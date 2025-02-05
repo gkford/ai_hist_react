@@ -11,7 +11,7 @@ export function HominidCard(props: { imageSrc?: string }) {
   );
 
   const containerContent = (
-    <div className="flex-1 w-full">
+    <div className="h-16 rounded-lg flex flex-col">
       <PopulationProgress />
     </div>
   );
