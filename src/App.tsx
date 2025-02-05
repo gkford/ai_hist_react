@@ -1,6 +1,7 @@
 import { ScienceCard } from "./components/ScienceCard"
 import { PersonCard } from "./components/PersonCard"
 import { MasterCard } from "./components/MasterCard"
+import { HominidCard } from "./components/HominidCard"
 
 function App() {
   return (
@@ -11,6 +12,9 @@ function App() {
           imageSrc="/placeholder.svg"
         />
         <PersonCard 
+          imageSrc="/placeholder.svg"
+        />
+        <HominidCard 
           imageSrc="/placeholder.svg"
         />
         <MasterCard className="w-[400px] overflow-hidden">
