@@ -5,10 +5,7 @@ import { cn } from "@/lib/utils";
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
   imageSrc?: string;
   header?: React.ReactNode;
-  container1?: React.ReactNode;
-  container2?: React.ReactNode;
-  container3?: React.ReactNode;
-  container4?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
@@ -29,28 +26,7 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
           />
         </div>
         <CardContent className="p-0 flex flex-col" style={{ minHeight: "240px" }}>
-          <div className="space-y-0">
-            {container1 !== undefined ? container1 : (
-              <div className="h-16 bg-primary/10 flex items-center justify-center w-full">
-                <span className="text-sm">Container 1</span>
-              </div>
-            )}
-            {container2 !== undefined ? container2 : (
-              <div className="h-16 bg-secondary/10 flex items-center justify-center w-full">
-                <span className="text-sm">Container 2</span>
-              </div>
-            )}
-            {container3 !== undefined ? container3 : (
-              <div className="h-16 bg-tertiary/10 flex items-center justify-center w-full">
-                <span className="text-sm">Container 3</span>
-              </div>
-            )}
-            {container4 !== undefined ? container4 : (
-              <div className="h-16 bg-accent/10 flex items-center justify-center w-full">
-                <span className="text-sm">Container 4</span>
-              </div>
-            )}
-          </div>
+          {children}
         </CardContent>
       </Card>
     );

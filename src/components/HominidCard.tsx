@@ -10,13 +10,15 @@ export function HominidCard(props: { imageSrc?: string }) {
     </div>
   );
 
-  const container4 = (
+  const containerContent = (
     <div className="flex items-center justify-center w-full h-16">
       <PopulationProgress />
     </div>
   );
 
   return (
-    <MasterCard imageSrc={props.imageSrc} header={header} container4={container4} />
+    <MasterCard imageSrc={props.imageSrc} header={header}>
+      {containerContent}
+    </MasterCard>
   );
 }
