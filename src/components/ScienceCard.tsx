@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
@@ -27,7 +26,7 @@ export function ScienceCard({ title, imageSrc }: ScienceCardProps) {
 
       {/* Shorter full-width image */}
       <div className="relative w-full aspect-[3/1]">
-        <Image src={imageSrc || "/placeholder.svg"} alt={title} fill className="object-cover" />
+        <img src={imageSrc || "/placeholder.svg"} alt={title} className="w-full h-full object-cover" />
       </div>
 
       {/* Content with margins */}
