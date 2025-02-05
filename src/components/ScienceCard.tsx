@@ -24,7 +24,11 @@ export function ScienceCard({ title, imageSrc }: ScienceCardProps) {
 
       {/* Shorter full-width image */}
       <div className="relative w-full aspect-[3/1]">
-        {/* <Image src={imageSrc || "/placeholder.svg"} alt={title} fill className="object-cover" /> */}
+        <img 
+          src={imageSrc || "/placeholder.svg"} 
+          alt={title}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Content with margins */}
