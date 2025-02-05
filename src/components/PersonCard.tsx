@@ -29,18 +29,18 @@ export function PersonCard({ imageSrc }: PersonCardProps) {
         />
       </div>
 
-      <CardContent className="p-4 flex flex-col" style={{ minHeight: "240px" }}>
-        <div className="space-y-4">
-          <div className="h-16 bg-primary/10 rounded-lg p-2 flex items-center justify-center">
+      <CardContent className="p-0 flex flex-col" style={{ minHeight: "240px" }}>
+        <div className="space-y-0">
+          <div className="h-16 bg-primary/10 flex items-center justify-center w-full">
             <span className="text-sm">Attribute Container 1</span>
           </div>
-          <div className="h-16 bg-secondary/10 rounded-lg p-2 flex items-center justify-center">
+          <div className="h-16 bg-secondary/10 flex items-center justify-center w-full">
             <span className="text-sm">Attribute Container 2</span>
           </div>
-          <div className="h-16 bg-tertiary/10 rounded-lg p-2 flex items-center justify-center">
+          <div className="h-16 bg-tertiary/10 flex items-center justify-center w-full">
             <span className="text-sm">Attribute Container 3</span>
           </div>
-          <div className="h-16 bg-accent/10 rounded-lg p-2 flex items-center justify-center">
+          <div className="h-16 bg-accent/10 flex items-center justify-center w-full">
             <span className="text-sm">Attribute Container 4</span>
           </div>
         </div>
