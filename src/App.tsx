@@ -1,7 +1,5 @@
 import { PersonCard } from "./components/PersonCard"
 import { MasterCard } from "./components/MasterCard"
-import { Attribute } from "./components/ui/Attribute"
-import { PopulationProgress } from "./components/PopulationProgress"
 
 function App() {
   return (
@@ -18,17 +16,6 @@ function App() {
             <span>This is a demonstration of the Master Card component.</span>
           </div>
         </MasterCard>
-        <div className="flex flex-col gap-4">
-          <h2 className="font-semibold">Example of an Attribute by itself</h2>
-          <Attribute>This is a standalone attribute.</Attribute>
-        </div>
-        <div className="attribute_container h-16 overflow-hidden bg-green-100 flex items-center justify-center">
-          <span className="text-sm">This is an attribute_container</span>
-        </div>
-        <div className="attribute_container h-16 overflow-hidden bg-blue-100 flex items-center justify-center">
-          <span className="text-sm">This is an attribute_container with a PopulationProgress component:</span>
-          <PopulationProgress />
-        </div>
       </div>
     </div>
   )
