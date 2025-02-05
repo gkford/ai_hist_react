@@ -8,6 +8,8 @@ This project uses a composition-based approach for card components. The `MasterC
 
 In the default version of the MasterCard (when no custom children are provided), the card displays four 'attribute_container' sections, each forced to the same height (h-16) with overflow hidden. Each container uses a distinct pastel background color, making it clear that four separate sections exist. This ensures consistency in the default layout and highlights the idea of 'attribute_containers' on the card.
 
+In the default version of the MasterCard (when no custom children are provided), the card displays four 'attribute_container' sections, each forced to the same height (h-16) with overflow hidden. Each container uses a distinct pastel background color, making it clear that four separate sections exist. This ensures consistency in the default layout and highlights the idea of 'attribute_containers' on the card.
+
 Child components (such as `ScienceCard`, `PersonCard`, and `HominidCard`) supply their unique content as children to `MasterCard`. This separation of concerns allows for:
 - **Flexibility:** Easily swap or update card content without modifying the core layout.
 - **Consistency:** All cards adhere to a unified layout defined in `MasterCard`.
