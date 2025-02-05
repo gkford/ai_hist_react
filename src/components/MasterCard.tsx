@@ -26,7 +26,14 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
           />
         </div>
         <CardContent className="p-0 flex flex-col" style={{ minHeight: "240px" }}>
-          {children}
+          {children ? children : (
+            <div className="flex flex-col">
+              <div className="attribute_container h-16 overflow-hidden bg-pink-100" />
+              <div className="attribute_container h-16 overflow-hidden bg-green-100" />
+              <div className="attribute_container h-16 overflow-hidden bg-blue-100" />
+              <div className="attribute_container h-16 overflow-hidden bg-yellow-100" />
+            </div>
+          )}
         </CardContent>
       </Card>
     );

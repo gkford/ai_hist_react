@@ -1,20 +1,13 @@
-import { ScienceCard } from "./components/ScienceCard"
 import { PersonCard } from "./components/PersonCard"
 import { MasterCard } from "./components/MasterCard"
-import { HominidCard } from "./components/HominidCard"
+import { Attribute } from "./components/ui/Attribute"
+import { PopulationProgress } from "./components/PopulationProgress"
 
 function App() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="flex gap-4">
-        <ScienceCard 
-          title="Biology Research"
-          imageSrc="/placeholder.svg"
-        />
         <PersonCard 
-          imageSrc="/placeholder.svg"
-        />
-        <HominidCard 
           imageSrc="/placeholder.svg"
         />
         <MasterCard className="w-[400px] overflow-hidden">
@@ -25,6 +18,17 @@ function App() {
             <span>This is a demonstration of the Master Card component.</span>
           </div>
         </MasterCard>
+        <div className="flex flex-col gap-4">
+          <h2 className="font-semibold">Example of an Attribute by itself</h2>
+          <Attribute>This is a standalone attribute.</Attribute>
+        </div>
+        <div className="attribute_container h-16 overflow-hidden bg-green-100 flex items-center justify-center">
+          <span className="text-sm">This is an attribute_container</span>
+        </div>
+        <div className="attribute_container h-16 overflow-hidden bg-blue-100 flex items-center justify-center">
+          <span className="text-sm">This is an attribute_container with a PopulationProgress component:</span>
+          <PopulationProgress />
+        </div>
       </div>
     </div>
   )
