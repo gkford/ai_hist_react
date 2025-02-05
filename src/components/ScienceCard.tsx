@@ -32,47 +32,19 @@ export function ScienceCard({ title, imageSrc }: ScienceCardProps) {
       </div>
 
       {/* Content with margins */}
-      <CardContent className="p-4 flex flex-col" style={{ minHeight: "120px" }}>
-        {/* Centered text box */}
-        <div className="flex-1 flex items-center justify-center border border-border rounded-md mb-4">
-          <div className="flex items-center space-x-2 text-lg p-4">
-            <span>🍗</span>
-            <span>+10%</span>
+      <CardContent className="p-4 flex flex-col" style={{ minHeight: "240px" }}>
+        <div className="space-y-4">
+          <div className="h-16 bg-primary/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Research Container 1</span>
           </div>
-        </div>
-
-        {/* Fixed-width progress section */}
-        <div className="flex items-center justify-between w-full" style={{ gap: '16px' }}>
-          {/* Icon pile */}
-          <div className="flex-1 flex items-center justify-start" style={{ marginLeft: -8 }}>
-            {[...Array(researchLevel)].map((_, i) => (
-              <div
-                key={i}
-                className={cn(
-                  "w-8 h-8 rounded-full bg-primary flex items-center justify-center border-2 border-background",
-                  "hover:z-10 transition-transform",
-                  i > 0 && "-ml-3",
-                )}
-                onClick={cycleResearchLevel}
-              >
-                <span className="text-[12px]">🤔</span>
-              </div>
-            ))}
-            {researchLevel === 0 && (
-              <div
-                className="w-8 h-8 rounded-full border-2 border-dashed border-muted-foreground flex items-center justify-center cursor-pointer hover:border-primary transition-colors"
-                onClick={cycleResearchLevel}
-              >
-                <span className="text-muted-foreground">+</span>
-              </div>
-            )}
+          <div className="h-16 bg-secondary/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Research Container 2</span>
           </div>
-
-          {/* Progress bar with fixed width */}
-          <div className="w-[260px]">
-            {" "}
-            {/* Fixed width container */}
-            <Progress value={researchLevel * 33.33} className="h-2 cursor-pointer" onClick={cycleResearchLevel} />
+          <div className="h-16 bg-tertiary/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Research Container 3</span>
+          </div>
+          <div className="h-16 bg-accent/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Research Container 4</span>
           </div>
         </div>
       </CardContent>

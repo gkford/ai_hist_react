@@ -30,33 +30,18 @@ export function PersonCard({ imageSrc }: PersonCardProps) {
       </div>
 
       <CardContent className="p-4 flex flex-col" style={{ minHeight: "240px" }}>
-        <div className="flex flex-col space-y-4">
-          <div className="flex items-center justify-center border border-border rounded-md">
-            <div className="flex items-center space-x-2 text-lg p-4">
-              <span>🍗</span>
-              <span>+10%</span>
-            </div>
+        <div className="space-y-4">
+          <div className="h-16 bg-primary/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Attribute Container 1</span>
           </div>
-          
-          <div className="flex items-center justify-center border border-border rounded-md">
-            <div className="flex items-center space-x-2 text-lg p-4">
-              <span>🍓</span>
-              <span>+5%</span>
-            </div>
+          <div className="h-16 bg-secondary/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Attribute Container 2</span>
           </div>
-          
-          <div className="flex items-center justify-center border border-border rounded-md">
-            <div className="flex items-center space-x-2 text-lg p-4">
-              <span>🥚</span>
-              <span>+8%</span>
-            </div>
+          <div className="h-16 bg-tertiary/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Attribute Container 3</span>
           </div>
-          
-          <div className="flex items-center justify-center border border-border rounded-md">
-            <div className="flex items-center space-x-2 text-lg p-4">
-              <span>🧄</span>
-              <span>+12%</span>
-            </div>
+          <div className="h-16 bg-accent/10 rounded-lg p-2 flex items-center justify-center">
+            <span className="text-sm">Attribute Container 4</span>
           </div>
         </div>
       </CardContent>
