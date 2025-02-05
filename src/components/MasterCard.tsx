@@ -7,10 +7,16 @@ export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     return (
       <Card ref={ref} className={cn("rounded-xl border bg-card text-card-foreground shadow", className)} {...props}>
-        {children}
+        <div className="relative w-full aspect-[3/1] bg-gray-200" />
+        <div className="flex flex-col divide-y">
+          <div className="h-16 w-full bg-primary/10"></div>
+          <div className="h-16 w-full bg-secondary/10"></div>
+          <div className="h-16 w-full bg-tertiary/10"></div>
+          <div className="h-16 w-full bg-accent/10"></div>
+        </div>
       </Card>
     );
   }
