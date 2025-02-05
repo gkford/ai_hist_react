@@ -42,7 +42,7 @@ export function ScienceCard({ title, imageSrc }: ScienceCardProps) {
         </div>
 
         {/* Fixed-width progress section */}
-        <div className="flex items-center" style={{ width: "100%" }}>
+        <div className="flex items-center justify-end w-full" style={{ gap: '16px' }}>
           {/* Icon pile */}
           <div className="flex items-center" style={{ marginLeft: -8 }}>
             {[...Array(researchLevel)].map((_, i) => (
@@ -69,7 +69,7 @@ export function ScienceCard({ title, imageSrc }: ScienceCardProps) {
           </div>
 
           {/* Progress bar with fixed width */}
-          <div className="w-[260px] ml-4">
+          <div className="w-[260px]">
             {" "}
             {/* Fixed width container */}
             <Progress value={researchLevel * 33.33} className="h-2 cursor-pointer" onClick={cycleResearchLevel} />
