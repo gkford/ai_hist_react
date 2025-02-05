@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { cn } from "@/lib/utils"
+import { Card, CardContent } from "../ui/card"
+import { Progress } from "../ui/progress"
+import { cn } from "../lib/utils"
 
 interface ScienceCardProps {
   title: string
@@ -24,7 +24,11 @@ export function ScienceCard({ title, imageSrc }: ScienceCardProps) {
 
       {/* Shorter full-width image */}
       <div className="relative w-full aspect-[3/1]">
-        <Image src={imageSrc || "/placeholder.svg"} alt={title} fill className="object-cover" />
+        <img 
+          src={imageSrc || "/placeholder.svg"} 
+          alt={title}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Content with margins */}
