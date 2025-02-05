@@ -28,10 +28,18 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
         <CardContent className="p-0 flex flex-col" style={{ minHeight: "240px" }}>
           {children ? children : (
             <div className="flex flex-col">
-              <div className="attribute_container h-16 overflow-hidden bg-pink-100" />
-              <div className="attribute_container h-16 overflow-hidden bg-green-100" />
-              <div className="attribute_container h-16 overflow-hidden bg-blue-100" />
-              <div className="attribute_container h-16 overflow-hidden bg-yellow-100" />
+              <div className="attribute_container h-16 overflow-hidden bg-pink-100 flex items-center justify-center">
+                <span className="text-sm">Default Container 1</span>
+              </div>
+              <div className="attribute_container h-16 overflow-hidden bg-green-100 flex items-center justify-center">
+                <span className="text-sm">Default Container 2</span>
+              </div>
+              <div className="attribute_container h-16 overflow-hidden bg-blue-100 flex items-center justify-center">
+                <span className="text-sm">Default Container 3</span>
+              </div>
+              <div className="attribute_container h-16 overflow-hidden bg-yellow-100 flex items-center justify-center">
+                <span className="text-sm">Default Container 4</span>
+              </div>
             </div>
           )}
         </CardContent>
