@@ -42,9 +42,9 @@ export function ScienceCard({ title, imageSrc }: ScienceCardProps) {
         </div>
 
         {/* Fixed-width progress section */}
-        <div className="flex items-center justify-end w-full" style={{ gap: '16px' }}>
+        <div className="flex items-center justify-between w-full" style={{ gap: '16px' }}>
           {/* Icon pile */}
-          <div className="flex items-center" style={{ marginLeft: -8 }}>
+          <div className="flex-1 flex items-center justify-start" style={{ marginLeft: -8 }}>
             {[...Array(researchLevel)].map((_, i) => (
               <div
                 key={i}
