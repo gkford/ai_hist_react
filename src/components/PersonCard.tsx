@@ -20,16 +20,16 @@ export function PersonCard({ imageSrc }: PersonCardProps) {
       </div>
     }>
       <div className="space-y-0">
-        <div className="h-16 bg-primary/10 flex items-center justify-center w-full">
+        <div className="h-16 bg-pink-100 flex items-center justify-center w-full">
           <span className="text-sm">Attribute Container 1</span>
         </div>
-        <div className="h-16 bg-secondary/10 flex items-center justify-center w-full">
+        <div className="h-16 bg-green-100 flex items-center justify-center w-full">
           <span className="text-sm">Attribute Container 2</span>
         </div>
-        <div className="h-16 bg-tertiary/10 flex items-center justify-center w-full">
+        <div className="h-16 bg-blue-100 flex items-center justify-center w-full">
           <span className="text-sm">Attribute Container 3</span>
         </div>
-        <div className="h-16 bg-accent/10 flex items-center justify-center w-full">
+        <div className="h-16 bg-yellow-100 flex items-center justify-center w-full">
           <span className="text-sm">Attribute Container 4</span>
         </div>
       </div>
