@@ -239,10 +239,7 @@ const Apptwo: React.FC = () => {
 
         {/* Bottom: “Available Cards” area */}
         <div
-          ref={(node) => {
-            drop(node);
-            availableRef.current = node;
-          }}
+          ref={drop}
           style={{
             position: 'relative',
             width: 600,
