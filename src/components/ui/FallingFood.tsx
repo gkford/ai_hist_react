@@ -13,21 +13,22 @@ export function FallingFood({ production, consumption }: FallingFoodProps) {
   // Spawns "rate" drumsticks each second at random x-positions along the top
   useEffect(() => {
     const interval = setInterval(() => {
-      // Add new drumsticks based on production
-      if (production > 0) {
+      const netRate = production + consumption
+      // Only add drumsticks if net rate is positive
+      if (netRate > 0) {
         setDrumsticks((prev) => {
           const width = containerRef.current?.clientWidth || 400
-          const newDrumsticks = Array.from({ length: production }).map((_, i) => {
+          const newDrumsticks = Array.from({ length: netRate }).map((_, i) => {
             const randomX = Math.floor(Math.random() * width)
             return { id: counter + i, x: randomX, y: 0, vx: 0, vy: 0 }
           })
           return [...prev, ...newDrumsticks]
         })
-        setCounter((prev) => prev + production)
+        setCounter((prev) => prev + netRate)
       }
 
-      // Remove drumsticks based on negative net rate
-      if (production + consumption < 0) {
+      // Only remove drumsticks if net rate is negative
+      if (netRate < 0) {
         setDrumsticks((prev) => {
           // Sort by y position (ascending) to get the ones closest to top
           const sorted = [...prev].sort((a, b) => {
