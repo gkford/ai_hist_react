@@ -207,7 +207,6 @@ const Apptwo: React.FC = () => {
                   col={colIndex}
                   cardInCell={rowArray[colIndex]}
                   onDropCard={handleDropOnBoard}
-                  onPickupCard={handlePickupFromBoard}
                 />
               ))}
             </div>
