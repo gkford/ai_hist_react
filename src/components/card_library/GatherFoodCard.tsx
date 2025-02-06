@@ -6,12 +6,8 @@ export function GatherFoodCard() {
   return (
     <MasterCard title="Gather Food">
       <CardImage imageSrc="/card_images/gatherFood.png" />
-      <CardContent className="p-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium">+1🍗 per worker</span>
-          <WorkerBar value={5} />
-        </div>
-      </CardContent>
+      <span className="text-sm font-medium h-16">+1🍗 per worker</span>
+      <WorkerBar className="h-16" value={5} />
     </MasterCard>
   )
 }
