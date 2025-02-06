@@ -17,7 +17,8 @@ export function WorkerBar({ value = 0, onChange, className }: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        gap: "0.5rem"
+        gap: "0.5rem",
+        width: "100%"
       }}
     >
       <button 
@@ -33,13 +34,15 @@ export function WorkerBar({ value = 0, onChange, className }: {
           cursor: "pointer"
         }}
       >
-        <MinusIcon />
+        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+          <MinusIcon className="w-4 h-4 text-gray-400" />
+        </div>
       </button>
       
       <div
         style={{
+          flex: 1,
           height: "8px",
-          width: "100px",
           background: 'rgb(236 72 72)'
         }}
       >
@@ -73,7 +76,9 @@ export function WorkerBar({ value = 0, onChange, className }: {
           cursor: "pointer"
         }}
       >
-        <PlusIcon />
+        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+          <PlusIcon className="w-4 h-4 text-gray-400" />
+        </div>
       </button>
     </div>
   )
