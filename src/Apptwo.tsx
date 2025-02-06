@@ -181,112 +181,39 @@ const Apptwo: React.FC = () => {
   ]);
 
 
-  // 7. The bottom “available cards” section itself can be a large drop target
-  //    so that cards can be re-dropped anywhere in the bottom area (to reposition).
-  const [, drop] = useDrop(() => ({
-    accept: ItemTypes.CARD,
-    drop: (item: { id: number, from: string, fromRow?: number, fromCol?: number }, monitor) => {
-      if (item.from === 'board') {
-        const clientOffset = monitor.getClientOffset();
-        const initialClientOffset = monitor.getInitialClientOffset();
-        if (!clientOffset || !initialClientOffset || !availableRef.current) return;
 
-        const containerRect = availableRef.current.getBoundingClientRect();
-        const dropX = clientOffset.x - containerRect.left;
-        const dropY = clientOffset.y - containerRect.top;
 
-        let foundCard: CardData | undefined;
-        setBoard(prev => {
-          const newBoard = prev.map(row => row.slice());
-          for (let i = 0; i < newBoard.length; i++) {
-            for (let j = 0; j < newBoard[i].length; j++) {
-              if (newBoard[i][j]?.id === item.id) {
-                foundCard = newBoard[i][j]!;
-                newBoard[i][j] = null;
-              }
-            }
-          }
-          return newBoard;
-        });
-
-        if (foundCard) {
-          const newCard: CardData = {
-            id: foundCard.id,
-            emoji: foundCard.emoji,
-            x: dropX,
-            y: dropY
-          };
-          setCards(prev => [...prev, newCard]);
-        }
-      } else {
-        const delta = monitor.getDifferenceFromInitialOffset();
-        if (!delta) return;
-        setCards((prev) => {
-          const cardIndex = prev.findIndex((c) => c.id === item.id);
-          if (cardIndex < 0) return prev;
-          const updatedCards = [...prev];
-          const card = { ...updatedCards[cardIndex] };
-          card.x += delta.x;
-          card.y += delta.y;
-          updatedCards[cardIndex] = card;
-          return updatedCards;
-        });
-      }
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  }));
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        {/* Top: 3x3 Board */}
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
-          {/* We’ll stack 3 columns side-by-side, each containing 3 cells */}
-          {board[0].map((_, colIndex) => (
-            <div  
-              key={colIndex}  
-              style={{ 
-                display: 'flex', 
-                flexDirection: 'column',
-                marginRight: colIndex < board[0].length - 1 ? 280 : 0 
-              }}
-            >
-              {board.map((rowArray, rowIndex) => (
+    return (
+      <div
+        ref={(node) => {
+          drop(node);
+          canvasRef.current = node;
+        }}
+        style={{ position: 'relative', width: 600, height: 500, margin: '0 auto', border: '2px solid #ccc' }}
+      >
+        {/* Board region: top 300px */}
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 300, borderBottom: '2px solid #000' }}>
+          {board.map((row, rowIndex) => (
+            <div key={rowIndex} style={{ display: 'flex' }}>
+              {row.map((cell, colIndex) => (
                 <BoardCell
-                  key={`${rowIndex}-${colIndex}`}
+                  key={colIndex}
                   row={rowIndex}
                   col={colIndex}
-                  cardInCell={rowArray[colIndex]}
-                  onDropCard={handleDropOnBoard}
+                  cardInCell={cell}
                 />
               ))}
             </div>
           ))}
         </div>
-
-        {/* Bottom: “Available Cards” area */}
-        <div
-          ref={drop}
-          style={{
-            position: 'relative',
-            width: 600,
-            height: 200,
-            border: '2px solid #ddd',
-            marginTop: 30,
-            backgroundColor: '#f0f0f0',
-          }}
-        >
-          {cards.map((card) => (
-            <Card
-              key={card.id}
-              card={card}
-              onMove={(_id, _x, _y) => {
-                // intentionally left empty
-              }}
-            />
-          ))}
-        </div>
+        {/* Available Cards: rendered as absolute items */}
+        {cards.map((card) => (
+          <Card
+            key={card.id}
+            card={card}
+            onMove={() => {}}
+          />
+        ))}
       </div>
   );
 };
