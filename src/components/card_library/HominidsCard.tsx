@@ -11,7 +11,7 @@ export function HominidsCard() {
 
   return (
     <MasterCard title="Hominids" typeIcon="👥" discoveryStatusIcon={null}>
-      <CardImage imageSrc="/card_images/hominids.png" />
+      <CardImage imageSrc="/react_ai_hist/card_images/hominids.png" />
       <CardInfo className="text-center">Eats 1🍗 per worker</CardInfo>
       <WorkerBar
         value={workerCount}
