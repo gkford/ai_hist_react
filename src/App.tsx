@@ -1,4 +1,5 @@
 import { MasterCard } from "./components/MasterCard"
+import { WorkerBar } from "./components/ui/WorkerBar"
 import { Attribute } from "./components/ui/Attribute"
 import { Card } from "./components/ui/card"
 import { CardImage } from "./components/ui/CardImage"
