@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
