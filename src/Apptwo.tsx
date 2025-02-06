@@ -129,6 +129,7 @@ const Apptwo: React.FC = () => {
     { id: 3, emoji: '🌟', x: 220, y: 20 },
     { id: 4, emoji: '⚡➡️🍗', x: 320, y: 20 },
     { id: 5, emoji: '🍗➡️⚡', x: 420, y: 20 },
+    { id: 6, emoji: '!⚡', x: 520, y: 20 },
   ]);
 
   // 6. When a card is dropped onto a board cell
