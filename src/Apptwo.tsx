@@ -102,7 +102,7 @@ const Apptwo: React.FC = () => {
   );
 
   // 5. Track the cards in the “available” section. Each has an (x,y) for absolute positioning.
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement | null>(null);
   
   const [, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
@@ -172,12 +172,12 @@ const Apptwo: React.FC = () => {
   }));
 
   const [cards, setCards] = useState<CardData[]>([
-    { id: 1, emoji: '😃', x: 20, y: 20 },
-    { id: 2, emoji: '🚀', x: 120, y: 20 },
-    { id: 3, emoji: '🌟', x: 220, y: 20 },
-    { id: 4, emoji: '⚡➡️🍗', x: 320, y: 20 },
-    { id: 5, emoji: '🍗➡️⚡', x: 420, y: 20 },
-    { id: 6, emoji: '!⚡', x: 520, y: 20 },
+    { id: 1, emoji: '😃', x: 20, y: 320 },
+    { id: 2, emoji: '🚀', x: 120, y: 320 },
+    { id: 3, emoji: '🌟', x: 220, y: 320 },
+    { id: 4, emoji: '⚡➡️🍗', x: 320, y: 320 },
+    { id: 5, emoji: '🍗➡️⚡', x: 420, y: 320 },
+    { id: 6, emoji: '!⚡', x: 520, y: 320 },
   ]);
 
 
@@ -187,6 +187,7 @@ const Apptwo: React.FC = () => {
       <div
         ref={(node) => {
           drop(node);
+          // Safe way to update the ref
           canvasRef.current = node;
         }}
         style={{ position: 'relative', width: 600, height: 500, margin: '0 auto', border: '2px solid #ccc' }}
