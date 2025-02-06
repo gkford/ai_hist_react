@@ -20,7 +20,7 @@ interface CardData {
 const Card: React.FC<{
   card: CardData;
   onMove: (id: number, x: number, y: number) => void;
-}> = ({ card, onMove }) => {
+}> = ({ card, onMove: _onMove }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.CARD,
     item: { id: card.id, from: 'available' },
@@ -191,9 +191,8 @@ const Apptwo: React.FC = () => {
             <Card
               key={card.id}
               card={card}
-              onMove={(id, x, y) => {
-                // In this simple example, we update card positions in the drop area’s `drop` handler
-                // but you could do direct “onMove” state updates as well.
+              onMove={(_id, _x, _y) => {
+                // intentionally left empty
               }}
             />
           ))}
