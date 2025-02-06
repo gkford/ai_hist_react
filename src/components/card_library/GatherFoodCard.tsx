@@ -10,7 +10,7 @@ export function GatherFoodCard() {
   const { setFoodProduction } = useResourceStore()
 
   return (
-    <MasterCard title="Gather Food">
+    <MasterCard title="Gather Food" typeIcon="⚙️" discoveryStatusIcon={null}>
       <CardImage imageSrc="/card_images/gatherFood.png" />
       <CardInfo className="text-center">+1🍗 per worker</CardInfo>
       <WorkerBar
