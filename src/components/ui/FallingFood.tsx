@@ -1,11 +1,9 @@
 import { useEffect, useState, useRef } from "react"
 
-interface FallingFoodProps {
-  production: number
-  consumption: number
-}
+import { useResourceStore } from "@/store/useResourceStore"
 
-export function FallingFood({ production, consumption }: FallingFoodProps) {
+export function FallingFood() {
+  const { netFoodRate } = useResourceStore()
   const containerRef = useRef<HTMLDivElement>(null)
   const [drumsticks, setDrumsticks] = useState<Array<{ id: number; x: number; y: number; vx: number; vy: number }>>([])
   const [counter, setCounter] = useState(0)
@@ -13,39 +11,31 @@ export function FallingFood({ production, consumption }: FallingFoodProps) {
   // Spawns "rate" drumsticks each second at random x-positions along the top
   useEffect(() => {
     const interval = setInterval(() => {
-      const netRate = production + consumption
-      // Only add drumsticks if net rate is positive
-      if (netRate > 0) {
-        setDrumsticks((prev) => {
-          const width = containerRef.current?.clientWidth || 400
-          const newDrumsticks = Array.from({ length: netRate }).map((_, i) => {
-            const randomX = Math.floor(Math.random() * width)
-            return { id: counter + i, x: randomX, y: 0, vx: 0, vy: 0 }
+      if (netFoodRate !== 0) {
+        if (netFoodRate > 0) {
+          setDrumsticks((prev) => {
+            const width = containerRef.current?.clientWidth || 400
+            const newDrumsticks = Array.from({ length: netFoodRate }).map((_, i) => {
+              const randomX = Math.floor(Math.random() * width)
+              return { id: counter + i, x: randomX, y: 0, vx: 0, vy: 0 }
+            })
+            return [...prev, ...newDrumsticks]
           })
-          return [...prev, ...newDrumsticks]
-        })
-        setCounter((prev) => prev + netRate)
-      }
-
-      // Only remove drumsticks if net rate is negative
-      if (netRate < 0) {
-        setDrumsticks((prev) => {
-          // Sort by y position (ascending) to get the ones closest to top
-          const sorted = [...prev].sort((a, b) => {
-            // First compare by y position
-            const yDiff = a.y - b.y;
-            if (Math.abs(yDiff) > 1) return yDiff;
-            // If y positions are very close, prefer drumsticks that have settled (vy near 0)
-            return Math.abs(a.vy) - Math.abs(b.vy);
+          setCounter((prev) => prev + netFoodRate)
+        } else {
+          setDrumsticks((prev) => {
+            const sorted = [...prev].sort((a, b) => {
+              const yDiff = a.y - b.y;
+              if (Math.abs(yDiff) > 1) return yDiff;
+              return Math.abs(a.vy) - Math.abs(b.vy);
+            });
+            return sorted.slice(-netFoodRate);
           });
-          // Remove the number of drumsticks equal to consumption rate
-          const numToRemove = Math.max(0, -consumption);
-          return sorted.slice(numToRemove);
-        });
+        }
       }
     }, 1000)
     return () => clearInterval(interval)
-  }, [production, consumption, counter])
+  }, [netFoodRate, counter])
 
   // Moves the drumsticks downward with physics including horizontal movement
   useEffect(() => {
