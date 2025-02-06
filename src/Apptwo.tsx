@@ -74,41 +74,20 @@ const BoardCell: React.FC<{
   row: number;
   col: number;
   cardInCell?: CardData | null;
-  onDropCard: (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => void;
-}> = ({ row, col, cardInCell, onDropCard }) => {
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: ItemTypes.CARD,
-    drop: (item: { id: number; from: string; fromRow?: number; fromCol?: number }) => {
-      if (item.from === 'board' && typeof item.fromRow === 'number' && typeof item.fromCol === 'number') {
-        onDropCard(item.id, row, col, { row: item.fromRow, col: item.fromCol });
-      } else {
-        onDropCard(item.id, row, col);
-      }
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  }));
-
+}> = ({ row, col, cardInCell }) => {
   return (
-    <div
-      ref={drop}
-      style={{
-        width: 140,
-        height: 80,
-        border: '2px dotted #777',
-        borderRadius: '6px',
-        margin: '8px',
-        backgroundColor: isOver ? '#eef' : 'transparent',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '24px',
-      }}
-    >
-      {cardInCell ? (
-        <DraggableCard row={row} col={col} card={cardInCell} />
-      ) : null}
+    <div style={{
+      width: 140,
+      height: 80,
+      border: '2px dotted #777',
+      borderRadius: '6px',
+      margin: '8px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '24px'
+    }}>
+      {cardInCell ? (<DraggableCard row={row} col={col} card={cardInCell} />) : null}
     </div>
   );
 };
@@ -123,8 +102,75 @@ const Apptwo: React.FC = () => {
   );
 
   // 5. Track the cards in the “available” section. Each has an (x,y) for absolute positioning.
-  const availableRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
   
+  const [, drop] = useDrop(() => ({
+    accept: ItemTypes.CARD,
+    drop: (item: { id: number; from: string; fromRow?: number; fromCol?: number }, monitor) => {
+      if (!canvasRef.current) return;
+      const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
+      
+      const canvasRect = canvasRef.current.getBoundingClientRect();
+      const dropX = clientOffset.x - canvasRect.left;
+      const dropY = clientOffset.y - canvasRect.top;
+      
+      if (dropY < 300) {
+        const cellWidth = 600 / 3;
+        const cellHeight = 300 / 3;
+        const row = Math.floor(dropY / cellHeight);
+        const col = Math.floor(dropX / cellWidth);
+        
+        if (item.from === 'available') {
+          const card = cards.find(c => c.id === item.id);
+          if (!card) return;
+          setBoard(prev => {
+            const newBoard = prev.map(r => r.slice());
+            newBoard[row][col] = card;
+            return newBoard;
+          });
+          setCards(prev => prev.filter(c => c.id !== item.id));
+        } else if (item.from === 'board') {
+          setBoard(prev => {
+            const newBoard = prev.map(r => r.slice());
+            for (let r = 0; r < newBoard.length; r++) {
+              for (let c = 0; c < newBoard[r].length; c++) {
+                if (newBoard[r][c]?.id === item.id) {
+                  newBoard[r][c] = null;
+                }
+              }
+            }
+            const card = board.flat().find(c => c?.id === item.id) || cards.find(c => c.id === item.id);
+            if (card) {
+              newBoard[row][col] = card;
+            }
+            return newBoard;
+          });
+        }
+      } else {
+        if (item.from === 'board') {
+          setBoard(prev => {
+            const newBoard = prev.map(r => r.slice());
+            for (let r = 0; r < newBoard.length; r++) {
+              for (let c = 0; c < newBoard[r].length; c++) {
+                if (newBoard[r][c]?.id === item.id) {
+                  newBoard[r][c] = null;
+                }
+              }
+            }
+            return newBoard;
+          });
+          const card = board.flat().find(c => c?.id === item.id) || cards.find(c => c.id === item.id);
+          if (card) {
+            setCards(prev => [...prev, { ...card, x: dropX, y: dropY }]);
+          }
+        } else {
+          setCards(prev => prev.map(c => c.id === item.id ? { ...c, x: dropX, y: dropY } : c));
+        }
+      }
+    }
+  }));
+
   const [cards, setCards] = useState<CardData[]>([
     { id: 1, emoji: '😃', x: 20, y: 20 },
     { id: 2, emoji: '🚀', x: 120, y: 20 },
