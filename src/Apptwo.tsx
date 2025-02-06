@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDrag, useDrop } from 'react-dnd';
 // import './App.css'; // optional, if you want to separate out your CSS
 
 // 1. Define the item type for react-dnd
@@ -155,8 +154,7 @@ const Apptwo: React.FC = () => {
   }));
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Top: 3x3 Board */}
         <div style={{ display: 'flex', flexDirection: 'row', marginTop: 20 }}>
           {/* We’ll stack 3 columns side-by-side, each containing 3 cells */}
@@ -198,7 +196,6 @@ const Apptwo: React.FC = () => {
           ))}
         </div>
       </div>
-    </DndProvider>
   );
 };
 
