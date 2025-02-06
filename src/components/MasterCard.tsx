@@ -17,7 +17,7 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
       <Card ref={ref} className={cn("w-[400px] overflow-hidden", className)} {...props}>
         {header ? header : (
           <div className="flex items-center justify-between p-4">
-            <h3 className="text-xl font-semibold">{title || "Master Card"}</h3>
+            <CardInfo className="w-full text-center">{title || "Master Card"}</CardInfo>
             <div className="flex gap-2">
               {typeIcon === null ? null : (
                 <div className="w-8 h-8 rounded-full flex items-center justify-center bg-pink-500">
