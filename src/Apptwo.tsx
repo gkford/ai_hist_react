@@ -75,7 +75,6 @@ const BoardCell: React.FC<{
   col: number;
   cardInCell?: CardData | null;
   onDropCard: (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => void;
-  onDropCard: (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => void;
 }> = ({ row, col, cardInCell, onDropCard }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
