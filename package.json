@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://graemeford.github.io/react_ai_hist/",
+  "homepage": "https://graemeford.github.io/react_ai_hist",
+  "publicUrl": "/react_ai_hist/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
