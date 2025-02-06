@@ -3,6 +3,7 @@ import { MasterCard } from "./components/MasterCard"
 import { Attribute } from "./components/ui/Attribute"
 import { PopulationProgress } from "./components/PopulationProgress"
 import { Card } from "./components/ui/card"
+import { ExampleCard } from "./components/ExampleCard"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <h3 className="text-xl font-semibold mb-4">Plain Card</h3>
             <p>This is a basic shadcn/ui Card component without any extras.</p>
           </Card>
+          <ExampleCard />
         </div>
 
         <div className="flex flex-col gap-4">
