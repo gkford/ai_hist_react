@@ -12,7 +12,6 @@ export default defineConfig({
   },
   server: {
     hmr: {
-      enabled: true,
       port: 443,
     },
   },
