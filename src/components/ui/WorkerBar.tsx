@@ -23,7 +23,7 @@ export function WorkerBar({ value = 0, onChange, className }: {
     >
       <button 
         onClick={() => {
-          const newProgress = Math.max(0, progress - 10)
+          const newProgress = Math.max(0, progress - 1)
           setProgress(newProgress)
           onChange?.(newProgress)
         }}
@@ -61,7 +61,7 @@ export function WorkerBar({ value = 0, onChange, className }: {
       
       <button 
         onClick={() => {
-          const newProgress = Math.min(100, progress + 10)
+          const newProgress = Math.min(100, progress + 1)
           setProgress(newProgress)
           onChange?.(newProgress)
         }}

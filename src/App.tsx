@@ -1,7 +1,6 @@
 import { MasterCard } from "./components/MasterCard"
 import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
 import { WorkerBar } from "./components/ui/WorkerBar"
-import { Attribute } from "./components/ui/Attribute"
 import { Card } from "./components/ui/card"
 import { CardImage } from "./components/ui/CardImage"
 import { useResourceStore } from "@/store/useResourceStore"
@@ -44,15 +43,6 @@ function App() {
             <CardImage/>
           </MasterCard>
           <GatherFoodCard />
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <h2 className="font-semibold">Example of an Attribute by itself</h2>
-          <Attribute>This is a standalone attribute.</Attribute>
-        </div>
-
-        <div className="attribute_container h-16 overflow-hidden bg-green-100 flex items-center justify-center">
-          <span className="text-sm">This is an attribute_container</span>
         </div>
 
       </div>
