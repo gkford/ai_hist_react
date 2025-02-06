@@ -11,6 +11,7 @@ function App() {
     thoughts,
     foodProduction,
     foodConsumption,
+    netFoodRate,
     knowledgeRate,
     thoughtsRate,
     tick
