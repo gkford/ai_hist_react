@@ -4,9 +4,10 @@ import { CardImage } from "@/components/ui/CardImage"
 import { CardInfo } from "../ui/CardInfo"
 import { useState } from "react"
 import { useResourceStore } from "@/store/useResourceStore"
+import { FallingFood } from "@/components/ui/FallingFood"
 
 export function GatherFoodCard() {
-  const [workerCount, setWorkerCount] = useState(5)
+  const [workerCount, setWorkerCount] = useState(0)
   const { setFoodRate } = useResourceStore()
 
   return (
@@ -20,6 +21,7 @@ export function GatherFoodCard() {
           setFoodRate(newValue * 1) // 1 food/second per worker
         }}
       />
+      <FallingFood rate={workerCount} />
     </MasterCard>
   )
 }
