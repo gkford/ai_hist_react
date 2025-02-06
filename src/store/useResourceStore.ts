@@ -64,12 +64,15 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       thoughts, thoughtsRate,
       humanEnergy, humanEnergyRate 
     } = get()
-    // Add each rate to its resource
+    
+    // Prevent human energy from going negative
+    const newHumanEnergy = Math.max(0, humanEnergy + humanEnergyRate)
+    
     set({
       food: Math.max(0, food + netFoodRate),
       knowledge: knowledge + knowledgeRate,
       thoughts: thoughts + thoughtsRate,
-      humanEnergy: humanEnergy + humanEnergyRate
+      humanEnergy: newHumanEnergy
     })
   }
 }))
