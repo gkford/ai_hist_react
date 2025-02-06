@@ -72,7 +72,7 @@ const BoardCell: React.FC<{
     <div
       ref={drop}
       style={{
-        width: 80,
+        width: 140,
         height: 80,
         border: '2px dotted #777',
         borderRadius: '6px',
@@ -154,12 +154,19 @@ const Apptwo: React.FC = () => {
   }));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
         {/* Top: 3x3 Board */}
-        <div style={{ display: 'flex', flexDirection: 'row', marginTop: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
           {/* We’ll stack 3 columns side-by-side, each containing 3 cells */}
           {board[0].map((_, colIndex) => (
-            <div key={colIndex} style={{ display: 'flex', flexDirection: 'column' }}>
+            <div  
+              key={colIndex}  
+              style={{ 
+                display: 'flex', 
+                flexDirection: 'column',
+                marginRight: colIndex < board[0].length - 1 ? 280 : 0 
+              }}
+            >
               {board.map((rowArray, rowIndex) => (
                 <BoardCell
                   key={`${rowIndex}-${colIndex}`}
