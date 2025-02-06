@@ -130,18 +130,6 @@ const Apptwo: React.FC = () => {
     { id: 3, emoji: '🌟', x: 220, y: 20 },
   ]);
 
-  const handlePickupFromBoard = (row: number, col: number, card: CardData) => {
-    // Remove the card from the board by setting its cell to null
-    setBoard((prev) => {
-      const newBoard = prev.map((boardRow) => boardRow.slice());
-      newBoard[row][col] = null;
-      return newBoard;
-    });
-
-    // Add the picked-up card back to the available "cards" with default positioning
-    setCards((prev) => [...prev, { ...card, x: 20, y: 20 }]);
-  };
-
   // 6. When a card is dropped onto a board cell
   const handleDropOnBoard = (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => {
     // For board-moves:
