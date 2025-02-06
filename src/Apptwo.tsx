@@ -60,12 +60,6 @@ const DraggableCard: React.FC<{
 }> = ({ row, col, card, onPickupCard }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.CARD,
-    item: () => {
-      if (onPickupCard) {
-        onPickupCard(row, col, card);
-      }
-      return { id: card.id, from: 'board' };
-    },
     item: { id: card.id, from: 'board', fromRow: row, fromCol: col },
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
   }));
@@ -81,7 +75,7 @@ const BoardCell: React.FC<{
   row: number;
   col: number;
   cardInCell?: CardData | null;
-  onDropCard: (cardId: number, row: number, col: number) => void;
+  onDropCard: (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => void;
   onPickupCard?: (row: number, col: number, card: CardData) => void;
 }> = ({ row, col, cardInCell, onDropCard, onPickupCard }) => {
   const [{ isOver }, drop] = useDrop(() => ({
