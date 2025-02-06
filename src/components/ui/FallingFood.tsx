@@ -29,8 +29,8 @@ export function FallingFood({ rate }: FallingFoodProps) {
 
   // Moves the drumsticks downward with physics including horizontal movement
   useEffect(() => {
-    const g = 1.0;
-    const restitution = 0.5;
+    const g = 0.3;
+    const restitution = 0.2;
     const drumWidth = 16;
     const drumHeight = 16;
     const moveInterval = setInterval(() => {
@@ -55,12 +55,12 @@ export function FallingFood({ rate }: FallingFoodProps) {
                 a.y = b.y - drumHeight;
                 a.vy = -a.vy * restitution;
                 const dx = (a.x + drumWidth/2) - (b.x + drumWidth/2);
-                a.vx += (dx < 0 ? -1 : 1) * (Math.random() * 2 + 1);
+                a.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.5 + 0.5);
               } else {
                 b.y = a.y - drumHeight;
                 b.vy = -b.vy * restitution;
                 const dx = (b.x + drumWidth/2) - (a.x + drumWidth/2);
-                b.vx += (dx < 0 ? -1 : 1) * (Math.random() * 2 + 1);
+                b.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.5 + 0.5);
               }
             }
           }
@@ -69,7 +69,7 @@ export function FallingFood({ rate }: FallingFoodProps) {
         newDrumsticks.forEach(d => {
           if (d.y + drumHeight >= containerHeight) {
             d.y = containerHeight - drumHeight;
-            if (Math.abs(d.vy) < 1) {
+            if (Math.abs(d.vy) < 0.5) {
               d.vy = 0;
             } else {
               d.vy = -d.vy * restitution;
