@@ -1,5 +1,6 @@
 import { Progress } from "@/components/ui/progress"
-import { useState } from "react"
+import { useState, styled } from "react"
+import { Plus, XMark } from "lucide-react"
 
 export function WorkerBar({ value = 0, onChange, className }: { 
   value?: number,

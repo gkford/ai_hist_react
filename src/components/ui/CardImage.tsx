@@ -12,7 +12,29 @@ export function CardImage({ imageSrc, alt, ...props }: CardImageProps) {
         alt={alt || "Card Image"}
         className="w-full h-full object-cover"
         {...props}
-      />
+      >
+        <div 
+          className="h-full" 
+          style={{ 
+            width: `${progress}%`,
+            background: 'var(--progress-indicator)'
+          }} 
+        />
+      </Progress>
+      
+      <button 
+        onClick={() => setProgress(p => Math.min(100, p + 10))}
+        title="Plus"
+        style={{
+          padding: "0.2rem",
+          border: "none",
+          background: "none",
+          cursor: "pointer",
+          color: "gray"
+        }
+      >
+        <Plus size={20} />
+      </button>
     </div>
   )
 }
