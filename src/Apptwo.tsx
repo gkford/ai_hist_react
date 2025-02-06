@@ -81,7 +81,7 @@ const BoardCell: React.FC<{
       height: 80,
       border: '2px dotted #777',
       borderRadius: '6px',
-      margin: '8px',
+      margin: '8px 160px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -116,7 +116,7 @@ const Apptwo: React.FC = () => {
       const dropY = clientOffset.y - canvasRect.top;
       
       if (dropY < 300) {
-        const cellWidth = 600 / 3;
+        const cellWidth = 1200 / 3;
         const cellHeight = 300 / 3;
         const row = Math.floor(dropY / cellHeight);
         const col = Math.floor(dropX / cellWidth);
@@ -172,12 +172,12 @@ const Apptwo: React.FC = () => {
   }));
 
   const [cards, setCards] = useState<CardData[]>([
-    { id: 1, emoji: '😃', x: 20, y: 320 },
-    { id: 2, emoji: '🚀', x: 120, y: 320 },
-    { id: 3, emoji: '🌟', x: 220, y: 320 },
-    { id: 4, emoji: '⚡➡️🍗', x: 320, y: 320 },
-    { id: 5, emoji: '🍗➡️⚡', x: 420, y: 320 },
-    { id: 6, emoji: '!⚡', x: 520, y: 320 },
+    { id: 1, emoji: '😃', x: 40, y: 320 },
+    { id: 2, emoji: '🚀', x: 240, y: 320 },
+    { id: 3, emoji: '🌟', x: 440, y: 320 },
+    { id: 4, emoji: '⚡➡️🍗', x: 640, y: 320 },
+    { id: 5, emoji: '🍗➡️⚡', x: 840, y: 320 },
+    { id: 6, emoji: '!⚡', x: 1040, y: 320 },
   ]);
 
 
@@ -190,7 +190,13 @@ const Apptwo: React.FC = () => {
           // Safe way to update the ref
           canvasRef.current = node;
         }}
-        style={{ position: 'relative', width: 600, height: 500, margin: '0 auto', border: '2px solid #ccc' }}
+        style={{ 
+          position: 'relative', 
+          width: '1200px',
+          height: 500, 
+          margin: '50px auto',
+          border: '2px solid #ccc' 
+        }}
       >
         {/* Board region: top 300px */}
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 300, borderBottom: '2px solid #000' }}>
