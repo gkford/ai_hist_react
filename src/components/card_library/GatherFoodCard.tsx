@@ -11,7 +11,7 @@ export function GatherFoodCard() {
 
   return (
     <MasterCard title="Gather Food" typeIcon="⚙️" discoveryStatusIcon={null}>
-      <CardImage imageSrc="./card_images/gatherFood.png" />
+      <CardImage imageSrc="/card_images/gatherFood.png" />
       <CardInfo className="text-center">+1🍗 per worker</CardInfo>
       <WorkerBar
         value={workerCount}
