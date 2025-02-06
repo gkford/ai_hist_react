@@ -37,7 +37,7 @@ export function FallingFood({ production, consumption }: FallingFoodProps) {
       }
     }, 1000)
     return () => clearInterval(interval)
-  }, [rate, counter])
+  }, [production, consumption, counter])
 
   // Moves the drumsticks downward with physics including horizontal movement
   useEffect(() => {
