@@ -190,7 +190,13 @@ const Apptwo: React.FC = () => {
         });
 
         if (foundCard) {
-          setCards(prev => [...prev, { ...foundCard, x: dropX, y: dropY }]);
+          const newCard: CardData = {
+            id: foundCard.id,
+            emoji: foundCard.emoji,
+            x: dropX,
+            y: dropY
+          };
+          setCards(prev => [...prev, newCard]);
         }
       } else {
         const delta = monitor.getDifferenceFromInitialOffset();
