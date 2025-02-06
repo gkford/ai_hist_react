@@ -168,27 +168,29 @@ const Apptwo: React.FC = () => {
     drop: (item: { id: number, from: string, fromRow?: number, fromCol?: number }, monitor) => {
       if (item.from === 'board') {
         const clientOffset = monitor.getClientOffset();
-        if (!clientOffset) return;
+        const initialClientOffset = monitor.getInitialClientOffset();
+        if (!clientOffset || !initialClientOffset || !availableRef.current) return;
+
+        const containerRect = availableRef.current.getBoundingClientRect();
+        const dropX = clientOffset.x - containerRect.left;
+        const dropY = clientOffset.y - containerRect.top;
+
         let foundCard: CardData | undefined;
-        const newBoard = board.map(row => row.slice());
-        for (let i = 0; i < newBoard.length; i++) {
-          for (let j = 0; j < newBoard[i].length; j++) {
-            if (newBoard[i][j]?.id === item.id) {
-              foundCard = newBoard[i][j]!;
-              newBoard[i][j] = null;
+        setBoard(prev => {
+          const newBoard = prev.map(row => row.slice());
+          for (let i = 0; i < newBoard.length; i++) {
+            for (let j = 0; j < newBoard[i].length; j++) {
+              if (newBoard[i][j]?.id === item.id) {
+                foundCard = newBoard[i][j]!;
+                newBoard[i][j] = null;
+              }
             }
           }
-        }
-        setBoard(newBoard);
+          return newBoard;
+        });
+
         if (foundCard) {
-          if (availableRef.current) {
-            const rect = availableRef.current.getBoundingClientRect();
-            const newX = clientOffset.x - rect.left;
-            const newY = clientOffset.y - rect.top;
-            setCards(prev => [...prev, { ...foundCard, x: newX, y: newY }]);
-          } else {
-            setCards(prev => [...prev, foundCard]);
-          }
+          setCards(prev => [...prev, { ...foundCard, x: dropX, y: dropY }]);
         }
       } else {
         const delta = monitor.getDifferenceFromInitialOffset();
