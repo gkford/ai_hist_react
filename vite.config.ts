@@ -4,7 +4,7 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.BASE_URL || '/react_ai_hist/',
+  base: './',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
