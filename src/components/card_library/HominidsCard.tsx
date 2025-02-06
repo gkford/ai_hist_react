@@ -10,7 +10,7 @@ export function HominidsCard() {
   const { setFoodConsumption } = useResourceStore()
 
   return (
-    <MasterCard title="Hominids">
+    <MasterCard title="Hominids" typeIcon="👥" discoveryStatusIcon={null}>
       <CardImage imageSrc="/card_images/hominids.png" />
       <CardInfo className="text-center">Eats 1🍗 per worker</CardInfo>
       <WorkerBar
