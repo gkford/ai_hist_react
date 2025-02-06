@@ -12,7 +12,7 @@ export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
-  ({ className, imageSrc, header, children, typeIcon, discoveryStatusIcon, ...props }, ref) => {
+  ({ className, imageSrc, header, title, children, typeIcon, discoveryStatusIcon, ...props }, ref) => {
     return (
       <Card ref={ref} className={cn("w-[400px] overflow-hidden", className)} {...props}>
         {header ? header : (
