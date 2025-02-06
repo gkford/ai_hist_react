@@ -180,32 +180,6 @@ const Apptwo: React.FC = () => {
     { id: 6, emoji: '!⚡', x: 520, y: 20 },
   ]);
 
-  // 6. When a card is dropped onto a board cell
-  const handleDropOnBoard = (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => {
-    // For board-moves:
-    if (oldPosition) {
-      setBoard((prev) => {
-        const newBoard = prev.map((r) => r.slice());
-        newBoard[oldPosition.row][oldPosition.col] = null;
-        newBoard[row][col] = prev[oldPosition.row][oldPosition.col];
-        return newBoard;
-      });
-    } else {
-      // Find the card data in "cards" 
-      const card = cards.find((c) => c.id === cardId);
-      if (!card) return;
-
-      // Place that card in the board cell
-      setBoard((prev) => {
-        const newBoard = prev.map((boardRow) => boardRow.slice());
-        newBoard[row][col] = card;
-        return newBoard;
-      });
-
-      // Remove the card from the "available" area
-      setCards((prev) => prev.filter((c) => c.id !== cardId));
-    }
-  };
 
   // 7. The bottom “available cards” section itself can be a large drop target
   //    so that cards can be re-dropped anywhere in the bottom area (to reposition).
