@@ -72,8 +72,7 @@ const BoardCell: React.FC<{
   if (cardInCell) {
     const [{ isDragging }, drag] = useDrag(() => ({
       type: ItemTypes.CARD,
-      item: { id: cardInCell.id, from: 'board' },
-      begin: () => {
+      item: () => {
         if (onPickupCard) {
           onPickupCard(row, col, cardInCell);
         }
