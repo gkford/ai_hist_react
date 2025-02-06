@@ -49,10 +49,6 @@ export function WorkerBar({ value = 0, onChange, className }: {
         <Progress
           value={progress}
           className="h-full"
-          style={{
-            '--progress-background': 'rgb(236 72 72)',
-            '--progress-indicator': 'rgb(221 39 39)'
-          }}
         >
           <div
             className="h-full"
