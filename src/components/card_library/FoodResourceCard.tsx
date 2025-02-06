@@ -9,7 +9,7 @@ export function FoodResourceCard() {
   return (
     <MasterCard title="Food Resources">
       <CardImage imageSrc="/placeholder.svg" />
-      <FallingFood rate={foodProduction + foodConsumption} />
+      <FallingFood production={foodProduction} consumption={foodConsumption} />
     </MasterCard>
   )
 }

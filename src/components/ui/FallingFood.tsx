@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react"
 
 interface FallingFoodProps {
-  rate: number
+  production: number
+  consumption: number
 }
 
-export function FallingFood({ rate }: FallingFoodProps) {
+export function FallingFood({ production, consumption }: FallingFoodProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [drumsticks, setDrumsticks] = useState<Array<{ id: number; x: number; y: number; vx: number; vy: number }>>([])
   const [counter, setCounter] = useState(0)
@@ -12,16 +13,27 @@ export function FallingFood({ rate }: FallingFoodProps) {
   // Spawns "rate" drumsticks each second at random x-positions along the top
   useEffect(() => {
     const interval = setInterval(() => {
-      if (rate > 0) {
+      // Add new drumsticks based on production
+      if (production > 0) {
         setDrumsticks((prev) => {
           const width = containerRef.current?.clientWidth || 400
-          const newDrumsticks = Array.from({ length: rate }).map((_, i) => {
+          const newDrumsticks = Array.from({ length: production }).map((_, i) => {
             const randomX = Math.floor(Math.random() * width)
             return { id: counter + i, x: randomX, y: 0, vx: 0, vy: 0 }
           })
           return [...prev, ...newDrumsticks]
         })
-        setCounter((prev) => prev + rate)
+        setCounter((prev) => prev + production)
+      }
+
+      // Remove drumsticks based on consumption
+      if (consumption < 0) {
+        setDrumsticks((prev) => {
+          // Sort by y position (descending) to get the ones closest to bottom
+          const sorted = [...prev].sort((a, b) => b.y - a.y)
+          // Remove the number of drumsticks equal to consumption rate
+          return sorted.slice(0, sorted.length + consumption)
+        })
       }
     }, 1000)
     return () => clearInterval(interval)
