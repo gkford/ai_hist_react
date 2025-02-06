@@ -32,7 +32,11 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
           </div>
         )}
         <CardContent className="p-0 flex flex-col" style={{ minHeight: "373px" }}>
-          {children}
+          {children || (
+            <div className="h-full flex items-center justify-center text-gray-400">
+              No content here
+            </div>
+          )}
         </CardContent>
       </Card>
     );
