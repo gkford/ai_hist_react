@@ -7,6 +7,7 @@ interface ResourceStore {
 
   foodProduction: number
   foodConsumption: number
+  netFoodRate: number
   knowledgeRate: number
   thoughtsRate: number
 
@@ -30,12 +31,19 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
 
   foodProduction: 0,
   foodConsumption: 0,
+  netFoodRate: 0,
   knowledgeRate: 0,
   thoughtsRate: 0,
 
   setFood: (amount) => set({ food: amount }),
-  setFoodProduction: (rate) => set({ foodProduction: rate }),
-  setFoodConsumption: (rate) => set({ foodConsumption: rate }),
+  setFoodProduction: (rate) => set((state) => ({ 
+    foodProduction: rate,
+    netFoodRate: rate + state.foodConsumption
+  })),
+  setFoodConsumption: (rate) => set((state) => ({ 
+    foodConsumption: rate,
+    netFoodRate: state.foodProduction + rate
+  })),
 
   setKnowledge: (amount) => set({ knowledge: amount }),
   setKnowledgeRate: (rate) => set({ knowledgeRate: rate }),
@@ -44,10 +52,10 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
   setThoughtsRate: (rate) => set({ thoughtsRate: rate }),
 
   tick: () => {
-    const { food, foodProduction, foodConsumption, knowledge, knowledgeRate, thoughts, thoughtsRate } = get()
+    const { food, netFoodRate, knowledge, knowledgeRate, thoughts, thoughtsRate } = get()
     // Add each rate to its resource
     set({
-      food: food + foodProduction + foodConsumption,
+      food: Math.max(0, food + netFoodRate),
       knowledge: knowledge + knowledgeRate,
       thoughts: thoughts + thoughtsRate
     })

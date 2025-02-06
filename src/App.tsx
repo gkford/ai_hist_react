@@ -35,7 +35,7 @@ function App() {
       </div>
       <div className="flex flex-col mt-8 p-4 border border-gray-200 rounded">
         <h2 className="font-semibold mb-2">Developer Dashboard</h2>
-        <p>Food: {food} (Production: +{foodProduction}, Consumption: {foodConsumption})</p>
+        <p>Food: {food} (Net Rate: {netFoodRate} | Production: +{foodProduction}, Consumption: {foodConsumption})</p>
         <p>Knowledge: {knowledge} (Rate: {knowledgeRate})</p>
         <p>Thoughts: {thoughts} (Rate: {thoughtsRate})</p>
       </div>

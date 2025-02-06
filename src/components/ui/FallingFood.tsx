@@ -26,8 +26,8 @@ export function FallingFood({ production, consumption }: FallingFoodProps) {
         setCounter((prev) => prev + production)
       }
 
-      // Remove drumsticks based on consumption
-      if (consumption < 0) {
+      // Remove drumsticks based on negative net rate
+      if (production + consumption < 0) {
         setDrumsticks((prev) => {
           // Sort by y position (ascending) to get the ones closest to top
           const sorted = [...prev].sort((a, b) => {
