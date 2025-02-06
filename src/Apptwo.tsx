@@ -19,6 +19,8 @@ interface LightningEmoji {
   id: number;
   x: number;
   y: number;
+  vx: number;
+  vy: number;
 }
 
 // 2. A component for a draggable Card
@@ -196,28 +198,75 @@ const Apptwo: React.FC = () => {
           if (cell?.emoji === '!⚡') {
             const cellWidth = 1200 / 3;
             const cellHeight = 300 / 3;
-            const startX = (colIndex * cellWidth) + 140; // Start at right edge of cell
-            const startY = (rowIndex * cellHeight) + (cellHeight / 2); // Middle of cell height
+            const startX = (colIndex * cellWidth) + 140;
+            const startY = (rowIndex * cellHeight) + (cellHeight / 2);
             
             setLightningEmojis(prev => [...prev, {
               id: Date.now(),
               x: startX,
-              y: startY
+              y: startY,
+              vx: 5, // Initial horizontal velocity
+              vy: 0  // Initial vertical velocity
             }]);
           }
         });
       });
     }, 1000);
 
-    // Move existing lightning emojis
+    // Move existing lightning emojis with attraction
     const moveInterval = setInterval(() => {
       setLightningEmojis(prev => {
+        // Find attraction point (if any)
+        let attractorX = -1;
+        let attractorY = -1;
+        
+        board.forEach((row, rowIndex) => {
+          row.forEach((cell, colIndex) => {
+            if (cell?.emoji === '⚡➡️🍗') {
+              const cellWidth = 1200 / 3;
+              const cellHeight = 300 / 3;
+              attractorX = (colIndex * cellWidth) + 140;
+              attractorY = (rowIndex * cellHeight) + (cellHeight / 2);
+            }
+          });
+        });
+
         return prev
-          .map(emoji => ({
-            ...emoji,
-            x: emoji.x + 5 // Move 5px right each frame
-          }))
-          .filter(emoji => emoji.x < 1200); // Remove when off screen
+          .map(emoji => {
+            let newVx = emoji.vx;
+            let newVy = emoji.vy;
+            
+            // If there's an attractor and the emoji is to its left
+            if (attractorX !== -1 && emoji.x < attractorX) {
+              const dx = attractorX - emoji.x;
+              const dy = attractorY - emoji.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              
+              // Add attraction force
+              const attractionStrength = 0.5;
+              newVx += (dx / distance) * attractionStrength;
+              newVy += (dy / distance) * attractionStrength;
+            }
+
+            return {
+              ...emoji,
+              x: emoji.x + newVx,
+              y: emoji.y + newVy,
+              vx: newVx,
+              vy: newVy
+            };
+          })
+          // Remove emojis that have reached or passed the attractor
+          .filter(emoji => {
+            if (attractorX !== -1) {
+              // Remove if it's reached the attractor
+              if (Math.abs(emoji.x - attractorX) < 20 && Math.abs(emoji.y - attractorY) < 20) {
+                return false;
+              }
+            }
+            // Remove if off screen
+            return emoji.x < 1200;
+          });
       });
     }, 50);
 
