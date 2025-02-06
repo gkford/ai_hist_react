@@ -66,6 +66,7 @@ const DraggableCard: React.FC<{
       }
       return { id: card.id, from: 'board' };
     },
+    item: { id: card.id, from: 'board', fromRow: row, fromCol: col },
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
   }));
   
@@ -85,8 +86,8 @@ const BoardCell: React.FC<{
 }> = ({ row, col, cardInCell, onDropCard, onPickupCard }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
-    drop: (item: { id: number }) => {
-      onDropCard(item.id, row, col);
+    drop: (item: { id: number; from: string; fromRow: number; fromCol: number }) => {
+      onDropCard(item.id, row, col, { row: item.fromRow, col: item.fromCol });
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -145,22 +146,30 @@ const Apptwo: React.FC = () => {
   };
 
   // 6. When a card is dropped onto a board cell
-  const handleDropOnBoard = (cardId: number, row: number, col: number) => {
-    // Find the card data in "cards" or possibly in the board
-    //  - if it's in the board, we might be moving from one cell to another
-    //  - for simplicity, assume we only drop from the bottom area right now
-    const card = cards.find((c) => c.id === cardId);
-    if (!card) return;
+  const handleDropOnBoard = (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => {
+    // For board-moves:
+    if (oldPosition) {
+      setBoard((prev) => {
+        const newBoard = prev.map((r) => r.slice());
+        newBoard[oldPosition.row][oldPosition.col] = null;
+        newBoard[row][col] = prev[oldPosition.row][oldPosition.col];
+        return newBoard;
+      });
+    } else {
+      // Find the card data in "cards" 
+      const card = cards.find((c) => c.id === cardId);
+      if (!card) return;
 
-    // Place that card in the board cell
-    setBoard((prev) => {
-      const newBoard = prev.map((boardRow) => boardRow.slice());
-      newBoard[row][col] = card;
-      return newBoard;
-    });
+      // Place that card in the board cell
+      setBoard((prev) => {
+        const newBoard = prev.map((boardRow) => boardRow.slice());
+        newBoard[row][col] = card;
+        return newBoard;
+      });
 
-    // Optionally remove the card from the "available" area
-    setCards((prev) => prev.filter((c) => c.id !== cardId));
+      // Remove the card from the "available" area
+      setCards((prev) => prev.filter((c) => c.id !== cardId));
+    }
   };
 
   // 7. The bottom “available cards” section itself can be a large drop target
