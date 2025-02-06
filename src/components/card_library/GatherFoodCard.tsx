@@ -1,10 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card"
+import { MasterCard } from "@/components/MasterCard"
 import { WorkerBar } from "@/components/ui/WorkerBar"
 import { CardImage } from "@/components/ui/CardImage"
 
 export function GatherFoodCard() {
   return (
-    <Card>
+    <MasterCard title="Gather Food">
       <CardImage imageSrc="/card_images/gatherFood.png" />
       <CardContent className="p-4">
         <div className="flex flex-col gap-2">
@@ -12,6 +12,6 @@ export function GatherFoodCard() {
           <WorkerBar value={5} />
         </div>
       </CardContent>
-    </Card>
+    </MasterCard>
   )
 }
