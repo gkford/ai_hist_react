@@ -1,8 +1,7 @@
-import { PersonCard } from "./components/PersonCard"
 import { MasterCard } from "./components/MasterCard"
 import { Attribute } from "./components/ui/Attribute"
 import { Card } from "./components/ui/card"
-import { ExampleCard } from "./components/ExampleCard"
+import { CardImage } from "./components/ui/CardImage"
 
 function App() {
   return (
@@ -24,7 +23,10 @@ function App() {
             <h3 className="text-xl font-semibold mb-4">Plain Card</h3>
             <p>This is a basic shadcn/ui Card component without any extras.</p>
           </Card>
-          <ExampleCard />
+          <MasterCard>            
+            <CardImage/>
+            <PopulationProgress/>
+          </MasterCard>
         </div>
 
         <div className="flex flex-col gap-4">
