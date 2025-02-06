@@ -88,8 +88,8 @@ export function FallingFood() {
         }
         // handle collision with container floor
         newDrumsticks.forEach(d => {
-          if (d.y + drumHeight >= containerHeight) {
-            d.y = containerHeight - drumHeight;
+          if (d.y + drumHeight > containerHeight - 4) { // subtract 4px to account for emoji rendering
+            d.y = containerHeight - drumHeight - 4;
             // Threshold for stopping bounce - Lower this value to make drumsticks settle faster
             if (Math.abs(d.vy) < 0.5) {
               d.vy = 0;
