@@ -36,24 +36,29 @@ export function WorkerBar({ value = 0, onChange, className }: {
         <MinusIcon />
       </button>
       
-      <Progress
-        value={progress}
-        className="h-8"
+      <div
         style={{
-          height: "100%",
+          height: "8px",
           width: "100px",
-          '--progress-background': 'rgb(236 72 72)',
-          '--progress-indicator': 'rgb(221 39 39)'
+          background: 'rgb(236 72 72)'
         }}
       >
-        <div 
-          className="h-full" 
-          style={{ 
-            width: `${progress}%`,
-            background: 'var(--progress-indicator)'
-          }} 
-        />
-      </Progress>
+        <Progress
+          value={progress}
+          className="h-full"
+          style={{
+            '--progress-background': 'rgb(236 72 72)',
+            '--progress-indicator': 'rgb(221 39 39)'
+          }}
+        >
+          <div
+            className="h-full"
+            style={{
+              background: 'var(--progress-indicator)'
+            }}
+          />
+        </Progress>
+      </div>
       
       <button 
         onClick={() => {
