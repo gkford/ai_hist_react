@@ -32,13 +32,6 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
           </div>
         )}
         <CardContent className="p-0 flex flex-col" style={{ minHeight: "373px" }}>
-        <div className="relative w-full aspect-[3/1]">
-          <img
-            src={imageSrc || "/placeholder.svg"}
-            alt="Master Card"
-            className="w-full h-full object-cover"
-          />
-        </div>
         
         </CardContent>
       </Card>
