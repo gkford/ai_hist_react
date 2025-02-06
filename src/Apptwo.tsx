@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 // import './App.css'; // optional, if you want to separate out your CSS
 
@@ -11,6 +11,12 @@ interface CardData {
   id: number;
   emoji: string;
   // For the free-floating area, store x/y positions
+  x: number;
+  y: number;
+}
+
+interface LightningEmoji {
+  id: number;
   x: number;
   y: number;
 }
@@ -171,6 +177,8 @@ const Apptwo: React.FC = () => {
     }
   }));
 
+  const [lightningEmojis, setLightningEmojis] = useState<LightningEmoji[]>([]);
+  
   const [cards, setCards] = useState<CardData[]>([
     { id: 1, emoji: '😃', x: 40, y: 320 },
     { id: 2, emoji: '🚀', x: 240, y: 320 },
@@ -180,8 +188,44 @@ const Apptwo: React.FC = () => {
     { id: 6, emoji: '!⚡', x: 1040, y: 320 },
   ]);
 
+  useEffect(() => {
+    // Spawn new lightning emojis
+    const spawnInterval = setInterval(() => {
+      board.forEach((row, rowIndex) => {
+        row.forEach((cell, colIndex) => {
+          if (cell?.emoji === '!⚡') {
+            const cellWidth = 1200 / 3;
+            const cellHeight = 300 / 3;
+            const startX = (colIndex * cellWidth) + 140; // Start at right edge of cell
+            const startY = (rowIndex * cellHeight) + (cellHeight / 2); // Middle of cell height
+            
+            setLightningEmojis(prev => [...prev, {
+              id: Date.now(),
+              x: startX,
+              y: startY
+            }]);
+          }
+        });
+      });
+    }, 1000);
 
+    // Move existing lightning emojis
+    const moveInterval = setInterval(() => {
+      setLightningEmojis(prev => {
+        return prev
+          .map(emoji => ({
+            ...emoji,
+            x: emoji.x + 5 // Move 5px right each frame
+          }))
+          .filter(emoji => emoji.x < 1200); // Remove when off screen
+      });
+    }, 50);
 
+    return () => {
+      clearInterval(spawnInterval);
+      clearInterval(moveInterval);
+    };
+  }, [board]);
 
     return (
       <div
@@ -220,6 +264,20 @@ const Apptwo: React.FC = () => {
             card={card}
             onMove={() => {}}
           />
+        ))}
+        {lightningEmojis.map((emoji) => (
+          <div
+            key={emoji.id}
+            style={{
+              position: 'absolute',
+              left: emoji.x,
+              top: emoji.y,
+              fontSize: '24px',
+              pointerEvents: 'none' // Make it non-interactive
+            }}
+          >
+            ⚡
+          </div>
         ))}
       </div>
   );
