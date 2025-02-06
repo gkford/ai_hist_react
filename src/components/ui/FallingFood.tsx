@@ -32,7 +32,7 @@ export function FallingFood({ rate }: FallingFoodProps) {
     // Gravity strength - Lower this value to make drumsticks fall more slowly
     const g = 0.3; 
     // Bounciness on collision - Lower this value to reduce bounce
-    const restitution = 0.2;
+    const restitution = 0.1;
     const drumWidth = 16;
     const drumHeight = 16;
     const moveInterval = setInterval(() => {
@@ -58,13 +58,13 @@ export function FallingFood({ rate }: FallingFoodProps) {
                 a.vy = -a.vy * restitution;
                 const dx = (a.x + drumWidth/2) - (b.x + drumWidth/2);
                 // Horizontal movement when colliding - Lower the 0.5 value to reduce side bounce
-                a.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.5 + 0.5); // Reduce 0.5 to make less horizontal movement
+                a.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.1 + 0.1); // Reduce 0.5 to make less horizontal movement
               } else {
                 b.y = a.y - drumHeight;
                 b.vy = -b.vy * restitution;
                 const dx = (b.x + drumWidth/2) - (a.x + drumWidth/2);
                 // Horizontal movement when colliding - Lower the 0.5 value to reduce side bounce
-                b.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.5 + 0.5); // Reduce 0.5 to make less horizontal movement
+                b.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.1 + 0.1); // Reduce 0.5 to make less horizontal movement
               }
             }
           }
