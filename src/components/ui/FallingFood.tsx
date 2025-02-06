@@ -30,10 +30,17 @@ export function FallingFood({ production, consumption }: FallingFoodProps) {
       if (consumption < 0) {
         setDrumsticks((prev) => {
           // Sort by y position (descending) to get the ones closest to bottom
-          const sorted = [...prev].sort((a, b) => b.y - a.y)
+          const sorted = [...prev].sort((a, b) => {
+            // First compare by y position
+            const yDiff = b.y - a.y;
+            if (Math.abs(yDiff) > 1) return yDiff;
+            // If y positions are very close, prefer drumsticks that have settled (vy near 0)
+            return Math.abs(b.vy) - Math.abs(a.vy);
+          });
           // Remove the number of drumsticks equal to consumption rate
-          return sorted.slice(0, sorted.length + consumption)
-        })
+          const numToKeep = Math.max(0, sorted.length + consumption);
+          return sorted.slice(0, numToKeep);
+        });
       }
     }, 1000)
     return () => clearInterval(interval)
