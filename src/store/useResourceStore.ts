@@ -5,13 +5,15 @@ interface ResourceStore {
   knowledge: number
   thoughts: number
 
-  foodRate: number
+  foodProduction: number
+  foodConsumption: number
   knowledgeRate: number
   thoughtsRate: number
 
   setFood: (amount: number) => void
-  setFoodRate: (rate: number) => void
-
+  setFoodProduction: (rate: number) => void
+  setFoodConsumption: (rate: number) => void
+  
   setKnowledge: (amount: number) => void
   setKnowledgeRate: (rate: number) => void
 
@@ -26,12 +28,14 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
   knowledge: 0,
   thoughts: 0,
 
-  foodRate: 0,
+  foodProduction: 0,
+  foodConsumption: 0,
   knowledgeRate: 0,
   thoughtsRate: 0,
 
   setFood: (amount) => set({ food: amount }),
-  setFoodRate: (rate) => set({ foodRate: rate }),
+  setFoodProduction: (rate) => set({ foodProduction: rate }),
+  setFoodConsumption: (rate) => set({ foodConsumption: rate }),
 
   setKnowledge: (amount) => set({ knowledge: amount }),
   setKnowledgeRate: (rate) => set({ knowledgeRate: rate }),
@@ -40,10 +44,10 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
   setThoughtsRate: (rate) => set({ thoughtsRate: rate }),
 
   tick: () => {
-    const { food, foodRate, knowledge, knowledgeRate, thoughts, thoughtsRate } = get()
+    const { food, foodProduction, foodConsumption, knowledge, knowledgeRate, thoughts, thoughtsRate } = get()
     // Add each rate to its resource
     set({
-      food: food + foodRate,
+      food: food + foodProduction + foodConsumption,
       knowledge: knowledge + knowledgeRate,
       thoughts: thoughts + thoughtsRate
     })

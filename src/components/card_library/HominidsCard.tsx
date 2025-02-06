@@ -7,7 +7,7 @@ import { useResourceStore } from "@/store/useResourceStore"
 
 export function HominidsCard() {
   const [workerCount, setWorkerCount] = useState(0)
-  const { setFoodRate } = useResourceStore()
+  const { setFoodConsumption } = useResourceStore()
 
   return (
     <MasterCard title="Hominids">
@@ -17,7 +17,7 @@ export function HominidsCard() {
         value={workerCount}
         onChange={(newValue) => {
           setWorkerCount(newValue)
-          setFoodRate(-newValue * 1) // -1 food/second per worker
+          setFoodConsumption(-newValue * 1) // -1 food/second per worker
         }}
       />
     </MasterCard>

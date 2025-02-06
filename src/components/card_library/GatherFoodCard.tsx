@@ -7,7 +7,7 @@ import { useResourceStore } from "@/store/useResourceStore"
 
 export function GatherFoodCard() {
   const [workerCount, setWorkerCount] = useState(0)
-  const { setFoodRate } = useResourceStore()
+  const { setFoodProduction } = useResourceStore()
 
   return (
     <MasterCard title="Gather Food">
@@ -17,7 +17,7 @@ export function GatherFoodCard() {
         value={workerCount}
         onChange={(newValue) => {
           setWorkerCount(newValue)
-          setFoodRate(newValue * 1) // 1 food/second per worker
+          setFoodProduction(newValue * 1) // 1 food/second per worker
         }}
       />
     </MasterCard>

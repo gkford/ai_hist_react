@@ -4,12 +4,12 @@ import { FallingFood } from "@/components/ui/FallingFood"
 import { useResourceStore } from "@/store/useResourceStore"
 
 export function FoodResourceCard() {
-  const { foodRate } = useResourceStore()
+  const { foodProduction, foodConsumption } = useResourceStore()
 
   return (
     <MasterCard title="Food Resources">
       <CardImage imageSrc="/placeholder.svg" />
-      <FallingFood rate={foodRate} />
+      <FallingFood rate={foodProduction + foodConsumption} />
     </MasterCard>
   )
 }
