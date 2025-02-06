@@ -21,7 +21,9 @@ function App() {
     const interval = setInterval(() => {
       tick()
     }, 1000)
-
+    
+    console.log('Base URL:', import.meta.env.BASE_URL)
+    
     return () => clearInterval(interval)
   }, [tick])
 
