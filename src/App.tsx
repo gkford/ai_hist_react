@@ -9,12 +9,10 @@ function App() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
-          <MasterCard className="w-[400px] overflow-hidden">
-            <div className="flex items-center justify-between p-4">
-              <h3 className="text-xl font-semibold">Master Card</h3>
-            </div>
+          <MasterCard className="w-[400px] overflow-hidden" title="Worker Card">
             <div className="p-4">
-              <span>This is a demonstration of the Master Card component.</span>
+              <span className="text-sm mb-2">This demonstrates the WorkerBar component:</span>
+              <WorkerBar value={5} onChange={(value) => console.log("Changed to", value)} />
             </div>
           </MasterCard>
           <Card className="w-[400px] p-6">
