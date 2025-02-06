@@ -9,11 +9,13 @@ function App() {
     food,
     knowledge,
     thoughts,
+    humanEnergy,
     foodProduction,
     foodConsumption,
     netFoodRate,
     knowledgeRate,
     thoughtsRate,
+    humanEnergyRate,
     tick
   } = useResourceStore()
 
@@ -41,6 +43,7 @@ function App() {
         <p>Food: {food} (Net Rate: {netFoodRate} | Production: +{foodProduction}, Consumption: {foodConsumption})</p>
         <p>Knowledge: {knowledge} (Rate: {knowledgeRate})</p>
         <p>Thoughts: {thoughts} (Rate: {thoughtsRate})</p>
+        <p>Human Energy: {humanEnergy} (Rate: {humanEnergyRate})</p>
       </div>
     </div>
   )
