@@ -165,29 +165,49 @@ const Apptwo: React.FC = () => {
   //    so that cards can be re-dropped anywhere in the bottom area (to reposition).
   const [, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
-    drop: (item: { id: number }, monitor) => {
-      const delta = monitor.getDifferenceFromInitialOffset();
-      if (!delta) return;
-
-      setCards((prev) => {
-        // If the card is already on the board, put it back in "cards"
-        // (though for a simple example, we might not do that).
-        // For now, let’s allow re-positioning only if it was in the available area already.
-        const cardIndex = prev.findIndex((c) => c.id === item.id);
-        if (cardIndex < 0) {
-          // The card might be on the board. If you want “pull back down to the available area,”
-          // you’d remove it from the board. That’s up to you.
-          return prev;
+    drop: (item: { id: number, from: string, fromRow?: number, fromCol?: number }, monitor) => {
+      if (item.from === 'board') {
+        const clientOffset = monitor.getClientOffset();
+        if (!clientOffset) return;
+        let foundCard: CardData | undefined;
+        const newBoard = board.map(row => row.slice());
+        for (let i = 0; i < newBoard.length; i++) {
+          for (let j = 0; j < newBoard[i].length; j++) {
+            if (newBoard[i][j]?.id === item.id) {
+              foundCard = newBoard[i][j]!;
+              newBoard[i][j] = null;
+            }
+          }
         }
-
-        const updatedCards = [...prev];
-        const card = { ...updatedCards[cardIndex] };
-        card.x += delta.x;
-        card.y += delta.y;
-        updatedCards[cardIndex] = card;
-        return updatedCards;
-      });
+        setBoard(newBoard);
+        if (foundCard) {
+          if (availableRef.current) {
+            const rect = availableRef.current.getBoundingClientRect();
+            const newX = clientOffset.x - rect.left;
+            const newY = clientOffset.y - rect.top;
+            setCards(prev => [...prev, { ...foundCard, x: newX, y: newY }]);
+          } else {
+            setCards(prev => [...prev, foundCard]);
+          }
+        }
+      } else {
+        const delta = monitor.getDifferenceFromInitialOffset();
+        if (!delta) return;
+        setCards((prev) => {
+          const cardIndex = prev.findIndex((c) => c.id === item.id);
+          if (cardIndex < 0) return prev;
+          const updatedCards = [...prev];
+          const card = { ...updatedCards[cardIndex] };
+          card.x += delta.x;
+          card.y += delta.y;
+          updatedCards[cardIndex] = card;
+          return updatedCards;
+        });
+      }
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
   }));
 
   return (
