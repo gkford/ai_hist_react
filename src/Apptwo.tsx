@@ -52,6 +52,30 @@ const Card: React.FC<{
 };
 
 // 3. Each cell on the board can be a drop target
+const DraggableCard: React.FC<{
+  row: number;
+  col: number;
+  card: CardData;
+  onPickupCard?: (row: number, col: number, card: CardData) => void;
+}> = ({ row, col, card, onPickupCard }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.CARD,
+    item: () => {
+      if (onPickupCard) {
+        onPickupCard(row, col, card);
+      }
+      return { id: card.id, from: 'board' };
+    },
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+  }));
+  
+  return (
+    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'move' }}>
+      {card.emoji}
+    </div>
+  );
+};
+
 const BoardCell: React.FC<{
   row: number;
   col: number;
@@ -69,41 +93,6 @@ const BoardCell: React.FC<{
     }),
   }));
 
-  if (cardInCell) {
-    const [{ isDragging }, drag] = useDrag(() => ({
-      type: ItemTypes.CARD,
-      item: () => {
-        if (onPickupCard) {
-          onPickupCard(row, col, cardInCell);
-        }
-        return { id: cardInCell.id, from: 'board' };
-      },
-      collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    }));
-
-    return (
-      <div
-        ref={drop}
-        style={{
-          width: 140,
-          height: 80,
-          border: '2px dotted #777',
-          borderRadius: '6px',
-          margin: '8px',
-          backgroundColor: isOver ? '#eef' : 'transparent',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '24px',
-        }}
-      >
-        <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'move' }}>
-          {cardInCell.emoji}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       ref={drop}
@@ -120,7 +109,9 @@ const BoardCell: React.FC<{
         fontSize: '24px',
       }}
     >
-      {null}
+      {cardInCell ? (
+        <DraggableCard row={row} col={col} card={cardInCell} onPickupCard={onPickupCard} />
+      ) : null}
     </div>
   );
 };
