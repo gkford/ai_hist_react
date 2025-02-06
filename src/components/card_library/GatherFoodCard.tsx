@@ -1,6 +1,7 @@
 import { MasterCard } from "@/components/MasterCard"
 import { WorkerBar } from "@/components/ui/WorkerBar"
 import { CardImage } from "@/components/ui/CardImage"
+import { CardInfo } from "../ui/CardInfo"
 
 export function GatherFoodCard() {
   return (
