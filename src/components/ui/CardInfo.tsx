@@ -9,10 +9,11 @@ export function CardInfo({ className, children, ...props }: CardInfoProps) {
   return (
     <div
       className={cn(
-        "h-16 flex items-center justify-center text-sm",
-        "min-w-0 overflow-hidden",
+        "flex-1 flex flex-col items-center justify-center text-sm",
+        "min-h-[48px] min-w-0 overflow-hidden",
         "whitespace-nowrap",
         "text-overflow-ellipsis",
+        "border-b border-gray-100",
         className
       )}
       {...props}
