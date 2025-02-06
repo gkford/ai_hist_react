@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 // import './App.css'; // optional, if you want to separate out your CSS
 
@@ -123,6 +123,8 @@ const Apptwo: React.FC = () => {
   );
 
   // 5. Track the cards in the “available” section. Each has an (x,y) for absolute positioning.
+  const availableRef = useRef<HTMLDivElement>(null);
+  
   const [cards, setCards] = useState<CardData[]>([
     { id: 1, emoji: '😃', x: 20, y: 20 },
     { id: 2, emoji: '🚀', x: 120, y: 20 },
@@ -217,7 +219,10 @@ const Apptwo: React.FC = () => {
 
         {/* Bottom: “Available Cards” area */}
         <div
-          ref={drop}
+          ref={(node) => {
+            drop(node);
+            availableRef.current = node;
+          }}
           style={{
             position: 'relative',
             width: 600,
