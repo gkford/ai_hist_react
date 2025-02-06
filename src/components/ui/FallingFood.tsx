@@ -47,6 +47,12 @@ export function FallingFood({ rate }: FallingFoodProps) {
           d.x += d.vx;
         });
         // handle collisions between drumsticks
+        // Apply friction to horizontal movement
+        newDrumsticks.forEach(d => {
+          d.vx *= 0.98; // Add slight friction to horizontal movement
+        });
+
+        // Handle collisions between drumsticks with improved settling
         for (let i = 0; i < newDrumsticks.length; i++) {
           for (let j = i + 1; j < newDrumsticks.length; j++) {
             let a = newDrumsticks[i];
@@ -54,17 +60,18 @@ export function FallingFood({ rate }: FallingFoodProps) {
             if (a.x < b.x + drumWidth && a.x + drumWidth > b.x &&
                 a.y < b.y + drumHeight && a.y + drumHeight > b.y) {
               if (a.y < b.y) {
+                // Stack more cleanly by adjusting position and velocity
                 a.y = b.y - drumHeight;
                 a.vy = -a.vy * restitution;
+                a.vx *= 0.5; // Reduce horizontal velocity on collision
                 const dx = (a.x + drumWidth/2) - (b.x + drumWidth/2);
-                // Horizontal movement when colliding - Lower the 0.5 value to reduce side bounce
-                a.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.1 + 0.1); // Reduce 0.5 to make less horizontal movement
+                a.x += (dx < 0 ? -0.5 : 0.5) * Math.abs(dx) * 0.1; // Small nudge
               } else {
                 b.y = a.y - drumHeight;
                 b.vy = -b.vy * restitution;
+                b.vx *= 0.5; // Reduce horizontal velocity on collision
                 const dx = (b.x + drumWidth/2) - (a.x + drumWidth/2);
-                // Horizontal movement when colliding - Lower the 0.5 value to reduce side bounce
-                b.vx += (dx < 0 ? -1 : 1) * (Math.random() * 0.1 + 0.1); // Reduce 0.5 to make less horizontal movement
+                b.x += (dx < 0 ? -0.5 : 0.5) * Math.abs(dx) * 0.1; // Small nudge
               }
             }
           }
