@@ -1,7 +1,6 @@
 import { PersonCard } from "./components/PersonCard"
 import { MasterCard } from "./components/MasterCard"
 import { Attribute } from "./components/ui/Attribute"
-import { PopulationProgress } from "./components/PopulationProgress"
 import { Card } from "./components/ui/card"
 import { ExampleCard } from "./components/ExampleCard"
 
