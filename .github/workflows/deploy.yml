@@ -24,7 +24,10 @@ jobs:
         run: yarn install
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn build
+        env:
+          BASE_URL: /react_ai_hist/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
