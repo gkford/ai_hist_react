@@ -56,8 +56,7 @@ const DraggableCard: React.FC<{
   row: number;
   col: number;
   card: CardData;
-  onPickupCard?: (row: number, col: number, card: CardData) => void;
-}> = ({ row, col, card, onPickupCard }) => {
+}> = ({ row, col, card }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.CARD,
     item: { id: card.id, from: 'board', fromRow: row, fromCol: col },
@@ -76,12 +75,16 @@ const BoardCell: React.FC<{
   col: number;
   cardInCell?: CardData | null;
   onDropCard: (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => void;
-  onPickupCard?: (row: number, col: number, card: CardData) => void;
-}> = ({ row, col, cardInCell, onDropCard, onPickupCard }) => {
+  onDropCard: (cardId: number, row: number, col: number, oldPosition?: { row: number; col: number }) => void;
+}> = ({ row, col, cardInCell, onDropCard }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
-    drop: (item: { id: number; from: string; fromRow: number; fromCol: number }) => {
-      onDropCard(item.id, row, col, { row: item.fromRow, col: item.fromCol });
+    drop: (item: { id: number; from: string; fromRow?: number; fromCol?: number }) => {
+      if (item.from === 'board' && typeof item.fromRow === 'number' && typeof item.fromCol === 'number') {
+        onDropCard(item.id, row, col, { row: item.fromRow, col: item.fromCol });
+      } else {
+        onDropCard(item.id, row, col);
+      }
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -105,7 +108,7 @@ const BoardCell: React.FC<{
       }}
     >
       {cardInCell ? (
-        <DraggableCard row={row} col={col} card={cardInCell} onPickupCard={onPickupCard} />
+        <DraggableCard row={row} col={col} card={cardInCell} />
       ) : null}
     </div>
   );
