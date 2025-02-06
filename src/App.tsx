@@ -37,10 +37,6 @@ function App() {
           <span className="text-sm">This is an attribute_container</span>
         </div>
 
-        <div className="attribute_container h-16 overflow-hidden bg-blue-100 flex items-center justify-center">
-          <span className="text-sm">This is an attribute_container with a PopulationProgress component:</span>
-          <PopulationProgress />
-        </div>
       </div>
     </div>
   )
