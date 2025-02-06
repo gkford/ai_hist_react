@@ -11,7 +11,7 @@ export function HominidsCard() {
 
   return (
     <MasterCard title="Hominids">
-      <CardImage imageSrc="/placeholder.svg" />
+      <CardImage imageSrc="/card_images/hominids.png" />
       <CardInfo className="text-center">Eats 1🍗 per worker</CardInfo>
       <WorkerBar
         value={workerCount}

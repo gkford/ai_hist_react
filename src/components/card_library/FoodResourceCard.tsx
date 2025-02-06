@@ -5,7 +5,7 @@ import { FallingFood } from "@/components/ui/FallingFood"
 export function FoodResourceCard() {
   return (
     <MasterCard title="Food Resources">
-      <CardImage imageSrc="/placeholder.svg" />
+      <CardImage imageSrc="/card_images/foodResource.png" />
       <FallingFood />
     </MasterCard>
   )
