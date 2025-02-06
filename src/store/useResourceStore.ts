@@ -22,6 +22,7 @@ interface ResourceStore {
 
   setThoughts: (amount: number) => void
   setThoughtsRate: (rate: number) => void
+  setHumanEnergyRate: (rate: number) => void
 
   tick: () => void
 }
@@ -54,6 +55,7 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
 
   setThoughts: (amount) => set({ thoughts: amount }),
   setThoughtsRate: (rate) => set({ thoughtsRate: rate }),
+  setHumanEnergyRate: (rate) => set({ humanEnergyRate: rate }),
 
   tick: () => {
     const { 
