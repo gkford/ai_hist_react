@@ -1,4 +1,5 @@
 import { MasterCard } from "./components/MasterCard"
+import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
 import { WorkerBar } from "./components/ui/WorkerBar"
 import { Attribute } from "./components/ui/Attribute"
 import { Card } from "./components/ui/card"
@@ -22,6 +23,7 @@ function App() {
           <MasterCard title="Example Master Card">            
             <CardImage/>
           </MasterCard>
+          <GatherFoodCard />
         </div>
 
         <div className="flex flex-col gap-4">
