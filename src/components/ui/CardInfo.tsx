@@ -1,4 +1,5 @@
 import * as React from "react"
+import { cn } from "@/lib/utils"
 
 interface CardInfoProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode
