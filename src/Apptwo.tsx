@@ -57,7 +57,8 @@ const BoardCell: React.FC<{
   col: number;
   cardInCell?: CardData | null;
   onDropCard: (cardId: number, row: number, col: number) => void;
-}> = ({ row, col, cardInCell, onDropCard }) => {
+  onPickupCard?: (row: number, col: number, card: CardData) => void;
+}> = ({ row, col, cardInCell, onDropCard, onPickupCard }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
     drop: (item: { id: number }) => {
@@ -67,6 +68,42 @@ const BoardCell: React.FC<{
       isOver: monitor.isOver(),
     }),
   }));
+
+  if (cardInCell) {
+    const [{ isDragging }, drag] = useDrag(() => ({
+      type: ItemTypes.CARD,
+      item: { id: cardInCell.id, from: 'board' },
+      begin: () => {
+        if (onPickupCard) {
+          onPickupCard(row, col, cardInCell);
+        }
+        return { id: cardInCell.id, from: 'board' };
+      },
+      collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+    }));
+
+    return (
+      <div
+        ref={drop}
+        style={{
+          width: 140,
+          height: 80,
+          border: '2px dotted #777',
+          borderRadius: '6px',
+          margin: '8px',
+          backgroundColor: isOver ? '#eef' : 'transparent',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '24px',
+        }}
+      >
+        <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'move' }}>
+          {cardInCell.emoji}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -84,7 +121,7 @@ const BoardCell: React.FC<{
         fontSize: '24px',
       }}
     >
-      {cardInCell ? cardInCell.emoji : null}
+      {null}
     </div>
   );
 };
@@ -104,6 +141,18 @@ const Apptwo: React.FC = () => {
     { id: 2, emoji: '🚀', x: 120, y: 20 },
     { id: 3, emoji: '🌟', x: 220, y: 20 },
   ]);
+
+  const handlePickupFromBoard = (row: number, col: number, card: CardData) => {
+    // Remove the card from the board by setting its cell to null
+    setBoard((prev) => {
+      const newBoard = prev.map((boardRow) => boardRow.slice());
+      newBoard[row][col] = null;
+      return newBoard;
+    });
+
+    // Add the picked-up card back to the available "cards" with default positioning
+    setCards((prev) => [...prev, { ...card, x: 20, y: 20 }]);
+  };
 
   // 6. When a card is dropped onto a board cell
   const handleDropOnBoard = (cardId: number, row: number, col: number) => {
@@ -174,6 +223,7 @@ const Apptwo: React.FC = () => {
                   col={colIndex}
                   cardInCell={rowArray[colIndex]}
                   onDropCard={handleDropOnBoard}
+                  onPickupCard={handlePickupFromBoard}
                 />
               ))}
             </div>
