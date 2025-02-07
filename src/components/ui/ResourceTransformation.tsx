@@ -22,11 +22,13 @@ interface TransformationParticle {
 
 export function ResourceTransformation({ inbound, outbound, active }: ResourceTransformationProps) {
   const [particles, setParticles] = useState<TransformationParticle[]>([])
+  const [transformationOccurred, setTransformationOccurred] = useState(false)
   const store = useResourceStore()
 
   useEffect(() => {
     if (!active) {
       setParticles([])
+      setTransformationOccurred(false)
       return
     }
 
@@ -67,8 +69,6 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
     
     setParticles(initialParticles)
 
-    let transformationOccurred = false
-    
     // Animate particles
     const interval = setInterval(() => {
       setParticles(prev => {
@@ -77,20 +77,18 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
         const middleParticle = inboundParticles[middleIndex]
 
         if (middleParticle && !transformationOccurred && middleParticle.x >= transformX) {
-          transformationOccurred = true
+          setTransformationOccurred(true)
           
           // Update resources once
-          requestAnimationFrame(() => {
-            inbound.forEach(resource => {
-              const currentAmount = store.resources[resource.key].amount
-              const newAmount = currentAmount - resource.amount
-              store.setResourceAmount(resource.key, newAmount)
-            })
-            
-            outbound.forEach(resource => {
-              const currentAmount = store.resources[resource.key].amount
-              store.setResourceAmount(resource.key, currentAmount + resource.amount)
-            })
+          inbound.forEach(resource => {
+            const currentAmount = store.resources[resource.key].amount
+            const newAmount = currentAmount - resource.amount
+            store.setResourceAmount(resource.key, newAmount)
+          })
+          
+          outbound.forEach(resource => {
+            const currentAmount = store.resources[resource.key].amount
+            store.setResourceAmount(resource.key, currentAmount + resource.amount)
           })
 
           // Create outbound particles
