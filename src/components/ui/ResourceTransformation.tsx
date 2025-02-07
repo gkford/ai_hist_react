@@ -72,6 +72,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   ): Promise<void> => {
     return new Promise(resolve => {
       const emojiString = emojis.join('')
+      let animationInterval: NodeJS.Timer
       
       setParticles([{
         id: Date.now(),
@@ -80,12 +81,12 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       }])
 
       let frame = 0
-      const animation = setInterval(() => {
+      animationInterval = setInterval(() => {
         frame++
         
         setParticles(prev => {
           if (frame >= config.frames) {
-            clearInterval(animation)
+            clearInterval(animationInterval)
             resolve()
             return []
           }
@@ -96,8 +97,6 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
           }))
         })
       }, 1000 / config.fps)
-
-      return () => clearInterval(animation)
     })
   }
 
@@ -108,6 +107,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   ): Promise<void> => {
     return new Promise(resolve => {
       const emojiString = emojis.join('')
+      let animationInterval: NodeJS.Timer
       
       setParticles([{
         id: Date.now(),
@@ -116,12 +116,12 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       }])
 
       let frame = 0
-      const animation = setInterval(() => {
+      animationInterval = setInterval(() => {
         frame++
         
         setParticles(prev => {
           if (frame >= config.frames) {
-            clearInterval(animation)
+            clearInterval(animationInterval)
             resolve()
             return []
           }
@@ -132,8 +132,6 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
           }))
         })
       }, 1000 / config.fps)
-
-      return () => clearInterval(animation)
     })
   }
 
@@ -162,16 +160,18 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
     )
 
     if (inboundIcons.length > 0) {
-      const cleanup = runResourceTransformation(
+      console.log("Starting resource transformation animation")
+      runResourceTransformation(
         inboundIcons,
         outboundIcons,
-        2400,  // animation speed in ms (3x longer)
+        2400,  // animation speed in ms
         500   // delay time in ms
       )
-      return () => {
-        cleanup
-        setParticles([])
-      }
+    }
+
+    // Only clear particles when component unmounts
+    return () => {
+      setParticles([])
     }
   }, [active, inbound, outbound, store])
 
