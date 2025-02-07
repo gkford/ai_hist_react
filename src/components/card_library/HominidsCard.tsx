@@ -14,7 +14,6 @@ export function HominidsCard() {
 
   const triggerOneTimeProcess = () => {
     setProcessActive(true)
-    // Automatically deactivate after 3 seconds (enough time for animation)
     setTimeout(() => setProcessActive(false), 3000)
   }
 
@@ -32,13 +31,9 @@ export function HominidsCard() {
       </CardInfo>
       <WorkerBar
         value={workerCount}
-        onChange={(newValue) => {
-          setWorkerCount(newValue)
-          food.setRate(-newValue * 1) // -1 food/second per worker
-          humanEnergy.setRate(newValue) // 1 energy per worker
-        }}
+        onChange={setWorkerCount}
       />
-      <EatDrumstickProcess workerCount={workerCount || processActive} />
+      <EatDrumstickProcess workerCount={processActive} />
     </MasterCard>
   )
 }
