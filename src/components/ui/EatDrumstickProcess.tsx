@@ -1,5 +1,6 @@
 import { Progress } from "@/components/ui/progress"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface EatDrumstickProcessProps {
   workerCount: number
@@ -17,7 +18,7 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 0
-        return prev + (10 * workerCount) // Speed based on worker count
+        return prev + (10 * workerCount)
       })
     }, 100)
 
@@ -25,11 +26,23 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
   }, [workerCount])
 
   return (
-    <div className="flex flex-col gap-2 p-2 h-24">
-      <div className="text-center text-sm">
-        Eating Progress
+    <div className={cn(
+      "h-24",
+      "border-y border-gray-100",
+      "flex items-center justify-center",
+      "bg-white",
+      "px-4"
+    )}>
+      <div className="relative w-full h-[30%]">
+        <div className="absolute inset-0 bg-white" />
+        <div 
+          className="absolute inset-0 bg-gray-200" 
+          style={{
+            left: '35%',
+            right: '35%'
+          }}
+        />
       </div>
-      <Progress value={progress} className="h-8" />
     </div>
   )
 }
