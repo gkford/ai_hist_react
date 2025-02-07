@@ -93,7 +93,8 @@ const BoardCell: React.FC<{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: '24px'
+      fontSize: '24px',
+      backgroundColor: 'white'
     }}>
       {cardInCell ? (<DraggableCard row={row} col={col} card={cardInCell} />) : null}
     </div>
@@ -198,13 +199,13 @@ const Apptwo: React.FC = () => {
           if (cell?.emoji === '!⚡') {
             const cellWidth = 1200 / 3;
             const cellHeight = 300 / 3;
-            const startX = (colIndex * cellWidth) + 140;
-            const startY = (rowIndex * cellHeight) + (cellHeight / 2);
+            const centerX = (colIndex * cellWidth) + (cellWidth / 2);
+            const centerY = (rowIndex * cellHeight) + (cellHeight / 2);
             
             setLightningEmojis(prev => [...prev, {
               id: Date.now(),
-              x: startX,
-              y: startY,
+              x: centerX,
+              y: centerY,
               vx: 5, // Initial horizontal velocity
               vy: 0  // Initial vertical velocity
             }]);
@@ -225,7 +226,7 @@ const Apptwo: React.FC = () => {
             if (cell?.emoji === '⚡➡️🍗') {
               const cellWidth = 1200 / 3;
               const cellHeight = 300 / 3;
-              attractorX = (colIndex * cellWidth) + 140;
+              attractorX = (colIndex * cellWidth) + (cellWidth / 2);
               attractorY = (rowIndex * cellHeight) + (cellHeight / 2);
             }
           });
