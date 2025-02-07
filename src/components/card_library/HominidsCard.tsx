@@ -2,7 +2,7 @@ import { MasterCard } from "@/components/MasterCard"
 import { CardImage } from "@/components/ui/CardImage"
 import { CardInfo } from "@/components/ui/CardInfo"
 import { WorkerBar } from "@/components/ui/WorkerBar"
-import { EatDrumstickTransformation } from "@/components/ui/EatDrumstickTransformation"
+import { EatDrumstickTransformation } from "@/components/ui/EatDrumstickRT"
 import { useState } from "react"
 import { useResource } from "@/store/useResourceStore"
 

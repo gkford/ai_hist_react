@@ -1,8 +1,7 @@
 import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
 import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
-import { useResourceStore, useResource } from "@/store/useResourceStore"
-import { useEffect } from "react"
+import { useResource } from "@/store/useResourceStore"
 
 function App() {
   const food = useResource('food')
@@ -14,8 +13,8 @@ function App() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
-          <GatherFoodCard />
-          <FoodResourceCard />
+          {/* <GatherFoodCard /> */}
+          {/* <FoodResourceCard /> */}
           <HominidsCard />
         </div>
       </div>
