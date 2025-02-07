@@ -72,7 +72,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   ): Promise<void> => {
     return new Promise(resolve => {
       const emojiString = emojis.join('')
-      let animationInterval: NodeJS.Timer
+      let animationInterval: ReturnType<typeof setInterval>
       
       setParticles([{
         id: Date.now(),
@@ -107,7 +107,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   ): Promise<void> => {
     return new Promise(resolve => {
       const emojiString = emojis.join('')
-      let animationInterval: NodeJS.Timer
+      let animationInterval: ReturnType<typeof setInterval>
       
       setParticles([{
         id: Date.now(),
