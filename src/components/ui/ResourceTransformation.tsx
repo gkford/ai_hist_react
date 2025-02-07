@@ -67,7 +67,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
 
   const animateInbound = (
     emojis: string[], 
-    durationMs: number,
+    _durationMs: number,
     config: AnimationConfig
   ): Promise<void> => {
     return new Promise(resolve => {
@@ -96,12 +96,14 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
           }))
         })
       }, 1000 / config.fps)
+
+      return () => clearInterval(animation)
     })
   }
 
   const animateOutbound = (
     emojis: string[], 
-    durationMs: number,
+    _durationMs: number,
     config: AnimationConfig
   ): Promise<void> => {
     return new Promise(resolve => {
@@ -130,6 +132,8 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
           }))
         })
       }, 1000 / config.fps)
+
+      return () => clearInterval(animation)
     })
   }
 
@@ -158,14 +162,18 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
     )
 
     if (inboundIcons.length > 0) {
-      runResourceTransformation(
+      const cleanup = runResourceTransformation(
         inboundIcons,
         outboundIcons,
         800,  // animation speed in ms
         500   // delay time in ms
       )
+      return () => {
+        cleanup
+        setParticles([])
+      }
     }
-  }, [active, inbound, store])
+  }, [active, inbound, outbound, store])
 
   return (
     <div className={cn(
