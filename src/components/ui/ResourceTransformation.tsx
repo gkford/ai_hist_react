@@ -53,9 +53,9 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   }, [active, store, inbound, outbound])
 
   const triggerTransformationAnimation = (inboundIcons: string[]) => {
-    const startX = -50
+    const startX = -10
     const transformX = 50
-    const endX = 200  // Increase to allow particles to move further right
+    const endX = 100  // Increase to allow particles to move further right
     const spacing = 10
     
     // Create initial particles
@@ -155,8 +155,8 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
         <div 
           className="absolute inset-0 bg-gray-200"
           style={{
-            left: '32%',
-            right: '32%',
+            left: '50%',
+            right: '50%',
             zIndex: 2
           }}
         />
