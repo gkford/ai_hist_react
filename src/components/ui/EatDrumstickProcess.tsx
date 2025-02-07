@@ -17,13 +17,14 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
 
   const triggerProcessAnimation = (inbound: string[], outbound: string[]) => {
     const startX = -50; // Start position off-screen left
-    const transformX = 32; // Position where transformation occurs (matches grey box left edge)
-    const endX = 100; // End position (percentage of container width)
+    const transformX = 50; // Center of component
+    const endX = 150; // End position (percentage of container width)
+    const spacing = 10; // Space between particles
     
-    // Create initial particles from inbound items
+    // Create initial particles from inbound items with spacing
     const initialParticles = inbound.map((content, index) => ({
       id: Date.now() + index,
-      x: startX,
+      x: startX - (index * spacing), // Space out the particles
       content,
       isOutput: false
     }));
@@ -33,24 +34,27 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
     // Animate particles
     const interval = setInterval(() => {
       setParticles(prev => {
-        return prev.map(particle => {
-          const newX = particle.x + 2; // Move 2% per frame
-          
-          // Transform particles when they reach the grey box
-          if (!particle.isOutput && newX >= transformX) {
-            const outputIndex = prev.filter(p => p.isOutput).length;
-            return {
-              ...particle,
-              content: outbound[outputIndex] || '',
-              isOutput: true
-            };
-          }
-          
-          return {
-            ...particle,
-            x: newX
-          };
-        }).filter(particle => particle.x <= endX); // Remove particles that are off-screen right
+        // Find middle particle's position (for inbound particles)
+        const inboundParticles = prev.filter(p => !p.isOutput);
+        const middleIndex = Math.floor(inbound.length / 2);
+        const middleParticle = inboundParticles[middleIndex];
+
+        // If middle particle reaches center, transform all particles
+        if (middleParticle && !prev.some(p => p.isOutput) && middleParticle.x >= transformX) {
+          // Create new outbound particles at center
+          return outbound.map((content, index) => ({
+            id: Date.now() + index,
+            x: transformX + (index * spacing), // Space out from center
+            content,
+            isOutput: true
+          }));
+        }
+
+        // Normal movement
+        return prev.map(particle => ({
+          ...particle,
+          x: particle.x + 2 // Move 2% per frame
+        })).filter(particle => particle.x <= endX); // Remove when off screen
       });
     }, 50);
 
@@ -69,7 +73,7 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
   // Example usage triggered by worker count changes
   useEffect(() => {
     if (workerCount > 0) {
-      triggerProcessAnimation(['⚡'], ['🍗']);
+      triggerProcessAnimation(['⚡', '⚡', '⚡'], ['🍗', '🍗', '🍗']);
     }
   }, [workerCount]);
 
@@ -94,20 +98,19 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
               left: `${particle.x}%`,
               transition: 'left 50ms linear',
               fontSize: '1.2rem',
-              zIndex: 1 // Add this to ensure particles are above background but below gray box
+              zIndex: 1
             }}
           >
             {particle.content}
           </div>
         ))}
 
-        {/* Move the gray box after the particles to ensure it's on top */}
         <div 
           className="absolute inset-0 bg-gray-200"
           style={{
             left: '32%',
             right: '32%',
-            zIndex: 2 // Add this to ensure gray box is above particles
+            zIndex: 2
           }}
         />
       </div>
