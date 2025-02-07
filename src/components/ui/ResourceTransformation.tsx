@@ -41,18 +41,25 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       return
     }
 
-    // Consume inbound resources and create particles
+    // Calculate inbound icons first without updating resources
     const inboundIcons = inbound.flatMap(resource => {
-      const currentAmount = store.resources[resource.key].amount
-      const newAmount = currentAmount - resource.amount
-      store.setResourceAmount(resource.key, newAmount)
-      
-      // Create one icon per whole number
       return Array(Math.floor(resource.amount))
         .fill(store.config[resource.key].icon)
     })
 
     if (inboundIcons.length > 0) {
+      // Update resources in a separate effect
+      const updateResources = () => {
+        inbound.forEach(resource => {
+          const currentAmount = store.resources[resource.key].amount
+          const newAmount = currentAmount - resource.amount
+          store.setResourceAmount(resource.key, newAmount)
+        })
+      }
+      
+      // Schedule the resource update
+      setTimeout(updateResources, 0)
+      
       triggerTransformationAnimation(inboundIcons)
     }
   }, [active])
@@ -81,16 +88,17 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
         const middleIndex = Math.floor(inboundParticles.length / 2)
         const middleParticle = inboundParticles[middleIndex]
 
-        // If middle particle reaches center, transform all particles
         if (middleParticle && !prev.some(p => p.isOutput) && middleParticle.x >= transformX) {
-          // Create outbound particles and add resources
-          const outboundIcons = outbound.flatMap(resource => {
+          const outboundIcons = outbound.flatMap(resource => 
+            Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
+          )
+          
+          // Update resources and create new particles
+          outbound.forEach(resource => {
             const currentAmount = store.resources[resource.key].amount
             store.setResourceAmount(resource.key, currentAmount + resource.amount)
-            return Array(Math.floor(resource.amount))
-              .fill(store.config[resource.key].icon)
           })
-
+          
           return outboundIcons.map((content, index) => ({
             id: Date.now() + index,
             x: transformX + (index * spacing),
