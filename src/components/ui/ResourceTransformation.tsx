@@ -30,7 +30,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       return
     }
 
-    // Check if we have enough resources
+    // Only trigger once when active becomes true
     const canTransform = inbound.every(resource => {
       const currentAmount = store.resources[resource.key].amount
       return currentAmount >= resource.amount
@@ -41,7 +41,6 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       return
     }
 
-    // Calculate inbound icons
     const inboundIcons = inbound.flatMap(resource => {
       return Array(Math.floor(resource.amount))
         .fill(store.config[resource.key].icon)
@@ -50,13 +49,13 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
     if (inboundIcons.length > 0) {
       triggerTransformationAnimation(inboundIcons)
     }
-  }, [active, store, inbound, outbound])
+  }, [active]) // Only depend on active state
 
   const triggerTransformationAnimation = (inboundIcons: string[]) => {
-    const startX = -10
-    const transformX = 50
-    const endX = 100  // Increase to allow particles to move further right
-    const spacing = 10
+    const startX = 0
+    const transformX = 200
+    const endX = 400
+    const spacing = 20
     
     // Create initial particles
     const initialParticles = inboundIcons.map((content, index) => ({
@@ -68,44 +67,48 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
     
     setParticles(initialParticles)
 
+    let transformationOccurred = false
+    
     // Animate particles
     const interval = setInterval(() => {
       setParticles(prev => {
-        // Find middle particle's position
         const inboundParticles = prev.filter(p => !p.isOutput)
         const middleIndex = Math.floor(inboundParticles.length / 2)
         const middleParticle = inboundParticles[middleIndex]
 
-        if (middleParticle && !prev.some(p => p.isOutput) && middleParticle.x >= transformX) {
-          const outboundIcons = outbound.flatMap(resource => 
-            Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
-          )
+        if (middleParticle && !transformationOccurred && middleParticle.x >= transformX) {
+          transformationOccurred = true
           
-          // Update resources in a separate effect
+          // Update resources once
           requestAnimationFrame(() => {
-            // Deduct inbound resources
             inbound.forEach(resource => {
               const currentAmount = store.resources[resource.key].amount
               const newAmount = currentAmount - resource.amount
               store.setResourceAmount(resource.key, newAmount)
             })
             
-            // Add outbound resources
             outbound.forEach(resource => {
               const currentAmount = store.resources[resource.key].amount
               store.setResourceAmount(resource.key, currentAmount + resource.amount)
             })
           })
+
+          // Create outbound particles
+          const outboundIcons = outbound.flatMap(resource => 
+            Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
+          )
           
-          return outboundIcons.map((content, index) => ({
-            id: Date.now() + index,
-            x: transformX + (index * spacing),
-            content,
-            isOutput: true
-          }))
+          return [
+            ...prev.filter(p => p.isOutput),
+            ...outboundIcons.map((content, index) => ({
+              id: Date.now() + index,
+              x: transformX,
+              content,
+              isOutput: true
+            }))
+          ]
         }
 
-        // Normal movement
         return prev.map(particle => ({
           ...particle,
           x: particle.x + 2
@@ -123,6 +126,12 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
         return prev
       })
     }, 100)
+
+    // Cleanup on component unmount
+    return () => {
+      clearInterval(interval)
+      clearInterval(cleanup)
+    }
   }
 
   return (
