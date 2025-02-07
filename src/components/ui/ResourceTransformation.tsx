@@ -17,22 +17,55 @@ interface TransformationParticle {
   id: number
   x: number
   content: string
-  isOutput: boolean
 }
 
 export function ResourceTransformation({ inbound, outbound, active }: ResourceTransformationProps) {
   const [particles, setParticles] = useState<TransformationParticle[]>([])
-  const [transformationOccurred, setTransformationOccurred] = useState(false)
   const store = useResourceStore()
+
+  const animateInbound = (emojis: string[], durationMs: number) => {
+    const startX = -50 // Start off-screen to the left
+    const endX = 50    // Center of component
+    const emojiString = emojis.join('')
+    
+    // Create single particle with concatenated emojis
+    setParticles([{
+      id: Date.now(),
+      x: startX,
+      content: emojiString
+    }])
+
+    // Calculate movement per frame to reach center in specified duration
+    const fps = 60
+    const frames = (durationMs / 1000) * fps
+    const distancePerFrame = (endX - startX) / frames
+
+    let frame = 0
+    const animation = setInterval(() => {
+      frame++
+      
+      setParticles(prev => {
+        if (frame >= frames) {
+          clearInterval(animation)
+          return [] // Clear particles when animation is complete
+        }
+
+        return prev.map(particle => ({
+          ...particle,
+          x: startX + (distancePerFrame * frame)
+        }))
+      })
+    }, 1000 / fps)
+
+    return () => clearInterval(animation)
+  }
 
   useEffect(() => {
     if (!active) {
       setParticles([])
-      setTransformationOccurred(false)
       return
     }
 
-    // Only trigger once when active becomes true
     const canTransform = inbound.every(resource => {
       const currentAmount = store.resources[resource.key].amount
       return currentAmount >= resource.amount
@@ -43,92 +76,12 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       return
     }
 
-    const inboundIcons = inbound.flatMap(resource => {
-      return Array(Math.floor(resource.amount))
-        .fill(store.config[resource.key].icon)
-    })
+    const inboundIcons = inbound.flatMap(resource => 
+      Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
+    )
 
     if (inboundIcons.length > 0) {
-      triggerTransformationAnimation(inboundIcons)
-    }
-  }, [active]) // Only depend on active state
-
-  const triggerTransformationAnimation = (inboundIcons: string[]) => {
-    const startX = 0
-    const transformX = 200
-    const endX = 400
-    const spacing = 20
-    
-    // Create initial particles
-    const initialParticles = inboundIcons.map((content, index) => ({
-      id: Date.now() + index,
-      x: startX - (index * spacing),
-      content,
-      isOutput: false
-    }))
-    
-    setParticles(initialParticles)
-
-    // Animate particles
-    const interval = setInterval(() => {
-      setParticles(prev => {
-        const inboundParticles = prev.filter(p => !p.isOutput)
-        const middleIndex = Math.floor(inboundParticles.length / 2)
-        const middleParticle = inboundParticles[middleIndex]
-
-        if (middleParticle && !transformationOccurred && middleParticle.x >= transformX) {
-          setTransformationOccurred(true)
-          
-          // Update resources once
-          inbound.forEach(resource => {
-            const currentAmount = store.resources[resource.key].amount
-            const newAmount = currentAmount - resource.amount
-            store.setResourceAmount(resource.key, newAmount)
-          })
-          
-          outbound.forEach(resource => {
-            const currentAmount = store.resources[resource.key].amount
-            store.setResourceAmount(resource.key, currentAmount + resource.amount)
-          })
-
-          // Create outbound particles
-          const outboundIcons = outbound.flatMap(resource => 
-            Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
-          )
-          
-          return [
-            ...prev.filter(p => p.isOutput),
-            ...outboundIcons.map((content, index) => ({
-              id: Date.now() + index,
-              x: transformX,
-              content,
-              isOutput: true
-            }))
-          ]
-        }
-
-        return prev.map(particle => ({
-          ...particle,
-          x: particle.x + 2
-        })).filter(particle => particle.x <= endX)
-      })
-    }, 50)
-
-    // Cleanup when all particles are gone
-    const cleanup = setInterval(() => {
-      setParticles(prev => {
-        if (prev.length === 0) {
-          clearInterval(interval)
-          clearInterval(cleanup)
-        }
-        return prev
-      })
-    }, 100)
-
-    // Cleanup on component unmount
-    return () => {
-      clearInterval(interval)
-      clearInterval(cleanup)
+      animateInbound(inboundIcons, 1000) // 1 second animation
     }
   }
 
@@ -142,15 +95,13 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       "relative"
     )}>
       <div className="relative w-full h-full">
-        <div className="absolute inset-0 bg-white" />
-        
         {particles.map(particle => (
           <div
             key={particle.id}
             className="absolute top-1/2 -translate-y-1/2"
             style={{
               left: `${particle.x}%`,
-              transition: 'left 50ms linear',
+              transition: 'left 16ms linear',
               fontSize: '1.2rem',
               zIndex: 1
             }}
@@ -158,15 +109,6 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
             {particle.content}
           </div>
         ))}
-
-        <div 
-          className="absolute inset-0 bg-gray-200"
-          style={{
-            left: '50%',
-            right: '50%',
-            zIndex: 2
-          }}
-        />
       </div>
     </div>
   )
