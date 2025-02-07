@@ -41,28 +41,16 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       return
     }
 
-    // Calculate inbound icons first without updating resources
+    // Calculate inbound icons
     const inboundIcons = inbound.flatMap(resource => {
       return Array(Math.floor(resource.amount))
         .fill(store.config[resource.key].icon)
     })
 
     if (inboundIcons.length > 0) {
-      // Update resources in a separate effect
-      const updateResources = () => {
-        inbound.forEach(resource => {
-          const currentAmount = store.resources[resource.key].amount
-          const newAmount = currentAmount - resource.amount
-          store.setResourceAmount(resource.key, newAmount)
-        })
-      }
-      
-      // Schedule the resource update
-      setTimeout(updateResources, 0)
-      
       triggerTransformationAnimation(inboundIcons)
     }
-  }, [active])
+  }, [active, store, inbound, outbound])
 
   const triggerTransformationAnimation = (inboundIcons: string[]) => {
     const startX = -50
@@ -93,10 +81,20 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
             Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
           )
           
-          // Update resources and create new particles
-          outbound.forEach(resource => {
-            const currentAmount = store.resources[resource.key].amount
-            store.setResourceAmount(resource.key, currentAmount + resource.amount)
+          // Update resources in a separate effect
+          requestAnimationFrame(() => {
+            // Deduct inbound resources
+            inbound.forEach(resource => {
+              const currentAmount = store.resources[resource.key].amount
+              const newAmount = currentAmount - resource.amount
+              store.setResourceAmount(resource.key, newAmount)
+            })
+            
+            // Add outbound resources
+            outbound.forEach(resource => {
+              const currentAmount = store.resources[resource.key].amount
+              store.setResourceAmount(resource.key, currentAmount + resource.amount)
+            })
           })
           
           return outboundIcons.map((content, index) => ({
