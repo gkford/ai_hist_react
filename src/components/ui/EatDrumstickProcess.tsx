@@ -33,13 +33,13 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
       "bg-white",
       "px-4"
     )}>
-      <div className="relative w-full h-[30%]">
+      <div className="relative w-full h-full">
         <div className="absolute inset-0 bg-white" />
         <div 
-          className="absolute inset-0 bg-gray-200" 
+          className="absolute inset-0 bg-gray-200"
           style={{
-            left: '35%',
-            right: '35%'
+            left: '32%',
+            right: '32%'
           }}
         />
       </div>
