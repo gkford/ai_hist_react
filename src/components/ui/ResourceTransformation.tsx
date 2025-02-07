@@ -13,6 +13,14 @@ interface ResourceTransformationProps {
   active: boolean
 }
 
+interface AnimationConfig {
+  fps: number
+  startX: number
+  endX: number
+  frames: number
+  distancePerFrame: number
+}
+
 const delayAnimation = (ms: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -27,75 +35,101 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
 
-  const animateInbound = (emojis: string[], durationMs: number): Promise<void> => {
+  const runResourceTransformation = async (
+    inboundEmojis: string[], 
+    outboundEmojis: string[], 
+    animationSpeed: number,
+    delayTime: number
+  ) => {
+    const fps = 60
+    const frames = (animationSpeed / 1000) * fps
+    
+    const inboundConfig: AnimationConfig = {
+      fps,
+      startX: -50,
+      endX: 50,
+      frames,
+      distancePerFrame: (50 - (-50)) / frames
+    }
+
+    const outboundConfig: AnimationConfig = {
+      fps,
+      startX: 50,
+      endX: 150,
+      frames,
+      distancePerFrame: (150 - 50) / frames
+    }
+
+    await animateInbound(inboundEmojis, animationSpeed, inboundConfig)
+    await delayAnimation(delayTime)
+    await animateOutbound(outboundEmojis, animationSpeed, outboundConfig)
+  }
+
+  const animateInbound = (
+    emojis: string[], 
+    durationMs: number,
+    config: AnimationConfig
+  ): Promise<void> => {
     return new Promise(resolve => {
-      const startX = -50
-      const endX = 50
       const emojiString = emojis.join('')
       
       setParticles([{
         id: Date.now(),
-        x: startX,
+        x: config.startX,
         content: emojiString
       }])
-
-      const fps = 60
-      const frames = (durationMs / 1000) * fps
-      const distancePerFrame = (endX - startX) / frames
 
       let frame = 0
       const animation = setInterval(() => {
         frame++
         
         setParticles(prev => {
-          if (frame >= frames) {
+          if (frame >= config.frames) {
             clearInterval(animation)
             resolve()
-            return [] // Clear particles when animation is complete
+            return []
           }
 
           return prev.map(particle => ({
             ...particle,
-            x: startX + (distancePerFrame * frame)
+            x: config.startX + (config.distancePerFrame * frame)
           }))
         })
-      }, 1000 / fps)
+      }, 1000 / config.fps)
     })
   }
 
-  const animateOutbound = (emojis: string[], durationMs: number): Promise<void> => {
+  const animateOutbound = (
+    emojis: string[], 
+    durationMs: number,
+    config: AnimationConfig
+  ): Promise<void> => {
     return new Promise(resolve => {
-      const startX = 50
-      const endX = 150
       const emojiString = emojis.join('')
       
       setParticles([{
         id: Date.now(),
-        x: startX,
+        x: config.startX,
         content: emojiString
       }])
-
-      const fps = 60
-      const frames = (durationMs / 1000) * fps
-      const distancePerFrame = (endX - startX) / frames
 
       let frame = 0
       const animation = setInterval(() => {
         frame++
         
         setParticles(prev => {
-          if (frame >= frames) {
+          if (frame >= config.frames) {
             clearInterval(animation)
             resolve()
-            return [] // Clear particles when animation is complete
+            return []
           }
 
           return prev.map(particle => ({
             ...particle,
-            x: startX + (distancePerFrame * frame)
+            x: config.startX + (config.distancePerFrame * frame)
           }))
         })
-      }, 1000 / fps)
+      }, 1000 / config.fps)
     })
   }
 
@@ -124,13 +158,12 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
     )
 
     if (inboundIcons.length > 0) {
-      const runAnimation = async () => {
-        await animateInbound(inboundIcons, 800)  // Slightly faster animation
-        await delayAnimation(500)                // Half second delay
-        await animateOutbound(outboundIcons, 800)
-      }
-      
-      runAnimation()
+      runResourceTransformation(
+        inboundIcons,
+        outboundIcons,
+        800,  // animation speed in ms
+        500   // delay time in ms
+      )
     }
   }, [active, inbound, store])
 
