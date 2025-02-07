@@ -80,17 +80,11 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
       "flex items-center justify-center",
       "bg-white",
       "px-4",
-      "relative" // Added for absolute positioning of particles
+      "relative"
     )}>
       <div className="relative w-full h-full">
         <div className="absolute inset-0 bg-white" />
-        <div 
-          className="absolute inset-0 bg-gray-200"
-          style={{
-            left: '32%',
-            right: '32%'
-          }}
-        />
+        
         {/* Render particles */}
         {particles.map(particle => (
           <div
@@ -99,12 +93,23 @@ export function EatDrumstickProcess({ workerCount }: EatDrumstickProcessProps) {
             style={{
               left: `${particle.x}%`,
               transition: 'left 50ms linear',
-              fontSize: '1.2rem'
+              fontSize: '1.2rem',
+              zIndex: 1 // Add this to ensure particles are above background but below gray box
             }}
           >
             {particle.content}
           </div>
         ))}
+
+        {/* Move the gray box after the particles to ensure it's on top */}
+        <div 
+          className="absolute inset-0 bg-gray-200"
+          style={{
+            left: '32%',
+            right: '32%',
+            zIndex: 2 // Add this to ensure gray box is above particles
+          }}
+        />
       </div>
     </div>
   );
