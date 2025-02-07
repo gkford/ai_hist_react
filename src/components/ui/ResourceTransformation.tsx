@@ -13,6 +13,10 @@ interface ResourceTransformationProps {
   active: boolean
 }
 
+const delayAnimation = (ms: number): Promise<void> => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 interface TransformationParticle {
   id: number
   x: number
@@ -23,41 +27,76 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
 
-  const animateInbound = (emojis: string[], durationMs: number) => {
-    const startX = -50 // Start off-screen to the left
-    const endX = 50    // Center of component
-    const emojiString = emojis.join('')
-    
-    // Create single particle with concatenated emojis
-    setParticles([{
-      id: Date.now(),
-      x: startX,
-      content: emojiString
-    }])
-
-    // Calculate movement per frame to reach center in specified duration
-    const fps = 60
-    const frames = (durationMs / 1000) * fps
-    const distancePerFrame = (endX - startX) / frames
-
-    let frame = 0
-    const animation = setInterval(() => {
-      frame++
+  const animateInbound = (emojis: string[], durationMs: number): Promise<void> => {
+    return new Promise(resolve => {
+      const startX = -50
+      const endX = 50
+      const emojiString = emojis.join('')
       
-      setParticles(prev => {
-        if (frame >= frames) {
-          clearInterval(animation)
-          return [] // Clear particles when animation is complete
-        }
+      setParticles([{
+        id: Date.now(),
+        x: startX,
+        content: emojiString
+      }])
 
-        return prev.map(particle => ({
-          ...particle,
-          x: startX + (distancePerFrame * frame)
-        }))
-      })
-    }, 1000 / fps)
+      const fps = 60
+      const frames = (durationMs / 1000) * fps
+      const distancePerFrame = (endX - startX) / frames
 
-    return () => clearInterval(animation)
+      let frame = 0
+      const animation = setInterval(() => {
+        frame++
+        
+        setParticles(prev => {
+          if (frame >= frames) {
+            clearInterval(animation)
+            resolve()
+            return [] // Clear particles when animation is complete
+          }
+
+          return prev.map(particle => ({
+            ...particle,
+            x: startX + (distancePerFrame * frame)
+          }))
+        })
+      }, 1000 / fps)
+    })
+  }
+
+  const animateOutbound = (emojis: string[], durationMs: number): Promise<void> => {
+    return new Promise(resolve => {
+      const startX = 50
+      const endX = 150
+      const emojiString = emojis.join('')
+      
+      setParticles([{
+        id: Date.now(),
+        x: startX,
+        content: emojiString
+      }])
+
+      const fps = 60
+      const frames = (durationMs / 1000) * fps
+      const distancePerFrame = (endX - startX) / frames
+
+      let frame = 0
+      const animation = setInterval(() => {
+        frame++
+        
+        setParticles(prev => {
+          if (frame >= frames) {
+            clearInterval(animation)
+            resolve()
+            return [] // Clear particles when animation is complete
+          }
+
+          return prev.map(particle => ({
+            ...particle,
+            x: startX + (distancePerFrame * frame)
+          }))
+        })
+      }, 1000 / fps)
+    })
   }
 
   useEffect(() => {
@@ -80,8 +119,18 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
     )
 
+    const outboundIcons = outbound.flatMap(resource => 
+      Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
+    )
+
     if (inboundIcons.length > 0) {
-      animateInbound(inboundIcons, 1000) // 1 second animation
+      const runAnimation = async () => {
+        await animateInbound(inboundIcons, 800)  // Slightly faster animation
+        await delayAnimation(500)                // Half second delay
+        await animateOutbound(outboundIcons, 800)
+      }
+      
+      runAnimation()
     }
   }, [active, inbound, store])
 
