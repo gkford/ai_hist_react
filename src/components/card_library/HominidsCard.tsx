@@ -2,6 +2,7 @@ import { MasterCard } from "@/components/MasterCard"
 import { CardImage } from "@/components/ui/CardImage"
 import { CardInfo } from "@/components/ui/CardInfo"
 import { WorkerBar } from "@/components/ui/WorkerBar"
+import { EatDrumstickProcess } from "@/components/ui/EatDrumstickProcess"
 import { useState } from "react"
 import { useResourceStore } from "@/store/useResourceStore"
 
@@ -21,6 +22,7 @@ export function HominidsCard() {
           setHumanEnergyRate(newValue) // 1 energy per worker
         }}
       />
+      <EatDrumstickProcess workerCount={workerCount} />
     </MasterCard>
   )
 }
