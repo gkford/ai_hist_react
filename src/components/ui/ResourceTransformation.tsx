@@ -83,6 +83,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
     if (inboundIcons.length > 0) {
       animateInbound(inboundIcons, 1000) // 1 second animation
     }
+  }, [active, inbound, store])
   }
 
   return (
