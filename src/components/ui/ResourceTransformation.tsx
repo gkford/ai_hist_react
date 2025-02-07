@@ -60,7 +60,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   const triggerTransformationAnimation = (inboundIcons: string[]) => {
     const startX = -50
     const transformX = 50
-    const endX = 150
+    const endX = 200  // Increase to allow particles to move further right
     const spacing = 10
     
     // Create initial particles
