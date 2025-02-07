@@ -5,19 +5,11 @@ import { useResourceStore } from "@/store/useResourceStore"
 import { useEffect } from "react"
 
 function App() {
-  const {
-    food,
-    knowledge,
-    thoughts,
-    humanEnergy,
-    foodProduction,
-    foodConsumption,
-    netFoodRate,
-    knowledgeRate,
-    thoughtsRate,
-    humanEnergyRate,
-    tick
-  } = useResourceStore()
+  const { tick } = useResourceStore()
+  const food = useResource('food')
+  const knowledge = useResource('knowledge')
+  const thoughts = useResource('thoughts')
+  const humanEnergy = useResource('humanEnergy')
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,10 +32,10 @@ function App() {
       </div>
       <div className="flex flex-col mt-8 p-4 border border-gray-200 rounded">
         <h2 className="font-semibold mb-2">Developer Dashboard</h2>
-        <p>Food: {food} (Net Rate: {netFoodRate} | Production: +{foodProduction}, Consumption: {foodConsumption})</p>
-        <p>Knowledge: {knowledge} (Rate: {knowledgeRate})</p>
-        <p>Thoughts: {thoughts} (Rate: {thoughtsRate})</p>
-        <p>Human Energy: {humanEnergy} (Rate: {humanEnergyRate})</p>
+        <p>Food: {food.amount} (Rate: {food.rate})</p>
+        <p>Knowledge: {knowledge.amount} (Rate: {knowledge.rate})</p>
+        <p>Thoughts: {thoughts.amount} (Rate: {thoughts.rate})</p>
+        <p>Human Energy: {humanEnergy.amount} (Rate: {humanEnergy.rate})</p>
       </div>
     </div>
   )
