@@ -38,12 +38,33 @@ export function Process({ inbound, outbound, active }: ProcessProps) {
     }), {} as Record<ResourceKey, number>)
 
     const processInterval = setInterval(() => {
+      console.log("Process tick, active:", active)
+      
+      // Check if we have enough resources
+      const canProcess = inbound.every(resource => {
+        const currentAmount = store.resources[resource.key].amount
+        return currentAmount >= resource.rate
+      })
+
+      if (!canProcess) {
+        console.log("Not enough resources for process")
+        return
+      }
+
       // Calculate how many icons to show for each resource
       const inboundIcons: string[] = []
       inbound.forEach(resource => {
         const currentAmount = store.resources[resource.key].amount
         const reduction = resource.rate
         const newAmount = currentAmount - reduction
+        
+        console.log(`Processing ${resource.key}:`, {
+          currentAmount,
+          reduction,
+          newAmount,
+          prevWhole: Math.floor(resourceStates.current[resource.key]),
+          newWhole: Math.floor(newAmount)
+        })
         
         // Calculate whole number transitions
         const prevWhole = Math.floor(resourceStates.current[resource.key])
@@ -60,6 +81,7 @@ export function Process({ inbound, outbound, active }: ProcessProps) {
       })
 
       if (inboundIcons.length > 0) {
+        console.log("Triggering animation with icons:", inboundIcons)
         triggerProcessAnimation(inboundIcons)
       }
     }, 1000)
