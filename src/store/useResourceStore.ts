@@ -31,7 +31,7 @@ const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
 
 export const useResourceStore = create<ResourceStore>((set, get) => ({
   resources: {
-    food: { amount: 0, rate: 0 },
+    food: { amount: 5, rate: 0 },
     knowledge: { amount: 0, rate: 0 },
     thoughts: { amount: 0, rate: 0 },
     humanEnergy: { amount: 0, rate: 0 }

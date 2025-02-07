@@ -1,7 +1,7 @@
 import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
 import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
-import { useResourceStore } from "@/store/useResourceStore"
+import { useResourceStore, useResource } from "@/store/useResourceStore"
 import { useEffect } from "react"
 
 function App() {
