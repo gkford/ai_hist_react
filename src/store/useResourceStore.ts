@@ -5,6 +5,7 @@ type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy'
 interface ResourceConfig {
   storable: boolean
   negable: boolean
+  icon: string
 }
 
 interface ResourceState {
@@ -22,10 +23,10 @@ interface ResourceStore {
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
-  food: { storable: true, negable: false },
-  knowledge: { storable: true, negable: false },
-  thoughts: { storable: false, negable: false },
-  humanEnergy: { storable: false, negable: false }
+  food: { storable: true, negable: false, icon: '🍗' },
+  knowledge: { storable: true, negable: false, icon: '📚' },
+  thoughts: { storable: false, negable: false, icon: '💭' },
+  humanEnergy: { storable: false, negable: false, icon: '⚡' }
 }
 
 export const useResourceStore = create<ResourceStore>((set, get) => ({
@@ -94,6 +95,7 @@ export const useResource = (resource: ResourceKey) => {
   return {
     amount: store.resources[resource].amount,
     rate: store.resources[resource].rate,
+    icon: store.config[resource].icon,
     setRate: (rate: number) => store.setResourceRate(resource, rate),
     setAmount: (amount: number) => store.setResourceAmount(resource, amount)
   }
