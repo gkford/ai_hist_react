@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy'
+export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy'
 
 interface ResourceConfig {
   storable: boolean
