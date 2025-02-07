@@ -165,7 +165,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       const cleanup = runResourceTransformation(
         inboundIcons,
         outboundIcons,
-        800,  // animation speed in ms
+        2400,  // animation speed in ms (3x longer)
         500   // delay time in ms
       )
       return () => {
