@@ -84,7 +84,6 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       animateInbound(inboundIcons, 1000) // 1 second animation
     }
   }, [active, inbound, store])
-  }
 
   return (
     <div className={cn(
@@ -96,7 +95,7 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       "relative"
     )}>
       <div className="relative w-full h-full">
-        {particles.map(particle => (
+        {particles.map((particle: TransformationParticle) => (
           <div
             key={particle.id}
             className="absolute top-1/2 -translate-y-1/2"
