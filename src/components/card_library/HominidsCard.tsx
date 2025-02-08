@@ -3,17 +3,17 @@ import { CardImage } from "@/components/ui/CardImage"
 import { CardInfo } from "@/components/ui/CardInfo"
 import { WorkerBar } from "@/components/ui/WorkerBar"
 import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useResource } from "@/store/useResourceStore"
 
 export function HominidsCard() {
   const [workerCount, setWorkerCount] = useState(0)
-  const [transformationId, setTransformationId] = useState(0)
   const food = useResource('food')
   const humanEnergy = useResource('humanEnergy')
+  const resourceTransformationRef = useRef(null)
 
   const triggerTransformation = () => {
-    setTransformationId(prev => prev + 1)
+    resourceTransformationRef.current?.startTransformation()
   }
 
   return (
@@ -35,7 +35,7 @@ export function HominidsCard() {
       <ResourceTransformation 
         inbound={[{ key: 'food', amount: 1 }]}
         outbound={[{ key: 'humanEnergy', amount: 1 }]}
-        key={transformationId}
+        ref={resourceTransformationRef}
       />
     </MasterCard>
   )

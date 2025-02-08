@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from "react"
+import { forwardRef, useImperativeHandle, useEffect, useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { ResourceKey, useResourceStore } from "@/store/useResourceStore"
 
 interface TransformationResource {
   key: ResourceKey
   amount: number
-}
+})
 
 interface ResourceTransformationProps {
   inbound: TransformationResource[]
@@ -31,7 +31,7 @@ interface TransformationParticle {
   animationId: number  // Track which animation this particle belongs to
 }
 
-export function ResourceTransformation({ inbound, outbound }: ResourceTransformationProps) {
+export const ResourceTransformation = forwardRef(function ResourceTransformation({ inbound, outbound }: ResourceTransformationProps, ref) {
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
   const [nextAnimationId, setNextAnimationId] = useState(0)
@@ -175,12 +175,9 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
     )
   }
 
-  useEffect(() => {
-    startTransformation()
-    return () => {
-      setParticles([])
-    }
-  }, [inbound, outbound])
+  useImperativeHandle(ref, () => ({
+    startTransformation,
+  }))
 
   return (
     <div className={cn(
