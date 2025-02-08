@@ -103,19 +103,15 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     
     const finalDecrease = Math.max(0, wholeNumberDecrease - startAdjustment + endAdjustment)
 
-    // Add debug logs
-    console.log('Subtraction Debug:', {
+    // Add animation-focused debug logs
+    console.log('Resource Change:', {
+      type: 'subtract',
       resource,
-      currentAmount,
-      newAmount,
-      startNumber,
-      endNumber,
-      wholeNumberDecrease,
-      isStartWhole: Number.isInteger(currentAmount),
-      isEndWhole: Number.isInteger(newAmount),
-      startAdjustment,
-      endAdjustment,
-      finalDecrease
+      icon: get().config[resource].icon,
+      from: currentAmount,
+      to: newAmount,
+      decrease: finalDecrease,
+      willAnimate: finalDecrease > 0
     })
     
     // Update the store

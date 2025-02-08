@@ -18,10 +18,10 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
   "eating_chicken": {
     name: "Eating Chicken",
     inbound: [
-      { key: "food", amount: 0.1 }
+      { key: "food", amount: 1 }
     ],
     outbound: [
-      { key: "humanEnergy", amount: 0.12 }
+      { key: "humanEnergy", amount: 1.2 }
     ],
     focusResource: 'population'
   }

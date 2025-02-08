@@ -55,11 +55,15 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   let particleIdCounter = 0
 
   const startTransformation = () => {
+    console.log('Starting transformation')
+    
     // Try to subtract all inbound resources and collect their icons
     const inboundResults = inbound.map(update => ({
       update,
       result: store.subtractResource(update.key, update.amount)
     }))
+
+    console.log('Inbound results:', inboundResults)
 
     if (inboundResults.some(({ result }) => result === null)) {
       console.error("Not enough resources for transformation")
@@ -76,6 +80,8 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       result ? Array(result).fill(store.config[update.key].icon) : []
     )
 
+    console.log('Creating inbound particles:', inboundIcons)
+
     // Add inbound particles
     const newParticles = inboundIcons.map(icon => ({
       id: ++particleIdCounter,
@@ -87,10 +93,13 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
 
     // Handle outbound after delay
     setTimeout(() => {
+      console.log('Starting outbound phase')
       const outboundIcons = outbound.flatMap(update => {
         const wholeNumberIncrease = store.addResource(update.key, update.amount)
         return Array(wholeNumberIncrease).fill(store.config[update.key].icon)
       })
+
+      console.log('Creating outbound particles:', outboundIcons)
 
       setParticles(outboundIcons.map(icon => ({
         id: ++particleIdCounter,
@@ -100,6 +109,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
 
       // Clean up particles after animation
       setTimeout(() => {
+        console.log('Cleaning up particles')
         setParticles([])
       }, 2400)
     }, 500)
