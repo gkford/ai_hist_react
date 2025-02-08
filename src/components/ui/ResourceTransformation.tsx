@@ -135,16 +135,6 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
   }
 
   useEffect(() => {
-    const canTransform = inbound.every(resource => {
-      const currentAmount = store.resources[resource.key].amount
-      return currentAmount >= resource.amount
-    })
-
-    if (!canTransform) {
-      console.log("Not enough resources for transformation")
-      return
-    }
-
     const inboundIcons = inbound.flatMap(resource => 
       Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
     )
@@ -153,20 +143,18 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
       Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
     )
 
-    if (inboundIcons.length > 0) {
-      console.log("Starting resource transformation animation")
-      runResourceTransformation(
-        inboundIcons,
-        outboundIcons,
-        2400,  // animation speed in ms
-        500   // delay time in ms
-      )
-    }
+    console.log("Starting resource transformation animation")
+    runResourceTransformation(
+      inboundIcons,
+      outboundIcons,
+      2400,  // animation speed in ms
+      500   // delay time in ms
+    )
 
     return () => {
       setParticles([])
     }
-  }, [inbound, outbound, store])
+  }, []) // Empty dependency array - run once when component instance is created
 
   return (
     <div className={cn(
