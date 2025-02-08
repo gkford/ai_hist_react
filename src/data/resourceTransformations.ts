@@ -1,7 +1,5 @@
 import { ResourceKey } from "@/store/useResourceStore"
 
-type FocusResourceType = 'population' | 'energy'
-
 interface TransformationResource {
   key: ResourceKey
   amount: number
