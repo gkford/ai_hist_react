@@ -3,7 +3,12 @@ import { cn } from "@/lib/utils"
 
 
 export interface ResourceTransformationHandle {
-  startTransformation: () => void
+  animateRT: (
+    inboundEmojisParam: string[],
+    outboundEmojisParam: string[],
+    animationSpeed: number,
+    delayAnimationSpeed: number
+  ) => void
 }
 
 interface ResourceTransformationProps {
@@ -107,3 +112,18 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     </div>
   )
 })
+
+export function animateResourceTransformation(
+  rtId: string,
+  inbound: string[],
+  outbound: string[],
+  animationSpeed: number,
+  delayAnimationSpeed: number
+) {
+  const instance = rtRegistry.get(rtId)
+  if (instance) {
+    instance.animateRT(inbound, outbound, animationSpeed, delayAnimationSpeed)
+  } else {
+    console.warn(`No ResourceTransformation instance for id: ${rtId}`)
+  }
+}
