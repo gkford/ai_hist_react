@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useEffect, useState, useRef } from "react"
+import { forwardRef, useImperativeHandle, useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { ResourceKey, useResourceStore } from "@/store/useResourceStore"
 
@@ -51,38 +51,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     return particleIdCounter.current
   }
 
-  const runResourceTransformation = async (
-    inboundEmojis: string[], 
-    outboundEmojis: string[], 
-    animationSpeed: number,
-    delayTime: number
-  ) => {
-    const animationId = nextAnimationId
-    setNextAnimationId(prev => prev + 1)
-    
-    const fps = 60
-    const frames = (animationSpeed / 1000) * fps
-    
-    const inboundConfig: AnimationConfig = {
-      fps,
-      startX: -50,
-      endX: 50,
-      frames,
-      distancePerFrame: (50 - (-50)) / frames
-    }
-
-    const outboundConfig: AnimationConfig = {
-      fps,
-      startX: 50,
-      endX: 150,
-      frames,
-      distancePerFrame: (150 - 50) / frames
-    }
-
-    await animateInbound(inboundEmojis, animationSpeed, inboundConfig, animationId)
-    await delayAnimation(delayTime)
-    await animateOutbound(outboundEmojis, animationSpeed, outboundConfig, animationId)
-  }
 
   const animateInbound = (
     emojis: string[], 
