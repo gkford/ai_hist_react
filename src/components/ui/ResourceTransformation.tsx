@@ -7,7 +7,7 @@ interface TransformationResource {
   amount: number
 }
 
-interface ResourceTransformationHandle {
+export interface ResourceTransformationHandle {
   startTransformation: () => void
 }
 
