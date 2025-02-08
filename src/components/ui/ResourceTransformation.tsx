@@ -149,11 +149,11 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
           ))
         )}
       </div>
-    </div>
-    {/* RT state debug overlay */}
-    <div className="absolute bottom-0 right-0 m-2 p-2 bg-gray-200 text-[10px] text-gray-700 z-10">
-      RT State:
-      <pre>{JSON.stringify(rtState, null, 2)}</pre>
+      {/* RT state debug overlay */}
+      <div className="absolute bottom-0 right-0 m-2 p-2 bg-gray-200 text-[10px] text-gray-700 z-10">
+        RT State:
+        <pre>{JSON.stringify(rtState, null, 2)}</pre>
+      </div>
     </div>
   )
 })
