@@ -50,27 +50,22 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     ) => {
       const transformationId = ++globalTransformationIdCounter
       
-      // Add inbound particles
-      const inboundParticles = inboundEmojisParam.map(emoji => ({
+      // Add single inbound particle with joined emojis
+      const inboundParticle = {
         id: ++globalParticleIdCounter,
-        content: emoji,
+        content: inboundEmojisParam.join(''),
         type: 'inbound' as const,
-      }))
-      
-      setTransformations(prev => [...prev, { id: transformationId, particles: inboundParticles }])
+      };
+      setTransformations(prev => [...prev, { id: transformationId, particles: [inboundParticle] }])
       
       setTimeout(() => {
+        const outboundParticle = {
+          id: ++globalParticleIdCounter,
+          content: outboundEmojisParam.join(''),
+          type: 'outbound' as const,
+        };
         setTransformations(prev => prev.map(t =>
-          t.id === transformationId 
-            ? {
-                ...t,
-                particles: outboundEmojisParam.map(emoji => ({
-                  id: ++globalParticleIdCounter,
-                  content: emoji,
-                  type: 'outbound' as const,
-                }))
-              }
-            : t
+          t.id === transformationId ? { ...t, particles: [outboundParticle] } : t
         ))
 
         setTimeout(() => {
@@ -154,13 +149,12 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       "relative"
     )}>
       <div className="relative w-full h-full overflow-hidden">
-        {transformations.flatMap(transformation => 
-          transformation.particles.map((particle, idx) => (
+        {transformations.map(transformation => 
+          transformation.particles.map(particle => (
             <div
               key={`${transformation.id}-${particle.id}`}
-              style={{ left: `${idx * 30}px` }}  // 30px per emoji; adjust as needed
               className={cn(
-                "absolute top-1/2 -translate-y-1/2 text-xl",
+                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl",
                 particle.type === 'inbound' ? 'animate-resource-inbound' : 'animate-resource-outbound'
               )}
             >
