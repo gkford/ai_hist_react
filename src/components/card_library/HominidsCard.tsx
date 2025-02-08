@@ -21,7 +21,7 @@ export function HominidsCard() {
     <MasterCard title="Hominids" typeIcon="👥" discoveryStatusIcon={null}>
       <CardImage imageSrc={import.meta.env.BASE_URL + "card_images/hominids.png"} />
       <CardInfo className="text-center">
-        Transforms 1{food.icon} into 1{humanEnergy.icon}
+        Transforms 0.01{food.icon} into 0.012{humanEnergy.icon} per second per person
         <button 
           onClick={triggerTransformation}
           className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
@@ -34,8 +34,8 @@ export function HominidsCard() {
         onChange={setWorkerCount}
       />
       <ResourceTransformation 
-        inbound={[{ key: 'food', amount: 1 }]}
-        outbound={[{ key: 'humanEnergy', amount: 1 }]}
+        inbound={[{ key: 'food', amount: 0.1 }]}
+        outbound={[{ key: 'humanEnergy', amount: 0.12 }]}
         ref={resourceTransformationRef}
       />
     </MasterCard>
