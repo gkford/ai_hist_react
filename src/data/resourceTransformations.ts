@@ -11,7 +11,6 @@ interface ResourceTransformation {
   name: string
   inbound: TransformationResource[]
   outbound: TransformationResource[]
-  focusResource: FocusResourceType
 }
 
 export const resourceTransformations: Record<string, ResourceTransformation> = {
@@ -23,7 +22,6 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     outbound: [
       { key: "humanEnergy", amount: 1.2 }
     ],
-    focusResource: 'population'
   }
   // Add more transformations here as needed
 }
