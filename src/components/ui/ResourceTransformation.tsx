@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { ResourceKey, useResourceStore } from "@/store/useResourceStore"
 
@@ -35,7 +35,12 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
   const [nextAnimationId, setNextAnimationId] = useState(0)
-  const [nextParticleId, setNextParticleId] = useState(0)
+  const particleIdCounter = useRef(0)  // Change to useRef for a stable counter
+
+  const getNextParticleId = () => {
+    particleIdCounter.current += 1
+    return particleIdCounter.current
+  }
 
   const runResourceTransformation = async (
     inboundEmojis: string[], 
@@ -81,12 +86,11 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
       let animationInterval: ReturnType<typeof setInterval>
       
       setParticles(prev => [...prev, {
-        id: nextParticleId + animationId * 1000,
+        id: getNextParticleId(),
         x: config.startX,
         content: emojiString,
         animationId
       }])
-      setNextParticleId(prev => prev + 1)
 
       let frame = 0
       animationInterval = setInterval(() => {
@@ -123,12 +127,11 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
       let animationInterval: ReturnType<typeof setInterval>
       
       setParticles(prev => [...prev, {
-        id: nextParticleId + animationId * 1000,
+        id: getNextParticleId(),
         x: config.startX,
         content: emojiString,
         animationId
       }])
-      setNextParticleId(prev => prev + 1)
 
       let frame = 0
       animationInterval = setInterval(() => {
@@ -154,7 +157,7 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
     })
   }
 
-  useEffect(() => {
+  const startTransformation = () => {
     const inboundIcons = inbound.flatMap(resource => 
       Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
     )
@@ -170,11 +173,14 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
       2400,  // animation speed in ms
       500   // delay time in ms
     )
+  }
 
+  useEffect(() => {
+    startTransformation()
     return () => {
       setParticles([])
     }
-  }, []) // Empty dependency array - run once when component instance is created
+  }, [inbound, outbound])
 
   return (
     <div className={cn(
