@@ -4,9 +4,11 @@ import { HominidsCard } from "./components/card_library/HominidsCard"
 import { useResource } from "@/store/useResourceStore"
 import { useRTStore } from "@/store/useRTStore"
 import { payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 function App() {
+  const [isEatingActive, setIsEatingActive] = useState(true);
+  const [isCyclingActive, setIsCyclingActive] = useState(true);
   const formatNumber = (n: number): string => {
     const trimmed = parseFloat(n.toFixed(3));
     return trimmed.toString();
@@ -20,15 +22,24 @@ function App() {
   const rtStates = useRTStore((state) => state.states)
 
   useEffect(() => {
+    if (!isEatingActive) return;
     const intervalId = setInterval(() => {
-      // Retrieve all current rtIds from the RT store
+      const success = payForResourceTransformation("eating_chicken");
+      console.log("Auto-eating triggered, success:", success);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [isEatingActive]);
+
+  useEffect(() => {
+    if (!isCyclingActive) return;
+    const intervalId = setInterval(() => {
       const rtStates = useRTStore.getState().states;
       Object.keys(rtStates).forEach(rtId => {
         processRTState(rtId);
       });
     }, 1000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isCyclingActive]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -59,6 +70,21 @@ function App() {
               </pre>
             </div>
           ))}
+        </div>
+
+        <div className="mt-4">
+          <button 
+            onClick={() => setIsEatingActive(prev => !prev)}
+            className="mr-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+          >
+            {isEatingActive ? "Turn off Eating Function" : "Turn on Eating Function"}
+          </button>
+          <button 
+            onClick={() => setIsCyclingActive(prev => !prev)}
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+          >
+            {isCyclingActive ? "Turn off RT State Cycler" : "Turn on RT State Cycler"}
+          </button>
         </div>
       </div>
     </div>
