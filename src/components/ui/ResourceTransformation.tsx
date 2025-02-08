@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } from "react"
 import type { ResourceKey } from "@/store/useResourceStore"
+import { useResourceStore } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 
 
@@ -36,8 +37,8 @@ let globalTransformationIdCounter = 0
 export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ rtId }, ref) {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
   const [rtState, setRtState] = useState<{
-    inbound_paid: Partial<Record<ResourceKey, number>>,
-    outbound_owed: Partial<Record<ResourceKey, number>>
+    inbound_paid: Partial<Record<ResourceKey, number>>;
+    outbound_owed: Partial<Record<ResourceKey, number>>;
   }>({
     inbound_paid: {},
     outbound_owed: {},
