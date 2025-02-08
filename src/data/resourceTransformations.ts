@@ -9,6 +9,7 @@ interface TransformationResource {
 
 interface ResourceTransformation {
   name: string
+  eating: boolean  // Add this property
   inbound: TransformationResource[]
   outbound: TransformationResource[]
 }
@@ -16,6 +17,7 @@ interface ResourceTransformation {
 export const resourceTransformations: Record<string, ResourceTransformation> = {
   "eating_chicken": {
     name: "Eating Chicken",
+    eating: true,    // Set to true for eating_chicken
     inbound: [
       { key: "food", amount: 1 }
     ],
