@@ -80,16 +80,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     [setTransformations]
   )
 
-  useEffect(() => {
-    rtRegistry.set(rtId, { 
-      animateRT,
-      payForTransformation 
-    })
-    return () => {
-      rtRegistry.delete(rtId)
-    }
-  }, [rtId, animateRT, payForTransformation])
-
   const payForTransformation = useCallback(
     (payment: Array<{ key: ResourceKey; amount: number }>) => {
       // Get the global store snapshot
@@ -122,8 +112,18 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       updateState(rtId, newState);
       return true;
     },
-    []
+    [rtState, updateState]
   )
+
+  useEffect(() => {
+    rtRegistry.set(rtId, { 
+      animateRT,
+      payForTransformation 
+    })
+    return () => {
+      rtRegistry.delete(rtId)
+    }
+  }, [rtId, animateRT, payForTransformation])
 
   useImperativeHandle(ref, () => ({
     animateRT,
