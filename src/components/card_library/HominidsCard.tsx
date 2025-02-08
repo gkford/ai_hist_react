@@ -5,7 +5,7 @@ import { WorkerBar } from "@/components/ui/WorkerBar"
 import type { ResourceTransformationHandle } from "@/components/ui/ResourceTransformation"
 import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { useState } from "react"
-import { animateResourceTransformation, payForResourceTransformation } from "@/components/ui/ResourceTransformation"
+import { animateResourceTransformation, payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
 import { useResource } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
 
@@ -51,6 +51,12 @@ export function HominidsCard() {
           className="mt-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
         >
           Pay For Transform
+        </button>
+        <button 
+          onClick={() => processRTState("eating_chicken")}
+          className="mt-2 px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm"
+        >
+          Process RT Deduction
         </button>
       </CardInfo>
       <WorkerBar

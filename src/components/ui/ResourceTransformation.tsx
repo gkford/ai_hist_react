@@ -195,3 +195,47 @@ export function animateResourceTransformation(
     console.warn(`No ResourceTransformation instance for id: ${rtId}`)
   }
 }
+
+export function processRTState(rtId: string): void {
+  // Get the current RT state for the given id (or default values)
+  const rtState = useRTStore.getState().states[rtId] || { inbound_paid: {}, outbound_owed: {} };
+  const resourceConfigs = useResourceStore.getState().config;
+
+  // Process inbound_paid: deduct whole numbers & build emoji list
+  const inboundList: string[] = [];
+  const newInboundPaid = { ...rtState.inbound_paid };
+  Object.entries(rtState.inbound_paid).forEach(([key, value]) => {
+    const whole = Math.floor(value);
+    if (whole > 0) {
+      newInboundPaid[key] = value - whole;
+      const icon = resourceConfigs[key as ResourceKey]?.icon || key;
+      for (let i = 0; i < whole; i++) {
+        inboundList.push(icon);
+      }
+    }
+  });
+
+  // Process outbound_owed similarly
+  const outboundList: string[] = [];
+  const newOutboundOwed = { ...rtState.outbound_owed };
+  Object.entries(rtState.outbound_owed).forEach(([key, value]) => {
+    const whole = Math.floor(value);
+    if (whole > 0) {
+      newOutboundOwed[key] = value - whole;
+      const icon = resourceConfigs[key as ResourceKey]?.icon || key;
+      for (let i = 0; i < whole; i++) {
+        outboundList.push(icon);
+      }
+    }
+  });
+
+  // Update the RT state with the deducted values
+  useRTStore.getState().updateState(rtId, {
+    inbound_paid: newInboundPaid,
+    outbound_owed: newOutboundOwed,
+  });
+
+  // Log the resulting emoji lists
+  console.log("Processed Inbound List:", inboundList);
+  console.log("Processed Outbound List:", outboundList);
+}
