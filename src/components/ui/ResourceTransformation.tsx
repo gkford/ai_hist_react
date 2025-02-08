@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } from "react"
 import type { ResourceKey } from "@/store/useResourceStore"
 import { useResourceStore } from "@/store/useResourceStore"
+import { getTransformation } from "@/data/resourceTransformations"
 import { useRTStore } from "@/store/useRTStore"
 import { cn } from "@/lib/utils"
 
@@ -12,7 +13,7 @@ export interface ResourceTransformationHandle {
     animationSpeed: number,
     delayAnimationSpeed: number
   ) => void;
-  payForTransformation: (payment: Array<{ key: ResourceKey; amount: number }>) => boolean;
+  payForTransformation: () => boolean;
 }
 
 interface ResourceTransformationProps {
@@ -80,39 +81,51 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     [setTransformations]
   )
 
-  const payForTransformation = useCallback(
-    (payment: Array<{ key: ResourceKey; amount: number }>) => {
-      // Get the global store snapshot
-      const store = useResourceStore.getState();
-      // Check each payment item for sufficient funds
-      for (const item of payment) {
-        if (store.resources[item.key].amount < item.amount) {
-          console.warn(`Insufficient ${item.key} available`);
-          return false;
-        }
+  const payForTransformation = useCallback(() => {
+    // For now, we are hardcoding the transformation config id "eating_chicken"
+    const transformation = getTransformation("eating_chicken");
+    if (!transformation) {
+      console.warn("No transformation config for eating_chicken");
+      return false;
+    }
+    // Get the global store snapshot
+    const store = useResourceStore.getState();
+    // Check each inbound payment for sufficient funds (do not check outbound)
+    for (const item of transformation.inbound) {
+      if (store.resources[item.key].amount < item.amount) {
+        console.warn(`Insufficient ${item.key} available`);
+        return false;
       }
-      // All items sufficient; deduct from store atomically
-      payment.forEach(item => {
-        const current = store.resources[item.key].amount;
-        store.setResourceAmount(item.key, current - item.amount);
-      });
-      // Update local rt state (accumulate payments)
-      const newState = {
-        inbound_paid: {
-          ...rtState.inbound_paid,
-          ...Object.fromEntries(
-            payment.map(item => [
-              item.key,
-              (rtState.inbound_paid[item.key] || 0) + item.amount
-            ])
-          )
-        },
-        outbound_owed: rtState.outbound_owed
+    }
+    // Deduct inbound amounts from store
+    transformation.inbound.forEach(item => {
+      const current = store.resources[item.key].amount;
+      store.setResourceAmount(item.key, current - item.amount);
+    });
+    // Update local RT state: add inbound_paid from transformation.inbound and add outbound_owed from transformation.outbound
+    const newState = {
+      inbound_paid: {
+        ...rtState.inbound_paid,
+        ...Object.fromEntries(
+          transformation.inbound.map(item => [
+            item.key,
+            (rtState.inbound_paid[item.key] || 0) + item.amount
+          ])
+        )
+      },
+      outbound_owed: {
+        ...rtState.outbound_owed,
+        ...Object.fromEntries(
+          transformation.outbound.map(item => [
+            item.key,
+            (rtState.outbound_owed[item.key] || 0) + item.amount
+          ])
+        )
       }
-      updateState(rtId, newState);
-      return true;
-    },
-    [rtState, updateState]
+    };
+    updateState(rtId, newState);
+    return true;
+  }, [rtState, updateState, rtId]
   )
 
   useEffect(() => {
@@ -158,13 +171,10 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   )
 })
 
-export function payForResourceTransformation(
-  rtId: string,
-  payment: Array<{ key: ResourceKey; amount: number }>
-): boolean {
+export function payForResourceTransformation(rtId: string): boolean {
   const instance = rtRegistry.get(rtId);
   if (instance) {
-    return instance.payForTransformation(payment);
+    return instance.payForTransformation();
   } else {
     console.warn(`No ResourceTransformation instance for id: ${rtId}`);
     return false;

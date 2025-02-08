@@ -15,9 +15,7 @@ export function HominidsCard() {
   const humanEnergy = useResource('humanEnergy')
 
   const triggerPay = () => {
-    // For example, request to take 1 food and 2 'humanEnergy' (replace with desired keys)
-    const payment = [{ key: "food", amount: 1 }, { key: "humanEnergy", amount: 2 }];
-    const success = payForResourceTransformation("hominids", payment);
+    const success = payForResourceTransformation("hominids");
     console.log("Payment success:", success);
   }
 
