@@ -17,6 +17,7 @@ interface ResourceStore {
   config: Record<ResourceKey, ResourceConfig>
   
   setResourceAmount: (resource: ResourceKey, amount: number) => void
+  addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
@@ -43,7 +44,29 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
         amount
       }
     }
-  }))
+  })),
+
+  addResource: (resource, amountToAdd) => {
+    const currentAmount = get().resources[resource].amount
+    const newAmount = currentAmount + amountToAdd
+    
+    // Calculate whole number increase
+    const previousWholeNumber = Math.floor(currentAmount)
+    const newWholeNumber = Math.floor(newAmount)
+    const wholeNumberIncrease = newWholeNumber - previousWholeNumber
+
+    // Update the store
+    set(state => ({
+      resources: {
+        ...state.resources,
+        [resource]: {
+          amount: newAmount
+        }
+      }
+    }))
+
+    return wholeNumberIncrease
+  }
 }))
 
 // Helper hooks for cleaner component usage

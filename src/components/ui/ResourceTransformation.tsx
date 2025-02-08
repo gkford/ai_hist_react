@@ -225,18 +225,20 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     // Run delay
     await delayAnimation(delayTime)
 
-    // Add outbound resources
-    outboundUpdates.forEach(update => {
-      const currentAmount = store.resources[update.key].amount
-      store.setResourceAmount(update.key, currentAmount + update.amount)
+    // Add outbound resources and get animation counts
+    const outboundIcons = outboundUpdates.flatMap(update => {
+      const wholeNumberIncrease = store.addResource(update.key, update.amount)
+      return Array(wholeNumberIncrease).fill(store.config[update.key].icon)
     })
 
-    // Run outbound animation
-    console.log('Starting outbound animation:', {
-      animationId,
-      outboundIcons
-    })
-    await animateOutbound(outboundIcons, animationSpeed, outboundConfig, animationId)
+    // Run outbound animation only if there are icons to show
+    if (outboundIcons.length > 0) {
+      console.log('Starting outbound animation:', {
+        animationId,
+        outboundIcons
+      })
+      await animateOutbound(outboundIcons, animationSpeed, outboundConfig, animationId)
+    }
   }
 
   const startTransformation = () => {
