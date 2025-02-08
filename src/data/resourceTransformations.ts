@@ -1,5 +1,7 @@
 import { ResourceKey } from "@/store/useResourceStore"
 
+type FocusResourceType = 'population' | 'energy'
+
 interface TransformationResource {
   key: ResourceKey
   amount: number
@@ -9,6 +11,7 @@ interface ResourceTransformation {
   name: string
   inbound: TransformationResource[]
   outbound: TransformationResource[]
+  focusResource: FocusResourceType
 }
 
 export const resourceTransformations: Record<string, ResourceTransformation> = {
@@ -19,7 +22,8 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     ],
     outbound: [
       { key: "humanEnergy", amount: 0.12 }
-    ]
+    ],
+    focusResource: 'population'
   }
   // Add more transformations here as needed
 }

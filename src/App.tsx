@@ -27,7 +27,7 @@ function App() {
         <p>Thoughts: {thoughts.amount}</p>
         <p>Human Energy: {humanEnergy.amount}</p>
         <p>Population: {population.amount}</p>
-        <p>Eating Chicken Energy: {(eatingChickenTransformation.energyLevel * 100).toFixed(0)}%</p>
+        <p>Eating Chicken Focus: {(eatingChickenTransformation.focusProp * 100).toFixed(0)}%</p>
         <p>Eating Chicken Active: {eatingChickenTransformation.active ? "Yes" : "No"}</p>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { create } from "zustand"
 export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'population'
 
 interface TransformationState {
-  energyLevel: number  // Between 0 and 1
+  focusProp: number  // Between 0 and 1
   active: boolean
 }
 
@@ -25,7 +25,7 @@ interface ResourceStore {
   setResourceAmount: (resource: ResourceKey, amount: number) => void
   addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
   subtractResource: (resource: ResourceKey, amount: number) => number | null  // Returns whole number decrease or null if not possible
-  setTransformationEnergy: (transformationId: string, energy: number) => void
+  setTransformationFocus: (transformationId: string, focus: number) => void
   setTransformationActive: (transformationId: string, active: boolean) => void
 }
 
@@ -40,7 +40,7 @@ const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
 export const useResourceStore = create<ResourceStore>((set, get) => ({
   transformations: {
     "eating_chicken": {
-      energyLevel: 0,
+      focusProp: 1,
       active: false
     }
   },
@@ -112,12 +112,12 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     return wholeNumberDecrease
   },
 
-  setTransformationEnergy: (transformationId, energy) => set(state => ({
+  setTransformationFocus: (transformationId, focus) => set(state => ({
     transformations: {
       ...state.transformations,
       [transformationId]: {
         ...state.transformations[transformationId],
-        energyLevel: Math.max(0, Math.min(1, energy)) // Clamp between 0 and 1
+        focusProp: Math.max(0, Math.min(1, focus)) // Clamp between 0 and 1
       }
     }
   })),
@@ -137,9 +137,9 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
 export const useTransformation = (transformationId: string) => {
   const store = useResourceStore()
   return {
-    energyLevel: store.transformations[transformationId]?.energyLevel ?? 0,
+    focusProp: store.transformations[transformationId]?.focusProp ?? 0,
     active: store.transformations[transformationId]?.active ?? false,
-    setEnergy: (energy: number) => store.setTransformationEnergy(transformationId, energy),
+    setFocus: (focus: number) => store.setTransformationFocus(transformationId, focus),
     setActive: (active: boolean) => store.setTransformationActive(transformationId, active)
   }
 }

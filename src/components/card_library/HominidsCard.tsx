@@ -27,7 +27,9 @@ export function HominidsCard() {
       <CardInfo className="text-center">
         Transforms {transformation?.inbound[0].amount}{food.icon} into {transformation?.outbound[0].amount}{humanEnergy.icon} per second per person
         <div className="mt-2">
-          Energy Level: {(transformationState.energyLevel * 100).toFixed(0)}%
+          Focus Level: {(transformationState.focusProp * 100).toFixed(0)}%
+          <br/>
+          Focus Type: {transformation?.focusResource}
         </div>
         <button 
           onClick={triggerTransformation}
