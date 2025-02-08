@@ -2,9 +2,7 @@ import { create } from "zustand"
 
 export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'population'
 
-interface TransformationState {
-  focusProp: number  // Between 0 and 1
-}
+
 
 interface ResourceConfig {
   storable: boolean
@@ -19,12 +17,10 @@ interface ResourceState {
 interface ResourceStore {
   resources: Record<ResourceKey, ResourceState>
   config: Record<ResourceKey, ResourceConfig>
-  transformations: Record<string, TransformationState>
   
   setResourceAmount: (resource: ResourceKey, amount: number) => void
   addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
   subtractResource: (resource: ResourceKey, amount: number) => number | null  // Returns whole number decrease or null if not possible
-  setTransformationFocus: (transformationId: string, focus: number) => void
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
@@ -36,11 +32,7 @@ const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
 }
 
 export const useResourceStore = create<ResourceStore>((set, get) => ({
-  transformations: {
-    "eating_chicken": {
-      focusProp: 1
-    }
-  },
+
 
   resources: {
     food: { amount: 5 },
@@ -127,26 +119,11 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     return finalDecrease
   },
 
-  setTransformationFocus: (transformationId, focus) => set(state => ({
-    transformations: {
-      ...state.transformations,
-      [transformationId]: {
-        ...state.transformations[transformationId],
-        focusProp: Math.max(0, Math.min(1, focus)) // Clamp between 0 and 1
-      }
-    }
-  })),
 
 }))
 
 // Helper hooks for cleaner component usage
-export const useTransformation = (transformationId: string) => {
-  const store = useResourceStore()
-  return {
-    focusProp: store.transformations[transformationId]?.focusProp ?? 0,
-    setFocus: (focus: number) => store.setTransformationFocus(transformationId, focus)
-  }
-}
+
 export const useResource = (resource: ResourceKey) => {
   const store = useResourceStore()
   return {
