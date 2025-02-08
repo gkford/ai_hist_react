@@ -91,22 +91,28 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       return null  // Cannot subtract this amount
     }
     
+    // Simple whole number decrease calculation
+    const startNumber = Math.floor(currentAmount)
+    const endNumber = Math.floor(newAmount)
+    const wholeNumberDecrease = startNumber - endNumber
+    
+    // If the starting number was exactly whole, subtract 1 from the decrease
+    const adjustment = Number.isInteger(currentAmount) ? 1 : 0
+    const finalDecrease = Math.max(0, wholeNumberDecrease - adjustment)
+
     // Add debug logs
     console.log('Subtraction Debug:', {
       resource,
       currentAmount,
       newAmount,
-      startWholeNumber: Math.floor(currentAmount + 0.001),
-      endWholeNumber: Math.floor(newAmount + 0.001),
-      raw_currentAmount_plus_epsilon: currentAmount + 0.001,
-      raw_newAmount_plus_epsilon: newAmount + 0.001
+      startNumber,
+      endNumber,
+      wholeNumberDecrease,
+      isStartWhole: Number.isInteger(currentAmount),
+      adjustment,
+      finalDecrease
     })
     
-    // Count every whole number we cross from above
-    const startWholeNumber = Math.floor(currentAmount + 0.001)
-    const endWholeNumber = Math.floor(newAmount + 0.001)
-    const wholeNumberDecrease = Math.max(0, startWholeNumber - endWholeNumber)
-
     // Update the store
     set(state => ({
       resources: {
@@ -117,7 +123,7 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       }
     }))
 
-    return wholeNumberDecrease
+    return finalDecrease
   },
 
   setTransformationFocus: (transformationId, focus) => set(state => ({
