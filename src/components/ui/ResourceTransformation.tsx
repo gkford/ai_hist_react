@@ -176,25 +176,10 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       return
     }
 
-    // Get the emoji strings for animation
+    // Get the emoji strings for inbound animation
     const inboundIcons = inboundUpdates.flatMap(update => 
       Array(Math.floor(update.amount)).fill(store.config[update.key].icon)
     )
-    const outboundIcons = outboundUpdates.flatMap(update => 
-      Array(Math.floor(update.amount)).fill(store.config[update.key].icon)
-    )
-
-    console.log('Starting transformation with:', {
-      animationId: nextAnimationId,
-      inboundIcons,
-      outboundIcons
-    })
-
-    // Reduce inbound resources
-    inboundUpdates.forEach(update => {
-      const currentAmount = store.resources[update.key].amount
-      store.setResourceAmount(update.key, currentAmount - update.amount)
-    })
 
     // Start inbound animation
     const animationId = nextAnimationId
@@ -219,13 +204,24 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       distancePerFrame: (150 - 50) / frames
     }
 
+    console.log('Starting transformation with:', {
+      animationId,
+      inboundIcons
+    })
+
+    // Reduce inbound resources
+    inboundUpdates.forEach(update => {
+      const currentAmount = store.resources[update.key].amount
+      store.setResourceAmount(update.key, currentAmount - update.amount)
+    })
+
     // Run inbound animation
     await animateInbound(inboundIcons, animationSpeed, inboundConfig, animationId)
     
     // Run delay
     await delayAnimation(delayTime)
 
-    // Add outbound resources and get animation counts
+    // Add outbound resources and collect icons based on whole number increases
     const outboundIcons = outboundUpdates.flatMap(update => {
       const wholeNumberIncrease = store.addResource(update.key, update.amount)
       return Array(wholeNumberIncrease).fill(store.config[update.key].icon)
