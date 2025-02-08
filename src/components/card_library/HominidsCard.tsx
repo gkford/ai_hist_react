@@ -4,7 +4,8 @@ import { CardInfo } from "@/components/ui/CardInfo"
 import { WorkerBar } from "@/components/ui/WorkerBar"
 import type { ResourceTransformationHandle } from "@/components/ui/ResourceTransformation"
 import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
-import { useState, useRef } from "react"
+import { useState } from "react"
+import { animateResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { useResource } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
 
@@ -12,10 +13,9 @@ export function HominidsCard() {
   const [workerCount, setWorkerCount] = useState(0)
   const food = useResource('food')
   const humanEnergy = useResource('humanEnergy')
-  const resourceTransformationRef = useRef<ResourceTransformationHandle>(null)
 
   const triggerTransformation = () => {
-    resourceTransformationRef.current?.startTransformation()
+    animateResourceTransformation("hominids", inboundEmojis, outboundEmojis, 2500, 2400)
   }
 
   const transformation = getTransformation("eating_chicken")
@@ -46,11 +46,7 @@ export function HominidsCard() {
         value={workerCount}
         onChange={setWorkerCount}
       />
-      <ResourceTransformation 
-        inboundEmojis={inboundEmojis}
-        outboundEmojis={outboundEmojis}
-        ref={resourceTransformationRef}
-      />
+      <ResourceTransformation rtId="hominids" />
     </MasterCard>
   )
 }

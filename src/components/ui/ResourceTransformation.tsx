@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } from "react"
 import { cn } from "@/lib/utils"
 
 
@@ -7,10 +7,7 @@ export interface ResourceTransformationHandle {
 }
 
 interface ResourceTransformationProps {
-  inboundEmojis: string[]
-  outboundEmojis: string[]
-  inboundDelay?: number
-  outboundDelay?: number
+  rtId: string
 }
 
 interface TransformationInstance {
@@ -22,52 +19,65 @@ interface TransformationInstance {
   }>
 }
 
+// Global registry for ResourceTransformation instances
+const rtRegistry = new Map<string, ResourceTransformationHandle>()
+
 // Move counters outside component to persist between renders
 let globalParticleIdCounter = 0
 let globalTransformationIdCounter = 0
 
-export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ inboundEmojis, outboundEmojis, inboundDelay = 2500, outboundDelay = 2400 }, ref) {
+export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ rtId }, ref) {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
 
-  const startTransformation = () => {
-    const transformationId = ++globalTransformationIdCounter
-    
-    // Create inbound particles using provided inboundEmojis
-
-    // Add inbound particles
-    const newParticles = inboundEmojis.map(emoji => ({
-      id: ++globalParticleIdCounter,
-      content: emoji,
-      type: 'inbound' as const
-    }))
-    
-    setTransformations(prev => [...prev, { id: transformationId, particles: newParticles }])
-
-    // Handle outbound after inbound animation completes (2.4s + small buffer)
-    setTimeout(() => {
-
-      setTransformations(prev => prev.map(t => 
-        t.id === transformationId 
-          ? {
-              ...t,
-              particles: outboundEmojis.map(emoji => ({
-                id: ++globalParticleIdCounter,
-                content: emoji,
-                type: 'outbound' as const
-              }))
-            }
-          : t
-      ))
-
-      // Clean up this transformation instance after outbound animation
+  const animateRT = useCallback(
+    (
+      inboundEmojisParam: string[],
+      outboundEmojisParam: string[],
+      animationSpeed: number,
+      delayAnimationSpeed: number
+    ) => {
+      const transformationId = ++globalTransformationIdCounter
+      
+      // Add inbound particles
+      const inboundParticles = inboundEmojisParam.map(emoji => ({
+        id: ++globalParticleIdCounter,
+        content: emoji,
+        type: 'inbound' as const,
+      }))
+      
+      setTransformations(prev => [...prev, { id: transformationId, particles: inboundParticles }])
+      
       setTimeout(() => {
-        setTransformations(prev => prev.filter(t => t.id !== transformationId))
-      }, outboundDelay)
-    }, inboundDelay)
-  }
+        setTransformations(prev => prev.map(t =>
+          t.id === transformationId 
+            ? {
+                ...t,
+                particles: outboundEmojisParam.map(emoji => ({
+                  id: ++globalParticleIdCounter,
+                  content: emoji,
+                  type: 'outbound' as const,
+                }))
+              }
+            : t
+        ))
+
+        setTimeout(() => {
+          setTransformations(prev => prev.filter(t => t.id !== transformationId))
+        }, delayAnimationSpeed)
+      }, animationSpeed)
+    },
+    [setTransformations]
+  )
+
+  useEffect(() => {
+    rtRegistry.set(rtId, { animateRT })
+    return () => {
+      rtRegistry.delete(rtId)
+    }
+  }, [rtId, animateRT])
 
   useImperativeHandle(ref, () => ({
-    startTransformation,
+    animateRT,
   }))
 
   return (
