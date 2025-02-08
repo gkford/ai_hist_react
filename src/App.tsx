@@ -6,7 +6,8 @@ import { useRTStore } from "@/store/useRTStore"
 
 function App() {
   const formatNumber = (n: number): string => {
-    return parseFloat(n.toFixed(3)).toString();
+    const trimmed = parseFloat(n.toFixed(3));
+    return trimmed.toString();
   }
 
   const food = useResource('food')

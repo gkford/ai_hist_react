@@ -102,14 +102,15 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       const current = store.resources[item.key].amount;
       store.setResourceAmount(item.key, current - item.amount);
     });
-    // Update local RT state: add inbound_paid from transformation.inbound and add outbound_owed from transformation.outbound
+    // Update local RT state: add inbound_paid from transformation.inbound and add outbound_owed from transformation.outbound,
+    // trimming all new values to 3 decimal places.
     const newState = {
       inbound_paid: {
         ...rtState.inbound_paid,
         ...Object.fromEntries(
           transformation.inbound.map(item => [
             item.key,
-            (rtState.inbound_paid[item.key] || 0) + item.amount
+            parseFloat((((rtState.inbound_paid[item.key] || 0) + item.amount)).toFixed(3))
           ])
         )
       },
@@ -118,7 +119,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
         ...Object.fromEntries(
           transformation.outbound.map(item => [
             item.key,
-            (rtState.outbound_owed[item.key] || 0) + item.amount
+            parseFloat((((rtState.outbound_owed[item.key] || 0) + item.amount)).toFixed(3))
           ])
         )
       }
