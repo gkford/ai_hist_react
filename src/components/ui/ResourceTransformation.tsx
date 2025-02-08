@@ -155,9 +155,10 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     )}>
       <div className="relative w-full h-full overflow-hidden">
         {transformations.flatMap(transformation => 
-          transformation.particles.map((particle) => (
+          transformation.particles.map((particle, idx) => (
             <div
               key={`${transformation.id}-${particle.id}`}
+              style={{ left: `${idx * 30}px` }}  // 30px per emoji; adjust as needed
               className={cn(
                 "absolute top-1/2 -translate-y-1/2 text-xl",
                 particle.type === 'inbound' ? 'animate-resource-inbound' : 'animate-resource-outbound'
