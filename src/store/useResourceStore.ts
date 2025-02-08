@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy'
+export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'population'
 
 interface ResourceConfig {
   storable: boolean
@@ -25,7 +25,8 @@ const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
   food: { storable: true, negable: false, icon: '🍗' },
   knowledge: { storable: true, negable: false, icon: '📚' },
   thoughts: { storable: false, negable: false, icon: '💭' },
-  humanEnergy: { storable: false, negable: false, icon: '⚡' }
+  humanEnergy: { storable: false, negable: false, icon: '⚡' },
+  population: { storable: true, negable: false, icon: '👤' }
 }
 
 export const useResourceStore = create<ResourceStore>((set, get) => ({
@@ -33,7 +34,8 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     food: { amount: 5 },
     knowledge: { amount: 0 },
     thoughts: { amount: 0 },
-    humanEnergy: { amount: 0 }
+    humanEnergy: { amount: 0 },
+    population: { amount: 10 }
   },
   
   config: resourceConfigs,

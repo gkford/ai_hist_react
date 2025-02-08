@@ -8,6 +8,7 @@ function App() {
   const knowledge = useResource('knowledge')
   const thoughts = useResource('thoughts')
   const humanEnergy = useResource('humanEnergy')
+  const population = useResource('population')
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -24,6 +25,7 @@ function App() {
         <p>Knowledge: {knowledge.amount}</p>
         <p>Thoughts: {thoughts.amount}</p>
         <p>Human Energy: {humanEnergy.amount}</p>
+        <p>Population: {population.amount}</p>
       </div>
     </div>
   )
