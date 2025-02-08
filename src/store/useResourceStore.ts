@@ -56,14 +56,14 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     resources: {
       ...state.resources,
       [resource]: {
-        amount: Number(amount.toFixed(4))
+        amount: Number(amount.toFixed(3))
       }
     }
   })),
 
   addResource: (resource, amountToAdd) => {
     const currentAmount = get().resources[resource].amount
-    const newAmount = Number((currentAmount + amountToAdd).toFixed(4))
+    const newAmount = Number((currentAmount + amountToAdd).toFixed(3))
     
     // Calculate whole number increase
     const previousWholeNumber = Math.floor(currentAmount)
@@ -85,7 +85,7 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
 
   subtractResource: (resource, amountToSubtract) => {
     const currentAmount = get().resources[resource].amount
-    const newAmount = Number((currentAmount - amountToSubtract).toFixed(4))
+    const newAmount = Number((currentAmount - amountToSubtract).toFixed(3))
 
     if (newAmount < 0) {
       return null  // Cannot subtract this amount
@@ -93,8 +93,8 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     
     // Calculate whole number decrease - if we start above a whole number and end at or below it
     const wholeNumberDecrease = currentAmount % 1 > 0 && // Must start with a fractional part
-                             Math.floor(currentAmount) > Math.floor(newAmount + 0.0001) ? 1 : 0 
-                             // Added small epsilon to handle floating point precision
+                             Math.floor(currentAmount) > Math.floor(newAmount + 0.001) ? 1 : 0 
+                             // Updated epsilon to match 3 decimal precision
 
     // Update the store
     set(state => ({
