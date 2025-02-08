@@ -4,6 +4,24 @@ export default {
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
   	extend: {
+      keyframes: {
+        'resource-inbound': {
+          '0%': { left: '-50px', opacity: '0' },
+          '20%': { opacity: '1' },
+          '80%': { opacity: '1' },
+          '100%': { left: '50%', opacity: '0' }
+        },
+        'resource-outbound': {
+          '0%': { left: '50%', opacity: '0' },
+          '20%': { opacity: '1' },
+          '80%': { opacity: '1' },
+          '100%': { left: 'calc(100% + 50px)', opacity: '0' }
+        }
+      },
+      animation: {
+        'resource-inbound': 'resource-inbound 2.4s ease-in-out forwards',
+        'resource-outbound': 'resource-outbound 2.4s ease-in-out forwards'
+      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
