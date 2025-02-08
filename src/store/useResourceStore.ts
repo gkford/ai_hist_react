@@ -33,7 +33,7 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
 
 
   resources: {
-    food: { amount: 5 },
+    food: { amount: 30 },
     knowledge: { amount: 0 },
     thoughts: { amount: 0 },
     humanEnergy: { amount: 0 },
