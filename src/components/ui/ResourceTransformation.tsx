@@ -7,6 +7,11 @@ interface TransformationResource {
   amount: number
 }
 
+interface ResourceUpdate {
+  key: ResourceKey
+  amount: number
+}
+
 export interface ResourceTransformationHandle {
   startTransformation: () => void
 }
@@ -161,21 +166,82 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     })
   }
 
+  const triggerRT = async (
+    animationSpeed: number,
+    delayTime: number,
+    inboundUpdates: ResourceUpdate[],
+    outboundUpdates: ResourceUpdate[]
+  ) => {
+    // Check if we have enough resources
+    const canTransform = inboundUpdates.every(update => {
+      const currentAmount = store.resources[update.key].amount
+      return currentAmount >= update.amount
+    })
+
+    if (!canTransform) {
+      console.error("Not enough resources for transformation")
+      return
+    }
+
+    // Get the emoji strings for animation
+    const inboundIcons = inboundUpdates.flatMap(update => 
+      Array(Math.floor(update.amount)).fill(store.config[update.key].icon)
+    )
+    const outboundIcons = outboundUpdates.flatMap(update => 
+      Array(Math.floor(update.amount)).fill(store.config[update.key].icon)
+    )
+
+    // Reduce inbound resources
+    inboundUpdates.forEach(update => {
+      const currentAmount = store.resources[update.key].amount
+      store.setResourceAmount(update.key, currentAmount - update.amount)
+    })
+
+    // Start inbound animation
+    const animationId = nextAnimationId
+    setNextAnimationId(prev => prev + 1)
+    
+    const fps = 60
+    const frames = (animationSpeed / 1000) * fps
+    
+    const inboundConfig: AnimationConfig = {
+      fps,
+      startX: -50,
+      endX: 50,
+      frames,
+      distancePerFrame: (50 - (-50)) / frames
+    }
+
+    const outboundConfig: AnimationConfig = {
+      fps,
+      startX: 50,
+      endX: 150,
+      frames,
+      distancePerFrame: (150 - 50) / frames
+    }
+
+    // Run inbound animation
+    await animateInbound(inboundIcons, animationSpeed, inboundConfig, animationId)
+    
+    // Run delay
+    await delayAnimation(delayTime)
+
+    // Add outbound resources
+    outboundUpdates.forEach(update => {
+      const currentAmount = store.resources[update.key].amount
+      store.setResourceAmount(update.key, currentAmount + update.amount)
+    })
+
+    // Run outbound animation
+    await animateOutbound(outboundIcons, animationSpeed, outboundConfig, animationId)
+  }
+
   const startTransformation = () => {
-    const inboundIcons = inbound.flatMap(resource => 
-      Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
-    )
-
-    const outboundIcons = outbound.flatMap(resource => 
-      Array(Math.floor(resource.amount)).fill(store.config[resource.key].icon)
-    )
-
-    console.log("Starting resource transformation animation")
-    runResourceTransformation(
-      inboundIcons,
-      outboundIcons,
+    triggerRT(
       2400,  // animation speed in ms
-      500   // delay time in ms
+      500,   // delay time in ms
+      inbound,
+      outbound
     )
   }
 
