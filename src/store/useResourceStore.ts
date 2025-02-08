@@ -18,6 +18,7 @@ interface ResourceStore {
   
   setResourceAmount: (resource: ResourceKey, amount: number) => void
   addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
+  subtractResource: (resource: ResourceKey, amount: number) => number | null  // Returns whole number decrease or null if not possible
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
@@ -66,6 +67,32 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     }))
 
     return wholeNumberIncrease
+  },
+
+  subtractResource: (resource, amountToSubtract) => {
+    const currentAmount = get().resources[resource].amount
+    const newAmount = currentAmount - amountToSubtract
+
+    if (newAmount < 0) {
+      return null  // Cannot subtract this amount
+    }
+    
+    // Calculate whole number decrease
+    const previousWholeNumber = Math.floor(currentAmount)
+    const newWholeNumber = Math.floor(newAmount)
+    const wholeNumberDecrease = previousWholeNumber - newWholeNumber
+
+    // Update the store
+    set(state => ({
+      resources: {
+        ...state.resources,
+        [resource]: {
+          amount: newAmount
+        }
+      }
+    }))
+
+    return wholeNumberDecrease
   }
 }))
 

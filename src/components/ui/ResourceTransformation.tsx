@@ -165,20 +165,27 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     inboundUpdates: ResourceUpdate[],
     outboundUpdates: ResourceUpdate[]
   ) => {
-    // Check if we have enough resources
-    const canTransform = inboundUpdates.every(update => {
-      const currentAmount = store.resources[update.key].amount
-      return currentAmount >= update.amount
-    })
+    // Try to subtract all inbound resources and collect their icons
+    const inboundResults = inboundUpdates.map(update => ({
+      update,
+      result: store.subtractResource(update.key, update.amount)
+    }))
 
-    if (!canTransform) {
+    // Check if any subtractions failed
+    if (inboundResults.some(({ result }) => result === null)) {
       console.error("Not enough resources for transformation")
+      // Reverse any successful subtractions
+      inboundResults.forEach(({ update, result }) => {
+        if (result !== null) {
+          store.addResource(update.key, update.amount)
+        }
+      })
       return
     }
 
-    // Get the emoji strings for inbound animation
-    const inboundIcons = inboundUpdates.flatMap(update => 
-      Array(Math.floor(update.amount)).fill(store.config[update.key].icon)
+    // Get the emoji strings for inbound animation based on whole number decreases
+    const inboundIcons = inboundResults.flatMap(({ update, result }) => 
+      Array(result).fill(store.config[update.key].icon)
     )
 
     // Start inbound animation
@@ -207,12 +214,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     console.log('Starting transformation with:', {
       animationId,
       inboundIcons
-    })
-
-    // Reduce inbound resources
-    inboundUpdates.forEach(update => {
-      const currentAmount = store.resources[update.key].amount
-      store.setResourceAmount(update.key, currentAmount - update.amount)
     })
 
     // Run inbound animation
