@@ -33,29 +33,24 @@ const delayAnimation = (ms: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-interface TransformationParticle {
+interface TransformationInstance {
   id: number
-  x: number
-  content: string
-  animationId: number
-}
-
-interface AnimationState {
-  particles: TransformationParticle[]
-  completed: boolean
+  particles: Array<{
+    id: number
+    content: string
+    type: 'inbound' | 'outbound'
+  }>
 }
 
 export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ inbound, outbound }, ref) {
-  const [particles, setParticles] = useState<Array<{
-    id: number;
-    content: string;
-    type: 'inbound' | 'outbound';
-  }>>([])
+  const [transformations, setTransformations] = useState<TransformationInstance[]>([])
   const store = useResourceStore()
   let particleIdCounter = 0
+  let transformationIdCounter = 0
 
   const startTransformation = () => {
     console.log('Starting transformation')
+    const transformationId = ++transformationIdCounter
     
     // Try to subtract all inbound resources and collect their icons
     const inboundResults = inbound.map(update => ({
@@ -89,7 +84,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       type: 'inbound' as const
     }))
     
-    setParticles(newParticles)
+    setTransformations(prev => [...prev, { id: transformationId, particles: newParticles }])
 
     // Handle outbound after inbound animation completes (2.4s + small buffer)
     setTimeout(() => {
@@ -101,16 +96,23 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
 
       console.log('Creating outbound particles:', outboundIcons)
 
-      setParticles(outboundIcons.map(icon => ({
-        id: ++particleIdCounter,
-        content: icon,
-        type: 'outbound' as const
-      })))
+      setTransformations(prev => prev.map(t => 
+        t.id === transformationId 
+          ? {
+              ...t,
+              particles: outboundIcons.map(icon => ({
+                id: ++particleIdCounter,
+                content: icon,
+                type: 'outbound' as const
+              }))
+            }
+          : t
+      ))
 
-      // Clean up particles after outbound animation
+      // Clean up this transformation instance after outbound animation
       setTimeout(() => {
-        console.log('Cleaning up particles')
-        setParticles([])
+        console.log('Cleaning up transformation:', transformationId)
+        setTransformations(prev => prev.filter(t => t.id !== transformationId))
       }, 2400)
     }, 2500) // Changed from 500 to 2500 to allow inbound animation to complete
   }
@@ -129,17 +131,19 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       "relative"
     )}>
       <div className="relative w-full h-full overflow-hidden">
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className={cn(
-              "absolute top-1/2 -translate-y-1/2 text-xl",
-              particle.type === 'inbound' ? 'animate-resource-inbound' : 'animate-resource-outbound'
-            )}
-          >
-            {particle.content}
-          </div>
-        ))}
+        {transformations.flatMap(transformation => 
+          transformation.particles.map((particle) => (
+            <div
+              key={`${transformation.id}-${particle.id}`}
+              className={cn(
+                "absolute top-1/2 -translate-y-1/2 text-xl",
+                particle.type === 'inbound' ? 'animate-resource-inbound' : 'animate-resource-outbound'
+              )}
+            >
+              {particle.content}
+            </div>
+          ))
+        )}
       </div>
     </div>
   )
