@@ -185,7 +185,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
 
     // Get the emoji strings for inbound animation based on whole number decreases
     const inboundIcons = inboundResults.flatMap(({ update, result }) => 
-      Array(result).fill(store.config[update.key].icon)
+      result ? Array(result).fill(store.config[update.key].icon) : []
     )
 
     // Start inbound animation
