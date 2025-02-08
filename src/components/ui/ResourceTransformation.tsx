@@ -35,7 +35,7 @@ interface TransformationParticle {
   animationId: number  // Track which animation this particle belongs to
 }
 
-export const ResourceTransformation = forwardRef(function ResourceTransformation({ inbound, outbound }: ResourceTransformationProps, ref) {
+export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ inbound, outbound }, ref) {
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
   const [nextAnimationId, setNextAnimationId] = useState(0)
