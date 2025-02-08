@@ -91,9 +91,10 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       return null  // Cannot subtract this amount
     }
     
-    // Calculate whole number decrease - only if crossing from above to below a whole number
+    // Calculate whole number decrease - if we start above a whole number and end at or below it
     const wholeNumberDecrease = currentAmount % 1 > 0 && // Must start with a fractional part
-                               Math.floor(currentAmount) > Math.floor(newAmount) ? 1 : 0
+                             Math.floor(currentAmount) > Math.floor(newAmount + 0.0001) ? 1 : 0 
+                             // Added small epsilon to handle floating point precision
 
     // Update the store
     set(state => ({
