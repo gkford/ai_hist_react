@@ -30,11 +30,9 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
 
   const startTransformation = () => {
-    console.log('Starting transformation')
     const transformationId = ++globalTransformationIdCounter
     
     // Create inbound particles using provided inboundEmojis
-    console.log('Creating inbound particles:', inboundEmojis)
 
     // Add inbound particles
     const newParticles = inboundEmojis.map(emoji => ({
@@ -47,8 +45,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
 
     // Handle outbound after inbound animation completes (2.4s + small buffer)
     setTimeout(() => {
-      console.log('Starting outbound phase')
-      console.log('Creating outbound particles:', outboundEmojis)
 
       setTransformations(prev => prev.map(t => 
         t.id === transformationId 
@@ -65,7 +61,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
 
       // Clean up this transformation instance after outbound animation
       setTimeout(() => {
-        console.log('Cleaning up transformation:', transformationId)
         setTransformations(prev => prev.filter(t => t.id !== transformationId))
       }, outboundDelay)
     }, inboundDelay)
