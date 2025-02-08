@@ -19,8 +19,6 @@ interface ResourceStore {
   config: Record<ResourceKey, ResourceConfig>
   
   setResourceAmount: (resource: ResourceKey, amount: number) => void
-  addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
-  subtractResource: (resource: ResourceKey, amount: number) => number | null  // Returns whole number decrease or null if not possible
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
@@ -53,71 +51,7 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     }
   })),
 
-  addResource: (resource, amountToAdd) => {
-    const currentAmount = get().resources[resource].amount
-    const newAmount = Number((currentAmount + amountToAdd).toFixed(3))
-    
-    // Calculate whole number increase
-    const previousWholeNumber = Math.floor(currentAmount)
-    const newWholeNumber = Math.floor(newAmount)
-    const wholeNumberIncrease = newWholeNumber - previousWholeNumber
-
-    // Update the store
-    set(state => ({
-      resources: {
-        ...state.resources,
-        [resource]: {
-          amount: newAmount
-        }
-      }
-    }))
-
-    return wholeNumberIncrease
-  },
-
-  subtractResource: (resource, amountToSubtract) => {
-    const currentAmount = get().resources[resource].amount
-    const newAmount = Number((currentAmount - amountToSubtract).toFixed(3))
-
-    if (newAmount < 0) {
-      return null  // Cannot subtract this amount
-    }
-    
-    // Simple whole number decrease calculation
-    const startNumber = Math.floor(currentAmount)
-    const endNumber = Math.floor(newAmount)
-    const wholeNumberDecrease = startNumber - endNumber
-    
-    // If the starting number was exactly whole, subtract 1 from the decrease
-    const startAdjustment = Number.isInteger(currentAmount) ? 1 : 0
-    // If the ending number is exactly whole, add 1 to the decrease
-    const endAdjustment = Number.isInteger(newAmount) ? 1 : 0
-    
-    const finalDecrease = Math.max(0, wholeNumberDecrease - startAdjustment + endAdjustment)
-
-    // Add animation-focused debug logs
-    console.log('Resource Change:', {
-      type: 'subtract',
-      resource,
-      icon: get().config[resource].icon,
-      from: currentAmount,
-      to: newAmount,
-      decrease: finalDecrease,
-      willAnimate: finalDecrease > 0
-    })
-    
-    // Update the store
-    set(state => ({
-      resources: {
-        ...state.resources,
-        [resource]: {
-          amount: newAmount
-        }
-      }
-    }))
-
-    return finalDecrease
-  },
+  // Removed addResource and subtractResource as their behavior will be reworked
 
 
 }))
