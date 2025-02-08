@@ -4,7 +4,6 @@ export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'p
 
 interface TransformationState {
   focusProp: number  // Between 0 and 1
-  active: boolean
 }
 
 interface ResourceConfig {
@@ -26,7 +25,6 @@ interface ResourceStore {
   addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
   subtractResource: (resource: ResourceKey, amount: number) => number | null  // Returns whole number decrease or null if not possible
   setTransformationFocus: (transformationId: string, focus: number) => void
-  setTransformationActive: (transformationId: string, active: boolean) => void
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
@@ -40,8 +38,7 @@ const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
 export const useResourceStore = create<ResourceStore>((set, get) => ({
   transformations: {
     "eating_chicken": {
-      focusProp: 1,
-      active: false
+      focusProp: 1
     }
   },
 
@@ -122,15 +119,6 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     }
   })),
 
-  setTransformationActive: (transformationId, active) => set(state => ({
-    transformations: {
-      ...state.transformations,
-      [transformationId]: {
-        ...state.transformations[transformationId],
-        active
-      }
-    }
-  }))
 }))
 
 // Helper hooks for cleaner component usage
@@ -138,9 +126,7 @@ export const useTransformation = (transformationId: string) => {
   const store = useResourceStore()
   return {
     focusProp: store.transformations[transformationId]?.focusProp ?? 0,
-    active: store.transformations[transformationId]?.active ?? false,
-    setFocus: (focus: number) => store.setTransformationFocus(transformationId, focus),
-    setActive: (active: boolean) => store.setTransformationActive(transformationId, active)
+    setFocus: (focus: number) => store.setTransformationFocus(transformationId, focus)
   }
 }
 export const useResource = (resource: ResourceKey) => {
