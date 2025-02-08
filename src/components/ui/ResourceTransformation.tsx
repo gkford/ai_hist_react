@@ -184,6 +184,12 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       Array(Math.floor(update.amount)).fill(store.config[update.key].icon)
     )
 
+    console.log('Starting transformation with:', {
+      animationId: nextAnimationId,
+      inboundIcons,
+      outboundIcons
+    })
+
     // Reduce inbound resources
     inboundUpdates.forEach(update => {
       const currentAmount = store.resources[update.key].amount
@@ -226,6 +232,10 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     })
 
     // Run outbound animation
+    console.log('Starting outbound animation:', {
+      animationId,
+      outboundIcons
+    })
     await animateOutbound(outboundIcons, animationSpeed, outboundConfig, animationId)
   }
 
