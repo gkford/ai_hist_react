@@ -22,8 +22,17 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     outbound: [
       { key: "humanEnergy", amount: 1.2 }
     ],
+  },
+  "hunt": {
+    name: "Hunt",
+    eating: false,
+    inbound: [
+      { key: "humanEnergy", amount: 1 }
+    ],
+    outbound: [
+      { key: "food", amount: 1 }
+    ]
   }
-  // Add more transformations here as needed
 }
 
 // Helper function to get transformation config
