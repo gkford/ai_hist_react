@@ -8,13 +8,12 @@ import { useResource } from "@/store/useResourceStore"
 
 export function HominidsCard() {
   const [workerCount, setWorkerCount] = useState(0)
-  const [processActive, setProcessActive] = useState(false)
+  const [transformationId, setTransformationId] = useState(0)
   const food = useResource('food')
   const humanEnergy = useResource('humanEnergy')
 
-  const triggerOneTimeProcess = () => {
-    setProcessActive(true)
-    setTimeout(() => setProcessActive(false), 3000)
+  const triggerTransformation = () => {
+    setTransformationId(prev => prev + 1)
   }
 
   return (
@@ -23,7 +22,7 @@ export function HominidsCard() {
       <CardInfo className="text-center">
         Transforms 1{food.icon} into 1{humanEnergy.icon}
         <button 
-          onClick={triggerOneTimeProcess}
+          onClick={triggerTransformation}
           className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
         >
           Transform Once
@@ -36,7 +35,8 @@ export function HominidsCard() {
       <ResourceTransformation 
         inbound={[{ key: 'food', amount: 1 }]}
         outbound={[{ key: 'humanEnergy', amount: 1 }]}
-        active={processActive}
+        active={transformationId > 0}
+        key={transformationId}
       />
     </MasterCard>
   )

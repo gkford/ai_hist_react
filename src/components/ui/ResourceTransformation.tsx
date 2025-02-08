@@ -136,11 +136,6 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
   }
 
   useEffect(() => {
-    if (!active) {
-      setParticles([])
-      return
-    }
-
     const canTransform = inbound.every(resource => {
       const currentAmount = store.resources[resource.key].amount
       return currentAmount >= resource.amount
@@ -169,11 +164,10 @@ export function ResourceTransformation({ inbound, outbound, active }: ResourceTr
       )
     }
 
-    // Only clear particles when component unmounts
     return () => {
       setParticles([])
     }
-  }, [active, inbound, outbound, store])
+  }, [inbound, outbound, store])
 
   return (
     <div className={cn(
