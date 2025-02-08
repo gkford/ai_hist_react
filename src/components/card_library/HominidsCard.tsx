@@ -5,7 +5,7 @@ import { WorkerBar } from "@/components/ui/WorkerBar"
 import type { ResourceTransformationHandle } from "@/components/ui/ResourceTransformation"
 import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { useState } from "react"
-import { animateResourceTransformation } from "@/components/ui/ResourceTransformation"
+import { animateResourceTransformation, payForResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { useResource } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
 
@@ -13,6 +13,13 @@ export function HominidsCard() {
   const [workerCount, setWorkerCount] = useState(0)
   const food = useResource('food')
   const humanEnergy = useResource('humanEnergy')
+
+  const triggerPay = () => {
+    // For example, request to take 1 food and 2 'humanEnergy' (replace with desired keys)
+    const payment = [{ key: "food", amount: 1 }, { key: "humanEnergy", amount: 2 }];
+    const success = payForResourceTransformation("hominids", payment);
+    console.log("Payment success:", success);
+  }
 
   const triggerTransformation = () => {
     animateResourceTransformation("hominids", inboundEmojis, outboundEmojis, 2500, 2400)
@@ -39,7 +46,7 @@ export function HominidsCard() {
           onClick={triggerTransformation}
           className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
         >
-          Transform Once
+          Animate Transformation
         </button>
       </CardInfo>
       <WorkerBar
