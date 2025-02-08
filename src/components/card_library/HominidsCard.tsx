@@ -35,7 +35,6 @@ export function HominidsCard() {
       <ResourceTransformation 
         inbound={[{ key: 'food', amount: 1 }]}
         outbound={[{ key: 'humanEnergy', amount: 1 }]}
-        active={transformationId > 0}
         key={transformationId}
       />
     </MasterCard>

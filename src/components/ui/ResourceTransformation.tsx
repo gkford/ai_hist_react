@@ -10,7 +10,6 @@ interface TransformationResource {
 interface ResourceTransformationProps {
   inbound: TransformationResource[]
   outbound: TransformationResource[]
-  active: boolean
 }
 
 interface AnimationConfig {
@@ -31,7 +30,7 @@ interface TransformationParticle {
   content: string
 }
 
-export function ResourceTransformation({ inbound, outbound, active }: ResourceTransformationProps) {
+export function ResourceTransformation({ inbound, outbound }: ResourceTransformationProps) {
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
 
