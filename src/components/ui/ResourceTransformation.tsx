@@ -77,10 +77,9 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   )
 
   const payForTransformation = useCallback(() => {
-    // For now, we are hardcoding the transformation config id "eating_chicken"
-    const transformation = getTransformation("eating_chicken");
+    const transformation = getTransformation(rtId);
     if (!transformation) {
-      console.warn("No transformation config for eating_chicken");
+      console.warn(`No transformation config for ${rtId}`);
       return false;
     }
     // Get the global store snapshot
