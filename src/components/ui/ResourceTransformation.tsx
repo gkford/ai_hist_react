@@ -35,6 +35,7 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
   const [nextAnimationId, setNextAnimationId] = useState(0)
+  const [nextParticleId, setNextParticleId] = useState(0)
 
   const runResourceTransformation = async (
     inboundEmojis: string[], 
@@ -80,10 +81,12 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
       let animationInterval: ReturnType<typeof setInterval>
       
       setParticles(prev => [...prev, {
-        id: Date.now(),
+        id: nextParticleId + animationId * 1000,
         x: config.startX,
         content: emojiString,
         animationId
+      }])
+      setNextParticleId(prev => prev + 1
       }])
 
       let frame = 0
@@ -121,10 +124,12 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
       let animationInterval: ReturnType<typeof setInterval>
       
       setParticles(prev => [...prev, {
-        id: Date.now(),
+        id: nextParticleId + animationId * 1000,
         x: config.startX,
         content: emojiString,
         animationId
+      }])
+      setNextParticleId(prev => prev + 1
       }])
 
       let frame = 0
