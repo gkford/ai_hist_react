@@ -252,6 +252,10 @@ export function processRTState(rtId: string): void {
     outbound_owed: newOutboundOwed,
   });
 
+  // Log the computed emoji lists before triggering the animation
+  console.log("processRTState: Inbound Emojis:", inboundList);
+  console.log("processRTState: Outbound Emojis:", outboundList);
+
   // Trigger the animation using the computed emoji lists
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
 
