@@ -3,7 +3,7 @@ import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
 import { useResource } from "@/store/useResourceStore"
 import { useRTStore } from "@/store/useRTStore"
-import { payForResourceTransformation } from "@/components/ui/ResourceTransformation"
+import { payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
 import { useEffect } from "react"
 
 function App() {
@@ -21,8 +21,11 @@ function App() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const success = payForResourceTransformation("eating_chicken");
-      console.log("Auto-eating triggered, success:", success);
+      // Retrieve all current rtIds from the RT store
+      const rtStates = useRTStore.getState().states;
+      Object.keys(rtStates).forEach(rtId => {
+        processRTState(rtId);
+      });
     }, 1000);
     return () => clearInterval(intervalId);
   }, []);
