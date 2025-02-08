@@ -91,6 +91,17 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       return null  // Cannot subtract this amount
     }
     
+    // Add debug logs
+    console.log('Subtraction Debug:', {
+      resource,
+      currentAmount,
+      newAmount,
+      startWholeNumber: Math.floor(currentAmount + 0.001),
+      endWholeNumber: Math.floor(newAmount + 0.001),
+      raw_currentAmount_plus_epsilon: currentAmount + 0.001,
+      raw_newAmount_plus_epsilon: newAmount + 0.001
+    })
+    
     // Count every whole number we cross from above
     const startWholeNumber = Math.floor(currentAmount + 0.001)
     const endWholeNumber = Math.floor(newAmount + 0.001)
