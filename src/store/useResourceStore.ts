@@ -97,8 +97,11 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     const wholeNumberDecrease = startNumber - endNumber
     
     // If the starting number was exactly whole, subtract 1 from the decrease
-    const adjustment = Number.isInteger(currentAmount) ? 1 : 0
-    const finalDecrease = Math.max(0, wholeNumberDecrease - adjustment)
+    const startAdjustment = Number.isInteger(currentAmount) ? 1 : 0
+    // If the ending number is exactly whole, add 1 to the decrease
+    const endAdjustment = Number.isInteger(newAmount) ? 1 : 0
+    
+    const finalDecrease = Math.max(0, wholeNumberDecrease - startAdjustment + endAdjustment)
 
     // Add debug logs
     console.log('Subtraction Debug:', {
@@ -109,7 +112,9 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       endNumber,
       wholeNumberDecrease,
       isStartWhole: Number.isInteger(currentAmount),
-      adjustment,
+      isEndWhole: Number.isInteger(newAmount),
+      startAdjustment,
+      endAdjustment,
       finalDecrease
     })
     
