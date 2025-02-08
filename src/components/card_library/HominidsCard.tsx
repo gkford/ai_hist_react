@@ -5,7 +5,7 @@ import { WorkerBar } from "@/components/ui/WorkerBar"
 import type { ResourceTransformationHandle } from "@/components/ui/ResourceTransformation"
 import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { useState, useRef } from "react"
-import { useResource } from "@/store/useResourceStore"
+import { useResource, useTransformation } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
 
 export function HominidsCard() {
@@ -19,12 +19,16 @@ export function HominidsCard() {
   }
 
   const transformation = getTransformation("eating_chicken")
+  const transformationState = useTransformation("eating_chicken")
 
   return (
     <MasterCard title="Hominids" typeIcon="👥" discoveryStatusIcon={null}>
       <CardImage imageSrc={import.meta.env.BASE_URL + "card_images/hominids.png"} />
       <CardInfo className="text-center">
         Transforms {transformation?.inbound[0].amount}{food.icon} into {transformation?.outbound[0].amount}{humanEnergy.icon} per second per person
+        <div className="mt-2">
+          Energy Level: {(transformationState.energyLevel * 100).toFixed(0)}%
+        </div>
         <button 
           onClick={triggerTransformation}
           className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"

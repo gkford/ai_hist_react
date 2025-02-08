@@ -9,6 +9,7 @@ function App() {
   const thoughts = useResource('thoughts')
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
+  const eatingChickenTransformation = useTransformation("eating_chicken")
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -26,6 +27,8 @@ function App() {
         <p>Thoughts: {thoughts.amount}</p>
         <p>Human Energy: {humanEnergy.amount}</p>
         <p>Population: {population.amount}</p>
+        <p>Eating Chicken Energy: {(eatingChickenTransformation.energyLevel * 100).toFixed(0)}%</p>
+        <p>Eating Chicken Active: {eatingChickenTransformation.active ? "Yes" : "No"}</p>
       </div>
     </div>
   )

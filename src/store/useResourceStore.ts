@@ -2,6 +2,11 @@ import { create } from "zustand"
 
 export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'population'
 
+interface TransformationState {
+  energyLevel: number  // Between 0 and 1
+  active: boolean
+}
+
 interface ResourceConfig {
   storable: boolean
   negable: boolean
@@ -15,10 +20,13 @@ interface ResourceState {
 interface ResourceStore {
   resources: Record<ResourceKey, ResourceState>
   config: Record<ResourceKey, ResourceConfig>
+  transformations: Record<string, TransformationState>
   
   setResourceAmount: (resource: ResourceKey, amount: number) => void
   addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
   subtractResource: (resource: ResourceKey, amount: number) => number | null  // Returns whole number decrease or null if not possible
+  setTransformationEnergy: (transformationId: string, energy: number) => void
+  setTransformationActive: (transformationId: string, active: boolean) => void
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
@@ -30,6 +38,13 @@ const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
 }
 
 export const useResourceStore = create<ResourceStore>((set, get) => ({
+  transformations: {
+    "eating_chicken": {
+      energyLevel: 0,
+      active: false
+    }
+  },
+
   resources: {
     food: { amount: 5 },
     knowledge: { amount: 0 },
@@ -95,10 +110,39 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     }))
 
     return wholeNumberDecrease
-  }
+  },
+
+  setTransformationEnergy: (transformationId, energy) => set(state => ({
+    transformations: {
+      ...state.transformations,
+      [transformationId]: {
+        ...state.transformations[transformationId],
+        energyLevel: Math.max(0, Math.min(1, energy)) // Clamp between 0 and 1
+      }
+    }
+  })),
+
+  setTransformationActive: (transformationId, active) => set(state => ({
+    transformations: {
+      ...state.transformations,
+      [transformationId]: {
+        ...state.transformations[transformationId],
+        active
+      }
+    }
+  }))
 }))
 
 // Helper hooks for cleaner component usage
+export const useTransformation = (transformationId: string) => {
+  const store = useResourceStore()
+  return {
+    energyLevel: store.transformations[transformationId]?.energyLevel ?? 0,
+    active: store.transformations[transformationId]?.active ?? false,
+    setEnergy: (energy: number) => store.setTransformationEnergy(transformationId, energy),
+    setActive: (active: boolean) => store.setTransformationActive(transformationId, active)
+  }
+}
 export const useResource = (resource: ResourceKey) => {
   const store = useResourceStore()
   return {
