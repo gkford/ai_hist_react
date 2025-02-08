@@ -91,10 +91,10 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       return null  // Cannot subtract this amount
     }
     
-    // Simple whole number decrease calculation
-    const previousWholeNumber = Math.floor(currentAmount)
-    const newWholeNumber = Math.floor(newAmount)
-    const wholeNumberDecrease = previousWholeNumber - newWholeNumber
+    // Count every whole number we cross from above
+    const startWholeNumber = Math.floor(currentAmount + 0.001)
+    const endWholeNumber = Math.floor(newAmount + 0.001)
+    const wholeNumberDecrease = Math.max(0, startWholeNumber - endWholeNumber)
 
     // Update the store
     set(state => ({
