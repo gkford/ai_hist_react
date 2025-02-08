@@ -7,6 +7,10 @@ interface TransformationResource {
   amount: number
 }
 
+interface ResourceTransformationHandle {
+  startTransformation: () => void
+}
+
 interface ResourceTransformationProps {
   inbound: TransformationResource[]
   outbound: TransformationResource[]
