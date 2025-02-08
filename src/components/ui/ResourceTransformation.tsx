@@ -205,10 +205,11 @@ export function processRTState(rtId: string): void {
   const inboundList: string[] = [];
   const newInboundPaid = { ...rtState.inbound_paid };
   Object.entries(rtState.inbound_paid).forEach(([key, value]) => {
+    const rKey = key as ResourceKey;
     const whole = Math.floor(value);
     if (whole > 0) {
-      newInboundPaid[key] = value - whole;
-      const icon = resourceConfigs[key as ResourceKey]?.icon || key;
+      newInboundPaid[rKey] = parseFloat((value - whole).toFixed(3));
+      const icon = resourceConfigs[rKey]?.icon || rKey;
       for (let i = 0; i < whole; i++) {
         inboundList.push(icon);
       }
@@ -219,10 +220,11 @@ export function processRTState(rtId: string): void {
   const outboundList: string[] = [];
   const newOutboundOwed = { ...rtState.outbound_owed };
   Object.entries(rtState.outbound_owed).forEach(([key, value]) => {
+    const rKey = key as ResourceKey;
     const whole = Math.floor(value);
     if (whole > 0) {
-      newOutboundOwed[key] = value - whole;
-      const icon = resourceConfigs[key as ResourceKey]?.icon || key;
+      newOutboundOwed[rKey] = parseFloat((value - whole).toFixed(3));
+      const icon = resourceConfigs[rKey]?.icon || rKey;
       for (let i = 0; i < whole; i++) {
         outboundList.push(icon);
       }

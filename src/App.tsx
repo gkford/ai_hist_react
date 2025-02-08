@@ -5,6 +5,10 @@ import { useResource } from "@/store/useResourceStore"
 import { useRTStore } from "@/store/useRTStore"
 
 function App() {
+  const formatNumber = (n: number): string => {
+    return parseFloat(n.toFixed(3)).toString();
+  }
+
   const food = useResource('food')
   const knowledge = useResource('knowledge')
   const thoughts = useResource('thoughts')
@@ -24,11 +28,11 @@ function App() {
       <div className="flex flex-col gap-4">
         <div className="p-4 border border-gray-200 rounded">
           <h2 className="font-semibold mb-2">Developer Dashboard</h2>
-          <p>Food: {food.amount.toFixed(3)}</p>
-          <p>Knowledge: {knowledge.amount.toFixed(3)}</p>
-          <p>Thoughts: {thoughts.amount.toFixed(3)}</p>
-          <p>Human Energy: {humanEnergy.amount.toFixed(3)}</p>
-          <p>Population: {population.amount.toFixed(3)}</p>
+          <p>Food: {formatNumber(food.amount)}</p>
+          <p>Knowledge: {formatNumber(knowledge.amount)}</p>
+          <p>Thoughts: {formatNumber(thoughts.amount)}</p>
+          <p>Human Energy: {formatNumber(humanEnergy.amount)}</p>
+          <p>Population: {formatNumber(population.amount)}</p>
         </div>
         
         <div className="p-4 border border-gray-200 rounded">
