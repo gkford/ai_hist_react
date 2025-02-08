@@ -20,7 +20,7 @@ export function HominidsCard() {
   }
 
   const triggerTransformation = () => {
-    animateResourceTransformation("hominids", inboundEmojis, outboundEmojis, 2500, 2400)
+    animateResourceTransformation("eating_chicken", inboundEmojis, outboundEmojis, 2500, 2400)
   }
 
   const transformation = getTransformation("eating_chicken")
