@@ -42,15 +42,17 @@ interface TransformationInstance {
   }>
 }
 
+// Move counters outside component to persist between renders
+let globalParticleIdCounter = 0
+let globalTransformationIdCounter = 0
+
 export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ inbound, outbound }, ref) {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
   const store = useResourceStore()
-  let particleIdCounter = 0
-  let transformationIdCounter = 0
 
   const startTransformation = () => {
     console.log('Starting transformation')
-    const transformationId = ++transformationIdCounter
+    const transformationId = ++globalTransformationIdCounter
     
     // Try to subtract all inbound resources and collect their icons
     const inboundResults = inbound.map(update => ({
@@ -79,7 +81,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
 
     // Add inbound particles
     const newParticles = inboundIcons.map(icon => ({
-      id: ++particleIdCounter,
+      id: ++globalParticleIdCounter,
       content: icon,
       type: 'inbound' as const
     }))
@@ -101,7 +103,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
           ? {
               ...t,
               particles: outboundIcons.map(icon => ({
-                id: ++particleIdCounter,
+                id: ++globalParticleIdCounter,
                 content: icon,
                 type: 'outbound' as const
               }))
