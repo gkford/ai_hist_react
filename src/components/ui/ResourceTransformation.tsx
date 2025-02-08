@@ -201,6 +201,9 @@ export function processRTState(rtId: string): void {
   const rtState = useRTStore.getState().states[rtId] || { inbound_paid: {}, outbound_owed: {} };
   const resourceConfigs = useResourceStore.getState().config;
   
+  const animationSpeed = 2500;
+  const delayAnimationSpeed = 2400;
+
   // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
   // If any resource has a value less than 1, do nothing.
   const allInboundAtLeastOne = Object.values(rtState.inbound_paid).every(val => val >= 1);
@@ -225,9 +228,10 @@ export function processRTState(rtId: string): void {
     }
   });
 
-  // Process outbound_owed similarly
+  // Process outbound_owed and track deductions
   const outboundList: string[] = [];
   const newOutboundOwed = { ...rtState.outbound_owed };
+  const outboundDeductions: Partial<Record<ResourceKey, number>> = {};
   Object.entries(rtState.outbound_owed).forEach(([key, value]) => {
     const rKey = key as ResourceKey;
     const whole = Math.floor(value);
@@ -237,16 +241,29 @@ export function processRTState(rtId: string): void {
       for (let i = 0; i < whole; i++) {
         outboundList.push(icon);
       }
+      outboundDeductions[rKey] = whole;
     }
   });
 
-  // Update the RT state with the deducted values
+  // Update RT state with new deducted values
   useRTStore.getState().updateState(rtId, {
     inbound_paid: newInboundPaid,
     outbound_owed: newOutboundOwed,
   });
 
-  // Log the resulting emoji lists
-  console.log("Processed Inbound List:", inboundList);
-  console.log("Processed Outbound List:", outboundList);
+  // Trigger the animation using the computed emoji lists
+  animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
+
+  // When the animation finishes, add the deducted outbound amounts to the general resource store
+  setTimeout(() => {
+    const store = useResourceStore.getState();
+    console.log("Animation finished, adding outbound deductions to general store:", outboundDeductions);
+    Object.entries(outboundDeductions).forEach(([key, deducted]) => {
+      const rKey = key as ResourceKey;
+      if (deducted && deducted > 0) {
+        const current = store.resources[rKey]?.amount || 0;
+        store.setResourceAmount(rKey, current + deducted);
+      }
+    });
+  }, animationSpeed + delayAnimationSpeed);
 }
