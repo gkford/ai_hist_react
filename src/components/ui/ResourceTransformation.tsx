@@ -5,7 +5,7 @@ import { ResourceKey, useResourceStore } from "@/store/useResourceStore"
 interface TransformationResource {
   key: ResourceKey
   amount: number
-})
+}
 
 interface ResourceTransformationProps {
   inbound: TransformationResource[]
