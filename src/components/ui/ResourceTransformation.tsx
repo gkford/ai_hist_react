@@ -91,7 +91,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     
     setParticles(newParticles)
 
-    // Handle outbound after delay
+    // Handle outbound after inbound animation completes (2.4s + small buffer)
     setTimeout(() => {
       console.log('Starting outbound phase')
       const outboundIcons = outbound.flatMap(update => {
@@ -107,12 +107,12 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
         type: 'outbound' as const
       })))
 
-      // Clean up particles after animation
+      // Clean up particles after outbound animation
       setTimeout(() => {
         console.log('Cleaning up particles')
         setParticles([])
       }, 2400)
-    }, 500)
+    }, 2500) // Changed from 500 to 2500 to allow inbound animation to complete
   }
 
   useImperativeHandle(ref, () => ({
