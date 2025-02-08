@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } from "react"
 import type { ResourceKey } from "@/store/useResourceStore"
 import { useResourceStore } from "@/store/useResourceStore"
+import { useRTStore } from "@/store/useRTStore"
 import { cn } from "@/lib/utils"
 
 
@@ -36,13 +37,8 @@ let globalTransformationIdCounter = 0
 
 export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ rtId }, ref) {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
-  const [rtState, setRtState] = useState<{
-    inbound_paid: Partial<Record<ResourceKey, number>>;
-    outbound_owed: Partial<Record<ResourceKey, number>>;
-  }>({
-    inbound_paid: {},
-    outbound_owed: {},
-  })
+  const { states: rtStates, updateState } = useRTStore()
+  const rtState = rtStates[rtId] || { inbound_paid: {}, outbound_owed: {} }
 
   const animateRT = useCallback(
     (
@@ -85,11 +81,14 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   )
 
   useEffect(() => {
-    rtRegistry.set(rtId, { animateRT })
+    rtRegistry.set(rtId, { 
+      animateRT,
+      payForTransformation 
+    })
     return () => {
       rtRegistry.delete(rtId)
     }
-  }, [rtId, animateRT])
+  }, [rtId, animateRT, payForTransformation])
 
   const payForTransformation = useCallback(
     (payment: Array<{ key: ResourceKey; amount: number }>) => {
@@ -108,13 +107,19 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
         store.setResourceAmount(item.key, current - item.amount);
       });
       // Update local rt state (accumulate payments)
-      setRtState(prev => {
-        const updated = { ...prev.inbound_paid };
-        payment.forEach(item => {
-          updated[item.key] = (updated[item.key] || 0) + item.amount;
-        });
-        return { ...prev, inbound_paid: updated };
-      });
+      const newState = {
+        inbound_paid: {
+          ...rtState.inbound_paid,
+          ...Object.fromEntries(
+            payment.map(item => [
+              item.key,
+              (rtState.inbound_paid[item.key] || 0) + item.amount
+            ])
+          )
+        },
+        outbound_owed: rtState.outbound_owed
+      }
+      updateState(rtId, newState);
       return true;
     },
     []
@@ -148,11 +153,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
             </div>
           ))
         )}
-      </div>
-      {/* RT state debug overlay */}
-      <div className="absolute bottom-0 right-0 m-2 p-2 bg-gray-200 text-[10px] text-gray-700 z-10">
-        RT State:
-        <pre>{JSON.stringify(rtState, null, 2)}</pre>
       </div>
     </div>
   )
