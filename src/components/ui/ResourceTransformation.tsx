@@ -86,8 +86,7 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
         content: emojiString,
         animationId
       }])
-      setNextParticleId(prev => prev + 1
-      }])
+      setNextParticleId(prev => prev + 1)
 
       let frame = 0
       animationInterval = setInterval(() => {
@@ -129,8 +128,7 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
         content: emojiString,
         animationId
       }])
-      setNextParticleId(prev => prev + 1
-      }])
+      setNextParticleId(prev => prev + 1)
 
       let frame = 0
       animationInterval = setInterval(() => {
