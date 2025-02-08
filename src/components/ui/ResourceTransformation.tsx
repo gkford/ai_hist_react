@@ -257,12 +257,14 @@ export function processRTState(rtId: string): void {
   setTimeout(() => {
     const store = useResourceStore.getState();
     console.log("Animation finished, adding outbound deductions to general store:", outboundDeductions);
+    const changes: Partial<Record<ResourceKey, number>> = {};
     Object.entries(outboundDeductions).forEach(([key, deducted]) => {
       const rKey = key as ResourceKey;
       if (deducted && deducted > 0) {
         const current = store.resources[rKey]?.amount || 0;
-        store.setResourceAmount(rKey, current + deducted);
+        changes[rKey] = current + deducted;
       }
     });
+    store.updateResources(changes);
   }, animationSpeed + delayAnimationSpeed);
 }

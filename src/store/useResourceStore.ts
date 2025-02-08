@@ -51,6 +51,17 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     }
   })),
 
+  updateResources: (changes: Partial<Record<ResourceKey, number>>) =>
+    set((state) => {
+      const updatedResources = { ...state.resources }
+      for (const key in changes) {
+        updatedResources[key as ResourceKey] = {
+          amount: Number(changes[key as ResourceKey]!.toFixed(3))
+        }
+      }
+      return { resources: updatedResources }
+    }),
+
   // Removed addResource and subtractResource as their behavior will be reworked
 
 
