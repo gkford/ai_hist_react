@@ -200,6 +200,15 @@ export function processRTState(rtId: string): void {
   // Get the current RT state for the given id (or default values)
   const rtState = useRTStore.getState().states[rtId] || { inbound_paid: {}, outbound_owed: {} };
   const resourceConfigs = useResourceStore.getState().config;
+  
+  // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
+  // If any resource has a value less than 1, do nothing.
+  const allInboundAtLeastOne = Object.values(rtState.inbound_paid).every(val => val >= 1);
+  const allOutboundAtLeastOne = Object.values(rtState.outbound_owed).every(val => val >= 1);
+  if (!allInboundAtLeastOne || !allOutboundAtLeastOne) {
+    console.log("RT deduction skipped: not all resources are at least 1.");
+    return;
+  }
 
   // Process inbound_paid: deduct whole numbers & build emoji list
   const inboundList: string[] = [];
