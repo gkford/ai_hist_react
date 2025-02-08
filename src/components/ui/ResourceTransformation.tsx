@@ -37,14 +37,19 @@ interface TransformationParticle {
   id: number
   x: number
   content: string
-  animationId: number  // Track which animation this particle belongs to
+  animationId: number
+}
+
+interface AnimationState {
+  particles: TransformationParticle[]
+  completed: boolean
 }
 
 export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ inbound, outbound }, ref) {
-  const [particles, setParticles] = useState<TransformationParticle[]>([])
+  const [animations, setAnimations] = useState<Record<number, AnimationState>>({})
   const store = useResourceStore()
   const [nextAnimationId, setNextAnimationId] = useState(0)
-  const particleIdCounter = useRef(0)  // Change to useRef for a stable counter
+  const particleIdCounter = useRef(0)
 
   const getNextParticleId = () => {
     particleIdCounter.current += 1
@@ -62,32 +67,42 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       const emojiString = emojis.join('')
       let animationInterval: ReturnType<typeof setInterval>
       
-      setParticles(prev => [...prev, {
-        id: getNextParticleId(),
-        x: config.startX,
-        content: emojiString,
-        animationId
-      }])
+      setAnimations(prev => ({
+        ...prev,
+        [animationId]: {
+          particles: [{
+            id: getNextParticleId(),
+            x: config.startX,
+            content: emojiString,
+            animationId
+          }],
+          completed: false
+        }
+      }))
 
       let frame = 0
       animationInterval = setInterval(() => {
         frame++
         
-        setParticles(prev => {
+        setAnimations(prev => {
           if (frame >= config.frames) {
             clearInterval(animationInterval)
             resolve()
-            return prev.filter(p => p.animationId !== animationId)
+            const newState = { ...prev }
+            delete newState[animationId]
+            return newState
           }
 
-          return prev.map(particle => 
-            particle.animationId === animationId 
-              ? {
-                  ...particle,
-                  x: config.startX + (config.distancePerFrame * frame)
-                }
-              : particle
-          )
+          return {
+            ...prev,
+            [animationId]: {
+              ...prev[animationId],
+              particles: prev[animationId].particles.map(particle => ({
+                ...particle,
+                x: config.startX + (config.distancePerFrame * frame)
+              }))
+            }
+          }
         })
       }, 1000 / config.fps)
     })
@@ -103,32 +118,42 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       const emojiString = emojis.join('')
       let animationInterval: ReturnType<typeof setInterval>
       
-      setParticles(prev => [...prev, {
-        id: getNextParticleId(),
-        x: config.startX,
-        content: emojiString,
-        animationId
-      }])
+      setAnimations(prev => ({
+        ...prev,
+        [animationId]: {
+          particles: [{
+            id: getNextParticleId(),
+            x: config.startX,
+            content: emojiString,
+            animationId
+          }],
+          completed: false
+        }
+      }))
 
       let frame = 0
       animationInterval = setInterval(() => {
         frame++
         
-        setParticles(prev => {
+        setAnimations(prev => {
           if (frame >= config.frames) {
             clearInterval(animationInterval)
             resolve()
-            return prev.filter(p => p.animationId !== animationId)
+            const newState = { ...prev }
+            delete newState[animationId]
+            return newState
           }
 
-          return prev.map(particle => 
-            particle.animationId === animationId 
-              ? {
-                  ...particle,
-                  x: config.startX + (config.distancePerFrame * frame)
-                }
-              : particle
-          )
+          return {
+            ...prev,
+            [animationId]: {
+              ...prev[animationId],
+              particles: prev[animationId].particles.map(particle => ({
+                ...particle,
+                x: config.startX + (config.distancePerFrame * frame)
+              }))
+            }
+          }
         })
       }, 1000 / config.fps)
     })
@@ -227,20 +252,22 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       "relative"
     )}>
       <div className="relative w-full h-full">
-        {particles.map((particle: TransformationParticle) => (
-          <div
-            key={particle.id}
-            className="absolute top-1/2 -translate-y-1/2"
-            style={{
-              left: `${particle.x}%`,
-              transition: 'left 16ms linear',
-              fontSize: '1.2rem',
-              zIndex: 1
-            }}
-          >
-            {particle.content}
-          </div>
-        ))}
+        {Object.values(animations).flatMap(animation => 
+          animation.particles.map((particle: TransformationParticle) => (
+            <div
+              key={particle.id}
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{
+                left: `${particle.x}%`,
+                transition: 'left 16ms linear',
+                fontSize: '1.2rem',
+                zIndex: 1
+              }}
+            >
+              {particle.content}
+            </div>
+          ))
+        )}
       </div>
     </div>
   )
