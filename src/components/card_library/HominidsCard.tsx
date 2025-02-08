@@ -5,7 +5,7 @@ import { WorkerBar } from "@/components/ui/WorkerBar"
 import type { ResourceTransformationHandle } from "@/components/ui/ResourceTransformation"
 import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { useState, useRef } from "react"
-import { useResource, useTransformation } from "@/store/useResourceStore"
+import { useResource } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
 
 export function HominidsCard() {
@@ -19,7 +19,6 @@ export function HominidsCard() {
   }
 
   const transformation = getTransformation("eating_chicken")
-  const transformationState = useTransformation("eating_chicken")
 
   return (
     <MasterCard title="Hominids" typeIcon="👥" discoveryStatusIcon={null}>
@@ -27,9 +26,6 @@ export function HominidsCard() {
       <CardInfo className="text-center">
         Transforms {transformation?.inbound[0].amount}{food.icon} into {transformation?.outbound[0].amount}{humanEnergy.icon} per second per person
         <div className="mt-2">
-          Focus Level: {(transformationState.focusProp * 100).toFixed(0)}%
-          <br/>
-          Focus Type: {transformation?.focusResource}
         </div>
         <button 
           onClick={triggerTransformation}
