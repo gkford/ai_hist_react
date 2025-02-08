@@ -1,13 +1,8 @@
-import { forwardRef, useImperativeHandle, useState, useRef } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 import { cn } from "@/lib/utils"
 import { ResourceKey, useResourceStore } from "@/store/useResourceStore"
 
 interface TransformationResource {
-  key: ResourceKey
-  amount: number
-}
-
-interface ResourceUpdate {
   key: ResourceKey
   amount: number
 }
@@ -19,18 +14,6 @@ export interface ResourceTransformationHandle {
 interface ResourceTransformationProps {
   inbound: TransformationResource[]
   outbound: TransformationResource[]
-}
-
-interface AnimationConfig {
-  fps: number
-  startX: number
-  endX: number
-  frames: number
-  distancePerFrame: number
-}
-
-const delayAnimation = (ms: number): Promise<void> => {
-  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 interface TransformationInstance {
