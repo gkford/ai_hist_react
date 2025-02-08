@@ -3,6 +3,8 @@ import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
 import { useResource } from "@/store/useResourceStore"
 import { useRTStore } from "@/store/useRTStore"
+import { payForResourceTransformation } from "@/components/ui/ResourceTransformation"
+import { useEffect } from "react"
 
 function App() {
   const formatNumber = (n: number): string => {
@@ -16,6 +18,14 @@ function App() {
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
   const rtStates = useRTStore((state) => state.states)
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const success = payForResourceTransformation("eating_chicken");
+      console.log("Auto-eating triggered, success:", success);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
