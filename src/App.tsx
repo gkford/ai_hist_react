@@ -1,7 +1,7 @@
 import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
 import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
-import { useResource } from "@/store/useResourceStore"
+import { useResource, useTransformation } from "@/store/useResourceStore"
 
 function App() {
   const food = useResource('food')
