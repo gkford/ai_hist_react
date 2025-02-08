@@ -56,14 +56,14 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     resources: {
       ...state.resources,
       [resource]: {
-        amount
+        amount: Number(amount.toFixed(4))
       }
     }
   })),
 
   addResource: (resource, amountToAdd) => {
     const currentAmount = get().resources[resource].amount
-    const newAmount = currentAmount + amountToAdd
+    const newAmount = Number((currentAmount + amountToAdd).toFixed(4))
     
     // Calculate whole number increase
     const previousWholeNumber = Math.floor(currentAmount)
@@ -85,7 +85,7 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
 
   subtractResource: (resource, amountToSubtract) => {
     const currentAmount = get().resources[resource].amount
-    const newAmount = currentAmount - amountToSubtract
+    const newAmount = Number((currentAmount - amountToSubtract).toFixed(4))
 
     if (newAmount < 0) {
       return null  // Cannot subtract this amount
