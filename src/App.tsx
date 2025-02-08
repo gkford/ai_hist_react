@@ -1,7 +1,7 @@
 import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
 import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
-import { useResource, useTransformation } from "@/store/useResourceStore"
+import { useResource } from "@/store/useResourceStore"
 
 function App() {
   const food = useResource('food')
@@ -9,7 +9,6 @@ function App() {
   const thoughts = useResource('thoughts')
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
-  const eatingChickenTransformation = useTransformation("eating_chicken")
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -27,7 +26,6 @@ function App() {
         <p>Thoughts: {thoughts.amount.toFixed(3)}</p>
         <p>Human Energy: {humanEnergy.amount.toFixed(3)}</p>
         <p>Population: {population.amount.toFixed(3)}</p>
-        <p>Eating Chicken Focus: {(eatingChickenTransformation.focusProp * 100).toFixed(0)}%</p>
       </div>
     </div>
   )
