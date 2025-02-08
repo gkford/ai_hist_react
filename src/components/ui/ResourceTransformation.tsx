@@ -28,11 +28,13 @@ interface TransformationParticle {
   id: number
   x: number
   content: string
+  animationId: number  // Track which animation this particle belongs to
 }
 
 export function ResourceTransformation({ inbound, outbound }: ResourceTransformationProps) {
   const [particles, setParticles] = useState<TransformationParticle[]>([])
   const store = useResourceStore()
+  const [nextAnimationId, setNextAnimationId] = useState(0)
 
   const runResourceTransformation = async (
     inboundEmojis: string[], 
@@ -40,6 +42,9 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
     animationSpeed: number,
     delayTime: number
   ) => {
+    const animationId = nextAnimationId
+    setNextAnimationId(prev => prev + 1)
+    
     const fps = 60
     const frames = (animationSpeed / 1000) * fps
     
@@ -59,24 +64,26 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
       distancePerFrame: (150 - 50) / frames
     }
 
-    await animateInbound(inboundEmojis, animationSpeed, inboundConfig)
+    await animateInbound(inboundEmojis, animationSpeed, inboundConfig, animationId)
     await delayAnimation(delayTime)
-    await animateOutbound(outboundEmojis, animationSpeed, outboundConfig)
+    await animateOutbound(outboundEmojis, animationSpeed, outboundConfig, animationId)
   }
 
   const animateInbound = (
     emojis: string[], 
     _durationMs: number,
-    config: AnimationConfig
+    config: AnimationConfig,
+    animationId: number
   ): Promise<void> => {
     return new Promise(resolve => {
       const emojiString = emojis.join('')
       let animationInterval: ReturnType<typeof setInterval>
       
-      setParticles([{
+      setParticles(prev => [...prev, {
         id: Date.now(),
         x: config.startX,
-        content: emojiString
+        content: emojiString,
+        animationId
       }])
 
       let frame = 0
@@ -87,13 +94,17 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
           if (frame >= config.frames) {
             clearInterval(animationInterval)
             resolve()
-            return []
+            return prev.filter(p => p.animationId !== animationId)
           }
 
-          return prev.map(particle => ({
-            ...particle,
-            x: config.startX + (config.distancePerFrame * frame)
-          }))
+          return prev.map(particle => 
+            particle.animationId === animationId 
+              ? {
+                  ...particle,
+                  x: config.startX + (config.distancePerFrame * frame)
+                }
+              : particle
+          )
         })
       }, 1000 / config.fps)
     })
@@ -102,16 +113,18 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
   const animateOutbound = (
     emojis: string[], 
     _durationMs: number,
-    config: AnimationConfig
+    config: AnimationConfig,
+    animationId: number
   ): Promise<void> => {
     return new Promise(resolve => {
       const emojiString = emojis.join('')
       let animationInterval: ReturnType<typeof setInterval>
       
-      setParticles([{
+      setParticles(prev => [...prev, {
         id: Date.now(),
         x: config.startX,
-        content: emojiString
+        content: emojiString,
+        animationId
       }])
 
       let frame = 0
@@ -122,13 +135,17 @@ export function ResourceTransformation({ inbound, outbound }: ResourceTransforma
           if (frame >= config.frames) {
             clearInterval(animationInterval)
             resolve()
-            return []
+            return prev.filter(p => p.animationId !== animationId)
           }
 
-          return prev.map(particle => ({
-            ...particle,
-            x: config.startX + (config.distancePerFrame * frame)
-          }))
+          return prev.map(particle => 
+            particle.animationId === animationId 
+              ? {
+                  ...particle,
+                  x: config.startX + (config.distancePerFrame * frame)
+                }
+              : particle
+          )
         })
       }, 1000 / config.fps)
     })
