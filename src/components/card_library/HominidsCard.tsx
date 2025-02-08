@@ -2,7 +2,7 @@ import { MasterCard } from "@/components/MasterCard"
 import { CardImage } from "@/components/ui/CardImage"
 import { CardInfo } from "@/components/ui/CardInfo"
 import { WorkerBar } from "@/components/ui/WorkerBar"
-import { EatDrumstickTransformation } from "@/components/ui/EatDrumstickRT"
+import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { useState } from "react"
 import { useResource } from "@/store/useResourceStore"
 
@@ -33,7 +33,11 @@ export function HominidsCard() {
         value={workerCount}
         onChange={setWorkerCount}
       />
-      <EatDrumstickTransformation workerCount={processActive} />
+      <ResourceTransformation 
+        inbound={[{ key: 'food', amount: 1 }]}
+        outbound={[{ key: 'humanEnergy', amount: 1 }]}
+        active={processActive}
+      />
     </MasterCard>
   )
 }
