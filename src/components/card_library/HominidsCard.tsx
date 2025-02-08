@@ -15,7 +15,7 @@ export function HominidsCard() {
   const humanEnergy = useResource('humanEnergy')
 
   const triggerPay = () => {
-    const success = payForResourceTransformation("hominids");
+    const success = payForResourceTransformation("eating_chicken");
     console.log("Payment success:", success);
   }
 
@@ -57,7 +57,7 @@ export function HominidsCard() {
         value={workerCount}
         onChange={setWorkerCount}
       />
-      <ResourceTransformation rtId="hominids" />
+      <ResourceTransformation rtId="eating_chicken" />
     </MasterCard>
   )
 }
