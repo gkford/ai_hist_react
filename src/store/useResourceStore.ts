@@ -96,14 +96,14 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
       resource,
       currentAmount,
       newAmount,
-      startWholeNumber: Math.floor(currentAmount + 0.001),
+      startWholeNumber: Math.floor(currentAmount - 0.001),
       endWholeNumber: Math.floor(newAmount + 0.001),
-      raw_currentAmount_plus_epsilon: currentAmount + 0.001,
+      raw_currentAmount_minus_epsilon: currentAmount - 0.001,
       raw_newAmount_plus_epsilon: newAmount + 0.001
     })
     
     // Count every whole number we cross from above
-    const startWholeNumber = Math.floor(currentAmount + 0.001)
+    const startWholeNumber = Math.floor(currentAmount - 0.001)
     const endWholeNumber = Math.floor(newAmount + 0.001)
     const wholeNumberDecrease = Math.max(0, startWholeNumber - endWholeNumber)
 
