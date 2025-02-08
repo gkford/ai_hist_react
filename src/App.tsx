@@ -10,6 +10,7 @@ function App() {
   const thoughts = useResource('thoughts')
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
+  const rtStates = useRTStore((state) => state.states)
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -32,7 +33,7 @@ function App() {
         
         <div className="p-4 border border-gray-200 rounded">
           <h2 className="font-semibold mb-2">RT States</h2>
-          {Object.entries(useRTStore.getState().states).map(([rtId, state]) => (
+          {Object.entries(rtStates).map(([rtId, state]) => (
             <div key={rtId} className="mb-2">
               <h3 className="font-medium">{rtId}</h3>
               <pre className="text-xs">
