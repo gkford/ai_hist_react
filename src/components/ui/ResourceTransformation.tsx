@@ -1,19 +1,16 @@
 import { forwardRef, useImperativeHandle, useState } from "react"
 import { cn } from "@/lib/utils"
-import { ResourceKey, useResourceStore } from "@/store/useResourceStore"
 
-interface TransformationResource {
-  key: ResourceKey
-  amount: number
-}
 
 export interface ResourceTransformationHandle {
   startTransformation: () => void
 }
 
 interface ResourceTransformationProps {
-  inbound: TransformationResource[]
-  outbound: TransformationResource[]
+  inboundEmojis: string[]
+  outboundEmojis: string[]
+  inboundDelay?: number
+  outboundDelay?: number
 }
 
 interface TransformationInstance {
@@ -29,43 +26,20 @@ interface TransformationInstance {
 let globalParticleIdCounter = 0
 let globalTransformationIdCounter = 0
 
-export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ inbound, outbound }, ref) {
+export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ inboundEmojis, outboundEmojis, inboundDelay = 2500, outboundDelay = 2400 }, ref) {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
-  const store = useResourceStore()
 
   const startTransformation = () => {
     console.log('Starting transformation')
     const transformationId = ++globalTransformationIdCounter
     
-    // Try to subtract all inbound resources and collect their icons
-    const inboundResults = inbound.map(update => ({
-      update,
-      result: store.subtractResource(update.key, update.amount)
-    }))
-
-    console.log('Inbound results:', inboundResults)
-
-    if (inboundResults.some(({ result }) => result === null)) {
-      console.error("Not enough resources for transformation")
-      inboundResults.forEach(({ update, result }) => {
-        if (result !== null) {
-          store.addResource(update.key, update.amount)
-        }
-      })
-      return
-    }
-
-    // Get icons for animation
-    const inboundIcons = inboundResults.flatMap(({ update, result }) => 
-      result ? Array(result).fill(store.config[update.key].icon) : []
-    )
-
-    console.log('Creating inbound particles:', inboundIcons)
+    // Create inbound particles using provided inboundEmojis
+    console.log('Creating inbound particles:', inboundEmojis)
 
     // Add inbound particles
-    const newParticles = inboundIcons.map(icon => ({
+    const newParticles = inboundEmojis.map(emoji => ({
       id: ++globalParticleIdCounter,
-      content: icon,
+      content: emoji,
       type: 'inbound' as const
     }))
     
@@ -74,20 +48,15 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     // Handle outbound after inbound animation completes (2.4s + small buffer)
     setTimeout(() => {
       console.log('Starting outbound phase')
-      const outboundIcons = outbound.flatMap(update => {
-        const wholeNumberIncrease = store.addResource(update.key, update.amount)
-        return Array(wholeNumberIncrease).fill(store.config[update.key].icon)
-      })
-
-      console.log('Creating outbound particles:', outboundIcons)
+      console.log('Creating outbound particles:', outboundEmojis)
 
       setTransformations(prev => prev.map(t => 
         t.id === transformationId 
           ? {
               ...t,
-              particles: outboundIcons.map(icon => ({
+              particles: outboundEmojis.map(emoji => ({
                 id: ++globalParticleIdCounter,
-                content: icon,
+                content: emoji,
                 type: 'outbound' as const
               }))
             }
@@ -98,8 +67,8 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       setTimeout(() => {
         console.log('Cleaning up transformation:', transformationId)
         setTransformations(prev => prev.filter(t => t.id !== transformationId))
-      }, 2400)
-    }, 2500) // Changed from 500 to 2500 to allow inbound animation to complete
+      }, outboundDelay)
+    }, inboundDelay)
   }
 
   useImperativeHandle(ref, () => ({

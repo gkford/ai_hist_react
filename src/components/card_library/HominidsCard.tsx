@@ -19,6 +19,14 @@ export function HominidsCard() {
   }
 
   const transformation = getTransformation("eating_chicken")
+  const inboundEmojis = transformation?.inbound.map(item => {
+    const count = Math.floor(item.amount)
+    return Array(count).fill(food.icon)
+  }).flat() ?? []
+  const outboundEmojis = transformation?.outbound.map(item => {
+    const count = Math.floor(item.amount)
+    return Array(count).fill(humanEnergy.icon)
+  }).flat() ?? []
 
   return (
     <MasterCard title="Hominids" typeIcon="👥" discoveryStatusIcon={null}>
@@ -39,8 +47,8 @@ export function HominidsCard() {
         onChange={setWorkerCount}
       />
       <ResourceTransformation 
-        inbound={transformation?.inbound ?? []}
-        outbound={transformation?.outbound ?? []}
+        inboundEmojis={inboundEmojis}
+        outboundEmojis={outboundEmojis}
         ref={resourceTransformationRef}
       />
     </MasterCard>
