@@ -110,7 +110,8 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
             parseFloat((((rtState.outbound_owed[item.key] || 0) + item.amount)).toFixed(3))
           ])
         )
-      }
+      },
+      human_energy_focus: rtState.human_energy_focus
     };
     updateState(rtId, newState);
     return true;
@@ -236,6 +237,7 @@ export function processRTState(rtId: string): void {
   useRTStore.getState().updateState(rtId, {
     inbound_paid: newInboundPaid,
     outbound_owed: newOutboundOwed,
+    human_energy_focus: rtState.human_energy_focus
   });
 
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);

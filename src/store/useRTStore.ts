@@ -16,7 +16,8 @@ export const useRTStore = create<RTStore>((set) => ({
   states: {
     eating_chicken: {
       inbound_paid: {},
-      outbound_owed: {}
+      outbound_owed: {},
+      human_energy_focus: 0
     },
     hunt: {
       inbound_paid: {},
