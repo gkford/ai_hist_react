@@ -1,11 +1,15 @@
 import { create } from 'zustand'
 import type { ResourceKey } from './useResourceStore'
 
+type RTStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
+
 interface RTState {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
   human_energy_focus: number | null;  // Allow null
   eating_focus: number | null;  // Value between 0 and 1, or null
+  hide: boolean;
+  status: RTStatus;
 }
 
 interface RTStore {
@@ -19,19 +23,33 @@ export const useRTStore = create<RTStore>((set) => ({
       inbound_paid: {},
       outbound_owed: {},
       human_energy_focus: null,
-      eating_focus: 1
+      eating_focus: 1,
+      hide: false,
+      status: 'discovered'
     },
     hunt: {
       inbound_paid: {},
       outbound_owed: {},
       human_energy_focus: 0,
-      eating_focus: null
+      eating_focus: null,
+      hide: false,
+      status: 'unthoughtof'
     },
     think: {
       inbound_paid: {},
       outbound_owed: {},
       human_energy_focus: 0,
-      eating_focus: null
+      eating_focus: null,
+      hide: false,
+      status: 'discovered'
+    },
+    gather_food: {
+      inbound_paid: {},
+      outbound_owed: {},
+      human_energy_focus: 0,
+      eating_focus: null,
+      hide: false,
+      status: 'discovered'
     }
   },
   updateState: (rtId, newState) => set((state) => {
