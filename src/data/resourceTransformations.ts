@@ -17,10 +17,10 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     name: "Eating Chicken",
     eating: true,    // Set to true for eating_chicken
     inbound: [
-      { key: "food", amount: 1 }
+      { key: "food", amount: 0.1 }
     ],
     outbound: [
-      { key: "humanEnergy", amount: 1.2 }
+      { key: "humanEnergy", amount: 0.12 }
     ],
   },
   "hunt": {
