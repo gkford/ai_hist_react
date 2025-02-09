@@ -44,8 +44,9 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
   }).join(' and ')}`;
 
   const triggerPay = () => {
-    const success = payForResourceTransformation(rtId);
-    console.log("Payment success:", success);
+    const multiplier = rtState?.human_energy_focus ? rtState.human_energy_focus / 100 : 1;
+    const success = payForResourceTransformation(rtId, multiplier);
+    console.log("Payment success:", success, "multiplier:", multiplier);
   }
 
   return (
