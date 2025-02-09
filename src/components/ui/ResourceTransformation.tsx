@@ -13,7 +13,7 @@ export interface ResourceTransformationHandle {
     animationSpeed: number,
     delayAnimationSpeed: number
   ) => void;
-  payForTransformation: () => boolean;
+  payForTransformation: (multiplier?: number) => boolean;
 }
 
 interface ResourceTransformationProps {
@@ -72,7 +72,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     [setTransformations, rtId]
   )
 
-  const payForTransformation = useCallback(() => {
+  const payForTransformation = useCallback((multiplier: number = 1) => {
     const transformation = getTransformation(rtId);
     if (!transformation) {
       return false;
@@ -81,14 +81,14 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     const store = useResourceStore.getState();
     // Check each inbound payment for sufficient funds (do not check outbound)
     for (const item of transformation.inbound) {
-      if (store.resources[item.key].amount < item.amount) {
+      if (store.resources[item.key].amount < (item.amount * multiplier)) {
         return false;
       }
     }
     // Deduct inbound amounts from store
     transformation.inbound.forEach(item => {
       const current = store.resources[item.key].amount;
-      store.setResourceAmount(item.key, current - item.amount);
+      store.setResourceAmount(item.key, current - (item.amount * multiplier));
     });
     // Update local RT state: add inbound_paid from transformation.inbound and add outbound_owed from transformation.outbound,
     // trimming all new values to 3 decimal places.
@@ -98,7 +98,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
         ...Object.fromEntries(
           transformation.inbound.map(item => [
             item.key,
-            parseFloat((((rtState.inbound_paid[item.key] || 0) + item.amount)).toFixed(3))
+            parseFloat((((rtState.inbound_paid[item.key] || 0) + (item.amount * multiplier))).toFixed(3))
           ])
         )
       },
@@ -107,7 +107,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
         ...Object.fromEntries(
           transformation.outbound.map(item => [
             item.key,
-            parseFloat((((rtState.outbound_owed[item.key] || 0) + item.amount)).toFixed(3))
+            parseFloat((((rtState.outbound_owed[item.key] || 0) + (item.amount * multiplier))).toFixed(3))
           ])
         )
       },
@@ -162,10 +162,10 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   )
 })
 
-export function payForResourceTransformation(rtId: string): boolean {
+export function payForResourceTransformation(rtId: string, multiplier: number = 1): boolean {
   const instance = rtRegistry.get(rtId);
   if (instance) {
-    return instance.payForTransformation();
+    return instance.payForTransformation(multiplier);
   } else {
     return false;
   }
