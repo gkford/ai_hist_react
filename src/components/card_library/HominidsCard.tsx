@@ -4,15 +4,26 @@ import { CardInfo } from "@/components/ui/CardInfo"
 import { WorkerBar } from "@/components/ui/WorkerBar"
 import type { ResourceTransformationHandle } from "@/components/ui/ResourceTransformation"
 import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
+import { Slider } from "@/components/ui/slider"
 import { useState } from "react"
 import { animateResourceTransformation, payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
 import { useResource } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
+import { useRTStore } from "@/store/useRTStore"
 
 export function HominidsCard() {
   const [workerCount, setWorkerCount] = useState(0)
   const food = useResource('food')
   const humanEnergy = useResource('humanEnergy')
+  const { states, updateState } = useRTStore()
+  const rtState = states["eating_chicken"]
+
+  const handleSliderChange = (value: number[]) => {
+    updateState("eating_chicken", {
+      ...rtState,
+      eating_focus: value[0] / 100
+    })
+  }
 
   const triggerPay = () => {
     const success = payForResourceTransformation("eating_chicken");
@@ -38,7 +49,19 @@ export function HominidsCard() {
       <CardImage imageSrc={import.meta.env.BASE_URL + "card_images/hominids.png"} />
       <CardInfo className="text-center">
         Transforms {transformation?.inbound[0].amount}{food.icon} into {transformation?.outbound[0].amount}{humanEnergy.icon} per second per person
-        <div className="mt-2">
+        <div className="mt-4 px-8 w-full">
+          <Slider
+            defaultValue={[rtState?.eating_focus ? rtState.eating_focus * 100 : 100]}
+            value={[rtState?.eating_focus ? rtState.eating_focus * 100 : 100]}
+            max={100}
+            step={1}
+            onValueChange={handleSliderChange}
+            className="w-full"
+            aria-label="Eating Focus"
+          />
+          <div className="text-sm text-gray-500 mt-1 text-center">
+            Eating Focus: {rtState?.eating_focus ? (rtState.eating_focus * 100).toFixed(0) : 100}%
+          </div>
         </div>
         <button 
           onClick={triggerTransformation}
