@@ -70,13 +70,33 @@ export const useRTStore = create<RTStore>((set) => ({
         sum + (rt.human_energy_focus || 0), 0);
       const total = (newState.human_energy_focus || 0) + otherTotal;
 
-      // If total would exceed max (100), adjust the new value down
+      // If total would exceed max (100), reduce others proportionally
       if (total > 100) {
-        newState.human_energy_focus = Math.max(0, 100 - otherTotal);
+        const excess = total - 100;
+        const newStates = { ...state.states };
+        
+        // Calculate total of other RTs that have focus
+        const activeRTs = otherRTs.filter(([, rt]) => (rt.human_energy_focus || 0) > 0);
+        const activeTotal = activeRTs.reduce((sum, [, rt]) => sum + (rt.human_energy_focus || 0), 0);
+        
+        // Reduce each active RT proportionally
+        activeRTs.forEach(([id, rt]) => {
+          const currentFocus = rt.human_energy_focus || 0;
+          const reduction = (excess * (currentFocus / activeTotal));
+          newStates[id] = {
+            ...rt,
+            human_energy_focus: Math.max(0, currentFocus - reduction)
+          };
+        });
+
+        // Update the target RT
+        newStates[rtId] = newState;
+
+        return { states: newStates };
       }
     }
 
-    // Update the RT state
+    // If no adjustment needed, just update the one RT
     return {
       states: {
         ...state.states,
