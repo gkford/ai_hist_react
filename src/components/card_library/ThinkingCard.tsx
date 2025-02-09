@@ -5,7 +5,7 @@ export function ThinkingCard() {
     <RTSliderCard
       title="Thinking"
       typeIcon="🧠"
-      imageSrc={import.meta.env.BASE_URL + "card_images/think.png"}
+      imageSrc={import.meta.env.BASE_URL + "card_images/think.webp"}
       rtId="think"
     />
   )

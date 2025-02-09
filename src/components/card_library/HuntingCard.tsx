@@ -5,7 +5,7 @@ export function HuntingCard() {
     <RTSliderCard
       title="Hunting"
       typeIcon="🦌"
-      imageSrc={import.meta.env.BASE_URL + "card_images/hunt.png"}
+      imageSrc={import.meta.env.BASE_URL + "card_images/hunt.webp"}
       rtId="hunt"
     />
   )
