@@ -25,10 +25,41 @@ function App() {
 
   useEffect(() => {
     if (!isEatingActive) return;
+    
     const intervalId = setInterval(() => {
-      const success = payForResourceTransformation("eating_chicken");
-      console.log("Auto-eating triggered, success:", success);
+      const rtStates = useRTStore.getState().states;
+      const population = useResourceStore.getState().resources.population.amount;
+
+      Object.entries(rtStates).forEach(([rtId, state]) => {
+        // Type check the focuses
+        if ((state.eating_focus === null && state.human_energy_focus === null) ||
+            (state.eating_focus !== null && state.human_energy_focus !== null)) {
+          console.error(`RT ${rtId} has invalid focus configuration:`, state);
+          return;
+        }
+
+        // Get the active focus value
+        const focusType = state.eating_focus !== null ? 'eating' : 'human_energy';
+        const focusValue = state.eating_focus ?? state.human_energy_focus;
+
+        if (focusValue === null) {
+          console.error(`RT ${rtId} has unexpected null focus value`);
+          return;
+        }
+
+        // Skip if focus is 0
+        if (focusValue === 0) return;
+
+        // Calculate multiplier based on focus type
+        const multiplier = focusType === 'eating' 
+          ? focusValue * population 
+          : focusValue;
+
+        const success = payForResourceTransformation(rtId, multiplier);
+        console.log(`Auto-${focusType} triggered for ${rtId}, multiplier: ${multiplier}, success: ${success}`);
+      });
     }, 1000);
+
     return () => clearInterval(intervalId);
   }, [isEatingActive]);
 
