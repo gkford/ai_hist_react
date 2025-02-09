@@ -7,9 +7,11 @@ interface TransformationResource {
 
 interface ResourceTransformation {
   name: string
-  eating: boolean  // Add this property
+  eating: boolean
   inbound: TransformationResource[]
   outbound: TransformationResource[]
+  thoughtToImagine: number
+  thoughtToDiscover: number
 }
 
 export const resourceTransformations: Record<string, ResourceTransformation> = {
@@ -21,17 +23,21 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     ],
     outbound: [
       { key: "food", amount: 1.2 }
-    ]
+    ],
+    thoughtToImagine: 0,
+    thoughtToDiscover: 0
   },
   "eating_chicken": {
     name: "Eating Chicken",
-    eating: true,    // Set to true for eating_chicken
+    eating: true,
     inbound: [
       { key: "food", amount: 0.1 }
     ],
     outbound: [
       { key: "humanEnergy", amount: 0.12 }
     ],
+    thoughtToImagine: 0,
+    thoughtToDiscover: 0
   },
   "hunt": {
     name: "Hunt",
@@ -41,7 +47,9 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     ],
     outbound: [
       { key: "food", amount: 1 }
-    ]
+    ],
+    thoughtToImagine: 10,
+    thoughtToDiscover: 10
   },
   "think": {
     name: "Thinking",
@@ -51,7 +59,9 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     ],
     outbound: [
       { key: "thoughts", amount: 1 }
-    ]
+    ],
+    thoughtToImagine: 0,
+    thoughtToDiscover: 0
   }
 }
 
