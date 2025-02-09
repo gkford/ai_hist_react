@@ -73,16 +73,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
         setTransformations(prev => prev.map(t =>
           t.id === transformationId ? { ...t, particles: [outboundParticle] } : t
         ));
-    
-        setTimeout(() => {
-          console.log(
-            `[animateRT] About to COMPLETE rtId:${rtId} transformationId:${transformationId} in ${delayAnimationSpeed}ms`
-          );
-          console.log(
-            `[animateRT] COMPLETE rtId:${rtId} transformationId:${transformationId} | Removing animation`
-          );
-          setTransformations(prev => prev.filter(t => t.id !== transformationId));
-        }, delayAnimationSpeed);
       }, animationSpeed);
     },
     [setTransformations, rtId]
