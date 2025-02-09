@@ -35,11 +35,13 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
 
   if (!transformation) return null
 
-  const descriptionText = `Converts ${transformation.inbound.map(item => 
-    `${item.amount}${resourcesForDisplay?.find(r => r.key === item.key)?.icon}`
-  ).join(', ')} into ${transformation.outbound.map(item => 
-    `${item.amount}${resourcesForDisplay?.find(r => r.key === item.key)?.icon}`
-  ).join(', ')}`
+  const descriptionText = `Converts ${transformation.inbound.map(item => {
+    const resource = resourcesForDisplay?.find(r => r.key === item.key);
+    return `${item.amount} ${resource?.icon || ''} ${resource?.name || item.key}`;
+  }).join(' and ')} into ${transformation.outbound.map(item => {
+    const resource = resourcesForDisplay?.find(r => r.key === item.key);
+    return `${item.amount} ${resource?.icon || ''} ${resource?.name || item.key}`;
+  }).join(' and ')}`;
 
   const triggerPay = () => {
     const success = payForResourceTransformation(rtId);
