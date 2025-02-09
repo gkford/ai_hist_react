@@ -15,7 +15,7 @@ export function HominidsCard() {
     <MasterCard title="Hominids" typeIcon="👥" discoveryStatusIcon={null}>
       <CardImage imageSrc={import.meta.env.BASE_URL + "card_images/hominids.png"} />
       <CardInfo className="text-center">
-        Your {Math.floor(population.amount)} hominids are eating
+        Your {Math.floor(population.amount)} hominids are eating.... <br></br>
         Transforms {transformation?.inbound[0].amount}{food.icon} into {transformation?.outbound[0].amount}{humanEnergy.icon} per second per person
         {/* <div className="mt-4 px-8 w-full">
           <Slider
