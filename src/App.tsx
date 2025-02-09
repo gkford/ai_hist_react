@@ -3,6 +3,7 @@ import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
 import { HuntingCard } from "./components/card_library/HuntingCard"
 import { ThinkingCard } from "./components/card_library/ThinkingCard"
+import { EarlyStoneToolsCard } from "./components/card_library/EarlyStoneToolsCard"
 import { useResource, useResourceStore } from "@/store/useResourceStore"
 import { useRTStore } from "@/store/useRTStore"
 import { payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
@@ -83,6 +84,7 @@ function App() {
           <HominidsCard />
           <HuntingCard />
           <ThinkingCard />
+          <EarlyStoneToolsCard />
         </div>
       </div>
       <div className="flex flex-col gap-4">
