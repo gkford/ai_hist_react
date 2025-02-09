@@ -25,17 +25,18 @@ export function FallingFood() {
           return [...prev, ...newDrumsticks];
         });
       } else if (currentFood < currentDrumsticks) {
-        // Need to remove drumsticks
+        // Remove drumsticks one at a time
         setDrumsticks(prev => {
           const sorted = [...prev].sort((a, b) => {
             const yDiff = a.y - b.y;
             if (Math.abs(yDiff) > 1) return yDiff;
             return Math.abs(a.vy) - Math.abs(b.vy);
           });
-          return sorted.slice(0, currentFood);
+          // Remove only one drumstick at a time
+          return sorted.slice(0, Math.max(currentDrumsticks - 1, currentFood));
         });
       }
-    }, 1000);
+    }, 100); // Changed interval to 100ms for smoother removal
     return () => clearInterval(interval);
   }, [food.amount, drumsticks.length, counter]);
 
