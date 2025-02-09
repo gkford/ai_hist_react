@@ -8,6 +8,7 @@ interface RTState {
   outbound_owed: Partial<Record<ResourceKey, number>>;
   human_energy_focus: number | null;  // Allow null
   eating_focus: number | null;  // Value between 0 and 1, or null
+  thought_focus: number | null;  // Add thought focus tracking
   hide: boolean;
   status: RTStatus;
   thoughtInvested: number;
@@ -25,6 +26,7 @@ export const useRTStore = create<RTStore>((set) => ({
       outbound_owed: {},
       human_energy_focus: null,
       eating_focus: 1,
+      thought_focus: null,
       hide: false,
       status: 'discovered',
       thoughtInvested: 0
@@ -34,6 +36,7 @@ export const useRTStore = create<RTStore>((set) => ({
       outbound_owed: {},
       human_energy_focus: 0,
       eating_focus: null,
+      thought_focus: 0,
       hide: false,
       status: 'unthoughtof',
       thoughtInvested: 0
@@ -43,6 +46,7 @@ export const useRTStore = create<RTStore>((set) => ({
       outbound_owed: {},
       human_energy_focus: 0,
       eating_focus: null,
+      thought_focus: 0,
       hide: false,
       status: 'discovered',
       thoughtInvested: 0
@@ -52,14 +56,17 @@ export const useRTStore = create<RTStore>((set) => ({
       outbound_owed: {},
       human_energy_focus: 0,
       eating_focus: null,
+      thought_focus: 0,
       hide: false,
       status: 'discovered',
       thoughtInvested: 0
     }
   },
   updateState: (rtId, newState) => set((state) => {
-    // Get all RTs with the same focus type as the one being updated
-    const focusType = newState.eating_focus !== null ? 'eating_focus' : 'human_energy_focus';
+    // Get focus type being updated (eating, human energy, or thought)
+    const focusType = newState.eating_focus !== null ? 'eating_focus' 
+      : newState.thought_focus !== null ? 'thought_focus'
+      : 'human_energy_focus';
     const otherRTs = Object.entries(state.states).filter(([id, rt]) => 
       id !== rtId && rt[focusType] !== null
     );
