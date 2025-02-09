@@ -34,10 +34,45 @@ export const useRTStore = create<RTStore>((set) => ({
       eating_focus: null
     }
   },
-  updateState: (rtId, newState) => set((state) => ({
-    states: {
-      ...state.states,
-      [rtId]: newState
+  updateState: (rtId, newState) => set((state) => {
+    // Get all RTs with the same focus type as the one being updated
+    const focusType = newState.eating_focus !== null ? 'eating_focus' : 'human_energy_focus';
+    const otherRTs = Object.entries(state.states).filter(([id, rt]) => 
+      id !== rtId && rt[focusType] !== null
+    );
+
+    // Calculate the new total including the updated RT
+    const newFocusValue = newState[focusType] || 0;
+    const otherTotal = otherRTs.reduce((sum, [, rt]) => sum + (rt[focusType] || 0), 0);
+    const total = newFocusValue + otherTotal;
+
+    // If total would exceed 1, adjust other RTs proportionally
+    if (total > 100) {  // Using 100 since our sliders work on 0-100 scale
+      const reduction = (total - 100) / otherRTs.length;
+      const newStates = { ...state.states };
+      
+      // Update the target RT
+      newStates[rtId] = newState;
+
+      // Adjust other RTs
+      otherRTs.forEach(([id, rt]) => {
+        const currentValue = rt[focusType] || 0;
+        const newValue = Math.max(0, currentValue - reduction);
+        newStates[id] = {
+          ...rt,
+          [focusType]: newValue
+        };
+      });
+
+      return { states: newStates };
     }
-  }))
+
+    // If total is fine, just update the one RT
+    return {
+      states: {
+        ...state.states,
+        [rtId]: newState
+      }
+    };
+  })
 }))
