@@ -19,11 +19,13 @@ export const useRTStore = create<RTStore>((set) => ({
     },
     hunt: {
       inbound_paid: {},
-      outbound_owed: {}
+      outbound_owed: {},
+      human_energy_focus: 0
     },
     think: {
       inbound_paid: {},
-      outbound_owed: {}
+      outbound_owed: {},
+      human_energy_focus: 0
     }
   },
   updateState: (rtId, newState) => set((state) => ({
