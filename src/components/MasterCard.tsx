@@ -65,28 +65,28 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
       <Card ref={ref} className={cn("w-[400px] h-[543px] overflow-hidden", className)} {...props}>
         {header ? header : (
           <div className="flex items-center justify-between p-4">
-            <h3 className="text-xl font-semibold">{title || "Master Card"}</h3>
+            <h3 className="text-xl font-semibold">
+              {isUnthoughtof ? obscureText(title || "Master Card") : (title || "Master Card")}
+            </h3>
             <div className="flex gap-2">
               {typeIcon === null ? null : (
                 <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                  {typeIcon || ""}
+                  {isUnthoughtof ? "?" : (typeIcon || "")}
                 </span>
               )}
               {discoveryStatusIcon === null ? null : (
                 <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                  {discoveryStatusIcon || ""}
+                  {isUnthoughtof ? "?" : (discoveryStatusIcon || "")}
                 </span>
               )}
             </div>
           </div>
         )}
-        {/* <CardContent className="p-0 flex flex-col" style={{ minHeight: "373px" }}> */}
-          {children || (
-            <div className="h-full flex items-center justify-center text-gray-400">
-              No content here
-            </div>
-          )}
-        {/* </CardContent> */}
+        {isUnthoughtof ? processChildren(children) : children || (
+          <div className="h-full flex items-center justify-center text-gray-400">
+            No content here
+          </div>
+        )}
       </Card>
     );
   }
