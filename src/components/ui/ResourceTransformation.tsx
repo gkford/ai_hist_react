@@ -48,15 +48,18 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       animationSpeed: number,
       delayAnimationSpeed: number
     ) => {
-      const transformationId = ++globalTransformationIdCounter
-      
-      // Add single inbound particle with joined emojis
+      const transformationId = ++globalTransformationIdCounter;
+      console.log(
+        `[animateRT] START rtId:${rtId} transformationId:${transformationId} | inbound: "${inboundEmojisParam.join('')}" | pending outbound: "${outboundEmojisParam.join('')}"`
+      );
+    
+      // Create inbound particle (joined emojis)
       const inboundParticle = {
         id: ++globalParticleIdCounter,
         content: inboundEmojisParam.join(''),
         type: 'inbound' as const,
       };
-      setTransformations(prev => [...prev, { id: transformationId, particles: [inboundParticle] }])
+      setTransformations(prev => [...prev, { id: transformationId, particles: [inboundParticle] }]);
       
       setTimeout(() => {
         const outboundParticle = {
@@ -64,16 +67,22 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
           content: outboundEmojisParam.join(''),
           type: 'outbound' as const,
         };
+        console.log(
+          `[animateRT] UPDATE rtId:${rtId} transformationId:${transformationId} | outbound: "${outboundEmojisParam.join('')}"`
+        );
         setTransformations(prev => prev.map(t =>
           t.id === transformationId ? { ...t, particles: [outboundParticle] } : t
-        ))
-
+        ));
+    
         setTimeout(() => {
-          setTransformations(prev => prev.filter(t => t.id !== transformationId))
-        }, delayAnimationSpeed)
-      }, animationSpeed)
+          console.log(
+            `[animateRT] COMPLETE rtId:${rtId} transformationId:${transformationId} | Removing animation`
+          );
+          setTransformations(prev => prev.filter(t => t.id !== transformationId));
+        }, delayAnimationSpeed);
+      }, animationSpeed);
     },
-    [setTransformations]
+    [setTransformations, rtId]
   )
 
   const payForTransformation = useCallback(() => {
@@ -246,17 +255,14 @@ export function processRTState(rtId: string): void {
     outbound_owed: newOutboundOwed,
   });
 
-  // Log the computed emoji lists before triggering the animation
-  console.log("processRTState: Inbound Emojis:", inboundList);
-  console.log("processRTState: Outbound Emojis:", outboundList);
-
-  // Trigger the animation using the computed emoji lists
+  console.log(
+    `[processRTState] Trigger animation for rtId:${rtId} | inbound: "${inboundList.join('')}" | outbound: "${outboundList.join('')}"`
+  );
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
 
   // When the animation finishes, add the deducted outbound amounts to the general resource store
   setTimeout(() => {
     const store = useResourceStore.getState();
-    console.log("Animation finished, adding outbound deductions to general store:", outboundDeductions);
     const changes: Partial<Record<ResourceKey, number>> = {};
     Object.entries(outboundDeductions).forEach(([key, deducted]) => {
       const rKey = key as ResourceKey;
