@@ -51,7 +51,7 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
 
   return (
     <MasterCard title={title} typeIcon={typeIcon} discoveryStatusIcon={null}>
-      <CardImage imageSrc={imageSrc} />
+      <CardImage imageSrc={imageSrc} rtId={rtId} />
       <CardInfo className="text-center">
         {descriptionText}
         {showSlider && (
