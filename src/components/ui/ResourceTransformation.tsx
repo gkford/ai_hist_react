@@ -148,6 +148,8 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       "relative"
     )}>
       <div className="relative w-full h-full overflow-hidden">
+        {/* Add grey box overlay */}
+        <div className="absolute left-1/3 right-1/3 top-0 bottom-0 bg-gray-200 z-10" />
         {transformations.map(transformation => 
           transformation.particles.map(particle => (
             <div
