@@ -52,13 +52,19 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
       <CardInfo className="text-center">
         {descriptionText}
         {showSlider && (
-          <div className="mt-4 px-8">
+          <div className="mt-4 px-8 w-full">
             <Slider
-              value={[rtState.human_energy_focus ?? 0]}
+              defaultValue={[rtState?.human_energy_focus ?? 0]}
+              value={[rtState?.human_energy_focus ?? 0]}
               max={100}
               step={1}
               onValueChange={handleSliderChange}
+              className="w-full"
+              aria-label="Human Energy Focus"
             />
+            <div className="text-sm text-gray-500 mt-1 text-center">
+              Energy Focus: {rtState?.human_energy_focus ?? 0}%
+            </div>
           </div>
         )}
         {/* Debug buttons */}
