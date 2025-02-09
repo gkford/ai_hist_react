@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useRTStore } from "@/store/useRTStore";
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
   imageSrc?: string;
@@ -9,10 +10,57 @@ export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   typeIcon?: string | null;
   discoveryStatusIcon?: string | null;
+  rtId?: string;
 }
 
 export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
-  ({ className, imageSrc, header, title, children, typeIcon, discoveryStatusIcon, ...props }, ref) => {
+  ({ className, imageSrc, header, title, children, typeIcon, discoveryStatusIcon, rtId, ...props }, ref) => {
+    const rtState = rtId ? useRTStore(state => state.states[rtId]) : null;
+    const isUnthoughtof = rtState?.status === 'unthoughtof';
+
+    // Function to replace text with question marks
+    const obscureText = (text: string) => {
+      return text.replace(/[^\s]/g, '?');
+    };
+
+    // Function to wrap children with text obscuring if needed
+    const processChildren = (children: React.ReactNode): React.ReactNode => {
+      if (!isUnthoughtof) return children;
+
+      if (typeof children === 'string') {
+        return obscureText(children);
+      }
+
+      if (React.isValidElement(children)) {
+        const childProps = { ...children.props };
+        
+        // Process text content in specific components
+        if (childProps.children) {
+          childProps.children = processChildren(childProps.children);
+        }
+
+        // Replace icons with ? in specific cases
+        if (children.type === 'img') {
+          return React.cloneElement(children, { 
+            ...childProps,
+            alt: '?',
+            className: cn(children.props.className, 'opacity-50')
+          });
+        }
+
+        return React.cloneElement(children, childProps);
+      }
+
+      if (Array.isArray(children)) {
+        return children.map((child, index) => (
+          <React.Fragment key={index}>
+            {processChildren(child)}
+          </React.Fragment>
+        ));
+      }
+
+      return children;
+    };
     return (
       <Card ref={ref} className={cn("w-[400px] h-[543px] overflow-hidden", className)} {...props}>
         {header ? header : (
