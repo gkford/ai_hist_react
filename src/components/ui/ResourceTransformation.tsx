@@ -76,6 +76,9 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     
         setTimeout(() => {
           console.log(
+            `[animateRT] About to COMPLETE rtId:${rtId} transformationId:${transformationId} in ${delayAnimationSpeed}ms`
+          );
+          console.log(
             `[animateRT] COMPLETE rtId:${rtId} transformationId:${transformationId} | Removing animation`
           );
           setTransformations(prev => prev.filter(t => t.id !== transformationId));
@@ -204,6 +207,10 @@ export function processRTState(rtId: string): void {
   // Get the current RT state for the given id (or default values)
   const rtState = useRTStore.getState().states[rtId] || { inbound_paid: {}, outbound_owed: {} };
   const resourceConfigs = useResourceStore.getState().config;
+
+  console.log(
+    `[processRTState] START for rtId:${rtId} | current state: inbound_paid: ${JSON.stringify(rtState.inbound_paid)}, outbound_owed: ${JSON.stringify(rtState.outbound_owed)}`
+  );
   
   const animationSpeed = 2500;
   const delayAnimationSpeed = 2400;
@@ -256,7 +263,13 @@ export function processRTState(rtId: string): void {
   });
 
   console.log(
-    `[processRTState] Trigger animation for rtId:${rtId} | inbound: "${inboundList.join('')}" | outbound: "${outboundList.join('')}"`
+    `[processRTState] Deduction computed for rtId:${rtId} | new inbound_paid: ${JSON.stringify(newInboundPaid)}, new outbound_owed: ${JSON.stringify(newOutboundOwed)}`
+  );
+  console.log(
+    `[processRTState] Animation payload for rtId:${rtId} | inbound emojis: "${inboundList.join('')}", outbound emojis: "${outboundList.join('')}"`
+  );
+  console.log(
+    `[processRTState] [${new Date().toLocaleTimeString()}] Triggering animation for rtId:${rtId}`
   );
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
 
