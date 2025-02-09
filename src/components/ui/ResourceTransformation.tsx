@@ -49,9 +49,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       delayAnimationSpeed: number
     ) => {
       const transformationId = ++globalTransformationIdCounter;
-      console.log(
-        `[animateRT] START rtId:${rtId} transformationId:${transformationId} | inbound: "${inboundEmojisParam.join('')}" | pending outbound: "${outboundEmojisParam.join('')}"`
-      );
     
       // Create inbound particle (joined emojis)
       const inboundParticle = {
@@ -67,9 +64,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
           content: outboundEmojisParam.join(''),
           type: 'outbound' as const,
         };
-        console.log(
-          `[animateRT] UPDATE rtId:${rtId} transformationId:${transformationId} | outbound: "${outboundEmojisParam.join('')}"`
-        );
         setTransformations(prev => prev.map(t =>
           t.id === transformationId ? { ...t, particles: [outboundParticle] } : t
         ));
@@ -81,7 +75,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   const payForTransformation = useCallback(() => {
     const transformation = getTransformation(rtId);
     if (!transformation) {
-      console.warn(`No transformation config for ${rtId}`);
       return false;
     }
     // Get the global store snapshot
@@ -89,7 +82,6 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     // Check each inbound payment for sufficient funds (do not check outbound)
     for (const item of transformation.inbound) {
       if (store.resources[item.key].amount < item.amount) {
-        console.warn(`Insufficient ${item.key} available`);
         return false;
       }
     }
@@ -173,7 +165,6 @@ export function payForResourceTransformation(rtId: string): boolean {
   if (instance) {
     return instance.payForTransformation();
   } else {
-    console.warn(`No ResourceTransformation instance for id: ${rtId}`);
     return false;
   }
 }
@@ -189,7 +180,6 @@ export function animateResourceTransformation(
   if (instance) {
     instance.animateRT(inbound, outbound, animationSpeed, delayAnimationSpeed)
   } else {
-    console.warn(`No ResourceTransformation instance for id: ${rtId}`)
   }
 }
 
@@ -198,9 +188,6 @@ export function processRTState(rtId: string): void {
   const rtState = useRTStore.getState().states[rtId] || { inbound_paid: {}, outbound_owed: {} };
   const resourceConfigs = useResourceStore.getState().config;
 
-  console.log(
-    `[processRTState] START for rtId:${rtId} | current state: inbound_paid: ${JSON.stringify(rtState.inbound_paid)}, outbound_owed: ${JSON.stringify(rtState.outbound_owed)}`
-  );
   
   const animationSpeed = 2500;
   const delayAnimationSpeed = 2400;
@@ -210,7 +197,6 @@ export function processRTState(rtId: string): void {
   const allInboundAtLeastOne = Object.values(rtState.inbound_paid).every(val => val >= 1);
   const allOutboundAtLeastOne = Object.values(rtState.outbound_owed).every(val => val >= 1);
   if (!allInboundAtLeastOne || !allOutboundAtLeastOne) {
-    console.log("RT deduction skipped: not all resources are at least 1.");
     return;
   }
 
@@ -252,15 +238,6 @@ export function processRTState(rtId: string): void {
     outbound_owed: newOutboundOwed,
   });
 
-  console.log(
-    `[processRTState] Deduction computed for rtId:${rtId} | new inbound_paid: ${JSON.stringify(newInboundPaid)}, new outbound_owed: ${JSON.stringify(newOutboundOwed)}`
-  );
-  console.log(
-    `[processRTState] Animation payload for rtId:${rtId} | inbound emojis: "${inboundList.join('')}", outbound emojis: "${outboundList.join('')}"`
-  );
-  console.log(
-    `[processRTState] [${new Date().toLocaleTimeString()}] Triggering animation for rtId:${rtId}`
-  );
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
 
   // When the animation finishes, add the deducted outbound amounts to the general resource store

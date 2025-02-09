@@ -19,6 +19,7 @@ interface ResourceStore {
   config: Record<ResourceKey, ResourceConfig>
   
   setResourceAmount: (resource: ResourceKey, amount: number) => void
+  updateResources: (changes: Partial<Record<ResourceKey, number>>) => void
 }
 
 const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
