@@ -1,7 +1,7 @@
 import { MasterCard } from "@/components/MasterCard"
 import { CardImage } from "@/components/ui/CardImage"
 import { CardInfo } from "@/components/ui/CardInfo"
-import { ResourceTransformation, payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
+import { ResourceTransformation } from "@/components/ui/ResourceTransformation"
 import { Slider } from "@/components/ui/slider"
 import { useResource } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
@@ -43,12 +43,6 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
     return `${item.amount} ${resource?.icon || ''} ${resource?.name || item.key}`;
   }).join(' and ')}`;
 
-  const triggerPay = () => {
-    const multiplier = rtState?.human_energy_focus ? rtState.human_energy_focus / 100 : 1;
-    const success = payForResourceTransformation(rtId, multiplier);
-    console.log("Payment success:", success, "multiplier:", multiplier);
-  }
-
   return (
     <MasterCard title={title} typeIcon={typeIcon} discoveryStatusIcon={null} rtId={rtId}>
       <CardImage imageSrc={imageSrc} rtId={rtId} />
@@ -70,21 +64,6 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
             </div>
           </div>
         )}
-        {/* Debug buttons */}
-        <div className="mt-4 flex justify-center gap-2">
-          <button
-            onClick={triggerPay}
-            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-          >
-            Pay
-          </button>
-          <button
-            onClick={() => processRTState(rtId)}
-            className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
-          >
-            Process
-          </button>
-        </div>
       </CardInfo>
       <ResourceTransformation rtId={rtId} />
     </MasterCard>
