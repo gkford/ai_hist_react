@@ -53,7 +53,7 @@ function App() {
         // Calculate multiplier based on focus type
         const multiplier = focusType === 'eating' 
           ? focusValue * population 
-          : focusValue;
+          : focusValue / 100;
 
         const success = payForResourceTransformation(rtId, multiplier);
         console.log(`Auto-${focusType} triggered for ${rtId}, multiplier: ${multiplier}, success: ${success}`);
