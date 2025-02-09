@@ -23,10 +23,13 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
   const resourcesForDisplay = transformation?.inbound.concat(transformation?.outbound || [])
     .map(item => useResource(item.key))
 
+  // Only show slider if transformation.eating is false
+  const showSlider = !transformation?.eating;
+
   const handleSliderChange = (value: number[]) => {
     updateState(rtId, {
       ...rtState,
-      human_energy_focus: value[0]
+      human_energy_focus: showSlider ? value[0] : null
     })
   }
 
@@ -48,14 +51,16 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
       <CardImage imageSrc={imageSrc} />
       <CardInfo className="text-center">
         {descriptionText}
-        <div className="mt-4 px-8">
-          <Slider
-            defaultValue={[rtState.human_energy_focus || 0]}
-            max={100}
-            step={1}
-            onValueChange={handleSliderChange}
-          />
-        </div>
+        {showSlider && (
+          <div className="mt-4 px-8">
+            <Slider
+              value={[rtState.human_energy_focus ?? 0]}
+              max={100}
+              step={1}
+              onValueChange={handleSliderChange}
+            />
+          </div>
+        )}
         {/* Debug buttons */}
         <div className="mt-4 flex justify-center gap-2">
           <button

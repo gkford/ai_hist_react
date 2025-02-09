@@ -4,7 +4,7 @@ import type { ResourceKey } from './useResourceStore'
 interface RTState {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
-  human_energy_focus: number;
+  human_energy_focus: number | null;  // Allow null
 }
 
 interface RTStore {
