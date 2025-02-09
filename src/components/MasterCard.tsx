@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useRTStore } from "@/store/useRTStore";
+import { getTransformation } from "@/data/resourceTransformations";
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
   imageSrc?: string;
@@ -17,6 +19,12 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
   ({ className, imageSrc, header, title, children, typeIcon, discoveryStatusIcon, rtId, ...props }, ref) => {
     const rtState = rtId ? useRTStore(state => state.states[rtId]) : null;
     const isUnthoughtof = rtState?.status === 'unthoughtof';
+    
+    const transformation = rtId ? getTransformation(rtId) : null;
+    const showProgressBar = isUnthoughtof && rtState && transformation;
+    const progressValue = showProgressBar 
+      ? (rtState.thoughtInvested / transformation.thoughtToImagine) * 100
+      : 0;
 
     // Function to replace text with question marks
     const obscureText = (text: string) => {
@@ -64,7 +72,8 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
     return (
       <Card ref={ref} className={cn("w-[400px] h-[543px] overflow-hidden", className)} {...props}>
         {header ? header : (
-          <div className="flex items-center justify-between p-4">
+          <>
+            <div className="flex items-center justify-between p-4">
             <h3 className="text-xl font-semibold">
               {isUnthoughtof ? obscureText(title || "Master Card") : (title || "Master Card")}
             </h3>
@@ -80,7 +89,13 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
                 </span>
               )}
             </div>
-          </div>
+            </div>
+            {showProgressBar && (
+              <div className="px-4 pb-2">
+                <Progress value={progressValue} className="w-full" />
+              </div>
+            )}
+          </>
         )}
         {isUnthoughtof ? processChildren(children) : children || (
           <div className="h-full flex items-center justify-center text-gray-400">

@@ -10,6 +10,7 @@ interface RTState {
   eating_focus: number | null;  // Value between 0 and 1, or null
   hide: boolean;
   status: RTStatus;
+  thoughtInvested: number;
 }
 
 interface RTStore {
@@ -25,7 +26,8 @@ export const useRTStore = create<RTStore>((set) => ({
       human_energy_focus: null,
       eating_focus: 1,
       hide: false,
-      status: 'discovered'
+      status: 'discovered',
+      thoughtInvested: 0
     },
     hunt: {
       inbound_paid: {},
@@ -33,7 +35,8 @@ export const useRTStore = create<RTStore>((set) => ({
       human_energy_focus: 0,
       eating_focus: null,
       hide: false,
-      status: 'unthoughtof'
+      status: 'unthoughtof',
+      thoughtInvested: 0
     },
     think: {
       inbound_paid: {},
@@ -41,7 +44,8 @@ export const useRTStore = create<RTStore>((set) => ({
       human_energy_focus: 0,
       eating_focus: null,
       hide: false,
-      status: 'discovered'
+      status: 'discovered',
+      thoughtInvested: 0
     },
     gather_food: {
       inbound_paid: {},
@@ -49,7 +53,8 @@ export const useRTStore = create<RTStore>((set) => ({
       human_energy_focus: 0,
       eating_focus: null,
       hide: false,
-      status: 'discovered'
+      status: 'discovered',
+      thoughtInvested: 0
     }
   },
   updateState: (rtId, newState) => set((state) => {
