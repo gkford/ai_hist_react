@@ -70,10 +70,9 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
       return children;
     };
     return (
-      <Card ref={ref} className={cn("w-[400px] h-[543px] overflow-hidden", className)} {...props}>
+      <Card ref={ref} className={cn("w-[400px] h-[543px] overflow-hidden flex flex-col", className)} {...props}>
         {header ? header : (
-          <>
-            <div className="flex items-center justify-between p-4">
+          <div className="flex items-center justify-between p-4">
             <h3 className="text-xl font-semibold">
               {isUnthoughtof ? obscureText(title || "Master Card") : (title || "Master Card")}
             </h3>
@@ -89,17 +88,19 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
                 </span>
               )}
             </div>
-            </div>
-            {showProgressBar && (
-              <div className="px-4 pb-2">
-                <Progress value={progressValue} className="w-full" />
-              </div>
-            )}
-          </>
+          </div>
         )}
-        {isUnthoughtof ? processChildren(children) : children || (
-          <div className="h-full flex items-center justify-center text-gray-400">
-            No content here
+        <div className="flex-1">
+          {isUnthoughtof ? processChildren(children) : children || (
+            <div className="h-full flex items-center justify-center text-gray-400">
+              No content here
+            </div>
+          )}
+        </div>
+        {showProgressBar && (
+          <div className="p-4 mt-auto">
+            <div className="text-sm text-center mb-1">Progress to imagining</div>
+            <Progress value={progressValue} className="w-full" />
           </div>
         )}
       </Card>

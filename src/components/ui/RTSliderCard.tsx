@@ -23,8 +23,8 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
   const resourcesForDisplay = transformation?.inbound.concat(transformation?.outbound || [])
     .map(item => useResource(item.key))
 
-  // Only show slider if transformation.eating is false
-  const showSlider = !transformation?.eating;
+  // Only show slider if transformation.eating is false and status is discovered
+  const showSlider = !transformation?.eating && rtState.status === 'discovered';
 
   const handleSliderChange = (value: number[]) => {
     updateState(rtId, {
