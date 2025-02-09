@@ -111,7 +111,8 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
           ])
         )
       },
-      human_energy_focus: rtState.human_energy_focus
+      human_energy_focus: rtState.human_energy_focus,
+      eating_focus: rtState.eating_focus
     };
     updateState(rtId, newState);
     return true;
@@ -237,7 +238,8 @@ export function processRTState(rtId: string): void {
   useRTStore.getState().updateState(rtId, {
     inbound_paid: newInboundPaid,
     outbound_owed: newOutboundOwed,
-    human_energy_focus: rtState.human_energy_focus
+    human_energy_focus: rtState.human_energy_focus,
+    eating_focus: rtState.eating_focus
   });
 
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
