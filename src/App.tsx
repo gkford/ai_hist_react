@@ -9,7 +9,7 @@ import { payForResourceTransformation, processRTState } from "@/components/ui/Re
 import { useEffect, useState } from "react"
 
 function App() {
-  const [isEatingActive, setIsEatingActive] = useState(true);
+  const [isPaymentActive, setIsPaymentActive] = useState(true);
   const [isCyclingActive, setIsCyclingActive] = useState(true);
   const formatNumber = (n: number): string => {
     const trimmed = parseFloat(n.toFixed(3));
@@ -24,7 +24,7 @@ function App() {
   const rtStates = useRTStore((state) => state.states)
 
   useEffect(() => {
-    if (!isEatingActive) return;
+    if (!isPaymentActive) return;
     
     const intervalId = setInterval(() => {
       const rtStates = useRTStore.getState().states;
@@ -61,7 +61,7 @@ function App() {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [isEatingActive]);
+  }, [isPaymentActive]);
 
   useEffect(() => {
     if (!isCyclingActive) return;
@@ -109,10 +109,10 @@ function App() {
 
         <div className="mt-4">
           <button 
-            onClick={() => setIsEatingActive(prev => !prev)}
+            onClick={() => setIsPaymentActive(prev => !prev)}
             className="mr-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
           >
-            {isEatingActive ? "Turn off Eating Function" : "Turn on Eating Function"}
+            {isPaymentActive ? "Turn off Payment Function" : "Turn on Payment Function"}
           </button>
           <button 
             onClick={() => setIsCyclingActive(prev => !prev)}
