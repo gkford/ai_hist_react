@@ -63,33 +63,20 @@ export const useRTStore = create<RTStore>((set) => ({
     }
   },
   updateState: (rtId, newState) => set((state) => {
-    // Get focus type being updated (eating, human energy, or thought)
-    const focusType = newState.eating_focus !== null ? 'eating_focus' 
-      : newState.thought_focus !== null ? 'thought_focus'
-      : 'human_energy_focus';
-    const otherRTs = Object.entries(state.states).filter(([id, rt]) => 
-      id !== rtId && rt[focusType] !== null
-    );
+    // Only sum human_energy_focus across RTs
+    if (newState.human_energy_focus !== null) {
+      const otherRTs = Object.entries(state.states).filter(([id]) => id !== rtId);
+      const otherTotal = otherRTs.reduce((sum, [, rt]) => 
+        sum + (rt.human_energy_focus || 0), 0);
+      const total = (newState.human_energy_focus || 0) + otherTotal;
 
-    // Calculate the new total including the updated RT
-    const newFocusValue = newState[focusType] || 0;
-    const otherTotal = otherRTs.reduce((sum, [, rt]) => sum + (rt[focusType] || 0), 0);
-    const total = newFocusValue + otherTotal;
-
-    // If total would exceed max (100), adjust the new value down
-    if (total > 100) {
-      // Adjust the new value to fit within remaining space
-      newState[focusType] = Math.max(0, 100 - otherTotal);
-      // Just update with the adjusted value
-      return {
-        states: {
-          ...state.states,
-          [rtId]: newState
-        }
-      };
+      // If total would exceed max (100), adjust the new value down
+      if (total > 100) {
+        newState.human_energy_focus = Math.max(0, 100 - otherTotal);
+      }
     }
 
-    // If total is fine, just update the one RT
+    // Update the RT state
     return {
       states: {
         ...state.states,
