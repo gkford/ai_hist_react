@@ -76,25 +76,17 @@ export const useRTStore = create<RTStore>((set) => ({
     const otherTotal = otherRTs.reduce((sum, [, rt]) => sum + (rt[focusType] || 0), 0);
     const total = newFocusValue + otherTotal;
 
-    // If total would exceed 1, adjust other RTs proportionally
-    if (total > 100) {  // Using 100 since our sliders work on 0-100 scale
-      const reduction = (total - 100) / otherRTs.length;
-      const newStates = { ...state.states };
-      
-      // Update the target RT
-      newStates[rtId] = newState;
-
-      // Adjust other RTs
-      otherRTs.forEach(([id, rt]) => {
-        const currentValue = rt[focusType] || 0;
-        const newValue = Math.max(0, currentValue - reduction);
-        newStates[id] = {
-          ...rt,
-          [focusType]: newValue
-        };
-      });
-
-      return { states: newStates };
+    // If total would exceed max (100), adjust the new value down
+    if (total > 100) {
+      // Adjust the new value to fit within remaining space
+      newState[focusType] = Math.max(0, 100 - otherTotal);
+      // Just update with the adjusted value
+      return {
+        states: {
+          ...state.states,
+          [rtId]: newState
+        }
+      };
     }
 
     // If total is fine, just update the one RT
