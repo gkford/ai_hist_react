@@ -75,6 +75,8 @@ export const useResource = (resource: ResourceKey) => {
   return {
     amount: store.resources[resource].amount,
     icon: store.config[resource].icon,
+    key: resource,
+    name: resource,  // Using the key as the name for now
     setAmount: (amount: number) => store.setResourceAmount(resource, amount)
   }
 }
