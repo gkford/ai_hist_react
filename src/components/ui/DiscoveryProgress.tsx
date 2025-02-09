@@ -57,22 +57,40 @@ function investThought(
 }
 
 export function DiscoveryProgress({ rtId }: ProgressProps) {
+  // Move all hooks to the top
   const rtState = useRTStore(state => state.states[rtId]);
   const transformation = getTransformation(rtId);
   
-  // Only show for unthoughtof or imagined states
+  // Use useEffect regardless of state
+  React.useEffect(() => {
+    // Only set up interval if conditions are met
+    if (!rtState || !transformation || 
+        (rtState.status !== 'unthoughtof' && rtState.status !== 'imagined') ||
+        !rtState.thought_focus) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const thoughts = useResourceStore.getState().resources.thoughts.amount;
+      const rtStore = useRTStore.getState();
+      if (thoughts > 0) {
+        investThought(rtId, thoughts, rtState.thought_focus / 100, rtStore);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [rtId, rtState?.thought_focus, rtState?.status]);
+
+  // Render null if conditions aren't met
   if (!rtState || !transformation || 
       (rtState.status !== 'unthoughtof' && rtState.status !== 'imagined')) {
     return null;
   }
 
   const isUnthoughtof = rtState.status === 'unthoughtof';
-  
-  // Calculate progress based on current state
   const targetThought = isUnthoughtof 
     ? transformation.thoughtToImagine 
     : transformation.thoughtToDiscover;
-  
   const progressValue = (rtState.thoughtInvested / targetThought) * 100;
 
   const handleThoughtSliderChange = (value: number[]) => {
@@ -81,24 +99,6 @@ export function DiscoveryProgress({ rtId }: ProgressProps) {
       thought_focus: value[0]
     });
   };
-
-  // Effect to handle thought investment based on focus
-  React.useEffect(() => {
-    const thoughtFocus = rtState.thought_focus;
-    if (!thoughtFocus) return;
-
-    const interval = setInterval(() => {
-      // Get current thoughts from resource store
-      const thoughts = useResourceStore.getState().resources.thoughts.amount;
-      const rtStore = useRTStore.getState(); // Get store reference here
-      if (thoughts > 0) {
-        // Convert percentage to decimal for multiplier
-        investThought(rtId, thoughts, thoughtFocus / 100, rtStore);
-      }
-    }, 1000); // Check every second
-
-    return () => clearInterval(interval);
-  }, [rtId, rtState.thought_focus, rtState.status]);
 
   return (
     <div className="p-4 mt-auto">
