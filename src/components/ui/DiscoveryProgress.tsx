@@ -9,14 +9,18 @@ interface ProgressProps {
   rtId: string;
 }
 
-function investThought(rtId: string, totalThought: number, multiplier: number): void {
+function investThought(
+  rtId: string, 
+  totalThought: number, 
+  multiplier: number,
+  rtStore: ReturnType<typeof useRTStore.getState>
+): void {
   // Validate multiplier is between 0 and 1
   if (multiplier < 0 || multiplier > 1) {
     console.warn('Thought multiplier must be between 0 and 1');
     return;
   }
 
-  const rtStore = useRTStore.getState();
   const rtState = rtStore.states[rtId];
   const transformation = getTransformation(rtId);
 
@@ -86,9 +90,10 @@ export function DiscoveryProgress({ rtId }: ProgressProps) {
     const interval = setInterval(() => {
       // Get current thoughts from resource store
       const thoughts = useResourceStore.getState().resources.thoughts.amount;
+      const rtStore = useRTStore.getState(); // Get store reference here
       if (thoughts > 0) {
         // Convert percentage to decimal for multiplier
-        investThought(rtId, thoughts, thoughtFocus / 100);
+        investThought(rtId, thoughts, thoughtFocus / 100, rtStore);
       }
     }, 1000); // Check every second
 
