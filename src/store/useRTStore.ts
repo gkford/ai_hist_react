@@ -115,7 +115,7 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'discovered',
       thoughtInvested: 0,
-      priority: 'none'
+      priority: 'low'
     },
     gather_food: {
       inbound_paid: {},
