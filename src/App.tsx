@@ -9,11 +9,10 @@ import { NonVerbalCommunicationCard } from "./components/card_library/NonVerbalC
 import { useResource, useResourceStore } from "@/store/useResourceStore"
 import { useRTStore } from "@/store/useRTStore"
 import { payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
 function App() {
-  const [isPaymentActive, setIsPaymentActive] = useState(true);
-  const [isCyclingActive, setIsCyclingActive] = useState(true);
   const formatNumber = (n: number): string => {
     const trimmed = parseFloat(n.toFixed(3));
     return trimmed.toString();
@@ -27,54 +26,11 @@ function App() {
   const rtStates = useRTStore((state) => state.states)
 
   useEffect(() => {
-    if (!isPaymentActive) return;
-    
-    const intervalId = setInterval(() => {
-      const rtStates = useRTStore.getState().states;
-      const population = useResourceStore.getState().resources.population.amount;
-
-      Object.entries(rtStates).forEach(([rtId, state]) => {
-        // Type check the focuses
-        if ((state.eating_focus === null && state.human_energy_focus === null) ||
-            (state.eating_focus !== null && state.human_energy_focus !== null)) {
-          console.error(`RT ${rtId} has invalid focus configuration:`, state);
-          return;
-        }
-
-        // Get the active focus value
-        const focusType = state.eating_focus !== null ? 'eating' : 'human_energy';
-        const focusValue = state.eating_focus ?? state.human_energy_focus;
-
-        if (focusValue === null) {
-          console.error(`RT ${rtId} has unexpected null focus value`);
-          return;
-        }
-
-        // Skip if focus is 0
-        if (focusValue === 0) return;
-
-        // Calculate multiplier based on focus type
-        const multiplier = focusType === 'eating' 
-          ? focusValue * population 
-          : focusValue / 100;
-
-        payForResourceTransformation(rtId, multiplier);
-      });
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [isPaymentActive]);
-
-  useEffect(() => {
-    if (!isCyclingActive) return;
-    const intervalId = setInterval(() => {
-      const rtStates = useRTStore.getState().states;
-      Object.keys(rtStates).forEach(rtId => {
-        processRTState(rtId);
-      });
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, [isCyclingActive]);
+    // Start the loop on mount
+    startGameLoop()
+    // Stop it on unmount
+    return () => stopGameLoop()
+  }, [])
 
   return (
     <div className="min-h-screen p-4 flex flex-col">
@@ -147,20 +103,6 @@ function App() {
           })}
         </div>
 
-        <div className="mt-4">
-          <button 
-            onClick={() => setIsPaymentActive(prev => !prev)}
-            className="mr-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-          >
-            {isPaymentActive ? "Turn off Payment Function" : "Turn on Payment Function"}
-          </button>
-          <button 
-            onClick={() => setIsCyclingActive(prev => !prev)}
-            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-          >
-            {isCyclingActive ? "Turn off RT State Cycler" : "Turn on RT State Cycler"}
-          </button>
-        </div>
       </div>
     </div>
   )
