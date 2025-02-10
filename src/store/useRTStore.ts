@@ -24,13 +24,12 @@ interface RTStore {
 }
 
 const recalculateThoughtFocus = (rtStates: Record<string, RTState>, effectStates: Record<string, EffectState>) => {
-  // Get all entities that can receive thought focus
+  // Get all entities that can receive thought focus - only unthoughtof or imagined
   const activeRTs = Object.values(rtStates).filter(rt => 
-    (rt.status === 'unthoughtof' || rt.status === 'imagined') && 
-    rt.thought_focus !== null
+    rt.status === 'unthoughtof' || rt.status === 'imagined'
   );
   const activeEffects = Object.values(effectStates).filter(effect => 
-    (effect.status === 'unthoughtof' || effect.status === 'imagined')
+    effect.status === 'unthoughtof' || effect.status === 'imagined'
   );
 
   const allEntities = [...activeRTs, ...activeEffects];
