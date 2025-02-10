@@ -167,30 +167,30 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
   )
 })
 
-export function payForResourceTransformation(rtId: string, multiplier: number = 1): boolean {
-  const instance = rtRegistry.get(rtId);
-  if (instance) {
-    return instance.payForTransformation(multiplier);
-  } else {
-    return false;
-  }
-}
+export const ResourceTransformationProcessor = {
+  payForResourceTransformation(rtId: string, multiplier: number = 1): boolean {
+    const instance = rtRegistry.get(rtId);
+    if (instance) {
+      return instance.payForTransformation(multiplier);
+    } else {
+      return false;
+    }
+  },
 
-export function animateResourceTransformation(
-  rtId: string,
-  inbound: string[],
-  outbound: string[],
-  animationSpeed: number,
-  delayAnimationSpeed: number
-) {
-  const instance = rtRegistry.get(rtId)
-  if (instance) {
-    instance.animateRT(inbound, outbound, animationSpeed, delayAnimationSpeed)
-  } else {
-  }
-}
+  animateResourceTransformation(
+    rtId: string,
+    inbound: string[],
+    outbound: string[],
+    animationSpeed: number,
+    delayAnimationSpeed: number
+  ) {
+    const instance = rtRegistry.get(rtId)
+    if (instance) {
+      instance.animateRT(inbound, outbound, animationSpeed, delayAnimationSpeed)
+    }
+  },
 
-export function processRTState(rtId: string): void {
+  processRTState(rtId: string): void {
   // Get the current RT state for the given id (or default values)
   const cardState = useCardsStore.getState().cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} };
   const store = useResourceStore.getState();

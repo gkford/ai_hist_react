@@ -1,5 +1,5 @@
 import { useCardsStore } from "@/store/useCardsStore"
-import { processRTState } from "@/components/ui/ResourceTransformation"
+import { ResourceTransformationProcessor } from "@/components/ui/ResourceTransformation"
 import { allCards } from "@/data/cards"
 
 let intervalId: number | null = null
@@ -14,7 +14,7 @@ export function startGameLoop() {
     Object.keys(cardStates).forEach((cardId) => {
       const cardDef = allCards.find(c => c.id === cardId);
       if (cardDef?.transformation) {
-        processRTState(cardId);
+        ResourceTransformationProcessor.processRTState(cardId);
       }
     });
   }, 1000);
