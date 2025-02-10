@@ -27,22 +27,18 @@ const initialCardState: CardState = {
 }
 
 export const useCardsStore = create<CardsStore>((set) => ({
-  cardStates: {
-    hominids: {
-      ...initialCardState,
-      discovery_state: {
-        current_status: 'discovered',
-        thought_invested: 0
+  cardStates: Object.fromEntries(
+    ['hominids'].map(id => [
+      id,
+      {
+        ...initialCardState,
+        discovery_state: {
+          current_status: 'discovered',
+          thought_invested: 0
+        }
       }
-    },
-    gather_food: {
-      ...initialCardState,
-      discovery_state: {
-        current_status: 'discovered',
-        thought_invested: 0
-      }
-    },
-  },
+    ])
+  ),
   updateCardState: (id, partial) =>
     set((state) => ({
       cardStates: {

@@ -3,7 +3,6 @@ import type { ResourceKey } from "@/store/useResourceStore";
 export type DiscoveryStatus = 'hidden' | 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 
 export interface DiscoveryStats {
-  initial_status: DiscoveryStatus;
   thought_to_imagine: number;
   further_thought_to_discover: number;
   dependencies?: string[]; // Array of card IDs this card depends on
@@ -41,7 +40,6 @@ export const allCards: CardDefinition[] = [
     imageSrc: "/card_images/hominids.png",
     description: "Your early human population",
     discovery_stats: {
-      initial_status: 'discovered',
       thought_to_imagine: 10,
       further_thought_to_discover: 20
     },
@@ -62,7 +60,6 @@ export const allCards: CardDefinition[] = [
     imageSrc: "/card_images/gatherFood.png",
     description: "Gather food from the environment",
     discovery_stats: {
-      initial_status: 'discovered',
       thought_to_imagine: 5,
       further_thought_to_discover: 15
     },
