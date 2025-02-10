@@ -231,7 +231,7 @@ export function processRTState(rtId: string): void {
     const whole = Math.floor(value);
     if (whole > 0) {
       newOutboundOwed[rKey] = parseFloat((value - whole).toFixed(3));
-      const icon = resourceConfigs[rKey]?.icon || rKey;
+      const icon = store.resources[rKey]?.icon || rKey;
       for (let i = 0; i < whole; i++) {
         outboundList.push(icon);
       }
