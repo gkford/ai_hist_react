@@ -62,6 +62,18 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
     ],
     thoughtToImagine: 0,
     thoughtToDiscover: 0
+  },
+  "non_verbal_communication": {
+    name: "Non-verbal Communication",
+    eating: false,
+    inbound: [
+      { key: "humanEnergy", amount: 1 }
+    ],
+    outbound: [
+      { key: "knowledge", amount: 1 }
+    ],
+    thoughtToImagine: 10,
+    thoughtToDiscover: 20
   }
 }
 

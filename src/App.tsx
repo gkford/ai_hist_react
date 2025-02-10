@@ -4,6 +4,7 @@ import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { HuntingCard } from "./components/card_library/HuntingCard"
 import { ThinkingCard } from "./components/card_library/ThinkingCard"
 import { EarlyStoneToolsCard } from "./components/card_library/EarlyStoneToolsCard"
+import { NonVerbalCommunicationCard } from "./components/card_library/NonVerbalCommunicationCard"
 import { useResource, useResourceStore } from "@/store/useResourceStore"
 import { useRTStore } from "@/store/useRTStore"
 import { payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
@@ -82,21 +83,26 @@ function App() {
 
       {/* Main game area */}
       <div className="flex gap-8">
-        {/* People Column */}
+        {/* People & Thinking Column */}
         <div className="flex flex-col gap-4">
           <HominidsCard />
+          <ThinkingCard />
         </div>
 
-        {/* Actions Column */}
+        {/* Food Actions Column */}
         <div className="flex flex-col gap-4">
           <GatherFoodCard />
-          <ThinkingCard />
           <HuntingCard />
         </div>
 
         {/* Effects Column */}
         <div className="flex flex-col gap-4">
           <EarlyStoneToolsCard />
+        </div>
+
+        {/* Communication Column */}
+        <div className="flex flex-col gap-4">
+          <NonVerbalCommunicationCard />
         </div>
       </div>
 
