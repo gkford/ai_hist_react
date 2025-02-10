@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { Priority } from './useRTStore'
 
 type EffectStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 

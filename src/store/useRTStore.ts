@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { ResourceKey } from './useResourceStore'
-import { useEffectsStore } from './useEffectsStore'
+import { useEffectsStore, type EffectState } from './useEffectsStore'
 
 type RTStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 type Priority = 'high' | 'low' | 'none';
@@ -216,7 +216,8 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'discovered' as RTStatus,
       thoughtInvested: 0,
-      priority: 'low' as Priority
+      priority: 'low' as Priority,
+      thought_priority: 'none' as Priority
     },
     gather_food: {
       inbound_paid: {},
@@ -227,7 +228,8 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'discovered' as RTStatus,
       thoughtInvested: 0,
-      priority: 'high' as Priority
+      priority: 'high' as Priority,
+      thought_priority: 'none' as Priority
     },
     non_verbal_communication: {
       inbound_paid: {},
