@@ -2,9 +2,6 @@ import * as React from "react";
 import { Card } from "@/components/ui/card";
 import { DiscoveryProgress } from "@/components/ui/DiscoveryProgress";
 import { cn } from "@/lib/utils";
-import { useRTStore } from "@/store/useRTStore";
-import { getTransformation } from "@/data/resourceTransformations";
-import { useResourceStore } from "@/store/useResourceStore";
 
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
