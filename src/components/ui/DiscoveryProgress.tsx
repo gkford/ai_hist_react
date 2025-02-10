@@ -4,6 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { useRTStore } from "@/store/useRTStore";
 import { getTransformation } from "@/data/resourceTransformations";
 import { useResourceStore } from "@/store/useResourceStore";
+import { progressDiscovery } from "@/lib/discoveryProgression";
 
 interface ProgressProps {
   rtId: string;
@@ -15,45 +16,34 @@ function investThought(
   multiplier: number,
   rtStore: ReturnType<typeof useRTStore.getState>
 ): void {
-  // Validate multiplier is between 0 and 1
   if (multiplier < 0 || multiplier > 1) {
-    console.warn('Thought multiplier must be between 0 and 1');
+    console.warn("Thought multiplier must be between 0 and 1");
     return;
   }
 
   const rtState = rtStore.states[rtId];
   const transformation = getTransformation(rtId);
+  if (!rtState || !transformation) return;
 
-  if (!rtState || !transformation) {
-    return;
-  }
-
-  // Calculate thought to invest
+  // Calculate the thought investment from the slider/resource
   const thoughtToInvest = totalThought * multiplier;
 
-  // Calculate new total invested thought
-  const newThoughtInvested = rtState.thoughtInvested + thoughtToInvest;
+  // Use the abstracted discovery logic
+  const { newStatus, newThoughtInvested } = progressDiscovery(
+    rtState.status,
+    rtState.thoughtInvested,
+    thoughtToInvest,
+    {
+      thoughtToImagine: transformation.thoughtToImagine,
+      thoughtToDiscover: transformation.thoughtToDiscover,
+    }
+  );
 
-  // Handle both unthoughtof -> imagined and imagined -> discovered transitions
-  if (rtState.status === 'unthoughtof' && newThoughtInvested >= transformation.thoughtToImagine) {
-    rtStore.updateState(rtId, {
-      ...rtState,
-      thoughtInvested: 0,
-      status: 'imagined'
-    });
-  } else if (rtState.status === 'imagined' && newThoughtInvested >= transformation.thoughtToDiscover) {
-    rtStore.updateState(rtId, {
-      ...rtState,
-      thoughtInvested: 0,
-      status: 'discovered'
-    });
-  } else {
-    // Just update the invested thought amount
-    rtStore.updateState(rtId, {
-      ...rtState,
-      thoughtInvested: newThoughtInvested
-    });
-  }
+  rtStore.updateState(rtId, {
+    ...rtState,
+    thoughtInvested: newThoughtInvested,
+    status: newStatus,
+  });
 }
 
 export function DiscoveryProgress({ rtId }: ProgressProps) {

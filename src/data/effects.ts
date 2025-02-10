@@ -19,7 +19,9 @@ export const effects: Record<string, Effect> = {
     name: "Early Stone Tools",
     type: "resourceProductionMultiplier",
     targetResource: "humanEnergy",
-    multiplier: 1.1  // 10% increase
+    multiplier: 1.1,  // 10% increase
+    thoughtToImagine: 20,  // example threshold
+    thoughtToDiscover: 40  // example threshold
   }
 }
 
