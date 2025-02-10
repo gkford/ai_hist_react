@@ -37,7 +37,7 @@ const rtRegistry = new Map<string, ResourceTransformationHandle>()
 let globalParticleIdCounter = 0
 let globalTransformationIdCounter = 0
 
-export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ rtId }, ref) {
+export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ rtId, transformationText }, ref) {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
   const { states: rtStates, updateState } = useRTStore()
   const rtState = rtStates[rtId] || { inbound_paid: {}, outbound_owed: {} }
