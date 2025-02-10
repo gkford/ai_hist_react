@@ -1,5 +1,5 @@
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
-import { CardRenderer } from "@/components/ui/CardRenderer"
+import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { allCards } from "@/data/cards"
 
@@ -36,7 +36,7 @@ function App() {
           {allCards
             .filter((card) => card.column === 1)
             .map((card) => (
-              <CardRenderer key={card.id} cardId={card.id} />
+              <MasterCard key={card.id} id={card.id} />
             ))}
         </div>
 
@@ -44,7 +44,7 @@ function App() {
           {allCards
             .filter((card) => card.column === 2)
             .map((card) => (
-              <CardRenderer key={card.id} cardId={card.id} />
+              <MasterCard key={card.id} id={card.id} />
             ))}
         </div>
       </div>
