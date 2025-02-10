@@ -224,9 +224,9 @@ export function processRTState(rtId: string): void {
 
   // Process outbound_owed and track deductions
   const outboundList: string[] = [];
-  const newOutboundOwed = { ...rtState.outbound_owed };
+  const newOutboundOwed = { ...cardState.outbound_owed };
   const outboundDeductions: Partial<Record<ResourceKey, number>> = {};
-  Object.entries(rtState.outbound_owed).forEach(([key, value]) => {
+  Object.entries(cardState.outbound_owed).forEach(([key, value]) => {
     const rKey = key as ResourceKey;
     const whole = Math.floor(value);
     if (whole > 0) {
