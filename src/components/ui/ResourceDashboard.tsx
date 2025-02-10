@@ -1,5 +1,29 @@
 import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
+
+interface ResourceDisplayProps {
+  icon: string
+  amount: number
+}
+
+function ResourceDisplay({ icon, amount }: ResourceDisplayProps) {
+  const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDisplayAmount(Math.floor(amount))
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [amount])
+
+  return (
+    <div className="w-32 px-4 py-2 bg-white rounded-md shadow-sm flex items-center justify-between">
+      <span className="text-xl">{icon}</span>
+      <span className="font-medium tabular-nums">{displayAmount}</span>
+    </div>
+  )
+}
 
 export function ResourceDashboard({ className }: { className?: string }) {
   const food = useResource('food')
@@ -7,11 +31,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const thoughts = useResource('thoughts')
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
-
-  const formatNumber = (n: number): string => {
-    const trimmed = parseFloat(n.toFixed(3));
-    return trimmed.toString();
-  }
 
   const resources = [
     { icon: food.icon, amount: food.amount },
@@ -22,12 +41,13 @@ export function ResourceDashboard({ className }: { className?: string }) {
   ]
 
   return (
-    <div className={cn("flex gap-6 p-4 bg-white rounded-lg shadow-sm", className)}>
+    <div className={cn("flex gap-4 p-4 bg-gray-50 rounded-lg", className)}>
       {resources.map((resource, index) => (
-        <div key={index} className="flex items-center gap-2">
-          <span className="text-xl">{resource.icon}</span>
-          <span className="font-medium">{formatNumber(resource.amount)}</span>
-        </div>
+        <ResourceDisplay 
+          key={index} 
+          icon={resource.icon} 
+          amount={resource.amount}
+        />
       ))}
     </div>
   )
