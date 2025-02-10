@@ -115,7 +115,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     };
     updateCardState(rtId, newState);
     return true;
-  }, [rtState, updateState, rtId]
+  }, [cardState, updateCardState, rtId]
   )
 
   useEffect(() => {
