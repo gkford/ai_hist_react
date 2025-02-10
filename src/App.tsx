@@ -3,7 +3,6 @@ import { CardRenderer } from "@/components/ui/CardRenderer"
 import { useResource } from "@/store/useResourceStore"
 import { allCards } from "@/data/cards"
 
-const INITIAL_CARDS = ['hominids']
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"

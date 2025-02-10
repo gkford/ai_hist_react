@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } from "react"
 import type { ResourceKey } from "@/store/useResourceStore"
+import { allCards } from "@/data/cards"
 import { useResourceStore } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
 import { useCardsStore } from "@/store/useCardsStore"
@@ -203,12 +204,13 @@ export const ResourceTransformationProcessor = {
     if (!cardDef?.transformation) return;
 
     // Scale transformation amounts by population
-    const scaledInbound = cardDef.transformation.inbound.map(item => ({
-      ...item,
+    // Apply population scaling directly to transformation checks
+    const inboundWithPopulation = cardDef.transformation.inbound.map(item => ({
+      resource: item.resource,
       amount: item.amount * population
     }));
-    const scaledOutbound = cardDef.transformation.outbound.map(item => ({
-      ...item,
+    const outboundWithPopulation = cardDef.transformation.outbound.map(item => ({
+      resource: item.resource,
       amount: item.amount * population
     }));
 
