@@ -9,7 +9,6 @@ import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 function initializeCards() {
   const cardStore = useCardsStore.getState();
   
-  // Just create the hominids card for now
   cardStore.createCard('hominids', {
     discovery_state: {
       current_status: 'discovered'

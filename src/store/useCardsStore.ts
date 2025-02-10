@@ -92,9 +92,8 @@ export const useCardsStore = create<CardsStore>((set) => ({
               prop: 0,
               priority: 'none'
             },
-            ...initialState?.discovery_state
-          },
-          ...initialState
+            ...(initialState?.discovery_state || {})  // This will override only the provided values
+          }
         }
       }
     }));
