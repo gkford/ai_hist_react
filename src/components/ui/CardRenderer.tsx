@@ -5,6 +5,7 @@ import { MasterCard } from "@/components/MasterCard";
 import { DiscoveryProgress } from "@/components/ui/DiscoveryProgress";
 import { CardInfo } from "@/components/ui/CardInfo";
 import { CardImage } from "@/components/ui/CardImage";
+import { ResourceTransformation } from "@/components/ui/ResourceTransformation";
 
 type CardRendererProps = {
   cardId: string;
@@ -24,6 +25,7 @@ export function CardRenderer({ cardId }: CardRendererProps) {
       imageSrc={cardDef.imageSrc ? import.meta.env.BASE_URL + cardDef.imageSrc : undefined}
     >
       {cardDef.imageSrc && <CardImage imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc} />}
+      {cardDef.transformation && <ResourceTransformation rtId={cardId} />}
       <CardInfo>
         <p>{cardDef.description}</p>
       </CardInfo>
