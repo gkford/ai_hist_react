@@ -2,6 +2,7 @@ import React from "react";
 import { MasterCard } from "@/components/MasterCard";
 import { CardInfo } from "@/components/ui/CardInfo";
 import { CardImage } from "@/components/ui/CardImage";
+import { EffectDiscoveryProgress } from "@/components/ui/EffectDiscoveryProgress";
 
 interface EffectCardProps {
   effectId: string;
@@ -45,6 +46,7 @@ export function EffectCard({
           </div>
         )}
       </CardInfo>
+      <EffectDiscoveryProgress effectId={effectId} />
     </MasterCard>
   );
 }
