@@ -5,7 +5,7 @@ export type DiscoveryStatus = 'hidden' | 'unthoughtof' | 'imagined' | 'discovere
 export interface DiscoveryStats {
   initial_status: DiscoveryStatus;
   thought_to_imagine: number;
-  thought_to_discover: number;
+  further_thought_to_discover: number;
   dependencies?: string[]; // Array of card IDs this card depends on
 }
 
@@ -43,7 +43,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       initial_status: 'discovered',
       thought_to_imagine: 10,
-      thought_to_discover: 20
+      further_thought_to_discover: 20
     },
     transformation: {
       inbound: [
