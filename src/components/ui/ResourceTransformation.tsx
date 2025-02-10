@@ -118,7 +118,8 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
       hide: rtState.hide,
       status: rtState.status,
       thoughtInvested: rtState.thoughtInvested,
-      priority: rtState.priority
+      priority: rtState.priority,
+      thought_priority: rtState.thought_priority
     };
     updateState(rtId, newState);
     return true;
@@ -256,7 +257,8 @@ export function processRTState(rtId: string): void {
     hide: rtState.hide,
     status: rtState.status,
     thoughtInvested: rtState.thoughtInvested,
-    priority: rtState.priority
+    priority: rtState.priority,
+    thought_priority: rtState.thought_priority
   });
 
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
