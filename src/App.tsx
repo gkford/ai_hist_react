@@ -8,13 +8,12 @@ import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
 function initializeCards() {
   const cardStore = useCardsStore.getState();
-
-  allCards.forEach(cardDef => {
-    cardStore.createCard(cardDef.id, {
-      discovery_state: {
-        current_status: cardDef.id === 'hominids' ? 'discovered' : 'unthoughtof'
-      }
-    });
+  
+  // Just create the hominids card for now
+  cardStore.createCard('hominids', {
+    discovery_state: {
+      current_status: 'discovered'
+    }
   });
 }
 
@@ -45,21 +44,9 @@ function App() {
       <ResourceDashboard className="mb-4" />
 
       <div className="flex gap-8">
-        <div className="flex flex-col gap-4">
-          {allCards
-            .filter((card) => card.column === 1)
-            .map((card) => (
-              <MasterCard key={card.id} id={card.id} />
-            ))}
-        </div>
-
-        <div className="flex flex-col gap-4">
-          {allCards
-            .filter((card) => card.column === 2)
-            .map((card) => (
-              <MasterCard key={card.id} id={card.id} />
-            ))}
-        </div>
+        {Object.values(useCardsStore.getState().cardStates).map((cardState) => (
+          <MasterCard key={cardState.id} id={cardState.id} />
+        ))}
       </div>
 
       {/* Developer Dashboard - moved to the right */}
