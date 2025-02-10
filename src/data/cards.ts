@@ -8,7 +8,7 @@ export interface DiscoveryStats {
   dependencies?: string[]; // Array of card IDs this card depends on
 }
 
-export interface TransformationData {
+export interface TransformationConfig {
   inbound: Array<{
     resource: ResourceKey;
     amount: number;
@@ -19,6 +19,11 @@ export interface TransformationData {
   }>;
 }
 
+export interface EffectConfig {
+  resource: ResourceKey;
+  multiplier: number;
+}
+
 export interface CardDefinition {
   id: string;
   title: string;
@@ -26,8 +31,8 @@ export interface CardDefinition {
   icon?: string;
   imageSrc?: string;
   description?: string;
-  transformation?: TransformationData;
-  effects?: string[];
+  transformations?: TransformationConfig[];
+  effects?: EffectConfig[];
   discovery_stats: DiscoveryStats;
 }
 
@@ -43,14 +48,16 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 10,
       further_thought_to_discover: 20
     },
-    transformation: {
-      inbound: [
-        { resource: 'food', amount: 0.1 }
-      ],
-      outbound: [
-        { resource: 'humanEnergy', amount: 0.12 }
-      ]
-    }
+    transformations: [
+      {
+        inbound: [
+          { resource: 'food', amount: 0.1 }
+        ],
+        outbound: [
+          { resource: 'humanEnergy', amount: 0.12 }
+        ]
+      }
+    ]
   },
   {
     id: "gather_food",
@@ -63,13 +70,15 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 5,
       further_thought_to_discover: 15
     },
-    transformation: {
-      inbound: [
-        { resource: 'humanEnergy', amount: 1 }
-      ],
-      outbound: [
-        { resource: 'food', amount: 2 }
-      ]
-    }
+    transformations: [
+      {
+        inbound: [
+          { resource: 'humanEnergy', amount: 1 }
+        ],
+        outbound: [
+          { resource: 'food', amount: 2 }
+        ]
+      }
+    ]
   }
 ];
