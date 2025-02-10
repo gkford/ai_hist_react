@@ -184,7 +184,7 @@ export const ResourceTransformationProcessor = {
   ) {
     const instance = rtRegistry.get(rtId)
     if (instance) {
-      instance.animateRT(inbound, outbound, animationSpeed, delayAnimationSpeed)
+      instance.animateRT(inbound, outbound, animationSpeed)
     }
   },
 
@@ -200,18 +200,32 @@ export const ResourceTransformationProcessor = {
     const cardDef = allCards.find(c => c.id === rtId);
     if (!cardDef?.transformation) return;
 
-    // Scale transformation amounts by population
+    // Scale transformation amounts by population and check thresholds
     const animationSpeed = 1000;
-    const scaledTransformation = {
-      inbound: cardDef.transformation.inbound.map(item => ({
-        ...item,
-        amount: item.amount * population
-      })),
-      outbound: cardDef.transformation.outbound.map(item => ({
-        ...item,
-        amount: item.amount * population
-      }))
-    };
+    const scaledInbound = cardDef.transformation.inbound.map(item => ({
+      ...item,
+      amount: item.amount * population
+    }));
+    const scaledOutbound = cardDef.transformation.outbound.map(item => ({
+      ...item,
+      amount: item.amount * population
+    }));
+
+    // Update card state with scaled amounts
+    useCardsStore.getState().updateCardState(rtId, {
+      inbound_paid: Object.fromEntries(
+        scaledInbound.map(item => [
+          item.resource,
+          (cardState.inbound_paid[item.resource] || 0) + item.amount
+        ])
+      ),
+      outbound_owed: Object.fromEntries(
+        scaledOutbound.map(item => [
+          item.resource,
+          (cardState.outbound_owed[item.resource] || 0) + item.amount
+        ])
+      )
+    });
 
     // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
     // If any resource has a value less than 1, do nothing.
