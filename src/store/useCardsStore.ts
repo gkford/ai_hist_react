@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import type { CardDefinition } from "../data/cards";
 import type { ResourceKey } from "./useResourceStore";
 
 interface CardState {
