@@ -1,23 +1,44 @@
 import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
+import { useEffectsStore } from "@/store/useEffectsStore"
+import { effects } from "@/data/effects"
 
 interface ResourceDisplayProps {
   icon: string
   amount: number
+  resourceKey: ResourceKey
 }
 
-function ResourceDisplay({ icon, amount }: ResourceDisplayProps) {
+function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
+  const effectsStore = useEffectsStore()
+
+  // Calculate total multiplier for this resource
+  const totalMultiplier = Object.entries(effects)
+    .filter(([id, effect]) => 
+      effect.type === 'resourceProductionMultiplier' 
+      && effect.targetResource === resourceKey
+      && effectsStore.effects[id]?.activated
+    )
+    .reduce((total, [, effect]) => total * (effect.multiplier || 1), 1)
+
+  // Format multiplier to 2 decimal places
+  const formattedMultiplier = totalMultiplier.toFixed(2)
 
   useEffect(() => {
     setDisplayAmount(Math.floor(amount))
   }, [amount])
 
   return (
-    <div className="w-32 px-4 py-2 bg-white rounded-md shadow-sm flex items-center justify-between">
-      <span className="text-xl">{icon}</span>
-      <span className="font-medium tabular-nums">{displayAmount}</span>
+    <div className="w-32 px-4 py-2 bg-white rounded-md shadow-sm">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xl">{icon}</span>
+        <span className="font-medium tabular-nums">{displayAmount}</span>
+      </div>
+      <div className="text-xs text-gray-600 border-t pt-1">
+        <div>bonus: {formattedMultiplier}x</div>
+      </div>
     </div>
   )
 }
@@ -30,11 +51,11 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const population = useResource('population')
 
   const resources = [
-    { icon: food.icon, amount: food.amount },
-    { icon: knowledge.icon, amount: knowledge.amount },
-    { icon: thoughts.icon, amount: thoughts.amount },
-    { icon: humanEnergy.icon, amount: humanEnergy.amount },
-    { icon: population.icon, amount: population.amount },
+    { icon: food.icon, amount: food.amount, key: food.key },
+    { icon: knowledge.icon, amount: knowledge.amount, key: knowledge.key },
+    { icon: thoughts.icon, amount: thoughts.amount, key: thoughts.key },
+    { icon: humanEnergy.icon, amount: humanEnergy.amount, key: humanEnergy.key },
+    { icon: population.icon, amount: population.amount, key: population.key },
   ]
 
   return (
@@ -44,6 +65,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
           key={index} 
           icon={resource.icon} 
           amount={resource.amount}
+          resourceKey={resource.key}
         />
       ))}
     </div>
