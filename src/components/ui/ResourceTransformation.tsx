@@ -194,8 +194,24 @@ export const ResourceTransformationProcessor = {
     // Get the current RT state for the given id (or default values)
     const cardState = useCardsStore.getState().cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} };
     const store = useResourceStore.getState();
-
     
+    // Get population multiplier
+    const population = store.resources['population'].amount;
+    
+    // Get the card definition to check transformation amounts
+    const cardDef = allCards.find(c => c.id === rtId);
+    if (!cardDef?.transformation) return;
+
+    // Scale transformation amounts by population
+    const scaledInbound = cardDef.transformation.inbound.map(item => ({
+      ...item,
+      amount: item.amount * population
+    }));
+    const scaledOutbound = cardDef.transformation.outbound.map(item => ({
+      ...item,
+      amount: item.amount * population
+    }));
+
     const animationSpeed = 1000;
     const delayAnimationSpeed = 900;
 
