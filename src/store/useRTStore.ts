@@ -114,7 +114,7 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'discovered' as RTStatus,
       thoughtInvested: 0,
-      priority: 'none'
+      priority: 'none' as Priority
     },
     hunt: {
       inbound_paid: {},
@@ -125,7 +125,7 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'unthoughtof' as RTStatus,
       thoughtInvested: 0,
-      priority: 'none'
+      priority: 'none' as Priority
     },
     think: {
       inbound_paid: {},
@@ -136,7 +136,7 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'discovered' as RTStatus,
       thoughtInvested: 0,
-      priority: 'low'
+      priority: 'low' as Priority
     },
     gather_food: {
       inbound_paid: {},
@@ -147,7 +147,7 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'discovered' as RTStatus,
       thoughtInvested: 0,
-      priority: 'high'
+      priority: 'high' as Priority
     },
     non_verbal_communication: {
       inbound_paid: {},
@@ -158,7 +158,7 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'unthoughtof' as RTStatus,
       thoughtInvested: 0,
-      priority: 'none'
+      priority: 'none' as Priority
     }
   };
 
