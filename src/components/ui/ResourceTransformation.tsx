@@ -196,8 +196,8 @@ export const ResourceTransformationProcessor = {
     const store = useResourceStore.getState();
 
     
-    const animationSpeed = 2500;
-    const delayAnimationSpeed = 2400;
+    const animationSpeed = 1000;
+    const delayAnimationSpeed = 900;
 
     // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
     // If any resource has a value less than 1, do nothing.

@@ -13,7 +13,8 @@ export function startGameLoop() {
     // Process each card's transformation
     Object.keys(cardStates).forEach((cardId) => {
       const cardDef = allCards.find(c => c.id === cardId);
-      if (cardDef?.transformation) {
+      const state = cardStates[cardId];
+      if (cardDef?.transformation && state.discovery_state.current_status === 'discovered') {
         ResourceTransformationProcessor.processRTState(cardId);
       }
     });
