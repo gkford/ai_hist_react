@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } fro
 import type { ResourceKey } from "@/store/useResourceStore"
 import { useResourceStore } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
-import { useRTStore } from "@/store/useRTStore"
+import { useCardsStore } from "@/store/useCardsStore"
 import { cn } from "@/lib/utils"
 
 
@@ -39,8 +39,8 @@ let globalTransformationIdCounter = 0
 
 export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ rtId, transformationText }, ref) {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
-  const { states: rtStates, updateState } = useRTStore()
-  const rtState = rtStates[rtId] || { inbound_paid: {}, outbound_owed: {} }
+  const { cardStates, updateCardState } = useCardsStore()
+  const cardState = cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} }
 
   const animateRT = useCallback(
     (
@@ -95,28 +95,25 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     // trimming all new values to 3 decimal places.
     const newState = {
       inbound_paid: {
-        ...rtState.inbound_paid,
+        ...cardState.inbound_paid,
         ...Object.fromEntries(
           transformation.inbound.map(item => [
             item.key,
-            parseFloat((((rtState.inbound_paid[item.key] || 0) + (item.amount * multiplier))).toFixed(3))
+            parseFloat((((cardState.inbound_paid[item.key] || 0) + (item.amount * multiplier))).toFixed(3))
           ])
         )
       },
       outbound_owed: {
-        ...rtState.outbound_owed,
+        ...cardState.outbound_owed,
         ...Object.fromEntries(
           transformation.outbound.map(item => [
             item.key,
-            parseFloat((((rtState.outbound_owed[item.key] || 0) + (item.amount * multiplier))).toFixed(3))
+            parseFloat((((cardState.outbound_owed[item.key] || 0) + (item.amount * multiplier))).toFixed(3))
           ])
         )
-      },
-      hide: rtState.hide,
-      status: rtState.status,
-      thoughtInvested: rtState.thoughtInvested
+      }
     };
-    updateState(rtId, newState);
+    updateCardState(rtId, newState);
     return true;
   }, [rtState, updateState, rtId]
   )
@@ -195,7 +192,7 @@ export function animateResourceTransformation(
 
 export function processRTState(rtId: string): void {
   // Get the current RT state for the given id (or default values)
-  const rtState = useRTStore.getState().states[rtId] || { inbound_paid: {}, outbound_owed: {} };
+  const cardState = useCardsStore.getState().cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} };
   const resourceConfigs = useResourceStore.getState().config;
 
   
@@ -204,16 +201,16 @@ export function processRTState(rtId: string): void {
 
   // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
   // If any resource has a value less than 1, do nothing.
-  const allInboundAtLeastOne = Object.values(rtState.inbound_paid).every(val => val >= 1);
-  const allOutboundAtLeastOne = Object.values(rtState.outbound_owed).every(val => val >= 1);
+  const allInboundAtLeastOne = Object.values(cardState.inbound_paid).every(val => val >= 1);
+  const allOutboundAtLeastOne = Object.values(cardState.outbound_owed).every(val => val >= 1);
   if (!allInboundAtLeastOne || !allOutboundAtLeastOne) {
     return;
   }
 
   // Process inbound_paid: deduct whole numbers & build emoji list
   const inboundList: string[] = [];
-  const newInboundPaid = { ...rtState.inbound_paid };
-  Object.entries(rtState.inbound_paid).forEach(([key, value]) => {
+  const newInboundPaid = { ...cardState.inbound_paid };
+  Object.entries(cardState.inbound_paid).forEach(([key, value]) => {
     const rKey = key as ResourceKey;
     const whole = Math.floor(value);
     if (whole > 0) {
@@ -243,12 +240,9 @@ export function processRTState(rtId: string): void {
   });
 
   // Update RT state with new deducted values
-  useRTStore.getState().updateState(rtId, {
+  useCardsStore.getState().updateCardState(rtId, {
     inbound_paid: newInboundPaid,
-    outbound_owed: newOutboundOwed,
-    hide: rtState.hide,
-    status: rtState.status,
-    thoughtInvested: rtState.thoughtInvested
+    outbound_owed: newOutboundOwed
   });
 
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
