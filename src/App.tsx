@@ -1,6 +1,7 @@
 import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
+import { useEffectsStore } from "@/store/useEffectsStore"
 import { HuntingCard } from "./components/card_library/HuntingCard"
 import { ThinkingCard } from "./components/card_library/ThinkingCard"
 import { EarlyStoneToolsCard } from "./components/card_library/EarlyStoneToolsCard"
@@ -126,6 +127,24 @@ function App() {
               </pre>
             </div>
           ))}
+        </div>
+
+        <div className="p-4 border border-gray-200 rounded">
+          <h2 className="font-semibold mb-2">Effects States</h2>
+          {Object.entries(useEffectsStore.getState().effects).map(([effectId, state]) => {
+            // Determine if we should highlight this row
+            const shouldHighlight = state.thought_focus > 0 && 
+              (state.thought_priority === 'high' || state.thought_priority === 'low');
+            
+            return (
+              <div key={effectId} className="mb-2">
+                <h3 className="font-medium">{effectId}</h3>
+                <pre className={`text-xs ${shouldHighlight ? "bg-yellow-100" : ""}`}>
+                  {JSON.stringify(state, null, 2)}
+                </pre>
+              </div>
+            );
+          })}
         </div>
 
         <div className="mt-4">
