@@ -1,6 +1,6 @@
 import { GatherFoodCard } from "./components/card_library/GatherFoodCard"
-import { FoodResourceCard } from "./components/card_library/FoodResourceCard"
 import { HominidsCard } from "./components/card_library/HominidsCard"
+import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { HuntingCard } from "./components/card_library/HuntingCard"
 import { ThinkingCard } from "./components/card_library/ThinkingCard"
 import { EarlyStoneToolsCard } from "./components/card_library/EarlyStoneToolsCard"
@@ -76,14 +76,12 @@ function App() {
   }, [isCyclingActive]);
 
   return (
-    <div className="min-h-screen p-4 flex">
+    <div className="min-h-screen p-4 flex flex-col">
+      {/* Resources Dashboard at the top */}
+      <ResourceDashboard className="mb-4" />
+
       {/* Main game area */}
       <div className="flex gap-8">
-        {/* Resources Column */}
-        <div className="flex flex-col gap-4">
-          <FoodResourceCard />
-        </div>
-
         {/* People Column */}
         <div className="flex flex-col gap-4">
           <HominidsCard />
