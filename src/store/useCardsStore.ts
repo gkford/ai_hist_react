@@ -13,29 +13,20 @@ interface CardState {
 
 interface CardsStore {
   cardStates: Record<string, CardState>;
+  createCard: (id: string, state: CardState) => void;
   updateCardState: (id: string, partial: Partial<CardState>) => void;
   setSliderValue: (id: string, value: number) => void;
 }
 
 export const useCardsStore = create<CardsStore>((set) => ({
-  cardStates: {
-    'hominids': {
-      discovery_state: {
-        current_status: 'discovered',
-        thought_invested: 0
-      },
-      inbound_paid: {},
-      outbound_owed: {}
-    },
-    'gather_food': {
-      discovery_state: {
-        current_status: 'discovered',
-        thought_invested: 0
-      },
-      inbound_paid: {},
-      outbound_owed: {}
-    }
-  },
+  cardStates: {},
+  createCard: (id, state) =>
+    set((store) => ({
+      cardStates: {
+        ...store.cardStates,
+        [id]: state
+      }
+    })),
   updateCardState: (id, partial) =>
     set((state) => ({
       cardStates: {

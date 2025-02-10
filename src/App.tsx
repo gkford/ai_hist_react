@@ -2,10 +2,42 @@ import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { allCards } from "@/data/cards"
-
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
+
+function initializeCards() {
+  const cardStore = useCardsStore.getState();
+
+  allCards.forEach(cardDef => {
+    const initialState = {
+      discovery_state: {
+        current_status: cardDef.id === 'hominids' ? 'discovered' : 'unthoughtof',
+        thought_invested: 0
+      },
+      rts: Object.fromEntries(
+        (cardDef.transformations || []).map(rt => [
+          rt.id,
+          {
+            inbound_paid: {},
+            outbound_owed: {},
+            value: 0
+          }
+        ])
+      ),
+      effects: Object.fromEntries(
+        (cardDef.effects || []).map(effect => [
+          effect.id,
+          {
+            value: 0
+          }
+        ])
+      )
+    };
+
+    cardStore.createCard(cardDef.id, initialState);
+  });
+}
 
 function App() {
   const formatNumber = (n: number): string => {
@@ -20,7 +52,9 @@ function App() {
   const population = useResource('population')
 
   useEffect(() => {
-    // Start the loop on mount
+    // Initialize cards first
+    initializeCards();
+    // Then start the game loop
     startGameLoop()
     // Stop it on unmount
     return () => stopGameLoop()
