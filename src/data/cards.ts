@@ -8,7 +8,7 @@ export interface DiscoveryStats {
   dependencies?: string[]; // Array of card IDs this card depends on
 }
 
-export interface TransformationConfig {
+export interface rtConfig {
   id: string;
   inbound: Array<{
     resource: ResourceKey;
@@ -33,7 +33,7 @@ export interface CardDefinition {
   icon?: string;
   imageSrc?: string;
   description?: string;
-  transformations?: TransformationConfig[];
+  rts?: rtConfig[];
   effects?: EffectConfig[];
   discovery_stats: DiscoveryStats;
 }
@@ -50,7 +50,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 10,
       further_thought_to_discover: 20
     },
-    transformations: [
+    rts: [
       {
         id: "eat_food",
         inbound: [
@@ -73,7 +73,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 5,
       further_thought_to_discover: 15
     },
-    transformations: [
+    rts: [
       {
         id: "gather_food",
         inbound: [
