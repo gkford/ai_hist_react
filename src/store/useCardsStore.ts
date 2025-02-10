@@ -35,7 +35,9 @@ interface CardState extends Omit<CardDefinition, 'rts' | 'effects' | 'discovery_
 
 interface CardsStore {
   cardStates: Record<string, CardState>;
-  createCard: (id: string, initialState?: Partial<CardState>) => void;
+  createCard: (id: string, initialState?: { 
+    discovery_state?: Partial<DiscoveryState> 
+  }) => void;
   updateCardState: (id: string, partial: Partial<CardState>) => void;
   updateRTState: (cardId: string, rtId: string, partial: Partial<RTState>) => void;
   updateEffectState: (cardId: string, effectId: string, partial: Partial<EffectState>) => void;

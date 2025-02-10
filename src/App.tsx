@@ -1,7 +1,6 @@
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
-import { allCards } from "@/data/cards"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
