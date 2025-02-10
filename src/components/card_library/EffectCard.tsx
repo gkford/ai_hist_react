@@ -1,34 +1,39 @@
-import React from "react";
-import { MasterCard } from "@/components/MasterCard";
-import { CardInfo } from "@/components/ui/CardInfo";
-import { CardImage } from "@/components/ui/CardImage";
-import { EffectDiscoveryProgress } from "@/components/ui/EffectDiscoveryProgress";
+import React from 'react'
+import { MasterCard } from '@/components/ui/CardRenderer'
+import { CardInfo } from '@/components/ui/CardInfo'
+import { CardImage } from '@/components/ui/CardImage'
+import { EffectDiscoveryProgress } from '@/components/ui/EffectDiscoveryProgress'
 
 interface EffectCardProps {
-  effectId: string;
-  title: string;
-  typeIcon?: string | null;
-  imageSrc?: string;
-  description: string;
-  onActivate: () => void;
-  status: 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
-  activated: boolean;
+  effectId: string
+  title: string
+  typeIcon?: string | null
+  imageSrc?: string
+  description: string
+  onActivate: () => void
+  status: 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete'
+  activated: boolean
 }
 
-export function EffectCard({ 
-  effectId, 
-  title, 
-  typeIcon = "✨",
+export function EffectCard({
+  effectId,
+  title,
+  typeIcon = '✨',
   imageSrc,
   description,
   onActivate,
   status,
-  activated
+  activated,
 }: EffectCardProps) {
-  const isDiscovered = status === 'discovered';
+  const isDiscovered = status === 'discovered'
 
   return (
-    <MasterCard title={title} typeIcon={typeIcon} discoveryStatusIcon={null} rtId={effectId}>
+    <MasterCard
+      title={title}
+      typeIcon={typeIcon}
+      discoveryStatusIcon={null}
+      rtId={effectId}
+    >
       {imageSrc && <CardImage imageSrc={imageSrc} rtId={effectId} />}
       <CardInfo className="text-center">
         <p>{description}</p>
@@ -41,12 +46,10 @@ export function EffectCard({
           </button>
         )}
         {activated && (
-          <div className="mt-4 text-green-600 font-medium">
-            Effect Active
-          </div>
+          <div className="mt-4 text-green-600 font-medium">Effect Active</div>
         )}
       </CardInfo>
       <EffectDiscoveryProgress effectId={effectId} />
     </MasterCard>
-  );
+  )
 }

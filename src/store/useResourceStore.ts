@@ -15,11 +15,11 @@ interface ResourceStore {
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: 10, icon: "🍖", key: "food" },
+    food: { amount: 30, icon: "🍖", key: "food" },
     knowledge: { amount: 0, icon: "📚", key: "knowledge" },
     thoughts: { amount: 0, icon: "💭", key: "thoughts" },
-    humanEnergy: { amount: 10, icon: "⚡", key: "humanEnergy" },
-    population: { amount: 1, icon: "👥", key: "population" },
+    humanEnergy: { amount: 0, icon: "⚡", key: "humanEnergy" },
+    population: { amount: 10, icon: "👥", key: "population" },
   },
   updateResource: (key: ResourceKey, delta: number) =>
     set((state) => ({

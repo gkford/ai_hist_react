@@ -17,15 +17,6 @@ interface CardsStore {
   setSliderValue: (id: string, value: number) => void;
 }
 
-const initialCardState: CardState = {
-  discovery_state: {
-    current_status: 'unthoughtof',
-    thought_invested: 0
-  },
-  inbound_paid: {},
-  outbound_owed: {},
-}
-
 export const useCardsStore = create<CardsStore>((set) => ({
   cardStates: {
     'hominids': {

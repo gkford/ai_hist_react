@@ -45,10 +45,10 @@ export const allCards: CardDefinition[] = [
     },
     transformation: {
       inbound: [
-        { resource: 'food', amount: 1 }
+        { resource: 'food', amount: 0.1 }
       ],
       outbound: [
-        { resource: 'humanEnergy', amount: 2 }
+        { resource: 'humanEnergy', amount: 0.12 }
       ]
     }
   },
