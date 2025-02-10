@@ -59,12 +59,16 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
         const resourceKey = key as ResourceKey
         let amount = changes[resourceKey]!
 
-        // Apply production multiplier effects if they exist
-        const activeEffects = Object.values(effects).filter(
-          effect => effect.type === 'resourceProductionMultiplier' 
-          && effect.targetResource === resourceKey
-          && amount > 0  // Only apply to production, not consumption
-        )
+        // Apply production multiplier effects if they exist and are activated
+        const effectsStore = useEffectsStore.getState();
+        const activeEffects = Object.entries(effects)
+          .filter(([id, effect]) => 
+            effect.type === 'resourceProductionMultiplier' 
+            && effect.targetResource === resourceKey
+            && amount > 0  // Only apply to production, not consumption
+            && effectsStore.effects[id]?.activated
+          )
+          .map(([, effect]) => effect)
 
         // Apply all relevant multipliers
         amount = activeEffects.reduce(

@@ -1,28 +1,29 @@
 import { EffectCard } from "./EffectCard";
-import { useRTStore } from "@/store/useRTStore";
+import { useEffectsStore } from "@/store/useEffectsStore";
 import { getEffect } from "@/data/effects";
 
 export function EarlyStoneToolsCard() {
-  const { states, updateState } = useRTStore();
-  const rtId = "early_stone_tools";
-  const effect = getEffect(rtId);
+  const effectId = "early_stone_tools";
+  const effect = getEffect(effectId);
+  const { effects, updateEffect } = useEffectsStore();
+  const effectState = effects[effectId];
 
   const handleActivate = () => {
-    // Mark the effect as discovered in RT store
-    updateState(rtId, {
-      ...states[rtId],
-      status: 'discovered'
+    updateEffect(effectId, {
+      activated: true
     });
   };
 
   return (
     <EffectCard
-      rtId={rtId}
+      effectId={effectId}
       title="Early Stone Tools"
       typeIcon="🪨"
       imageSrc={import.meta.env.BASE_URL + "card_images/earlyStoneTools.png"}
       description="This technology grants a +10% bonus to human energy production."
       onActivate={handleActivate}
+      status={effectState.status}
+      activated={effectState.activated}
     />
   );
 }
