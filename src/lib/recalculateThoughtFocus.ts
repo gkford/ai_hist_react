@@ -3,7 +3,7 @@ import { EffectState } from '@/store/useEffectsStore';
 import { RTState } from '@/store/useRTStore';
 
 interface ThoughtEntity {
-  thought_focus: number;
+  thought_focus: number | null;
   thought_priority: Priority;
 }
 
@@ -11,10 +11,11 @@ export function recalculateThoughtFocus(
   rtStates: Record<string, RTState>,
   effectStates: Record<string, EffectState>
 ): { rtStates: Record<string, RTState>, effectStates: Record<string, EffectState> } {
-  // Combine all entities that can receive thought focus
+  // Combine all entities that can receive thought focus and filter out null thought_focus
   const allEntities: ThoughtEntity[] = [
     ...Object.values(rtStates).filter(rt => 
-      rt.status === 'unthoughtof' || rt.status === 'imagined'
+      (rt.status === 'unthoughtof' || rt.status === 'imagined') &&
+      rt.thought_focus !== null
     ),
     ...Object.values(effectStates).filter(effect => 
       effect.status === 'unthoughtof' || effect.status === 'imagined'
