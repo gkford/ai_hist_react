@@ -1,8 +1,7 @@
 import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
-import { useEffectsStore } from "@/store/useEffectsStore"
-import { effects } from "@/data/effects"
+import { useCardsStore } from "@/store/useCardsStore"
 
 interface ResourceDisplayProps {
   icon: string
@@ -14,14 +13,17 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
   const effectsStore = useEffectsStore()
 
-  // Calculate total multiplier for this resource
-  const totalMultiplier = Object.entries(effects)
-    .filter(([id, effect]) => 
-      effect.type === 'resourceProductionMultiplier' 
-      && effect.targetResource === resourceKey
-      && effectsStore.effects[id]?.activated
+  // Calculate total multiplier for this resource from card effects
+  const totalMultiplier = Object.values(useCardsStore.getState().cardStates)
+    .flatMap(card => Object.values(card.effects))
+    .filter(effect => 
+      effect.resource === resourceKey 
+      && effect.active
     )
-    .reduce((total, [, effect]) => total * (effect.multiplier || 1), 1)
+    .reduce((total, effect) => total * (effect.multiplier || 1), 1)
+
+  // TODO: Focus levels are not yet implemented. 
+  // When implemented, focus.prop and focus.priority will further modify the impact of multipliers
 
   // Format multiplier to 2 decimal places
   const formattedMultiplier = totalMultiplier.toFixed(2)
