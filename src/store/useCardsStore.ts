@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { CardDefinition } from "@/data/cards";
+import type { CardDefinition } from "../data/cards";
 
 interface CardState {
   discovered: boolean;
+  status: 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 }
 
 interface CardsStore {
@@ -12,8 +13,8 @@ interface CardsStore {
 
 export const useCardsStore = create<CardsStore>((set) => ({
   cardStates: {
-    hominids: { discovered: true },
-    gather_food: { discovered: true },
+    hominids: { discovered: true, status: 'discovered' },
+    gather_food: { discovered: true, status: 'discovered' },
   },
   updateCardState: (id, partial) =>
     set((state) => ({

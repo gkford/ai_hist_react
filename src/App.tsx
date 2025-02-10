@@ -1,4 +1,5 @@
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
+import { CardRenderer } from "@/components/ui/CardRenderer"
 import { useResource } from "@/store/useResourceStore"
 import { allCards } from "@/data/cards"
 import { useCardsStore } from "@/store/useCardsStore"
@@ -35,9 +36,7 @@ function App() {
           {allCards
             .filter((card) => card.column === 1)
             .map((card) => (
-              <div key={card.id} className="p-4 border border-gray-300">
-                <h2>{card.title}</h2>
-              </div>
+              <CardRenderer key={card.id} cardId={card.id} />
             ))}
         </div>
 
@@ -45,9 +44,7 @@ function App() {
           {allCards
             .filter((card) => card.column === 2)
             .map((card) => (
-              <div key={card.id} className="p-4 border border-gray-300">
-                <h2>{card.title}</h2>
-              </div>
+              <CardRenderer key={card.id} cardId={card.id} />
             ))}
         </div>
       </div>
