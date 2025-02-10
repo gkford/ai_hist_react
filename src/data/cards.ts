@@ -2,10 +2,16 @@ import type { ResourceKey } from "@/store/useResourceStore";
 
 export type DiscoveryStatus = 'hidden' | 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 
+export interface FocusConfig {
+  focus_resource: ResourceKey | 'thought';
+  focus_prop: number;
+}
+
 export interface DiscoveryStats {
   thought_to_imagine: number;
   further_thought_to_discover: number;
   dependencies?: string[]; // Array of card IDs this card depends on
+  focus: FocusConfig;
 }
 
 export interface rtConfig {
@@ -18,12 +24,14 @@ export interface rtConfig {
     resource: ResourceKey;
     amount: number;
   }>;
+  focus: FocusConfig;
 }
 
 export interface EffectConfig {
   id: string;
   resource: ResourceKey;
   multiplier: number;
+  focus: FocusConfig;
 }
 
 export interface CardDefinition {
@@ -48,7 +56,11 @@ export const allCards: CardDefinition[] = [
     description: "Your early human population",
     discovery_stats: {
       thought_to_imagine: 10,
-      further_thought_to_discover: 20
+      further_thought_to_discover: 20,
+      focus: {
+        focus_resource: 'thought',
+        focus_prop: 0
+      }
     },
     rts: [
       {
@@ -58,7 +70,11 @@ export const allCards: CardDefinition[] = [
         ],
         outbound: [
           { resource: 'humanEnergy', amount: 0.12 }
-        ]
+        ],
+        focus: {
+          focus_resource: 'food',
+          focus_prop: 0
+        }
       }
     ]
   },
@@ -71,7 +87,11 @@ export const allCards: CardDefinition[] = [
     description: "Gather food from the environment",
     discovery_stats: {
       thought_to_imagine: 5,
-      further_thought_to_discover: 15
+      further_thought_to_discover: 15,
+      focus: {
+        focus_resource: 'thought',
+        focus_prop: 0
+      }
     },
     rts: [
       {
@@ -81,7 +101,11 @@ export const allCards: CardDefinition[] = [
         ],
         outbound: [
           { resource: 'food', amount: 2 }
-        ]
+        ],
+        focus: {
+          focus_resource: 'humanEnergy',
+          focus_prop: 0
+        }
       }
     ]
   }

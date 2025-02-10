@@ -7,8 +7,6 @@ import type { CardDefinition, DiscoveryStatus, rtConfig, EffectConfig, Discovery
 interface RTState extends rtConfig {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
-  focus_type: 'manual' | 'auto';
-  focus_prop: number;
 }
 
 interface EffectState extends EffectConfig {
@@ -18,8 +16,6 @@ interface EffectState extends EffectConfig {
 interface DiscoveryState extends DiscoveryStats {
   current_status: DiscoveryStatus;
   thought_invested: number;
-  focus_type: 'thought';
-  focus_prop: number;
 }
 
 // The full card state extends CardDefinition
@@ -55,9 +51,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
               {
                 ...rt,
                 inbound_paid: {},
-                outbound_owed: {},
-                focus_type: 'manual',
-                focus_prop: 0
+                outbound_owed: {}
               }
             ])
           ),
@@ -74,8 +68,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
             ...cardDef.discovery_stats,
             current_status: 'unthoughtof',
             thought_invested: 0,
-            focus_type: 'thought',
-            focus_prop: 0,
             ...initialState?.discovery_state
           },
           ...initialState
