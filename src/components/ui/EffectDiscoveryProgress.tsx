@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Progress } from "@/components/ui/progress";
-import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
 import { useEffectsStore } from "@/store/useEffectsStore";
 import { getEffect } from "@/data/effects";
 import { useResourceStore } from "@/store/useResourceStore";
 import { progressDiscovery } from "@/lib/discoveryProgression";
+import { cn } from "@/lib/utils";
 
 interface ProgressProps {
   effectId: string;
@@ -79,24 +80,59 @@ export function EffectDiscoveryProgress({ effectId }: ProgressProps) {
     : effectConfig.thoughtToDiscover;
   const progressValue = (effectState.thoughtInvested / targetThought) * 100;
 
+  const handlePriorityClick = () => {
+    const currentPriority = effectState.thought_priority;
+    
+    // Check if this is the last active effect
+    const otherActiveEffects = Object.entries(useEffectsStore.getState().effects)
+      .filter(([id, state]) => 
+        id !== effectId && 
+        (state.status === 'unthoughtof' || state.status === 'imagined') && 
+        state.thought_priority !== 'none'
+      );
+    
+    // If this is the last active effect and it's not already 'none', skip 'none'
+    if (otherActiveEffects.length === 0 && currentPriority !== 'none') {
+      useEffectsStore.getState().updateEffect(effectId, {
+        ...effectState,
+        thought_priority: currentPriority === 'high' ? 'low' : 'high'
+      });
+      return;
+    }
+
+    // Normal priority cycling
+    const newPriority = currentPriority === 'high' ? 'low' : 
+                       currentPriority === 'low' ? 'none' : 'high';
+    
+    useEffectsStore.getState().updateEffect(effectId, {
+      ...effectState,
+      thought_priority: newPriority
+    });
+  };
+
   return (
     <div className="p-4 mt-auto">
-      <div className="mb-4">
-        <div className="text-sm text-center mb-1">Thought Focus</div>
-        <Slider
-          defaultValue={[thoughtFocus]}
-          value={[thoughtFocus]}
-          max={100}
-          step={1}
-          onValueChange={(value) => setThoughtFocus(value[0])}
-          className="w-full"
-          aria-label="Thought Focus"
-        />
-        <div className="text-sm text-gray-500 mt-1 text-center">
-          {thoughtFocus}%
+      <div className="flex items-center gap-2">
+        <div className="flex-1">
+          <Progress 
+            value={effectState.thought_focus || 0} 
+            label={`💭 focus - ${Math.round(effectState.thought_focus || 0)}%`}
+          />
         </div>
+        <Button 
+          onClick={handlePriorityClick}
+          className={cn(
+            "transition-colors w-32",
+            effectState.thought_priority === 'high' ? 'bg-green-500 hover:bg-green-600 text-white' : 
+            effectState.thought_priority === 'low' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 
+            'bg-white hover:bg-gray-100 text-black border border-gray-200'
+          )}
+        >
+          {effectState.thought_priority === 'high' ? 'High Priority' :
+           effectState.thought_priority === 'low' ? 'Low Priority' : 'Off'}
+        </Button>
       </div>
-      <div className="text-sm text-center mb-1">
+      <div className="text-sm text-center mt-4 mb-1">
         Progress to {isUnthoughtof ? 'imagining' : 'discovery'}
       </div>
       <Progress value={progressValue} className="w-full" />
