@@ -65,7 +65,7 @@ export const useRTStore = create<RTStore>((set) => ({
       hide: false,
       status: 'discovered',
       thoughtInvested: 0,
-      priority: 'none'
+      priority: 'high'
     },
     non_verbal_communication: {
       inbound_paid: {},

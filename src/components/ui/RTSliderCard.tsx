@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import { useResource } from "@/store/useResourceStore"
 import { getTransformation } from "@/data/resourceTransformations"
+import { cn } from "@/lib/utils"
 import { useRTStore } from "@/store/useRTStore"
 
 interface RTSliderCardProps {
@@ -92,19 +93,23 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
       {showSlider && (
         <div className="px-8 w-full py-4">
           <div className="flex items-center gap-2 mb-2">
-            <span>⚡focus</span>
             <Button 
               onClick={handlePriorityClick}
-              variant={rtState.priority === 'high' ? 'default' : 
-                      rtState.priority === 'low' ? 'secondary' : 'ghost'}
+              className={cn(
+                "transition-colors",
+                rtState.priority === 'high' ? 'bg-green-500 hover:bg-green-600 text-white' : 
+                rtState.priority === 'low' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 
+                'bg-white hover:bg-gray-100 text-black border border-gray-200'
+              )}
             >
               {rtState.priority === 'high' ? 'High' :
                rtState.priority === 'low' ? 'Low' : 'None'}
             </Button>
+            <Progress value={energyFocus} className="flex-1" />
           </div>
-          <Progress value={energyFocus} className="w-full" />
-          <div className="text-sm text-gray-500 mt-1 text-center">
-            Energy Focus: {Math.round(energyFocus)}%
+          <div className="flex justify-between text-sm text-gray-500">
+            <span>⚡focus</span>
+            <span>{Math.round(energyFocus)}%</span>
           </div>
         </div>
       )}
