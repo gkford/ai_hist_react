@@ -211,8 +211,8 @@ export const ResourceTransformationProcessor = {
       amount: item.amount * population
     }));
 
-    // Update card state with scaled amounts
-    useCardsStore.getState().updateCardState(rtId, {
+    // Prepare our new inbound/outbound state
+    const newState = {
       inbound_paid: Object.fromEntries(
         scaledInbound.map(item => [
           item.resource,
@@ -225,12 +225,17 @@ export const ResourceTransformationProcessor = {
           (cardState.outbound_owed[item.resource] || 0) + item.amount
         ])
       )
-    });
+    };
+
+    // Update card state in the store
+    useCardsStore.getState().updateCardState(rtId, newState);
+
+    // Re-check the updated cardState from the store
+    const updatedCardState = useCardsStore.getState().cardStates[rtId];
 
     // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
-    // If any resource has a value less than 1, do nothing.
-    const allInboundAtLeastOne = Object.values(cardState.inbound_paid).every(val => val >= 1);
-    const allOutboundAtLeastOne = Object.values(cardState.outbound_owed).every(val => val >= 1);
+    const allInboundAtLeastOne = Object.values(updatedCardState.inbound_paid).every(val => val >= 1);
+    const allOutboundAtLeastOne = Object.values(updatedCardState.outbound_owed).every(val => val >= 1);
     if (!allInboundAtLeastOne || !allOutboundAtLeastOne) {
       return;
     }
