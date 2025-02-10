@@ -3,7 +3,7 @@ import { Priority } from './useRTStore'
 
 type EffectStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 
-interface EffectState {
+export interface EffectState {
   status: EffectStatus;
   activated: boolean;
   thoughtInvested: number;

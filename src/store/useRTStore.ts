@@ -3,7 +3,7 @@ import type { ResourceKey } from './useResourceStore'
 import { useEffectsStore, type EffectState } from './useEffectsStore'
 
 type RTStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
-type Priority = 'high' | 'low' | 'none';
+export type Priority = 'high' | 'low' | 'none';
 
 interface RTState {
   inbound_paid: Partial<Record<ResourceKey, number>>;
@@ -240,7 +240,8 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'unthoughtof' as RTStatus,
       thoughtInvested: 0,
-      priority: 'none' as Priority
+      priority: 'none' as Priority,
+      thought_priority: 'none' as Priority
     }
   };
 
