@@ -56,15 +56,20 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
 
   // Calculate energy distribution
   const calculateEnergyFocus = () => {
-    const allRTs = Object.values(states);
-    const highPriorityRTs = allRTs.filter(rt => rt.priority === 'high');
-    const lowPriorityRTs = allRTs.filter(rt => rt.priority === 'low');
+    // Only consider RTs that are discovered and have non-null human_energy_focus
+    const activeRTs = Object.values(states).filter(rt => 
+      rt.status === 'discovered' && 
+      rt.human_energy_focus !== null
+    );
     
-    if (rtState.priority === 'none') return 0;
+    const highPriorityRTs = activeRTs.filter(rt => rt.priority === 'high');
+    const lowPriorityRTs = activeRTs.filter(rt => rt.priority === 'low');
+    
+    if (rtState.priority === 'none' || rtState.status !== 'discovered') return 0;
     
     if (highPriorityRTs.length === 0 && lowPriorityRTs.length === 0) {
-      const activeRTs = allRTs.filter(rt => rt.priority !== 'none');
-      return activeRTs.length > 0 ? 100 / activeRTs.length : 0;
+      const nonNoneRTs = activeRTs.filter(rt => rt.priority !== 'none');
+      return nonNoneRTs.length > 0 ? 100 / nonNoneRTs.length : 0;
     }
 
     if (rtState.priority === 'high') {
