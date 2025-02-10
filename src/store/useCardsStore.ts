@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import type { ResourceKey } from "./useResourceStore";
-import type { CardDefinition, DiscoveryStatus, TransformationConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
+import type { CardDefinition, DiscoveryStatus, rtConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
 
 // State extensions of the base configs
-interface RTState extends TransformationConfig {
+interface RTState extends rtConfig {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
   focus_type: 'manual' | 'auto';
