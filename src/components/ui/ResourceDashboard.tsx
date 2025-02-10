@@ -36,9 +36,11 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
         <span className="text-xl">{icon}</span>
         <span className="font-medium tabular-nums">{displayAmount}</span>
       </div>
-      <div className="text-xs text-gray-600 border-t pt-1">
-        <div>bonus: {formattedMultiplier}x</div>
-      </div>
+      {resourceKey !== 'population' && (
+        <div className="text-xs text-gray-600 border-t pt-1">
+          <div>bonus: {formattedMultiplier}x</div>
+        </div>
+      )}
     </div>
   )
 }
