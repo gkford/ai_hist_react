@@ -16,7 +16,7 @@ function initializeCards() {
         thought_invested: 0
       },
       rts: Object.fromEntries(
-        (cardDef.transformations || []).map(rt => [
+        (cardDef.rts || []).map(rt => [
           rt.id,
           {
             inbound_paid: {},
