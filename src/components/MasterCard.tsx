@@ -46,13 +46,12 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
           childProps.children = processChildren(childProps.children);
         }
 
-        // Replace icons with ? in specific cases
-        if (children.type === 'img') {
-          return React.cloneElement(children, { 
-            ...childProps,
-            alt: '?',
-            className: cn(children.props.className, 'opacity-50')
-          });
+        // Hide images completely if not discovered
+        if (children.type === 'img' || children.type.name === 'CardImage') {
+          if (rtState?.status !== 'discovered') {
+            return null; // Don't render the image at all
+          }
+          return React.cloneElement(children, childProps);
         }
 
         return React.cloneElement(children, childProps);
