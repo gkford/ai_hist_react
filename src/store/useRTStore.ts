@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { ResourceKey } from './useResourceStore'
 
 type RTStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
+type Priority = 'high' | 'low' | 'none';
 
 interface RTState {
   inbound_paid: Partial<Record<ResourceKey, number>>;
@@ -12,6 +13,7 @@ interface RTState {
   hide: boolean;
   status: RTStatus;
   thoughtInvested: number;
+  priority: Priority;
 }
 
 interface RTStore {
@@ -29,7 +31,8 @@ export const useRTStore = create<RTStore>((set) => ({
       thought_focus: null,
       hide: false,
       status: 'discovered',
-      thoughtInvested: 0
+      thoughtInvested: 0,
+      priority: 'none'
     },
     hunt: {
       inbound_paid: {},
@@ -39,7 +42,8 @@ export const useRTStore = create<RTStore>((set) => ({
       thought_focus: 0,
       hide: false,
       status: 'unthoughtof',
-      thoughtInvested: 0
+      thoughtInvested: 0,
+      priority: 'none'
     },
     think: {
       inbound_paid: {},
@@ -49,7 +53,8 @@ export const useRTStore = create<RTStore>((set) => ({
       thought_focus: 0,
       hide: false,
       status: 'discovered',
-      thoughtInvested: 0
+      thoughtInvested: 0,
+      priority: 'none'
     },
     gather_food: {
       inbound_paid: {},
@@ -59,7 +64,8 @@ export const useRTStore = create<RTStore>((set) => ({
       thought_focus: 0,
       hide: false,
       status: 'discovered',
-      thoughtInvested: 0
+      thoughtInvested: 0,
+      priority: 'none'
     },
     non_verbal_communication: {
       inbound_paid: {},
@@ -69,7 +75,8 @@ export const useRTStore = create<RTStore>((set) => ({
       thought_focus: 0,
       hide: false,
       status: 'unthoughtof',
-      thoughtInvested: 0
+      thoughtInvested: 0,
+      priority: 'none'
     }
   },
   updateState: (rtId, newState) => set((state) => {
