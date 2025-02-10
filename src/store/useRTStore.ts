@@ -82,8 +82,8 @@ const recalculateEnergyFocus = (states: Record<string, RTState>) => {
   return newStates;
 };
 
-export const useRTStore = create<RTStore>((set) => ({
-  states: {
+export const useRTStore = create<RTStore>((set) => {
+  const initialStates = {
     eating_chicken: {
       inbound_paid: {},
       outbound_owed: {},
@@ -139,7 +139,12 @@ export const useRTStore = create<RTStore>((set) => ({
       thoughtInvested: 0,
       priority: 'none'
     }
-  },
+  };
+
+  const calculatedInitialStates = recalculateEnergyFocus(initialStates);
+
+  return {
+    states: calculatedInitialStates,
   updateState: (rtId, newState) => set((state) => {
     // Prevent all RTs from being set to 'none'
     if (newState.priority === 'none') {
