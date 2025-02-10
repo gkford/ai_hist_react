@@ -14,6 +14,7 @@ interface RTState {
   status: RTStatus;
   thoughtInvested: number;
   priority: Priority;
+  thought_priority: Priority;
 }
 
 interface RTStore {
@@ -114,7 +115,8 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'discovered' as RTStatus,
       thoughtInvested: 0,
-      priority: 'none' as Priority
+      priority: 'none' as Priority,
+      thought_priority: 'none' as Priority
     },
     hunt: {
       inbound_paid: {},
