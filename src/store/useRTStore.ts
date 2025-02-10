@@ -8,14 +8,9 @@ export type Priority = 'high' | 'low' | 'none';
 export interface RTState {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
-  human_energy_focus: number | null;  // Allow null
-  eating_focus: number | null;  // Value between 0 and 1, or null
-  thought_focus: number | null;  // Add thought focus tracking
   hide: boolean;
   status: RTStatus;
   thoughtInvested: number;
-  priority: Priority;
-  thought_priority: Priority;
 }
 
 interface RTStore {
@@ -185,62 +180,37 @@ export const useRTStore = create<RTStore>((set) => {
     eating_chicken: {
       inbound_paid: {},
       outbound_owed: {},
-      human_energy_focus: null,
-      eating_focus: 1,
-      thought_focus: null,
       hide: false,
       status: 'discovered' as RTStatus,
-      thoughtInvested: 0,
-      priority: 'none' as Priority,
-      thought_priority: 'none' as Priority
+      thoughtInvested: 0
     },
     hunt: {
       inbound_paid: {},
       outbound_owed: {},
-      human_energy_focus: 0,
-      eating_focus: null,
-      thought_focus: 0,
       hide: false,
       status: 'unthoughtof' as RTStatus,
-      thoughtInvested: 0,
-      priority: 'none' as Priority,
-      thought_priority: 'none' as Priority
+      thoughtInvested: 0
     },
     think: {
       inbound_paid: {},
       outbound_owed: {},
-      human_energy_focus: 25,
-      eating_focus: null,
-      thought_focus: 0,
       hide: false,
       status: 'discovered' as RTStatus,
-      thoughtInvested: 0,
-      priority: 'low' as Priority,
-      thought_priority: 'none' as Priority
+      thoughtInvested: 0
     },
     gather_food: {
       inbound_paid: {},
       outbound_owed: {},
-      human_energy_focus: 75,
-      eating_focus: null,
-      thought_focus: 0,
       hide: false,
       status: 'discovered' as RTStatus,
-      thoughtInvested: 0,
-      priority: 'high' as Priority,
-      thought_priority: 'none' as Priority
+      thoughtInvested: 0
     },
     non_verbal_communication: {
       inbound_paid: {},
       outbound_owed: {},
-      human_energy_focus: 0,
-      eating_focus: null,
-      thought_focus: 0,
       hide: false,
       status: 'unthoughtof' as RTStatus,
-      thoughtInvested: 0,
-      priority: 'none' as Priority,
-      thought_priority: 'none' as Priority
+      thoughtInvested: 0
     }
   };
 

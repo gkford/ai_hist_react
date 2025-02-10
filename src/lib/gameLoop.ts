@@ -14,27 +14,9 @@ export function startGameLoop() {
     const rtStates = useRTStore.getState().states
     const population = useResourceStore.getState().resources.population.amount
 
-    // Pay for transformations based on focus
-    Object.entries(rtStates).forEach(([rtId, state]) => {
-      const bothNullOrBothNonNull =
-        (state.eating_focus === null && state.human_energy_focus === null) ||
-        (state.eating_focus !== null && state.human_energy_focus !== null)
-
-      if (bothNullOrBothNonNull) {
-        console.error(`RT ${rtId} has invalid focus configuration:`, state)
-        return
-      }
-
-      const focusType = state.eating_focus !== null ? "eating" : "human_energy"
-      const focusValue = state.eating_focus ?? state.human_energy_focus
-      if (focusValue === null || focusValue === 0) return
-
-      const multiplier =
-        focusType === "eating"
-          ? focusValue * population
-          : focusValue / 100
-
-      payForResourceTransformation(rtId, multiplier)
+    // Process each RT with a simple multiplier of 1
+    Object.keys(rtStates).forEach((rtId) => {
+      payForResourceTransformation(rtId, 1)
     })
 
     // Then process the RT states as needed
