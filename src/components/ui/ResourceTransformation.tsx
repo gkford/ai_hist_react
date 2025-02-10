@@ -191,75 +191,76 @@ export const ResourceTransformationProcessor = {
   },
 
   processRTState(rtId: string): void {
-  // Get the current RT state for the given id (or default values)
-  const cardState = useCardsStore.getState().cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} };
-  const store = useResourceStore.getState();
-
-  
-  const animationSpeed = 2500;
-  const delayAnimationSpeed = 2400;
-
-  // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
-  // If any resource has a value less than 1, do nothing.
-  const allInboundAtLeastOne = Object.values(cardState.inbound_paid).every(val => val >= 1);
-  const allOutboundAtLeastOne = Object.values(cardState.outbound_owed).every(val => val >= 1);
-  if (!allInboundAtLeastOne || !allOutboundAtLeastOne) {
-    return;
-  }
-
-  // Process inbound_paid: deduct whole numbers & build emoji list
-  const inboundList: string[] = [];
-  const newInboundPaid = { ...cardState.inbound_paid };
-  Object.entries(cardState.inbound_paid).forEach(([key, value]) => {
-    const rKey = key as ResourceKey;
-    const whole = Math.floor(value);
-    if (whole > 0) {
-      newInboundPaid[rKey] = parseFloat((value - whole).toFixed(3));
-      const icon = store.resources[rKey]?.icon || rKey;
-      for (let i = 0; i < whole; i++) {
-        inboundList.push(icon);
-      }
-    }
-  });
-
-  // Process outbound_owed and track deductions
-  const outboundList: string[] = [];
-  const newOutboundOwed = { ...cardState.outbound_owed };
-  const outboundDeductions: Partial<Record<ResourceKey, number>> = {};
-  Object.entries(cardState.outbound_owed).forEach(([key, value]) => {
-    const rKey = key as ResourceKey;
-    const whole = Math.floor(value);
-    if (whole > 0) {
-      newOutboundOwed[rKey] = parseFloat((value - whole).toFixed(3));
-      const icon = store.resources[rKey]?.icon || rKey;
-      for (let i = 0; i < whole; i++) {
-        outboundList.push(icon);
-      }
-      outboundDeductions[rKey] = whole;
-    }
-  });
-
-  // Update RT state with new deducted values
-  useCardsStore.getState().updateCardState(rtId, {
-    inbound_paid: newInboundPaid,
-    outbound_owed: newOutboundOwed
-  });
-
-  animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
-
-  // When the animation finishes, add the deducted outbound amounts to the general resource store
-  setTimeout(() => {
+    // Get the current RT state for the given id (or default values)
+    const cardState = useCardsStore.getState().cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} };
     const store = useResourceStore.getState();
-    const changes: Partial<Record<ResourceKey, number>> = {};
-    Object.entries(outboundDeductions).forEach(([key, deducted]) => {
+
+    
+    const animationSpeed = 2500;
+    const delayAnimationSpeed = 2400;
+
+    // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
+    // If any resource has a value less than 1, do nothing.
+    const allInboundAtLeastOne = Object.values(cardState.inbound_paid).every(val => val >= 1);
+    const allOutboundAtLeastOne = Object.values(cardState.outbound_owed).every(val => val >= 1);
+    if (!allInboundAtLeastOne || !allOutboundAtLeastOne) {
+      return;
+    }
+
+    // Process inbound_paid: deduct whole numbers & build emoji list
+    const inboundList: string[] = [];
+    const newInboundPaid = { ...cardState.inbound_paid };
+    Object.entries(cardState.inbound_paid).forEach(([key, value]) => {
       const rKey = key as ResourceKey;
-      if (deducted && deducted > 0) {
-        const current = store.resources[rKey]?.amount || 0;
-        changes[rKey] = current + deducted;
+      const whole = Math.floor(value);
+      if (whole > 0) {
+        newInboundPaid[rKey] = parseFloat((value - whole).toFixed(3));
+        const icon = store.resources[rKey]?.icon || rKey;
+        for (let i = 0; i < whole; i++) {
+          inboundList.push(icon);
+        }
       }
     });
-    Object.entries(changes).forEach(([key, amount]) => {
-      store.updateResource(key as ResourceKey, amount);
+
+    // Process outbound_owed and track deductions
+    const outboundList: string[] = [];
+    const newOutboundOwed = { ...cardState.outbound_owed };
+    const outboundDeductions: Partial<Record<ResourceKey, number>> = {};
+    Object.entries(cardState.outbound_owed).forEach(([key, value]) => {
+      const rKey = key as ResourceKey;
+      const whole = Math.floor(value);
+      if (whole > 0) {
+        newOutboundOwed[rKey] = parseFloat((value - whole).toFixed(3));
+        const icon = store.resources[rKey]?.icon || rKey;
+        for (let i = 0; i < whole; i++) {
+          outboundList.push(icon);
+        }
+        outboundDeductions[rKey] = whole;
+      }
     });
-  }, animationSpeed + delayAnimationSpeed);
+
+    // Update RT state with new deducted values
+    useCardsStore.getState().updateCardState(rtId, {
+      inbound_paid: newInboundPaid,
+      outbound_owed: newOutboundOwed
+    });
+
+    this.animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
+
+    // When the animation finishes, add the deducted outbound amounts to the general resource store
+    setTimeout(() => {
+      const store = useResourceStore.getState();
+      const changes: Partial<Record<ResourceKey, number>> = {};
+      Object.entries(outboundDeductions).forEach(([key, deducted]) => {
+        const rKey = key as ResourceKey;
+        if (deducted && deducted > 0) {
+          const current = store.resources[rKey]?.amount || 0;
+          changes[rKey] = current + deducted;
+        }
+      });
+      Object.entries(changes).forEach(([key, amount]) => {
+        store.updateResource(key as ResourceKey, amount);
+      });
+    }, animationSpeed + delayAnimationSpeed);
+  }
 }
