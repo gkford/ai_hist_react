@@ -11,8 +11,7 @@ export interface ResourceTransformationHandle {
   animateRT: (
     inboundEmojisParam: string[],
     outboundEmojisParam: string[],
-    animationSpeed: number,
-    delayAnimationSpeed: number
+    animationSpeed: number
   ) => void;
   payForTransformation: (multiplier?: number) => boolean;
 }
@@ -47,8 +46,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     (
       inboundEmojisParam: string[],
       outboundEmojisParam: string[],
-      animationSpeed: number,
-      delayAnimationSpeed: number
+      animationSpeed: number
     ) => {
       const transformationId = ++globalTransformationIdCounter;
     
@@ -182,8 +180,7 @@ export const ResourceTransformationProcessor = {
     rtId: string,
     inbound: string[],
     outbound: string[],
-    animationSpeed: number,
-    delayAnimationSpeed: number
+    animationSpeed: number
   ) {
     const instance = rtRegistry.get(rtId)
     if (instance) {
@@ -203,8 +200,18 @@ export const ResourceTransformationProcessor = {
     const cardDef = allCards.find(c => c.id === rtId);
     if (!cardDef?.transformation) return;
 
-    // Scale transformation amounts by population and use them directly
+    // Scale transformation amounts by population
     const animationSpeed = 1000;
+    const scaledTransformation = {
+      inbound: cardDef.transformation.inbound.map(item => ({
+        ...item,
+        amount: item.amount * population
+      })),
+      outbound: cardDef.transformation.outbound.map(item => ({
+        ...item,
+        amount: item.amount * population
+      }))
+    };
 
     // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
     // If any resource has a value less than 1, do nothing.
@@ -252,7 +259,7 @@ export const ResourceTransformationProcessor = {
       outbound_owed: newOutboundOwed
     });
 
-    this.animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);
+    this.animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed);
 
     // When the animation finishes, add the deducted outbound amounts to the general resource store
     setTimeout(() => {
@@ -268,6 +275,6 @@ export const ResourceTransformationProcessor = {
       Object.entries(changes).forEach(([key, amount]) => {
         store.updateResource(key as ResourceKey, amount);
       });
-    }, animationSpeed + delayAnimationSpeed);
+    }, animationSpeed * 2);
   }
 }
