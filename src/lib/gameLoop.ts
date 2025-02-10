@@ -1,33 +1,55 @@
-import { useRTStore } from "@/store/useRTStore"
+import { useCardsStore } from "@/store/useCardsStore"
 import { useResourceStore } from "@/store/useResourceStore"
-import { payForResourceTransformation, processRTState } from "@/components/ui/ResourceTransformation"
+import { allCards } from "@/data/cards"
 
-// Keep a reference to our interval so we can cancel it later
 let intervalId: number | null = null
 
+function processCardTransformation(cardId: string, multiplier: number = 1) {
+  const cardStore = useCardsStore.getState();
+  const resourceStore = useResourceStore.getState();
+  const cardDef = allCards.find(c => c.id === cardId);
+  const cardState = cardStore.cardStates[cardId];
+
+  if (!cardDef?.transformation || cardState.status !== 'discovered') return;
+
+  // Process inbound resources
+  const canPay = cardDef.transformation.inbound.every(({ resource, amount }) => {
+    return resourceStore.resources[resource].amount >= amount * multiplier;
+  });
+
+  if (!canPay) return;
+
+  // Pay resources
+  cardDef.transformation.inbound.forEach(({ resource, amount }) => {
+    resourceStore.updateResource(resource, -amount * multiplier);
+  });
+
+  // Grant resources
+  cardDef.transformation.outbound.forEach(({ resource, amount }) => {
+    resourceStore.updateResource(resource, amount * multiplier);
+  });
+}
+
 export function startGameLoop() {
-  // If already started, do nothing
-  if (intervalId) return
+  if (intervalId) return;
 
   intervalId = window.setInterval(() => {
-    // Get current RT states and population from Zustand stores
-    const rtStates = useRTStore.getState().states
-    const population = useResourceStore.getState().resources.population.amount
+    const cardStates = useCardsStore.getState().cardStates;
 
-    // Process each RT with a simple multiplier of 1
-    Object.keys(rtStates).forEach((rtId) => {
-      payForResourceTransformation(rtId, 1)
-    })
-
-    // Then process the RT states as needed
-    Object.keys(rtStates).forEach((rtId) => {
-      processRTState(rtId)
-    })
-  }, 1000)
+    // Process each card's transformation
+    Object.keys(cardStates).forEach((cardId) => {
+      const cardState = cardStates[cardId];
+      if (cardState.sliderValue) {
+        processCardTransformation(cardId, cardState.sliderValue);
+      } else {
+        processCardTransformation(cardId);
+      }
+    });
+  }, 1000);
 }
 
 export function stopGameLoop() {
-  if (!intervalId) return
-  clearInterval(intervalId)
-  intervalId = null
+  if (!intervalId) return;
+  clearInterval(intervalId);
+  intervalId = null;
 }
