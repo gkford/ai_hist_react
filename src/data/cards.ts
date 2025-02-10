@@ -9,6 +9,7 @@ export interface DiscoveryStats {
 }
 
 export interface TransformationConfig {
+  id: string;
   inbound: Array<{
     resource: ResourceKey;
     amount: number;
@@ -20,6 +21,7 @@ export interface TransformationConfig {
 }
 
 export interface EffectConfig {
+  id: string;
   resource: ResourceKey;
   multiplier: number;
 }
@@ -50,6 +52,7 @@ export const allCards: CardDefinition[] = [
     },
     transformations: [
       {
+        id: "eat_food",
         inbound: [
           { resource: 'food', amount: 0.1 }
         ],
@@ -72,6 +75,7 @@ export const allCards: CardDefinition[] = [
     },
     transformations: [
       {
+        id: "gather_food",
         inbound: [
           { resource: 'humanEnergy', amount: 1 }
         ],
