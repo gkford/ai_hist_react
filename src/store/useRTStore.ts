@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { ResourceKey } from './useResourceStore'
+import { useEffectsStore } from './useEffectsStore'
 
 type RTStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 type Priority = 'high' | 'low' | 'none';
@@ -21,6 +22,82 @@ interface RTStore {
   states: Record<string, RTState>;
   updateState: (rtId: string, newState: RTState) => void;
 }
+
+const recalculateThoughtFocus = (rtStates: Record<string, RTState>, effectStates: Record<string, EffectState>) => {
+  // Get all entities that can receive thought focus
+  const activeRTs = Object.values(rtStates).filter(rt => 
+    (rt.status === 'unthoughtof' || rt.status === 'imagined') && 
+    rt.thought_focus !== null
+  );
+  const activeEffects = Object.values(effectStates).filter(effect => 
+    (effect.status === 'unthoughtof' || effect.status === 'imagined')
+  );
+
+  const allEntities = [...activeRTs, ...activeEffects];
+
+  // Get counts by priority
+  const highPriorityEntities = allEntities.filter(e => e.thought_priority === 'high');
+  const lowPriorityEntities = allEntities.filter(e => e.thought_priority === 'low');
+
+  // Create new state objects
+  const newRTStates = { ...rtStates };
+  const newEffectStates = { ...effectStates };
+
+  // If all entities have the same priority, split focus equally
+  if (allEntities.every(e => e.thought_priority === allEntities[0].thought_priority)) {
+    const focusPerEntity = allEntities[0].thought_priority === 'none' ? 0 : 100 / allEntities.length;
+    
+    // Apply focus to RTs
+    Object.entries(rtStates).forEach(([id, rt]) => {
+      if (rt.thought_focus !== null) {
+        newRTStates[id] = {
+          ...rt,
+          thought_focus: focusPerEntity
+        };
+      }
+    });
+    
+    // Apply focus to effects
+    Object.entries(effectStates).forEach(([id, effect]) => {
+      newEffectStates[id] = {
+        ...effect,
+        thought_focus: focusPerEntity
+      };
+    });
+  }
+  // Handle mixed priorities
+  else {
+    // High priority entities split 75%
+    const highFocusPerEntity = highPriorityEntities.length > 0 ? 75 / highPriorityEntities.length : 0;
+    // Low priority entities split 25%
+    const lowFocusPerEntity = lowPriorityEntities.length > 0 ? 25 / lowPriorityEntities.length : 0;
+
+    // Apply focus values
+    Object.entries(rtStates).forEach(([id, rt]) => {
+      if (rt.thought_focus !== null) {
+        newRTStates[id] = {
+          ...rt,
+          thought_focus: 
+            rt.thought_priority === 'high' ? highFocusPerEntity :
+            rt.thought_priority === 'low' ? lowFocusPerEntity :
+            0
+        };
+      }
+    });
+
+    Object.entries(effectStates).forEach(([id, effect]) => {
+      newEffectStates[id] = {
+        ...effect,
+        thought_focus: 
+          effect.thought_priority === 'high' ? highFocusPerEntity :
+          effect.thought_priority === 'low' ? lowFocusPerEntity :
+          0
+      };
+    });
+  }
+
+  return { rtStates: newRTStates, effectStates: newEffectStates };
+};
 
 const recalculateEnergyFocus = (states: Record<string, RTState>) => {
   // Get all RTs with non-null human_energy_focus
@@ -127,7 +204,8 @@ export const useRTStore = create<RTStore>((set) => {
       hide: false,
       status: 'unthoughtof' as RTStatus,
       thoughtInvested: 0,
-      priority: 'none' as Priority
+      priority: 'none' as Priority,
+      thought_priority: 'none' as Priority
     },
     think: {
       inbound_paid: {},
@@ -184,6 +262,27 @@ export const useRTStore = create<RTStore>((set) => {
         }
       }
 
+      // Check thought priority similarly
+      if (newState.thought_priority === 'none') {
+        const otherActiveThoughtEntities = [
+          ...Object.entries(state.states)
+            .filter(([id, rt]) => 
+              id !== rtId && 
+              (rt.status === 'unthoughtof' || rt.status === 'imagined') &&
+              rt.thought_priority !== 'none'
+            ),
+          ...Object.values(useEffectsStore.getState().effects)
+            .filter(effect => 
+              (effect.status === 'unthoughtof' || effect.status === 'imagined') &&
+              effect.thought_priority !== 'none'
+            )
+        ];
+        
+        if (otherActiveThoughtEntities.length === 0) {
+          return state;
+        }
+      }
+
       // Create new states with the updated RT
       const intermediateStates = {
         ...state.states,
@@ -191,9 +290,18 @@ export const useRTStore = create<RTStore>((set) => {
       };
 
       // Recalculate all energy focus values based on priorities
-      const finalStates = recalculateEnergyFocus(intermediateStates);
+      const energyFocusStates = recalculateEnergyFocus(intermediateStates);
 
-      return { states: finalStates };
+      // Recalculate thought focus across both stores
+      const { rtStates, effectStates } = recalculateThoughtFocus(
+        energyFocusStates,
+        useEffectsStore.getState().effects
+      );
+
+      // Update effects store with new thought focus values
+      useEffectsStore.setState({ effects: effectStates });
+
+      return { states: rtStates };
     })
   };
 });

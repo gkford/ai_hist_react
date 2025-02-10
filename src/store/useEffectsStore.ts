@@ -6,6 +6,8 @@ interface EffectState {
   status: EffectStatus;
   activated: boolean;
   thoughtInvested: number;
+  thought_focus: number;
+  thought_priority: Priority;
 }
 
 interface EffectsStore {
@@ -18,7 +20,9 @@ export const useEffectsStore = create<EffectsStore>((set) => ({
     early_stone_tools: {
       status: 'unthoughtof',
       activated: false,
-      thoughtInvested: 0
+      thoughtInvested: 0,
+      thought_focus: 0,
+      thought_priority: 'none' as Priority
     }
   },
   updateEffect: (effectId, newState) => set((state) => ({
