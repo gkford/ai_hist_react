@@ -10,32 +10,11 @@ function initializeCards() {
   const cardStore = useCardsStore.getState();
 
   allCards.forEach(cardDef => {
-    const initialState = {
+    cardStore.createCard(cardDef.id, {
       discovery_state: {
-        current_status: cardDef.id === 'hominids' ? 'discovered' : 'unthoughtof',
-        thought_invested: 0
-      },
-      rts: Object.fromEntries(
-        (cardDef.rts || []).map(rt => [
-          rt.id,
-          {
-            inbound_paid: {},
-            outbound_owed: {},
-            value: 0
-          }
-        ])
-      ),
-      effects: Object.fromEntries(
-        (cardDef.effects || []).map(effect => [
-          effect.id,
-          {
-            value: 0
-          }
-        ])
-      )
-    };
-
-    cardStore.createCard(cardDef.id, initialState);
+        current_status: cardDef.id === 'hominids' ? 'discovered' : 'unthoughtof'
+      }
+    });
   });
 }
 
