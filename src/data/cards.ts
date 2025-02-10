@@ -56,20 +56,23 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: "gather_food",
-    title: "Gather Food",
+    title: "Gather Food", 
     column: 2,
     icon: "⚙️",
     imageSrc: "/card_images/gatherFood.png",
     description: "Gather food from the environment",
+    discovery_stats: {
+      initial_status: 'discovered',
+      thought_to_imagine: 5,
+      further_thought_to_discover: 15
+    },
     transformation: {
       inbound: [
         { resource: 'humanEnergy', amount: 1 }
       ],
       outbound: [
         { resource: 'food', amount: 2 }
-      ],
-      thoughtToImagine: 5,
-      thoughtToDiscover: 15
+      ]
     }
   }
 ];
