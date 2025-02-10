@@ -91,7 +91,7 @@ export const useRTStore = create<RTStore>((set) => {
       eating_focus: 1,
       thought_focus: null,
       hide: false,
-      status: 'discovered',
+      status: 'discovered' as RTStatus,
       thoughtInvested: 0,
       priority: 'none'
     },
@@ -102,7 +102,7 @@ export const useRTStore = create<RTStore>((set) => {
       eating_focus: null,
       thought_focus: 0,
       hide: false,
-      status: 'unthoughtof',
+      status: 'unthoughtof' as RTStatus,
       thoughtInvested: 0,
       priority: 'none'
     },
@@ -113,7 +113,7 @@ export const useRTStore = create<RTStore>((set) => {
       eating_focus: null,
       thought_focus: 0,
       hide: false,
-      status: 'discovered',
+      status: 'discovered' as RTStatus,
       thoughtInvested: 0,
       priority: 'low'
     },
@@ -124,7 +124,7 @@ export const useRTStore = create<RTStore>((set) => {
       eating_focus: null,
       thought_focus: 0,
       hide: false,
-      status: 'discovered',
+      status: 'discovered' as RTStatus,
       thoughtInvested: 0,
       priority: 'high'
     },
@@ -135,7 +135,7 @@ export const useRTStore = create<RTStore>((set) => {
       eating_focus: null,
       thought_focus: 0,
       hide: false,
-      status: 'unthoughtof',
+      status: 'unthoughtof' as RTStatus,
       thoughtInvested: 0,
       priority: 'none'
     }
