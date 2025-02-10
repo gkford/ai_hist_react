@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { ResourceKey } from "./useResourceStore";
+import { allCards } from "@/data/cards";
 import type { CardDefinition, DiscoveryStatus, rtConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
 
 // State extensions of the base configs
@@ -40,7 +41,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
   cardStates: {},
   
   createCard: (id, initialState) => {
-    const cardDef = allCards.find(c => c.id === id);
+    const cardDef = allCards.find((c: CardDefinition) => c.id === id);
     if (!cardDef) return;
 
     set((state) => ({
@@ -49,7 +50,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
         [id]: {
           ...cardDef,
           rts: Object.fromEntries(
-            (cardDef.rts || []).map(rt => [
+            (cardDef.rts || []).map((rt: rtConfig) => [
               rt.id,
               {
                 ...rt,
@@ -61,7 +62,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
             ])
           ),
           effects: Object.fromEntries(
-            (cardDef.effects || []).map(effect => [
+            (cardDef.effects || []).map((effect: EffectConfig) => [
               effect.id,
               {
                 ...effect,
