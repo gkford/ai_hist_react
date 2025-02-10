@@ -47,36 +47,57 @@ const recalculateEnergyFocus = (states: Record<string, RTState>) => {
       };
     });
   }
-  // Case 2: Mix of priorities
+  // Case 2: Special cases and mix of priorities
   else {
-    // High priority RTs split 75%
-    const highEnergyPerRT = highPriorityRTs.length > 0 ? 75 / highPriorityRTs.length : 0;
-    highPriorityRTs.forEach(rt => {
-      const rtId = Object.keys(states).find(key => states[key] === rt)!;
+    // If there's only one RT with non-none priority, it gets 100%
+    if (highPriorityRTs.length + lowPriorityRTs.length === 1) {
+      const activeRT = highPriorityRTs[0] || lowPriorityRTs[0];
+      const rtId = Object.keys(states).find(key => states[key] === activeRT)!;
       newStates[rtId] = {
-        ...rt,
-        human_energy_focus: highEnergyPerRT
+        ...activeRT,
+        human_energy_focus: 100
       };
-    });
+      
+      // Set all none priority RTs to 0
+      nonePriorityRTs.forEach(rt => {
+        const rtId = Object.keys(states).find(key => states[key] === rt)!;
+        newStates[rtId] = {
+          ...rt,
+          human_energy_focus: 0
+        };
+      });
+    }
+    // Regular mixed priority case
+    else {
+      // High priority RTs split 75%
+      const highEnergyPerRT = highPriorityRTs.length > 0 ? 75 / highPriorityRTs.length : 0;
+      highPriorityRTs.forEach(rt => {
+        const rtId = Object.keys(states).find(key => states[key] === rt)!;
+        newStates[rtId] = {
+          ...rt,
+          human_energy_focus: highEnergyPerRT
+        };
+      });
 
-    // Low priority RTs split 25%
-    const lowEnergyPerRT = lowPriorityRTs.length > 0 ? 25 / lowPriorityRTs.length : 0;
-    lowPriorityRTs.forEach(rt => {
-      const rtId = Object.keys(states).find(key => states[key] === rt)!;
-      newStates[rtId] = {
-        ...rt,
-        human_energy_focus: lowEnergyPerRT
-      };
-    });
+      // Low priority RTs split 25%
+      const lowEnergyPerRT = lowPriorityRTs.length > 0 ? 25 / lowPriorityRTs.length : 0;
+      lowPriorityRTs.forEach(rt => {
+        const rtId = Object.keys(states).find(key => states[key] === rt)!;
+        newStates[rtId] = {
+          ...rt,
+          human_energy_focus: lowEnergyPerRT
+        };
+      });
 
-    // None priority RTs get 0
-    nonePriorityRTs.forEach(rt => {
-      const rtId = Object.keys(states).find(key => states[key] === rt)!;
-      newStates[rtId] = {
-        ...rt,
-        human_energy_focus: 0
-      };
-    });
+      // None priority RTs get 0
+      nonePriorityRTs.forEach(rt => {
+        const rtId = Object.keys(states).find(key => states[key] === rt)!;
+        newStates[rtId] = {
+          ...rt,
+          human_energy_focus: 0
+        };
+      });
+    }
   }
 
   return newStates;
