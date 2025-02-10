@@ -68,7 +68,7 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
       return children;
     };
     return (
-      <Card ref={ref} className={cn("w-[400px] overflow-hidden flex flex-col", className)} {...props}>
+      <Card ref={ref} className={cn("w-[480px] overflow-hidden flex flex-col", className)} {...props}>
         {header ? header : (
           <div className="flex items-center justify-between p-4">
             <h3 className="text-xl font-semibold">

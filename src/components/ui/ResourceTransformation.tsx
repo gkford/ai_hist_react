@@ -18,6 +18,7 @@ export interface ResourceTransformationHandle {
 
 interface ResourceTransformationProps {
   rtId: string
+  transformationText?: string
 }
 
 interface TransformationInstance {
@@ -149,7 +150,11 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     )}>
       <div className="relative w-full h-full overflow-hidden">
         {/* Add grey box overlay */}
-        <div className="absolute left-1/3 right-1/3 top-0 bottom-0 bg-gray-100 border-4 border-black z-10" />
+        <div className="absolute left-1/3 right-1/3 top-0 bottom-0 bg-gray-100 border-4 border-black z-10 flex items-center justify-center">
+          {transformationText && (
+            <span className="text-sm font-medium">{transformationText}</span>
+          )}
+        </div>
         {transformations.map(transformation => 
           transformation.particles.map(particle => (
             <div

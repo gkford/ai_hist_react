@@ -35,37 +35,31 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
 
   if (!transformation) return null
 
-  const descriptionText = `Converts ${transformation.inbound.map(item => {
+  const simplifiedText = `⚡ → ${transformation.outbound.map(item => {
     const resource = resourcesForDisplay?.find(r => r.key === item.key);
-    return `${item.amount} ${resource?.icon || ''} ${resource?.name || item.key}`;
-  }).join(' and ')} into ${transformation.outbound.map(item => {
-    const resource = resourcesForDisplay?.find(r => r.key === item.key);
-    return `${item.amount} ${resource?.icon || ''} ${resource?.name || item.key}`;
-  }).join(' and ')}`;
+    return `${item.amount}${resource?.icon || ''}`
+  }).join(' ')}`;
 
   return (
     <MasterCard title={title} typeIcon={typeIcon} discoveryStatusIcon={null} rtId={rtId}>
       <CardImage imageSrc={imageSrc} rtId={rtId} />
-      <CardInfo className="text-center">
-        {descriptionText}
-        {showSlider && (
-          <div className="mt-4 px-8 w-full">
-            <Slider
-              defaultValue={[rtState?.human_energy_focus ?? 0]}
-              value={[rtState?.human_energy_focus ?? 0]}
-              max={100}
-              step={1}
-              onValueChange={handleSliderChange}
-              className="w-full"
-              aria-label="Human Energy Focus"
-            />
-            <div className="text-sm text-gray-500 mt-1 text-center">
-              Energy Focus: {rtState?.human_energy_focus ?? 0}%
-            </div>
+      {showSlider && (
+        <div className="px-8 w-full py-4">
+          <Slider
+            defaultValue={[rtState?.human_energy_focus ?? 0]}
+            value={[rtState?.human_energy_focus ?? 0]}
+            max={100}
+            step={1}
+            onValueChange={handleSliderChange}
+            className="w-full"
+            aria-label="Human Energy Focus"
+          />
+          <div className="text-sm text-gray-500 mt-1 text-center">
+            Energy Focus: {rtState?.human_energy_focus ?? 0}%
           </div>
-        )}
-      </CardInfo>
-      <ResourceTransformation rtId={rtId} />
+        </div>
+      )}
+      <ResourceTransformation rtId={rtId} transformationText={simplifiedText} />
     </MasterCard>
   )
 }
