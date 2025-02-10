@@ -60,6 +60,16 @@ export const useRTStore = create<RTStore>((set) => ({
       hide: false,
       status: 'discovered',
       thoughtInvested: 0
+    },
+    non_verbal_communication: {
+      inbound_paid: {},
+      outbound_owed: {},
+      human_energy_focus: 0,
+      eating_focus: null,
+      thought_focus: 0,
+      hide: false,
+      status: 'unthoughtof',
+      thoughtInvested: 0
     }
   },
   updateState: (rtId, newState) => set((state) => {
