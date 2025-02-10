@@ -2,10 +2,10 @@ import { create } from 'zustand'
 import type { ResourceKey } from './useResourceStore'
 import { useEffectsStore, type EffectState } from './useEffectsStore'
 
-type RTStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
+export type RTStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 export type Priority = 'high' | 'low' | 'none';
 
-interface RTState {
+export interface RTState {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
   human_energy_focus: number | null;  // Allow null
