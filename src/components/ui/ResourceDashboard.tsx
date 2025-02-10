@@ -11,7 +11,6 @@ interface ResourceDisplayProps {
 
 function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
-  const effectsStore = useEffectsStore()
 
   // Calculate total multiplier for this resource from card effects
   const totalMultiplier = Object.values(useCardsStore.getState().cardStates)
