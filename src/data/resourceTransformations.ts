@@ -22,7 +22,7 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
       { key: "humanEnergy", amount: 1 }
     ],
     outbound: [
-      { key: "food", amount: 1.2 }
+      { key: "food", amount: 1.1 }
     ],
     thoughtToImagine: 0,
     thoughtToDiscover: 0
@@ -46,7 +46,7 @@ export const resourceTransformations: Record<string, ResourceTransformation> = {
       { key: "humanEnergy", amount: 1 }
     ],
     outbound: [
-      { key: "food", amount: 1 }
+      { key: "food", amount: 1.2 }
     ],
     thoughtToImagine: 10,
     thoughtToDiscover: 10
