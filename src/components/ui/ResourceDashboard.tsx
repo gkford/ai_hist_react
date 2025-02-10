@@ -11,11 +11,11 @@ function ResourceDisplay({ icon, amount }: ResourceDisplayProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const interval = setInterval(() => {
       setDisplayAmount(Math.floor(amount))
     }, 1000)
-    return () => clearTimeout(timer)
-  }, [amount])
+    return () => clearInterval(interval)
+  }, []) // Empty dependency array to set up interval once
 
   return (
     <div className="w-32 px-4 py-2 bg-white rounded-md shadow-sm flex items-center justify-between">
