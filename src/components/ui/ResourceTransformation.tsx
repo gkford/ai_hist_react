@@ -112,14 +112,9 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
           ])
         )
       },
-      human_energy_focus: rtState.human_energy_focus,
-      eating_focus: rtState.eating_focus,
-      thought_focus: rtState.thought_focus,
       hide: rtState.hide,
       status: rtState.status,
-      thoughtInvested: rtState.thoughtInvested,
-      priority: rtState.priority,
-      thought_priority: rtState.thought_priority
+      thoughtInvested: rtState.thoughtInvested
     };
     updateState(rtId, newState);
     return true;
@@ -251,14 +246,9 @@ export function processRTState(rtId: string): void {
   useRTStore.getState().updateState(rtId, {
     inbound_paid: newInboundPaid,
     outbound_owed: newOutboundOwed,
-    human_energy_focus: rtState.human_energy_focus,
-    eating_focus: rtState.eating_focus,
-    thought_focus: rtState.thought_focus,
     hide: rtState.hide,
     status: rtState.status,
-    thoughtInvested: rtState.thoughtInvested,
-    priority: rtState.priority,
-    thought_priority: rtState.thought_priority
+    thoughtInvested: rtState.thoughtInvested
   });
 
   animateResourceTransformation(rtId, inboundList, outboundList, animationSpeed, delayAnimationSpeed);

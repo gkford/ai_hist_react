@@ -63,6 +63,6 @@ export const useRTStore = create<RTStore>((set) => {
         ...state.states,
         [rtId]: newState
       }
-    })
+    }))
   };
 });
