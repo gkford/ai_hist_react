@@ -1,43 +1,13 @@
-import { forwardRef, useImperativeHandle, useState, useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import type { ResourceKey } from "@/store/useResourceStore"
 import { allCards } from "@/data/cards"
 import { useResourceStore } from "@/store/useResourceStore"
-import { getTransformation } from "@/data/resourceTransformations"
 import { useCardsStore } from "@/store/useCardsStore"
 import { cn } from "@/lib/utils"
 
 
-export interface ResourceTransformationHandle {
-  animateRT: (
-    inboundEmojisParam: string[],
-    outboundEmojisParam: string[],
-    animationSpeed: number
-  ) => void;
-  payForTransformation: (multiplier?: number) => boolean;
-}
-
-interface ResourceTransformationProps {
-  rtId: string
-  transformationText?: string
-}
-
-interface TransformationInstance {
-  id: number
-  particles: Array<{
-    id: number
-    content: string
-    type: 'inbound' | 'outbound'
-  }>
-}
-
-// Global registry for ResourceTransformation instances
-const rtRegistry = new Map<string, ResourceTransformationHandle>()
-
-// Move counters outside component to persist between renders
-let globalParticleIdCounter = 0
-let globalTransformationIdCounter = 0
-
-export const ResourceTransformation = forwardRef<ResourceTransformationHandle, ResourceTransformationProps>(function ResourceTransformation({ rtId, transformationText }, ref) {
+export const ResourceTransformationProcessor = {
+  processTransformation(rtId: string): void {
   const [transformations, setTransformations] = useState<TransformationInstance[]>([])
   const { cardStates, updateCardState } = useCardsStore()
   const cardState = cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} }
