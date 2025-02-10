@@ -12,7 +12,11 @@ function initializeCards() {
   allCards.forEach(cardDef => {
     cardStore.createCard(cardDef.id, {
       discovery_state: {
-        current_status: cardDef.id === 'hominids' ? 'discovered' : 'unthoughtof'
+        current_status: cardDef.id === 'hominids' ? 'discovered' : 'unthoughtof',
+        thought_invested: 0,
+        thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
+        further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
+        focus: cardDef.discovery_stats.focus
       }
     });
   });
