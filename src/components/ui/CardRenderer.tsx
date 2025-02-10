@@ -12,24 +12,5 @@ type CardRendererProps = {
 };
 
 export function CardRenderer({ cardId }: CardRendererProps) {
-  const cardDef = allCards.find((c) => c.id === cardId);
-  const cardState = useCardsStore((state) => state.cardStates[cardId]);
-
-  if (!cardDef || !cardState) return null;
-
-  return (
-    <MasterCard
-      title={cardDef.title}
-      typeIcon={cardDef.icon}
-      discoveryStatusIcon={null}
-      imageSrc={cardDef.imageSrc ? import.meta.env.BASE_URL + cardDef.imageSrc : undefined}
-    >
-      {cardDef.imageSrc && <CardImage imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc} />}
-      {cardDef.transformation && <ResourceTransformation rtId={cardId} />}
-      <CardInfo>
-        <p>{cardDef.description}</p>
-      </CardInfo>
-      {cardDef.id && <DiscoveryProgress rtId={cardDef.id} />}
-    </MasterCard>
-  );
+  return <MasterCard id={cardId} />;
 }
