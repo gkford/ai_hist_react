@@ -5,8 +5,8 @@ import type { CardDefinition, DiscoveryStatus, rtConfig, FocusConfig, EffectConf
 
 // State extensions of the base configs
 interface FocusState extends FocusConfig {
-  focus_prop: number;
-  focus_priority: 'low' | 'high' | 'none';
+  prop: number;
+  priority: 'low' | 'high' | 'none';
 }
 
 interface RTState extends Omit<rtConfig, 'focus'> {
@@ -61,9 +61,9 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 inbound_paid: {},
                 outbound_owed: {},
                 focus: {
-                  focus_resource: rt.focus.focus_resource,
-                  focus_prop: 0,
-                  focus_priority: 'none'
+                  resource: rt.focus.resource,
+                  prop: 0,
+                  priority: 'none'
                 }
               }
             ])
@@ -75,9 +75,9 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 ...effect,
                 active: false,
                 focus: {
-                  focus_resource: effect.focus.focus_resource,
-                  focus_prop: 0,
-                  focus_priority: 'none'
+                  resource: effect.focus.resource,
+                  prop: 0,
+                  priority: 'none'
                 }
               }
             ])
@@ -88,9 +88,9 @@ export const useCardsStore = create<CardsStore>((set) => ({
             current_status: 'unthoughtof',
             thought_invested: 0,
             focus: {
-              focus_resource: cardDef.discovery_stats.focus.focus_resource,
-              focus_prop: 0,
-              focus_priority: 'none'
+              resource: cardDef.discovery_stats.focus.resource,
+              prop: 0,
+              priority: 'none'
             },
             ...initialState?.discovery_state
           },
