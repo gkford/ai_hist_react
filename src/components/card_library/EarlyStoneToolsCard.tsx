@@ -1,14 +1,23 @@
 import { EffectCard } from "./EffectCard";
+import { useRTStore } from "@/store/useRTStore";
+import { getEffect } from "@/data/effects";
 
 export function EarlyStoneToolsCard() {
+  const { states, updateState } = useRTStore();
+  const rtId = "early_stone_tools";
+  const effect = getEffect(rtId);
+
   const handleActivate = () => {
-    console.log("Early Stone Tools effect activated: +10% human energy");
-    // Future: implement the actual effect here
+    // Mark the effect as discovered in RT store
+    updateState(rtId, {
+      ...states[rtId],
+      status: 'discovered'
+    });
   };
 
   return (
     <EffectCard
-      rtId="early_stone_tools"
+      rtId={rtId}
       title="Early Stone Tools"
       typeIcon="🪨"
       imageSrc={import.meta.env.BASE_URL + "card_images/earlyStoneTools.png"}

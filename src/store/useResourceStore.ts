@@ -56,8 +56,24 @@ export const useResourceStore = create<ResourceStore>((set, get) => ({
     set((state) => {
       const updatedResources = { ...state.resources }
       for (const key in changes) {
-        updatedResources[key as ResourceKey] = {
-          amount: Number(changes[key as ResourceKey]!.toFixed(3))
+        const resourceKey = key as ResourceKey
+        let amount = changes[resourceKey]!
+
+        // Apply production multiplier effects if they exist
+        const activeEffects = Object.values(effects).filter(
+          effect => effect.type === 'resourceProductionMultiplier' 
+          && effect.targetResource === resourceKey
+          && amount > 0  // Only apply to production, not consumption
+        )
+
+        // Apply all relevant multipliers
+        amount = activeEffects.reduce(
+          (value, effect) => value * (effect.multiplier || 1), 
+          amount
+        )
+
+        updatedResources[resourceKey] = {
+          amount: Number(amount.toFixed(3))
         }
       }
       return { resources: updatedResources }
