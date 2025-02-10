@@ -4,18 +4,26 @@ import { allCards } from "@/data/cards";
 import type { CardDefinition, DiscoveryStatus, rtConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
 
 // State extensions of the base configs
-interface RTState extends rtConfig {
+interface FocusState extends FocusConfig {
+  focus_prop: number;
+  focus_priority: 'low' | 'high' | 'none';
+}
+
+interface RTState extends Omit<rtConfig, 'focus'> {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
+  focus: FocusState;
 }
 
-interface EffectState extends EffectConfig {
+interface EffectState extends Omit<EffectConfig, 'focus'> {
   active: boolean;
+  focus: FocusState;
 }
 
-interface DiscoveryState extends DiscoveryStats {
+interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
   current_status: DiscoveryStatus;
   thought_invested: number;
+  focus: FocusState;
 }
 
 // The full card state extends CardDefinition
@@ -51,7 +59,12 @@ export const useCardsStore = create<CardsStore>((set) => ({
               {
                 ...rt,
                 inbound_paid: {},
-                outbound_owed: {}
+                outbound_owed: {},
+                focus: {
+                  focus_resource: rt.focus.focus_resource,
+                  focus_prop: 0,
+                  focus_priority: 'none'
+                }
               }
             ])
           ),
@@ -60,14 +73,25 @@ export const useCardsStore = create<CardsStore>((set) => ({
               effect.id,
               {
                 ...effect,
-                active: false
+                active: false,
+                focus: {
+                  focus_resource: effect.focus.focus_resource,
+                  focus_prop: 0,
+                  focus_priority: 'none'
+                }
               }
             ])
           ),
           discovery_state: {
-            ...cardDef.discovery_stats,
+            thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
+            further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
             current_status: 'unthoughtof',
             thought_invested: 0,
+            focus: {
+              focus_resource: cardDef.discovery_stats.focus.focus_resource,
+              focus_prop: 0,
+              focus_priority: 'none'
+            },
             ...initialState?.discovery_state
           },
           ...initialState

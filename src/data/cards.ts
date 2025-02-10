@@ -4,7 +4,6 @@ export type DiscoveryStatus = 'hidden' | 'unthoughtof' | 'imagined' | 'discovere
 
 export interface FocusConfig {
   focus_resource: ResourceKey | 'thought';
-  focus_prop: number;
 }
 
 export interface DiscoveryStats {
@@ -58,8 +57,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 10,
       further_thought_to_discover: 20,
       focus: {
-        focus_resource: 'thought',
-        focus_prop: 0
+        focus_resource: 'thought'
       }
     },
     rts: [
@@ -72,8 +70,7 @@ export const allCards: CardDefinition[] = [
           { resource: 'humanEnergy', amount: 0.12 }
         ],
         focus: {
-          focus_resource: 'food',
-          focus_prop: 0
+          focus_resource: 'food'
         }
       }
     ]
@@ -103,8 +100,7 @@ export const allCards: CardDefinition[] = [
           { resource: 'food', amount: 2 }
         ],
         focus: {
-          focus_resource: 'humanEnergy',
-          focus_prop: 0
+          focus_resource: 'humanEnergy'
         }
       }
     ]
