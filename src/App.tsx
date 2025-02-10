@@ -57,8 +57,7 @@ function App() {
           ? focusValue * population 
           : focusValue / 100;
 
-        const success = payForResourceTransformation(rtId, multiplier);
-        console.log(`Auto-${focusType} triggered for ${rtId}, multiplier: ${multiplier}, success: ${success}`);
+        payForResourceTransformation(rtId, multiplier);
       });
     }, 1000);
 

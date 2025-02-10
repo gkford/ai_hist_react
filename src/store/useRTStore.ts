@@ -59,7 +59,7 @@ export const useRTStore = create<RTStore>((set) => ({
     gather_food: {
       inbound_paid: {},
       outbound_owed: {},
-      human_energy_focus: 0,
+      human_energy_focus: 75,
       eating_focus: null,
       thought_focus: 0,
       hide: false,
