@@ -1,5 +1,14 @@
 import type { ResourceKey } from "@/store/useResourceStore";
 
+export type DiscoveryStatus = 'hidden' | 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
+
+export interface DiscoveryStats {
+  initial_status: DiscoveryStatus;
+  thought_to_imagine: number;
+  thought_to_discover: number;
+  dependencies?: string[]; // Array of card IDs this card depends on
+}
+
 export interface TransformationData {
   inbound: Array<{
     resource: ResourceKey;
@@ -9,8 +18,6 @@ export interface TransformationData {
     resource: ResourceKey;
     amount: number;
   }>;
-  thoughtToImagine: number;
-  thoughtToDiscover: number;
 }
 
 export interface CardDefinition {
@@ -22,6 +29,7 @@ export interface CardDefinition {
   description?: string;
   transformation?: TransformationData;
   effects?: string[];
+  discovery_stats: DiscoveryStats;
 }
 
 export const allCards: CardDefinition[] = [
@@ -32,15 +40,18 @@ export const allCards: CardDefinition[] = [
     icon: "👥",
     imageSrc: "/card_images/hominids.png",
     description: "Your early human population",
+    discovery_stats: {
+      initial_status: 'discovered',
+      thought_to_imagine: 10,
+      thought_to_discover: 20
+    },
     transformation: {
       inbound: [
         { resource: 'food', amount: 1 }
       ],
       outbound: [
         { resource: 'humanEnergy', amount: 2 }
-      ],
-      thoughtToImagine: 10,
-      thoughtToDiscover: 20
+      ]
     }
   },
   {
