@@ -17,7 +17,6 @@ function App() {
   const thoughts = useResource('thoughts')
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
-  const rtStates = useRTStore((state) => state.states)
 
   useEffect(() => {
     // Start the loop on mount
@@ -61,10 +60,10 @@ function App() {
         </div>
         
         <div className="p-4 border border-gray-200 rounded">
-          <h2 className="font-semibold mb-2">RT States</h2>
-          {Object.entries(rtStates).map(([rtId, state]) => (
-            <div key={rtId} className="mb-2">
-              <h3 className="font-medium">{rtId}</h3>
+          <h2 className="font-semibold mb-2">Card States</h2>
+          {Object.entries(useCardsStore.getState().cardStates).map(([cardId, state]) => (
+            <div key={cardId} className="mb-2">
+              <h3 className="font-medium">{cardId}</h3>
               <pre className="text-xs">
                 {JSON.stringify(state, null, 2)}
               </pre>
