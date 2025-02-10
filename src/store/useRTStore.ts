@@ -145,31 +145,32 @@ export const useRTStore = create<RTStore>((set) => {
 
   return {
     states: calculatedInitialStates,
-  updateState: (rtId, newState) => set((state) => {
-    // Prevent all RTs from being set to 'none'
-    if (newState.priority === 'none') {
-      const otherActiveRTs = Object.entries(state.states)
-        .filter(([id, rt]) => 
-          id !== rtId && 
-          rt.status === 'discovered' && 
-          rt.human_energy_focus !== null && 
-          rt.priority !== 'none'
-        );
-      
-      if (otherActiveRTs.length === 0) {
-        return state; // Don't allow the change
+    updateState: (rtId, newState) => set((state) => {
+      // Prevent all RTs from being set to 'none'
+      if (newState.priority === 'none') {
+        const otherActiveRTs = Object.entries(state.states)
+          .filter(([id, rt]) => 
+            id !== rtId && 
+            rt.status === 'discovered' && 
+            rt.human_energy_focus !== null && 
+            rt.priority !== 'none'
+          );
+        
+        if (otherActiveRTs.length === 0) {
+          return state; // Don't allow the change
+        }
       }
-    }
 
-    // Create new states with the updated RT
-    const intermediateStates = {
-      ...state.states,
-      [rtId]: newState
-    };
+      // Create new states with the updated RT
+      const intermediateStates = {
+        ...state.states,
+        [rtId]: newState
+      };
 
-    // Recalculate all energy focus values based on priorities
-    const finalStates = recalculateEnergyFocus(intermediateStates);
+      // Recalculate all energy focus values based on priorities
+      const finalStates = recalculateEnergyFocus(intermediateStates);
 
-    return { states: finalStates };
-  })
-}))
+      return { states: finalStates };
+    })
+  };
+});
