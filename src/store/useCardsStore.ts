@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { ResourceKey } from "./useResourceStore";
 import { allCards } from "@/data/cards";
-import type { CardDefinition, DiscoveryStatus, rtConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
+import type { CardDefinition, DiscoveryStatus, rtConfig, FocusConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
 
 // State extensions of the base configs
 interface FocusState extends FocusConfig {
