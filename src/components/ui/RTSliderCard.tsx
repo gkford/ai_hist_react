@@ -92,24 +92,25 @@ export function RTSliderCard({ title, typeIcon, imageSrc, rtId }: RTSliderCardPr
       <CardImage imageSrc={imageSrc} rtId={rtId} />
       {showSlider && (
         <div className="px-8 w-full py-4">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2">
+            <div className="flex-1">
+              <Progress 
+                value={energyFocus} 
+                label={`⚡focus - ${Math.round(energyFocus)}%`}
+              />
+            </div>
             <Button 
               onClick={handlePriorityClick}
               className={cn(
-                "transition-colors",
+                "transition-colors w-32",
                 rtState.priority === 'high' ? 'bg-green-500 hover:bg-green-600 text-white' : 
                 rtState.priority === 'low' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 
                 'bg-white hover:bg-gray-100 text-black border border-gray-200'
               )}
             >
-              {rtState.priority === 'high' ? 'High' :
-               rtState.priority === 'low' ? 'Low' : 'None'}
+              {rtState.priority === 'high' ? 'High Priority' :
+               rtState.priority === 'low' ? 'Low Priority' : 'Off'}
             </Button>
-            <Progress value={energyFocus} className="flex-1" />
-          </div>
-          <div className="flex justify-between text-sm text-gray-500">
-            <span>⚡focus</span>
-            <span>{Math.round(energyFocus)}%</span>
           </div>
         </div>
       )}
