@@ -89,7 +89,7 @@ export const ResourceTransformation = forwardRef<ResourceTransformationHandle, R
     // Deduct inbound amounts from store
     transformation.inbound.forEach(item => {
       const current = store.resources[item.key].amount;
-      store.setResourceAmount(item.key, current - (item.amount * multiplier));
+      store.updateResource(item.key, current - (item.amount * multiplier));
     });
     // Update local RT state: add inbound_paid from transformation.inbound and add outbound_owed from transformation.outbound,
     // trimming all new values to 3 decimal places.
@@ -193,7 +193,7 @@ export function animateResourceTransformation(
 export function processRTState(rtId: string): void {
   // Get the current RT state for the given id (or default values)
   const cardState = useCardsStore.getState().cardStates[rtId] || { inbound_paid: {}, outbound_owed: {} };
-  const resourceConfigs = useResourceStore.getState().config;
+  const store = useResourceStore.getState();
 
   
   const animationSpeed = 2500;
@@ -215,7 +215,7 @@ export function processRTState(rtId: string): void {
     const whole = Math.floor(value);
     if (whole > 0) {
       newInboundPaid[rKey] = parseFloat((value - whole).toFixed(3));
-      const icon = resourceConfigs[rKey]?.icon || rKey;
+      const icon = store.resources[rKey]?.icon || rKey;
       for (let i = 0; i < whole; i++) {
         inboundList.push(icon);
       }
@@ -258,6 +258,8 @@ export function processRTState(rtId: string): void {
         changes[rKey] = current + deducted;
       }
     });
-    store.updateResources(changes);
+    Object.entries(changes).forEach(([key, amount]) => {
+      store.updateResource(key as ResourceKey, amount);
+    });
   }, animationSpeed + delayAnimationSpeed);
 }
