@@ -21,6 +21,67 @@ interface RTStore {
   updateState: (rtId: string, newState: RTState) => void;
 }
 
+const recalculateEnergyFocus = (states: Record<string, RTState>) => {
+  // Get all RTs with non-null human_energy_focus
+  const activeRTs = Object.values(states).filter(rt => 
+    rt.status === 'discovered' && 
+    rt.human_energy_focus !== null
+  );
+
+  // Get counts by priority
+  const highPriorityRTs = activeRTs.filter(rt => rt.priority === 'high');
+  const lowPriorityRTs = activeRTs.filter(rt => rt.priority === 'low');
+  const nonePriorityRTs = activeRTs.filter(rt => rt.priority === 'none');
+
+  // Create new states object
+  const newStates = { ...states };
+
+  // Case 1: All same priority
+  if (activeRTs.every(rt => rt.priority === activeRTs[0].priority)) {
+    const energyPerRT = 100 / activeRTs.length;
+    activeRTs.forEach(rt => {
+      const rtId = Object.keys(states).find(key => states[key] === rt)!;
+      newStates[rtId] = {
+        ...rt,
+        human_energy_focus: rt.priority === 'none' ? 0 : energyPerRT
+      };
+    });
+  }
+  // Case 2: Mix of priorities
+  else {
+    // High priority RTs split 75%
+    const highEnergyPerRT = highPriorityRTs.length > 0 ? 75 / highPriorityRTs.length : 0;
+    highPriorityRTs.forEach(rt => {
+      const rtId = Object.keys(states).find(key => states[key] === rt)!;
+      newStates[rtId] = {
+        ...rt,
+        human_energy_focus: highEnergyPerRT
+      };
+    });
+
+    // Low priority RTs split 25%
+    const lowEnergyPerRT = lowPriorityRTs.length > 0 ? 25 / lowPriorityRTs.length : 0;
+    lowPriorityRTs.forEach(rt => {
+      const rtId = Object.keys(states).find(key => states[key] === rt)!;
+      newStates[rtId] = {
+        ...rt,
+        human_energy_focus: lowEnergyPerRT
+      };
+    });
+
+    // None priority RTs get 0
+    nonePriorityRTs.forEach(rt => {
+      const rtId = Object.keys(states).find(key => states[key] === rt)!;
+      newStates[rtId] = {
+        ...rt,
+        human_energy_focus: 0
+      };
+    });
+  }
+
+  return newStates;
+};
+
 export const useRTStore = create<RTStore>((set) => ({
   states: {
     eating_chicken: {
@@ -80,45 +141,30 @@ export const useRTStore = create<RTStore>((set) => ({
     }
   },
   updateState: (rtId, newState) => set((state) => {
-    // Only sum human_energy_focus across RTs
-    if (newState.human_energy_focus !== null) {
-      const otherRTs = Object.entries(state.states).filter(([id]) => id !== rtId);
-      const otherTotal = otherRTs.reduce((sum, [, rt]) => 
-        sum + (rt.human_energy_focus || 0), 0);
-      const total = (newState.human_energy_focus || 0) + otherTotal;
-
-      // If total would exceed max (100), reduce others proportionally
-      if (total > 100) {
-        const excess = total - 100;
-        const newStates = { ...state.states };
-        
-        // Calculate total of other RTs that have focus
-        const activeRTs = otherRTs.filter(([, rt]) => (rt.human_energy_focus || 0) > 0);
-        const activeTotal = activeRTs.reduce((sum, [, rt]) => sum + (rt.human_energy_focus || 0), 0);
-        
-        // Reduce each active RT proportionally
-        activeRTs.forEach(([id, rt]) => {
-          const currentFocus = rt.human_energy_focus || 0;
-          const reduction = (excess * (currentFocus / activeTotal));
-          newStates[id] = {
-            ...rt,
-            human_energy_focus: Math.max(0, currentFocus - reduction)
-          };
-        });
-
-        // Update the target RT
-        newStates[rtId] = newState;
-
-        return { states: newStates };
+    // Prevent all RTs from being set to 'none'
+    if (newState.priority === 'none') {
+      const otherActiveRTs = Object.entries(state.states)
+        .filter(([id, rt]) => 
+          id !== rtId && 
+          rt.status === 'discovered' && 
+          rt.human_energy_focus !== null && 
+          rt.priority !== 'none'
+        );
+      
+      if (otherActiveRTs.length === 0) {
+        return state; // Don't allow the change
       }
     }
 
-    // If no adjustment needed, just update the one RT
-    return {
-      states: {
-        ...state.states,
-        [rtId]: newState
-      }
+    // Create new states with the updated RT
+    const intermediateStates = {
+      ...state.states,
+      [rtId]: newState
     };
+
+    // Recalculate all energy focus values based on priorities
+    const finalStates = recalculateEnergyFocus(intermediateStates);
+
+    return { states: finalStates };
   })
 }))
