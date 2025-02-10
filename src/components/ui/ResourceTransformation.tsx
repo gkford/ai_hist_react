@@ -203,19 +203,8 @@ export const ResourceTransformationProcessor = {
     const cardDef = allCards.find(c => c.id === rtId);
     if (!cardDef?.transformation) return;
 
-    // Scale transformation amounts by population
-    // Apply population scaling directly to transformation checks
-    const inboundWithPopulation = cardDef.transformation.inbound.map(item => ({
-      resource: item.resource,
-      amount: item.amount * population
-    }));
-    const outboundWithPopulation = cardDef.transformation.outbound.map(item => ({
-      resource: item.resource,
-      amount: item.amount * population
-    }));
-
+    // Scale transformation amounts by population and use them directly
     const animationSpeed = 1000;
-    const delayAnimationSpeed = 900;
 
     // Only process deduction if every resource in both inbound_paid and outbound_owed is at least 1.
     // If any resource has a value less than 1, do nothing.
