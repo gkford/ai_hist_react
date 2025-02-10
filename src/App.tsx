@@ -76,18 +76,34 @@ function App() {
   }, [isCyclingActive]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-4">
-          <GatherFoodCard />
+    <div className="min-h-screen p-4 flex">
+      {/* Main game area */}
+      <div className="flex gap-8">
+        {/* Resources Column */}
+        <div className="flex flex-col gap-4">
           <FoodResourceCard />
+        </div>
+
+        {/* People Column */}
+        <div className="flex flex-col gap-4">
           <HominidsCard />
-          <HuntingCard />
+        </div>
+
+        {/* Actions Column */}
+        <div className="flex flex-col gap-4">
+          <GatherFoodCard />
           <ThinkingCard />
+          <HuntingCard />
+        </div>
+
+        {/* Effects Column */}
+        <div className="flex flex-col gap-4">
           <EarlyStoneToolsCard />
         </div>
       </div>
-      <div className="flex flex-col gap-4">
+
+      {/* Developer Dashboard - moved to the right */}
+      <div className="ml-8 flex flex-col gap-4">
         <div className="p-4 border border-gray-200 rounded">
           <h2 className="font-semibold mb-2">Developer Dashboard</h2>
           <p>Food: {formatNumber(food.amount)}</p>
