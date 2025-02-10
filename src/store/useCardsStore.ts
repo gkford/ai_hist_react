@@ -9,7 +9,6 @@ interface CardState {
   };
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
-  sliderValue?: number; // For cards that need slider functionality
 }
 
 interface CardsStore {
