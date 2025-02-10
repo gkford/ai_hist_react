@@ -1,4 +1,6 @@
 import { create } from "zustand"
+import { useEffectsStore } from './useEffectsStore'
+import { effects } from '@/data/effects'
 
 export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'population'
 
