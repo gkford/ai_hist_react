@@ -66,39 +66,42 @@ export function processTransformations() {
     if (card.discovery_state.current_status !== 'discovered') return;
 
     Object.entries(card.rts).forEach(([rtId, rt]) => {
-      const multiplier = rt.focus.resource === 'population' 
-        ? resourceStore.resources.population.amount 
-        : 1;
+      // Create copies of the paid and owed values
+      const flooredInboundPaid = { ...rt.inbound_paid };
+      const flooredOutboundOwed = { ...rt.outbound_owed };
 
-      // Check if we have enough accumulated resources to complete a transformation
-      const canTransform = Object.entries(rt.inbound_cost).every(([resource, cost]) => {
-        const key = resource as ResourceKey;
-        return (rt.inbound_paid[key] || 0) >= (cost * multiplier);
+      // Floor all values in the copies
+      Object.keys(flooredInboundPaid).forEach(key => {
+        flooredInboundPaid[key as ResourceKey] = Math.floor(flooredInboundPaid[key as ResourceKey] || 0);
+      });
+      Object.keys(flooredOutboundOwed).forEach(key => {
+        flooredOutboundOwed[key as ResourceKey] = Math.floor(flooredOutboundOwed[key as ResourceKey] || 0);
       });
 
-      if (canTransform) {
-        // Deduct from inbound_paid and outbound_owed
+      // Check if ALL values are 1 or higher
+      const allValuesValid = Object.values(flooredInboundPaid).every(value => value >= 1) &&
+                            Object.values(flooredOutboundOwed).every(value => value >= 1);
+
+      if (allValuesValid) {
+        // Deduct floored values from actual paid/owed values
         const newInboundPaid = { ...rt.inbound_paid };
         const newOutboundOwed = { ...rt.outbound_owed };
 
-        // Remove the costs
-        Object.entries(rt.inbound_cost).forEach(([resource, cost]) => {
+        Object.entries(flooredInboundPaid).forEach(([resource, amount]) => {
           const key = resource as ResourceKey;
-          newInboundPaid[key] = (newInboundPaid[key] || 0) - (cost * multiplier);
+          newInboundPaid[key] = (rt.inbound_paid[key] || 0) - amount;
         });
 
-        // Add gains to resource store and update owed
-        Object.entries(rt.outbound_gain).forEach(([resource, gain]) => {
+        Object.entries(flooredOutboundOwed).forEach(([resource, amount]) => {
           const key = resource as ResourceKey;
-          const adjustedGain = gain * multiplier;
-          resourceStore.updateResource(key, adjustedGain);
-          newOutboundOwed[key] = (newOutboundOwed[key] || 0) - adjustedGain;
+          newOutboundOwed[key] = (rt.outbound_owed[key] || 0) - amount;
+          // Add the deducted amount to the resource store
+          resourceStore.updateResource(key, amount);
         });
 
         console.log(`RT ${rtId} transformation completed:`, {
           newInboundPaid,
-          newOutboundOwed,
-          multiplier
+          newOutboundOwed
         });
 
         cardStore.updateRTState(card.id, rtId, {
