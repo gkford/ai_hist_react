@@ -62,10 +62,10 @@ export const useCardsStore = create<CardsStore>((set) => ({
               {
                 ...rt,
                 inbound_paid: Object.fromEntries(
-                  rt.inbound.map(({ resource }) => [resource, 0])
+                  Object.keys(rt.inbound_cost).map(resource => [resource, 0])
                 ),
                 outbound_owed: Object.fromEntries(
-                  rt.outbound.map(({ resource }) => [resource, 0])
+                  Object.keys(rt.outbound_gain).map(resource => [resource, 0])
                 ),
                 focus: {
                   resource: rt.focus.resource,
