@@ -28,20 +28,29 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
     // Give a small delay to ensure state is updated
     await new Promise(resolve => setTimeout(resolve, 0));
     
-    // Then recalculate if it's an RT type
-    if (type === 'rt') {
-      const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
-      Object.values(useCardsStore.getState().cardStates).forEach(card => {
+    // Get all focus states for this resource
+    const focusStates: Array<'none' | 'low' | 'high'> = [];
+    
+    Object.values(useCardsStore.getState().cardStates).forEach(card => {
+      if (type === 'rt') {
+        // Collect RT focus states
         Object.values(card.rts).forEach(rt => {
           if (rt.focus.resource === focus.resource) {
-            rtFocusStates.push(rt.focus.priority);
+            focusStates.push(rt.focus.priority);
           }
         });
-      });
+      } else if (type === 'discovery' && focus.resource === 'thoughts') {
+        // Collect discovery focus states
+        if (card.discovery_state.focus.resource === 'thoughts' &&
+            (card.discovery_state.current_status === 'unthoughtof' || 
+             card.discovery_state.current_status === 'imagined')) {
+          focusStates.push(card.discovery_state.focus.priority);
+        }
+      }
+    });
 
-      const propValues = calculateFocusPropFromPriorities(rtFocusStates);
-      updateResourceProps(focus.resource, propValues);
-    }
+    const propValues = calculateFocusPropFromPriorities(focusStates);
+    updateResourceProps(focus.resource, propValues);
   };
 
   const buttonStyles = {
