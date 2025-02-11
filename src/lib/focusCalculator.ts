@@ -8,6 +8,16 @@ export function calculateFocusPropFromPriorities(priorities: Priority[]) {
 
   console.log('Focus Calculator Counts:', { highCount, lowCount, noneCount });
 
+  // If everything is set to none, they share 100%
+  if (noneCount === priorities.length && noneCount > 0) {
+    console.log('Rule: All none - sharing 100%');
+    return {
+      high: 0,
+      low: 0,
+      none: 1 / noneCount
+    };
+  }
+
   // If there are high priority items, they share 100% if no low priority items exist
   if (highCount > 0 && lowCount === 0) {
     console.log('Rule: High priority items sharing 100%');
@@ -38,7 +48,7 @@ export function calculateFocusPropFromPriorities(priorities: Priority[]) {
     };
   }
 
-  // If no high or low priorities exist, everything gets 0
+  // If no priorities exist at all, everything gets 0
   console.log('Rule: No priorities - all zero');
   return {
     high: 0,
