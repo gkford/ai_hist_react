@@ -5,23 +5,44 @@ export function calculateFocusPropFromPriorities(priorities: Priority[]) {
   const highCount = priorities.filter(p => p === 'high').length;
   const lowCount = priorities.filter(p => p === 'low').length;
   const noneCount = priorities.filter(p => p === 'none').length;
-  const totalCount = priorities.length;
 
-  // If all priorities are the same, handle special cases
-  if (highCount === totalCount) {
-    return { high: 1 / totalCount, low: 0, none: 0 };
-  } 
-  if (lowCount === totalCount) {
-    return { high: 0, low: 1 / totalCount, none: 0 };
+  console.log('Focus Calculator Counts:', { highCount, lowCount, noneCount });
+
+  // If there are high priority items, they share 100% if no low priority items exist
+  if (highCount > 0 && lowCount === 0) {
+    console.log('Rule: High priority items sharing 100%');
+    return {
+      high: 1 / highCount,
+      low: 0,
+      none: 0
+    };
   }
-  if (noneCount === totalCount) {
-    return { high: 0, low: 0, none: 0 };
+  
+  // If there are low priority items but no high priority items, they share 100%
+  if (lowCount > 0 && highCount === 0) {
+    console.log('Rule: Low priority items sharing 100%');
+    return {
+      high: 0,
+      low: 1 / lowCount,
+      none: 0
+    };
+  }
+  
+  // If both high and low exist, high shares 75%, low shares 25%
+  if (highCount > 0 && lowCount > 0) {
+    console.log('Rule: High (75%) and Low (25%) sharing');
+    return {
+      high: 0.75 / highCount,
+      low: 0.25 / lowCount,
+      none: 0
+    };
   }
 
-  // Mixed priorities case - high gets 75%, low gets 25%, none gets 0%
+  // If no high or low priorities exist, everything gets 0
+  console.log('Rule: No priorities - all zero');
   return {
-    high: highCount > 0 ? 0.75 / highCount : 0,
-    low: lowCount > 0 ? 0.25 / lowCount : 0,
+    high: 0,
+    low: 0,
     none: 0
   };
 }
