@@ -5,6 +5,7 @@ import { useCardsStore } from "@/store/useCardsStore";
 import { allCards } from "@/data/cards";
 import { CardImage } from "@/components/ui/CardImage";
 import { CardInfo } from "@/components/ui/CardInfo";
+import { RTViewer } from "@/components/ui/RTViewer";
 
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -48,6 +49,9 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
             </CardInfo>
           )}
         </div>
+        {Object.values(cardState.rts).map((rtState) => (
+          <RTViewer key={rtState.id} rtState={rtState} />
+        ))}
       </Card>
     );
   }
