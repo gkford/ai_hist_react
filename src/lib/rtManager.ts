@@ -14,25 +14,31 @@ export function processRTs() {
     Object.entries(card.rts).forEach(([rtId, rt]) => {
       // Process inbound resources
       rt.inbound.forEach(({ resource, amount }) => {
+        // Apply population multiplier if this RT is population-focused
+        const multiplier = rt.focus.resource === 'population' 
+          ? resourceStore.resources.population.amount 
+          : 1;
+        const adjustedAmount = amount * multiplier;
+        
         const currentResource = resourceStore.resources[resource].amount;
         
         // Check if we have enough resources
-        if (currentResource >= amount) {
+        if (currentResource >= adjustedAmount) {
           // Deduct the resources
-          resourceStore.updateResource(resource, -amount);
+          resourceStore.updateResource(resource, -adjustedAmount);
           
           // Update both paid and owed amounts
           cardStore.updateRTState(card.id, rtId, {
             inbound_paid: {
               ...rt.inbound_paid,
-              [resource]: (rt.inbound_paid[resource] || 0) + amount
+              [resource]: (rt.inbound_paid[resource] || 0) + adjustedAmount
             },
             outbound_owed: {
               ...rt.outbound_owed,
               ...Object.fromEntries(
                 rt.outbound.map(({ resource: outResource, amount: outAmount }) => [
                   outResource,
-                  (rt.outbound_owed[outResource] || 0) + outAmount
+                  (rt.outbound_owed[outResource] || 0) + (outAmount * multiplier)
                 ])
               )
             }
