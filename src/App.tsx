@@ -13,6 +13,18 @@ function initializeCards() {
       current_status: 'discovered'
     }
   });
+  
+  cardStore.createCard('gather_food', {
+    discovery_state: {
+      current_status: 'discovered'
+    }
+  });
+
+  cardStore.createCard('think', {
+    discovery_state: {
+      current_status: 'discovered'
+    }
+  });
 }
 
 function App() {

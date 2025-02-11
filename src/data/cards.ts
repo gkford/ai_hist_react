@@ -97,5 +97,34 @@ export const allCards: CardDefinition[] = [
         }
       }
     ]
+  },
+  {
+    id: "think",
+    title: "Think",
+    column: 1,
+    icon: "🧠",
+    imageSrc: "/card_images/think.webp",
+    description: "Convert human energy into thoughts",
+    discovery_stats: {
+      thought_to_imagine: 0,
+      further_thought_to_discover: 0,
+      focus: {
+        resource: 'thought'
+      }
+    },
+    rts: [
+      {
+        id: "think",
+        inbound_cost: {
+          humanEnergy: 1
+        },
+        outbound_gain: {
+          thoughts: 1
+        },
+        focus: {
+          resource: 'humanEnergy'
+        }
+      }
+    ]
   }
 ];
