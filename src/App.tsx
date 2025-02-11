@@ -2,7 +2,7 @@ import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 // import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
 function initializeCards() {
@@ -27,10 +27,13 @@ function App() {
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
 
+  const [initialized, setInitialized] = useState(false);
+
   useEffect(() => {
     // Initialize cards first
     console.log("init")
     initializeCards();
+    setInitialized(true);
     // Then start the game loop
     // startGameLoop()
     // // Stop it on unmount
@@ -43,7 +46,7 @@ function App() {
       <ResourceDashboard className="mb-4" />
 
       <div className="flex gap-8">
-        {Object.values(useCardsStore.getState().cardStates).map((cardState) => (
+        {initialized && Object.values(useCardsStore.getState().cardStates).map((cardState) => (
           <MasterCard key={cardState.id} id={cardState.id} />
         ))}
       </div>
