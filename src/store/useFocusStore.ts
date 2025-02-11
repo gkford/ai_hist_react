@@ -13,7 +13,7 @@ interface FocusStore {
   humanEnergy: FocusResourceProps;
   population: FocusResourceProps;
   thought: FocusResourceProps;
-  updateResourceProps: (resource: ResourceKey | 'thought', props: FocusResourceProps) => void;
+  updateResourceProps: (resource: ResourceKey | 'thoughts', props: FocusResourceProps) => void;
 }
 
 export const useFocusStore = create<FocusStore>((set) => ({
