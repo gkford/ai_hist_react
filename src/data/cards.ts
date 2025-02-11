@@ -3,7 +3,7 @@ import type { ResourceKey } from "@/store/useResourceStore";
 export type DiscoveryStatus = 'hidden' | 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete';
 
 export interface FocusConfig {
-  resource: ResourceKey | 'thought';
+  resource: ResourceKey;
 }
 
 export interface DiscoveryStats {
@@ -51,7 +51,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 10,
       further_thought_to_discover: 20,
       focus: {
-        resource: 'thought'
+        resource: 'thoughts'
       }
     },
     rts: [
@@ -80,7 +80,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 0,
       further_thought_to_discover: 0,
       focus: {
-        resource: 'thought'
+        resource: 'thoughts'
       }
     },
     rts: [
@@ -109,7 +109,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 0,
       further_thought_to_discover: 0,
       focus: {
-        resource: 'thought'
+        resource: 'thoughts'
       }
     },
     rts: [
