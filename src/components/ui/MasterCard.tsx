@@ -68,14 +68,16 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
             />
           )} */}
         </div>
-        {Object.entries(cardState.rts).map(([rtId, rtState]) => (
-          <RTViewer 
-            key={rtId} 
-            rtState={rtState} 
-            cardId={id}
-            rtId={rtId}
-          />
-        ))}
+        {cardState.discovery_state.current_status === 'discovered' && 
+          Object.entries(cardState.rts).map(([rtId, rtState]) => (
+            <RTViewer 
+              key={rtId} 
+              rtState={rtState} 
+              cardId={id}
+              rtId={rtId}
+            />
+          ))
+        }
       </Card>
     );
   }
