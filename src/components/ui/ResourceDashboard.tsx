@@ -1,4 +1,4 @@
-import { useResource } from "@/store/useResourceStore"
+import { useResource, ResourceKey } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { useCardsStore } from "@/store/useCardsStore"

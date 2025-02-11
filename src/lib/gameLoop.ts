@@ -1,4 +1,4 @@
-import { processRTs, processTransformations } from "./rtManager";
+import { processRTPayments, processTransformations } from "./rtManager";
 
 let intervalId: number | null = null;
 

@@ -98,10 +98,10 @@ export function processTransformations() {
           resourceStore.updateResource(key, amount);
         });
 
-        console.log(`RT ${rtId} transformation completed:`, {
-          transformedInbound,
-          transformedOutbound
-        });
+        // console.log(`RT ${rtId} transformation completed:`, {
+        //   transformedInbound,
+        //   transformedOutbound
+        // });
 
         cardStore.updateRTState(card.id, rtId, {
           inbound_paid: newInboundPaid,

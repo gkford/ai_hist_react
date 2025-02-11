@@ -49,7 +49,7 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
               <p>{isUnthoughtof ? obscureText(cardDef.description) : cardDef.description}</p>
             </CardInfo>
           )}
-          {/* {(cardState.discovery_state.current_status === 'unthoughtof' || 
+          {(cardState.discovery_state.current_status === 'unthoughtof' || 
             cardState.discovery_state.current_status === 'imagined') && (
             <FocusSelector 
               focus={cardState.discovery_state.focus}
@@ -66,7 +66,7 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
                 });
               }}
             />
-          )} */}
+          )}
         </div>
         {cardState.discovery_state.current_status === 'discovered' && 
           Object.entries(cardState.rts).map(([rtId, rtState]) => (
