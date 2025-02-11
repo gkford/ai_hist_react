@@ -60,8 +60,12 @@ export const useCardsStore = create<CardsStore>((set) => ({
               rt.id,
               {
                 ...rt,
-                inbound_paid: {},
-                outbound_owed: {},
+                inbound_paid: Object.fromEntries(
+                  rt.inbound.map(({ resource }) => [resource, 0])
+                ),
+                outbound_owed: Object.fromEntries(
+                  rt.outbound.map(({ resource }) => [resource, 0])
+                ),
                 focus: {
                   resource: rt.focus.resource,
                   prop: 0,
