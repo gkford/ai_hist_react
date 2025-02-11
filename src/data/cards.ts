@@ -70,7 +70,7 @@ export const allCards: CardDefinition[] = [
           { resource: 'humanEnergy', amount: 0.12 }
         ],
         focus: {
-          resource: 'food'
+          resource: 'population'
         }
       }
     ]
