@@ -1,12 +1,10 @@
 import * as React from "react";
 import { Card } from "@/components/ui/card";
-import { DiscoveryProgress } from "@/components/ui/DiscoveryProgress";
 import { cn } from "@/lib/utils";
 import { useCardsStore } from "@/store/useCardsStore";
 import { allCards } from "@/data/cards";
 import { CardImage } from "@/components/ui/CardImage";
 import { CardInfo } from "@/components/ui/CardInfo";
-// import { ResourceTransformation } from "@/components/ui/ResourceTransformation";
 
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -44,14 +42,12 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
         </div>
         <div className="flex-1">
           {cardDef.imageSrc && <CardImage imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc} />}
-          {/* {cardDef.transformation && <ResourceTransformation rtId={id} />} */}
           {cardDef.description && (
             <CardInfo>
               <p>{isUnthoughtof ? obscureText(cardDef.description) : cardDef.description}</p>
             </CardInfo>
           )}
         </div>
-        <DiscoveryProgress rtId={id} />
       </Card>
     );
   }
