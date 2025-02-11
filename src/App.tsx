@@ -28,6 +28,9 @@ function initializeCards() {
       current_status: 'discovered'
     }
   });
+
+  // Add hunt card without specifying discovery state
+  cardStore.createCard('hunt');
 }
 
 function App() {
