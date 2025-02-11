@@ -6,6 +6,7 @@ import { allCards } from "@/data/cards";
 import { CardImage } from "@/components/ui/CardImage";
 import { CardInfo } from "@/components/ui/CardInfo";
 import { RTViewer } from "@/components/ui/RTViewer";
+import { FocusSelector } from "@/components/ui/FocusSelector";
 
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
