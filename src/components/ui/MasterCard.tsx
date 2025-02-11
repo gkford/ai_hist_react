@@ -49,7 +49,10 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
               <p>{isUnthoughtof ? obscureText(cardDef.description) : cardDef.description}</p>
             </CardInfo>
           )}
-          <FocusSelector focus={cardState.discovery_state.focus} />
+          {(cardState.discovery_state.current_status === 'unthoughtof' || 
+            cardState.discovery_state.current_status === 'imagined') && (
+            <FocusSelector focus={cardState.discovery_state.focus} />
+          )}
         </div>
         {Object.values(cardState.rts).map((rtState) => (
           <RTViewer key={rtState.id} rtState={rtState} />
