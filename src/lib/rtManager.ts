@@ -10,25 +10,30 @@ export function processTransformations() {
     if (card.discovery_state.current_status !== 'discovered') return;
 
     Object.entries(card.rts).forEach(([rtId, rt]) => {
+      // Apply population multiplier if this RT is population-focused
+      const multiplier = rt.focus.resource === 'population' 
+        ? resourceStore.resources.population.amount 
+        : 1;
+
       // Check if we have enough accumulated resources in both inbound and outbound
       const canTransform = Object.entries(rt.inbound_cost).every(([resource, cost]) => 
-        (rt.inbound_paid[resource] || 0) >= cost
+        (rt.inbound_paid[resource] || 0) >= (cost * multiplier)
       ) && Object.entries(rt.outbound_gain).every(([resource, gain]) => 
-        (rt.outbound_owed[resource] || 0) >= gain
+        (rt.outbound_owed[resource] || 0) >= (gain * multiplier)
       );
 
       if (canTransform) {
         // Deduct the costs from inbound_paid
         const newInboundPaid = { ...rt.inbound_paid };
         Object.entries(rt.inbound_cost).forEach(([resource, cost]) => {
-          newInboundPaid[resource] = (newInboundPaid[resource] || 0) - cost;
+          newInboundPaid[resource] = (newInboundPaid[resource] || 0) - (cost * multiplier);
         });
 
         // Deduct from outbound_owed and add to resource store
         const newOutboundOwed = { ...rt.outbound_owed };
         Object.entries(rt.outbound_gain).forEach(([resource, gain]) => {
-          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) - gain;
-          resourceStore.updateResource(resource, gain);
+          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) - (gain * multiplier);
+          resourceStore.updateResource(resource, gain * multiplier);
         });
 
         // Update the RT state with new values
