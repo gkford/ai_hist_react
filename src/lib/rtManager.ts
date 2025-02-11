@@ -44,11 +44,6 @@ export function processRTPayments() {
           newOutboundOwed[key] = (newOutboundOwed[key] || 0) + (amount * multiplier);
         });
 
-        console.log(`RT ${rtId} payment processed:`, {
-          newInboundPaid,
-          newOutboundOwed
-        });
-
         cardStore.updateRTState(card.id, rtId, {
           inbound_paid: newInboundPaid,
           outbound_owed: newOutboundOwed
