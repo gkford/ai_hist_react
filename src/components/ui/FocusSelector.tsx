@@ -1,4 +1,4 @@
-import { FocusState } from "@/store/useCardsStore";
+import { FocusState, useCardsStore } from "@/store/useCardsStore";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -10,23 +10,76 @@ interface FocusSelectorProps {
 }
 
 export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps) {
+  const cardStates = useCardsStore(state => state.cardStates);
+
+  const calculateRTPriorities = (newPriority: 'none' | 'low' | 'high') => {
+    // Count RTs with matching resource
+    const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
+    
+    // Collect all RT focus priorities for this resource
+    Object.values(cardStates).forEach(card => {
+      Object.values(card.rts).forEach(rt => {
+        if (rt.focus.resource === focus.resource) {
+          rtFocusStates.push(rt.focus.priority);
+        }
+      });
+    });
+
+    // Replace the first occurrence of the old priority with the new priority
+    // (this represents the current RT being changed)
+    const firstIndex = rtFocusStates.indexOf(focus.priority);
+    if (firstIndex !== -1) {
+      rtFocusStates[firstIndex] = newPriority;
+    }
+
+    // Count priorities
+    const highCount = rtFocusStates.filter(p => p === 'high').length;
+    const lowCount = rtFocusStates.filter(p => p === 'low').length;
+    const noneCount = rtFocusStates.filter(p => p === 'none').length;
+    const totalCount = rtFocusStates.length;
+
+    // Calculate props based on rules
+    if (highCount === totalCount) {
+      return { high: 1 / totalCount, low: 0, none: 0 };
+    } else if (lowCount === totalCount) {
+      return { high: 0, low: 1 / totalCount, none: 0 };
+    } else if (noneCount === totalCount) {
+      return { high: 0, low: 0, none: 0 };
+    } else {
+      // Mixed priorities case
+      return {
+        high: highCount > 0 ? 0.75 / highCount : 0,
+        low: lowCount > 0 ? 0.25 / lowCount : 0,
+        none: 0
+      };
+    }
+  };
+
   const cyclePriority = () => {
     const priorities: Array<'none' | 'low' | 'high'> = ['none', 'low', 'high'];
     const currentIndex = priorities.indexOf(focus.priority);
     const nextIndex = (currentIndex + 1) % priorities.length;
     const newPriority = priorities[nextIndex];
     
-    // Set prop based on priority
-    const propValues = {
-      none: 0,
-      low: 0.5,
-      high: 1
-    };
-    
-    onFocusChange({ 
-      priority: newPriority,
-      prop: propValues[newPriority]
-    });
+    if (type === 'rt') {
+      const propValues = calculateRTPriorities(newPriority);
+      onFocusChange({ 
+        priority: newPriority,
+        prop: propValues[newPriority]
+      });
+    } else {
+      // Keep original behavior for discovery type
+      const propValues = {
+        none: 0,
+        low: 0.5,
+        high: 1
+      };
+      
+      onFocusChange({ 
+        priority: newPriority,
+        prop: propValues[newPriority]
+      });
+    }
   };
 
   const buttonStyles = {
