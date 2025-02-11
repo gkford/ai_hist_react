@@ -16,22 +16,24 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
   const focusProps = useFocusStore(state => state[focus.resource]);
   const updateResourceProps = useFocusStore(state => state.updateResourceProps);
 
-  const cyclePriority = () => {
+  const cyclePriority = async () => {
     const priorities: Array<'none' | 'low' | 'high'> = ['none', 'low', 'high'];
     const currentIndex = priorities.indexOf(focus.priority);
     const nextIndex = (currentIndex + 1) % priorities.length;
     const newPriority = priorities[nextIndex];
     
-    onFocusChange({ priority: newPriority });
+    // First update the focus state
+    await onFocusChange({ priority: newPriority });
     
-    // Always recalculate after priority change if it's an RT type
+    // Give a small delay to ensure state is updated
+    await new Promise(resolve => setTimeout(resolve, 0));
+    
+    // Then recalculate if it's an RT type
     if (type === 'rt') {
-      // Collect all RT focus priorities for this resource
       const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
-      Object.values(cardStates).forEach(card => {
+      Object.values(useCardsStore.getState().cardStates).forEach(card => {
         Object.values(card.rts).forEach(rt => {
           if (rt.focus.resource === focus.resource) {
-            // Use the new priority if it's this RT, otherwise use existing priority
             rtFocusStates.push(rt.focus.priority);
           }
         });
