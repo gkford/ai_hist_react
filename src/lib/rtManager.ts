@@ -18,14 +18,14 @@ export function processRTPayments() {
       // Check if we can afford the input costs
       const canPay = Object.entries(rt.inbound_cost).every(([resource, amount]) => {
         const adjustedAmount = amount * multiplier;
-        return resourceStore.resources[resource].amount >= adjustedAmount;
+        return resourceStore.resources[resource as ResourceKey].amount >= adjustedAmount;
       });
 
       if (canPay) {
         // Take payment from resource store
         Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
           const adjustedAmount = amount * multiplier;
-          resourceStore.updateResource(resource, -adjustedAmount);
+          resourceStore.updateResource(resource as ResourceKey, -adjustedAmount);
         });
 
         // Update inbound_paid and outbound_owed
@@ -33,11 +33,13 @@ export function processRTPayments() {
         const newOutboundOwed = { ...rt.outbound_owed };
 
         Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
-          newInboundPaid[resource] = (newInboundPaid[resource] || 0) + (amount * multiplier);
+          const key = resource as ResourceKey;
+          newInboundPaid[key] = (newInboundPaid[key] || 0) + (amount * multiplier);
         });
 
         Object.entries(rt.outbound_gain).forEach(([resource, amount]) => {
-          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) + (amount * multiplier);
+          const key = resource as ResourceKey;
+          newOutboundOwed[key] = (newOutboundOwed[key] || 0) + (amount * multiplier);
         });
 
         console.log(`RT ${rtId} payment processed:`, {
@@ -67,9 +69,10 @@ export function processTransformations() {
         : 1;
 
       // Check if we have enough accumulated resources to complete a transformation
-      const canTransform = Object.entries(rt.inbound_cost).every(([resource, cost]) => 
-        (rt.inbound_paid[resource] || 0) >= (cost * multiplier)
-      );
+      const canTransform = Object.entries(rt.inbound_cost).every(([resource, cost]) => {
+        const key = resource as ResourceKey;
+        return (rt.inbound_paid[key] || 0) >= (cost * multiplier);
+      });
 
       if (canTransform) {
         // Deduct from inbound_paid and outbound_owed
@@ -78,14 +81,16 @@ export function processTransformations() {
 
         // Remove the costs
         Object.entries(rt.inbound_cost).forEach(([resource, cost]) => {
-          newInboundPaid[resource] = (newInboundPaid[resource] || 0) - (cost * multiplier);
+          const key = resource as ResourceKey;
+          newInboundPaid[key] = (newInboundPaid[key] || 0) - (cost * multiplier);
         });
 
         // Add gains to resource store and update owed
         Object.entries(rt.outbound_gain).forEach(([resource, gain]) => {
+          const key = resource as ResourceKey;
           const adjustedGain = gain * multiplier;
-          resourceStore.updateResource(resource, adjustedGain);
-          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) - adjustedGain;
+          resourceStore.updateResource(key, adjustedGain);
+          newOutboundOwed[key] = (newOutboundOwed[key] || 0) - adjustedGain;
         });
 
         console.log(`RT ${rtId} transformation completed:`, {
