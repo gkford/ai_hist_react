@@ -3,6 +3,7 @@ import { calculateFocusPropFromPriorities } from "@/lib/focusCalculator";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useFocusStore } from "@/store/useFocusStore";
 
 interface FocusSelectorProps {
   focus: FocusState;
@@ -12,6 +13,8 @@ interface FocusSelectorProps {
 
 export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps) {
   const cardStates = useCardsStore(state => state.cardStates);
+  const focusProps = useFocusStore(state => state[focus.resource]);
+  const updateResourceProps = useFocusStore(state => state.updateResourceProps);
 
   const cyclePriority = () => {
     const priorities: Array<'none' | 'low' | 'high'> = ['none', 'low', 'high'];
@@ -29,10 +32,7 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
         high: 1
       };
       
-      onFocusChange({ 
-        priority: newPriority,
-        prop: propValues[newPriority]
-      });
+      onFocusChange({ priority: newPriority });
     }
   };
 
@@ -50,7 +50,7 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
     });
 
     const propValues = calculateFocusPropFromPriorities(rtFocusStates);
-    onFocusChange({ prop: propValues[focus.priority] });
+    updateResourceProps(focus.resource, propValues);
   };
 
   const buttonStyles = {
@@ -76,7 +76,7 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
           Focus: {focus.resource}
           {type === 'discovery' ? ' (Discovery)' : ' (RT)'}
         </div>
-        <Progress value={focus.prop * 100} className="h-2" />
+        <Progress value={focusProps[focus.priority] * 100} className="h-2" />
       </div>
       <div className="flex gap-2">
         <Button 

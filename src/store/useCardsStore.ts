@@ -5,7 +5,6 @@ import type { CardDefinition, DiscoveryStatus, rtConfig, FocusConfig, EffectConf
 
 // State extensions of the base configs
 interface FocusState extends FocusConfig {
-  prop: number;
   priority: 'low' | 'high' | 'none';
 }
 
@@ -69,7 +68,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 ),
                 focus: {
                   resource: rt.focus.resource,
-                  prop: 0,
                   priority: 'none'
                 }
               }
@@ -83,7 +81,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 active: false,
                 focus: {
                   resource: effect.focus.resource,
-                  prop: 0,
                   priority: 'none'
                 }
               }
@@ -96,7 +93,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
             thought_invested: 0,
             focus: {
               resource: cardDef.discovery_stats.focus.resource,
-              prop: 0,
               priority: 'none'
             },
             ...(initialState?.discovery_state || {})  // This will override only the provided values
