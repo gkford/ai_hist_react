@@ -1,7 +1,8 @@
 import { useResourceStore } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
 
-export function processTransformations() {
+// First phase: Take payments and accumulate resources
+export function processRTPayments() {
   const resourceStore = useResourceStore.getState();
   const cardStore = useCardsStore.getState();
 
@@ -14,40 +15,36 @@ export function processTransformations() {
         ? resourceStore.resources.population.amount 
         : 1;
 
-      // Debug log current state
-      console.log(`RT ${rtId} before transform:`, {
-        inbound_paid: rt.inbound_paid,
-        outbound_owed: rt.outbound_owed,
-        multiplier
+      // Check if we can afford the input costs
+      const canPay = Object.entries(rt.inbound_cost).every(([resource, amount]) => {
+        const adjustedAmount = amount * multiplier;
+        return resourceStore.resources[resource].amount >= adjustedAmount;
       });
 
-      const canTransform = Object.entries(rt.inbound_cost).every(([resource, cost]) => 
-        (rt.inbound_paid[resource] || 0) >= (cost * multiplier)
-      ) && Object.entries(rt.outbound_gain).every(([resource, gain]) => 
-        (rt.outbound_owed[resource] || 0) >= (gain * multiplier)
-      );
+      if (canPay) {
+        // Take payment from resource store
+        Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
+          const adjustedAmount = amount * multiplier;
+          resourceStore.updateResource(resource, -adjustedAmount);
+        });
 
-      if (canTransform) {
-        // Deduct the costs from inbound_paid
+        // Update inbound_paid and outbound_owed
         const newInboundPaid = { ...rt.inbound_paid };
-        Object.entries(rt.inbound_cost).forEach(([resource, cost]) => {
-          newInboundPaid[resource] = (newInboundPaid[resource] || 0) - (cost * multiplier);
-        });
-
-        // Deduct from outbound_owed and add to resource store
         const newOutboundOwed = { ...rt.outbound_owed };
-        Object.entries(rt.outbound_gain).forEach(([resource, gain]) => {
-          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) - (gain * multiplier);
-          resourceStore.updateResource(resource, gain * multiplier);
+
+        Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
+          newInboundPaid[resource] = (newInboundPaid[resource] || 0) + (amount * multiplier);
         });
 
-        // Debug log the changes
-        console.log(`RT ${rtId} transform occurring:`, {
+        Object.entries(rt.outbound_gain).forEach(([resource, amount]) => {
+          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) + (amount * multiplier);
+        });
+
+        console.log(`RT ${rtId} payment processed:`, {
           newInboundPaid,
           newOutboundOwed
         });
 
-        // Update the RT state with new values
         cardStore.updateRTState(card.id, rtId, {
           inbound_paid: newInboundPaid,
           outbound_owed: newOutboundOwed
@@ -56,50 +53,50 @@ export function processTransformations() {
     });
   });
 }
-
-export function processRTs() {
+// Second phase: Complete transformations when enough resources are accumulated
+export function processTransformations() {
   const resourceStore = useResourceStore.getState();
   const cardStore = useCardsStore.getState();
 
-  // Process each card's RTs
   Object.values(cardStore.cardStates).forEach(card => {
-    // Only process discovered cards
     if (card.discovery_state.current_status !== 'discovered') return;
 
-    // Process each RT
     Object.entries(card.rts).forEach(([rtId, rt]) => {
-      // Apply population multiplier if this RT is population-focused
       const multiplier = rt.focus.resource === 'population' 
         ? resourceStore.resources.population.amount 
         : 1;
 
-      // Check if we have enough of all required resources
-      const canProcess = Object.entries(rt.inbound_cost).every(([resource, amount]) => {
-        const adjustedAmount = amount * multiplier;
-        return resourceStore.resources[resource].amount >= adjustedAmount;
-      });
+      // Check if we have enough accumulated resources to complete a transformation
+      const canTransform = Object.entries(rt.inbound_cost).every(([resource, cost]) => 
+        (rt.inbound_paid[resource] || 0) >= (cost * multiplier)
+      );
 
-      if (canProcess) {
-        // Deduct all input resources
-        Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
-          const adjustedAmount = amount * multiplier;
-          resourceStore.updateResource(resource, -adjustedAmount);
+      if (canTransform) {
+        // Deduct from inbound_paid and outbound_owed
+        const newInboundPaid = { ...rt.inbound_paid };
+        const newOutboundOwed = { ...rt.outbound_owed };
+
+        // Remove the costs
+        Object.entries(rt.inbound_cost).forEach(([resource, cost]) => {
+          newInboundPaid[resource] = (newInboundPaid[resource] || 0) - (cost * multiplier);
         });
 
-        // Update both paid and owed amounts
+        // Add gains to resource store and update owed
+        Object.entries(rt.outbound_gain).forEach(([resource, gain]) => {
+          const adjustedGain = gain * multiplier;
+          resourceStore.updateResource(resource, adjustedGain);
+          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) - adjustedGain;
+        });
+
+        console.log(`RT ${rtId} transformation completed:`, {
+          newInboundPaid,
+          newOutboundOwed,
+          multiplier
+        });
+
         cardStore.updateRTState(card.id, rtId, {
-          inbound_paid: Object.fromEntries(
-            Object.entries(rt.inbound_cost).map(([resource, amount]) => [
-              resource,
-              (rt.inbound_paid[resource] || 0) + (amount * multiplier)
-            ])
-          ),
-          outbound_owed: Object.fromEntries(
-            Object.entries(rt.outbound_gain).map(([resource, amount]) => [
-              resource,
-              (rt.outbound_owed[resource] || 0) + (amount * multiplier)
-            ])
-          )
+          inbound_paid: newInboundPaid,
+          outbound_owed: newOutboundOwed
         });
       }
     });
