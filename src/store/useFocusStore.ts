@@ -10,19 +10,23 @@ interface FocusResourceProps {
 }
 
 interface FocusStore {
-  humanEnergy: FocusResourceProps;
-  population: FocusResourceProps;
-  thought: FocusResourceProps;
+  resourceProps: Record<ResourceKey | 'thoughts', FocusResourceProps>;
   updateResourceProps: (resource: ResourceKey | 'thoughts', props: FocusResourceProps) => void;
 }
 
 export const useFocusStore = create<FocusStore>((set) => ({
-  humanEnergy: { high: 0, low: 0, none: 0 },
-  population: { high: 0, low: 0, none: 0 },
-  thought: { high: 0, low: 0, none: 0 },
+  resourceProps: {
+    humanEnergy: { high: 0, low: 0, none: 0 },
+    population: { high: 0, low: 0, none: 0 },
+    thoughts: { high: 0, low: 0, none: 0 },
+    food: { high: 0, low: 0, none: 0 },
+    knowledge: { high: 0, low: 0, none: 0 }
+  },
   updateResourceProps: (resource, props) => 
     set((state) => ({
-      ...state,
-      [resource]: props
+      resourceProps: {
+        ...state.resourceProps,
+        [resource]: props
+      }
     }))
 }));

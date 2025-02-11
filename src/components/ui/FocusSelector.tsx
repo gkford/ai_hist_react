@@ -13,7 +13,7 @@ interface FocusSelectorProps {
 
 export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps) {
   const cardStates = useCardsStore(state => state.cardStates);
-  const focusProps = useFocusStore(state => state[focus.resource]);
+  const focusProps = useFocusStore(state => state.resourceProps[focus.resource]);
   const updateResourceProps = useFocusStore(state => state.updateResourceProps);
 
   const cyclePriority = async () => {
