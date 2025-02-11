@@ -1,5 +1,4 @@
 import { RTState } from "@/store/useCardsStore";
-import { ResourceKey } from "@/store/useResourceStore";
 
 interface RTViewerProps {
   rtState: RTState;
@@ -28,7 +27,7 @@ export function RTViewer({ rtState }: RTViewerProps) {
           <h4 className="text-sm font-medium mb-1">Paid</h4>
           {Object.entries(rtState.inbound_paid).map(([resource, amount]) => (
             <div key={resource} className="text-sm">
-              {resource}: {amount.toFixed(2)}
+              {resource}: {(amount as number).toFixed(2)}
             </div>
           ))}
         </div>
@@ -36,7 +35,7 @@ export function RTViewer({ rtState }: RTViewerProps) {
           <h4 className="text-sm font-medium mb-1">Owed</h4>
           {Object.entries(rtState.outbound_owed).map(([resource, amount]) => (
             <div key={resource} className="text-sm">
-              {resource}: {amount.toFixed(2)}
+              {resource}: {(amount as number).toFixed(2)}
             </div>
           ))}
         </div>
