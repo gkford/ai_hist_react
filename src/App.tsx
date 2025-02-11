@@ -51,7 +51,7 @@ function App() {
     
     // Calculate initial focus values for all resources
     const cardStates = useCardsStore.getState().cardStates;
-    const resourceTypes = new Set<ResourceKey | "thoughts">();
+    const resourceTypes = new Set<ResourceKey>();
     
     // Collect all unique resource types from RT focuses
     Object.values(cardStates).forEach(card => {
