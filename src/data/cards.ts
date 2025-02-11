@@ -126,5 +126,34 @@ export const allCards: CardDefinition[] = [
         }
       }
     ]
+  },
+  {
+    id: "hunt",
+    title: "Hunt",
+    column: 2,
+    icon: "🦌",
+    imageSrc: "/card_images/hunt.webp", 
+    description: "Hunt animals for food",
+    discovery_stats: {
+      thought_to_imagine: 5,
+      further_thought_to_discover: 5,
+      focus: {
+        resource: 'thoughts'
+      }
+    },
+    rts: [
+      {
+        id: "hunt",
+        inbound_cost: {
+          humanEnergy: 1
+        },
+        outbound_gain: {
+          food: 1.1
+        },
+        focus: {
+          resource: 'humanEnergy'
+        }
+      }
+    ]
   }
 ];
