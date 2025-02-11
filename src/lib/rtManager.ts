@@ -12,39 +12,40 @@ export function processRTs() {
 
     // Process each RT
     Object.entries(card.rts).forEach(([rtId, rt]) => {
-      // Process inbound resources
-      rt.inbound.forEach(({ resource, amount }) => {
-        // Apply population multiplier if this RT is population-focused
-        const multiplier = rt.focus.resource === 'population' 
-          ? resourceStore.resources.population.amount 
-          : 1;
+      // Apply population multiplier if this RT is population-focused
+      const multiplier = rt.focus.resource === 'population' 
+        ? resourceStore.resources.population.amount 
+        : 1;
+
+      // Check if we have enough of all required resources
+      const canProcess = Object.entries(rt.inbound_cost).every(([resource, amount]) => {
         const adjustedAmount = amount * multiplier;
-        
-        const currentResource = resourceStore.resources[resource].amount;
-        
-        // Check if we have enough resources
-        if (currentResource >= adjustedAmount) {
-          // Deduct the resources
-          resourceStore.updateResource(resource, -adjustedAmount);
-          
-          // Update both paid and owed amounts
-          cardStore.updateRTState(card.id, rtId, {
-            inbound_paid: {
-              ...rt.inbound_paid,
-              [resource]: (rt.inbound_paid[resource] || 0) + adjustedAmount
-            },
-            outbound_owed: {
-              ...rt.outbound_owed,
-              ...Object.fromEntries(
-                rt.outbound.map(({ resource: outResource, amount: outAmount }) => [
-                  outResource,
-                  (rt.outbound_owed[outResource] || 0) + (outAmount * multiplier)
-                ])
-              )
-            }
-          });
-        }
+        return resourceStore.resources[resource].amount >= adjustedAmount;
       });
+
+      if (canProcess) {
+        // Deduct all input resources
+        Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
+          const adjustedAmount = amount * multiplier;
+          resourceStore.updateResource(resource, -adjustedAmount);
+        });
+
+        // Update both paid and owed amounts
+        cardStore.updateRTState(card.id, rtId, {
+          inbound_paid: Object.fromEntries(
+            Object.entries(rt.inbound_cost).map(([resource, amount]) => [
+              resource,
+              (rt.inbound_paid[resource] || 0) + (amount * multiplier)
+            ])
+          ),
+          outbound_owed: Object.fromEntries(
+            Object.entries(rt.outbound_gain).map(([resource, amount]) => [
+              resource,
+              (rt.outbound_owed[resource] || 0) + (amount * multiplier)
+            ])
+          )
+        });
+      }
     });
   });
 }

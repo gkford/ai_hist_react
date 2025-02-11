@@ -15,14 +15,8 @@ export interface DiscoveryStats {
 
 export interface rtConfig {
   id: string;
-  inbound: Array<{
-    resource: ResourceKey;
-    amount: number;
-  }>;
-  outbound: Array<{
-    resource: ResourceKey;
-    amount: number;
-  }>;
+  inbound_cost: Partial<Record<ResourceKey, number>>;
+  outbound_gain: Partial<Record<ResourceKey, number>>;
   focus: FocusConfig;
 }
 
@@ -63,12 +57,12 @@ export const allCards: CardDefinition[] = [
     rts: [
       {
         id: "eat_food",
-        inbound: [
-          { resource: 'food', amount: 0.1 }
-        ],
-        outbound: [
-          { resource: 'humanEnergy', amount: 0.12 }
-        ],
+        inbound_cost: {
+          food: 0.1
+        },
+        outbound_gain: {
+          humanEnergy: 0.12
+        },
         focus: {
           resource: 'population'
         }
@@ -92,12 +86,12 @@ export const allCards: CardDefinition[] = [
     rts: [
       {
         id: "gather_food",
-        inbound: [
-          { resource: 'humanEnergy', amount: 1 }
-        ],
-        outbound: [
-          { resource: 'food', amount: 2 }
-        ],
+        inbound_cost: {
+          humanEnergy: 1
+        },
+        outbound_gain: {
+          food: 2
+        },
         focus: {
           resource: 'humanEnergy'
         }
