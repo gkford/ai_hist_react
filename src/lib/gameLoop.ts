@@ -6,7 +6,7 @@ export function startGameLoop() {
   if (intervalId) return;
 
   intervalId = window.setInterval(() => {
-    processRTs();
+    processRTPayments();
     processTransformations();
   }, 1000);
 }
