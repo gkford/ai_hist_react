@@ -1,4 +1,4 @@
-import { useResourceStore } from "@/store/useResourceStore";
+import { useResourceStore, type ResourceKey } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
 
 // First phase: Take payments and accumulate resources
@@ -18,14 +18,16 @@ export function processRTPayments() {
       // Check if we can afford the input costs
       const canPay = Object.entries(rt.inbound_cost).every(([resource, amount]) => {
         const adjustedAmount = amount * multiplier;
-        return resourceStore.resources[resource as ResourceKey].amount >= adjustedAmount;
+        const resourceKey = resource as ResourceKey;
+        return resourceStore.resources[resourceKey].amount >= adjustedAmount;
       });
 
       if (canPay) {
         // Take payment from resource store
         Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
           const adjustedAmount = amount * multiplier;
-          resourceStore.updateResource(resource as ResourceKey, -adjustedAmount);
+          const resourceKey = resource as ResourceKey;
+          resourceStore.updateResource(resourceKey, -adjustedAmount);
         });
 
         // Update inbound_paid and outbound_owed
