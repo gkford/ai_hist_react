@@ -51,11 +51,29 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
           )}
           {(cardState.discovery_state.current_status === 'unthoughtof' || 
             cardState.discovery_state.current_status === 'imagined') && (
-            <FocusSelector focus={cardState.discovery_state.focus} />
+            <FocusSelector 
+              focus={cardState.discovery_state.focus}
+              onFocusChange={(newFocus) => {
+                useCardsStore.getState().updateCardState(id, {
+                  discovery_state: {
+                    ...cardState.discovery_state,
+                    focus: {
+                      ...cardState.discovery_state.focus,
+                      ...newFocus
+                    }
+                  }
+                });
+              }}
+            />
           )}
         </div>
-        {Object.values(cardState.rts).map((rtState) => (
-          <RTViewer key={rtState.id} rtState={rtState} />
+        {Object.entries(cardState.rts).map(([rtId, rtState]) => (
+          <RTViewer 
+            key={rtId} 
+            rtState={rtState} 
+            cardId={id}
+            rtId={rtId}
+          />
         ))}
       </Card>
     );

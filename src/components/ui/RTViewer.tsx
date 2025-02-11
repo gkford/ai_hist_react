@@ -1,14 +1,27 @@
 import { RTState } from "@/store/useCardsStore";
 import { FocusSelector } from "@/components/ui/FocusSelector";
+import { useCardsStore } from "@/store/useCardsStore";
 
 interface RTViewerProps {
   rtState: RTState;
+  cardId: string;
+  rtId: string;
 }
 
-export function RTViewer({ rtState }: RTViewerProps) {
+export function RTViewer({ rtState, cardId, rtId }: RTViewerProps) {
   return (
     <div className="p-2 border-t border-gray-200">
-      <FocusSelector focus={rtState.focus} />
+      <FocusSelector 
+        focus={rtState.focus}
+        onFocusChange={(newFocus) => {
+          useCardsStore.getState().updateRTState(cardId, rtId, {
+            focus: {
+              ...rtState.focus,
+              ...newFocus
+            }
+          });
+        }}
+      />
       
       <div className="flex justify-between">
         <div className="flex-1">
