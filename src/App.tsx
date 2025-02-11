@@ -35,9 +35,9 @@ function App() {
     initializeCards();
     setInitialized(true);
     // Then start the game loop
-    // startGameLoop()
-    // // Stop it on unmount
-    // return () => stopGameLoop()
+    startGameLoop()
+    // Stop it on unmount
+    return () => stopGameLoop()
   }, [])
 
   return (
