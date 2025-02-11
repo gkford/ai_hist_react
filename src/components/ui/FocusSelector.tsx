@@ -53,7 +53,10 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
     updateResourceProps(focus.resource, propValues);
   };
 
-  const buttonStyles = {
+  type FocusType = 'discovery' | 'rt';
+  type Priority = 'none' | 'low' | 'high';
+
+  const buttonStyles: Record<FocusType, Record<Priority, string>> = {
     discovery: {
       none: "bg-gray-100 hover:bg-gray-200",
       low: "bg-blue-100 hover:bg-blue-200 text-blue-700",
