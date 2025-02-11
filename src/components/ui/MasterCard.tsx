@@ -53,6 +53,7 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
             cardState.discovery_state.current_status === 'imagined') && (
             <FocusSelector 
               focus={cardState.discovery_state.focus}
+              type="discovery"
               onFocusChange={(newFocus) => {
                 useCardsStore.getState().updateCardState(id, {
                   discovery_state: {

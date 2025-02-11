@@ -6,9 +6,10 @@ import { cn } from "@/lib/utils";
 interface FocusSelectorProps {
   focus: FocusState;
   onFocusChange: (newFocus: Partial<FocusState>) => void;
+  type: 'discovery' | 'rt';
 }
 
-export function FocusSelector({ focus, onFocusChange }: FocusSelectorProps) {
+export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps) {
   const cyclePriority = () => {
     const priorities: Array<'none' | 'low' | 'high'> = ['none', 'low', 'high'];
     const currentIndex = priorities.indexOf(focus.priority);
@@ -29,16 +30,27 @@ export function FocusSelector({ focus, onFocusChange }: FocusSelectorProps) {
   };
 
   const buttonStyles = {
-    none: "bg-gray-100 hover:bg-gray-200",
-    low: "bg-blue-100 hover:bg-blue-200 text-blue-700",
-    high: "bg-blue-500 hover:bg-blue-600 text-white"
+    discovery: {
+      none: "bg-gray-100 hover:bg-gray-200",
+      low: "bg-blue-100 hover:bg-blue-200 text-blue-700",
+      high: "bg-blue-500 hover:bg-blue-600 text-white"
+    },
+    rt: {
+      none: "bg-gray-100 hover:bg-gray-200",
+      low: "bg-green-100 hover:bg-green-200 text-green-700",
+      high: "bg-green-500 hover:bg-green-600 text-white"
+    }
   };
 
   return (
-    <div className="flex items-center gap-4 p-2">
+    <div className={cn(
+      "flex items-center gap-4 p-2",
+      type === 'discovery' ? 'bg-blue-50' : 'bg-green-50'
+    )}>
       <div className="flex-1">
         <div className="text-sm text-gray-600 mb-1">
           Focus: {focus.resource}
+          {type === 'discovery' ? ' (Discovery)' : ' (RT)'}
         </div>
         <Progress value={focus.prop * 100} className="h-2" />
       </div>
@@ -46,7 +58,7 @@ export function FocusSelector({ focus, onFocusChange }: FocusSelectorProps) {
         variant="outline" 
         size="sm" 
         onClick={cyclePriority}
-        className={cn(buttonStyles[focus.priority])}
+        className={cn(buttonStyles[type][focus.priority])}
       >
         {focus.priority === 'none' ? 'Off' : focus.priority}
       </Button>

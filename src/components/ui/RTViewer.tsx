@@ -13,6 +13,7 @@ export function RTViewer({ rtState, cardId, rtId }: RTViewerProps) {
     <div className="p-2 border-t border-gray-200">
       <FocusSelector 
         focus={rtState.focus}
+        type="rt"
         onFocusChange={(newFocus) => {
           useCardsStore.getState().updateRTState(cardId, rtId, {
             focus: {
