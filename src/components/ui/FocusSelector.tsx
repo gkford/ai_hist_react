@@ -22,35 +22,24 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
     const nextIndex = (currentIndex + 1) % priorities.length;
     const newPriority = priorities[nextIndex];
     
+    onFocusChange({ priority: newPriority });
+    
+    // Always recalculate after priority change if it's an RT type
     if (type === 'rt') {
-      onFocusChange({ priority: newPriority });
-    } else {
-      // Keep original behavior for discovery type
-      const propValues = {
-        none: 0,
-        low: 0.5,
-        high: 1
-      };
-      
-      onFocusChange({ priority: newPriority });
-    }
-  };
-
-  const recalculateProps = () => {
-    if (type !== 'rt') return;
-
-    // Collect all RT focus priorities for this resource
-    const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
-    Object.values(cardStates).forEach(card => {
-      Object.values(card.rts).forEach(rt => {
-        if (rt.focus.resource === focus.resource) {
-          rtFocusStates.push(rt.focus.priority);
-        }
+      // Collect all RT focus priorities for this resource
+      const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
+      Object.values(cardStates).forEach(card => {
+        Object.values(card.rts).forEach(rt => {
+          if (rt.focus.resource === focus.resource) {
+            // Use the new priority if it's this RT, otherwise use existing priority
+            rtFocusStates.push(rt.focus.priority);
+          }
+        });
       });
-    });
 
-    const propValues = calculateFocusPropFromPriorities(rtFocusStates);
-    updateResourceProps(focus.resource, propValues);
+      const propValues = calculateFocusPropFromPriorities(rtFocusStates);
+      updateResourceProps(focus.resource, propValues);
+    }
   };
 
   const buttonStyles = {
@@ -87,16 +76,6 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
         >
           {focus.priority === 'none' ? 'Off' : focus.priority}
         </Button>
-        {type === 'rt' && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={recalculateProps}
-            className="bg-gray-100 hover:bg-gray-200"
-          >
-            Recalc
-          </Button>
-        )}
       </div>
     </div>
   );
