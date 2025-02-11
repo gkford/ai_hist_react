@@ -1,5 +1,6 @@
 import { useResourceStore, type ResourceKey } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
+import { useFocusStore } from "@/store/useFocusStore";
 
 // First phase: Take payments and accumulate resources
 export function processRTPayments() {
@@ -11,9 +12,14 @@ export function processRTPayments() {
     if (card.discovery_state.current_status !== 'discovered') return;
 
     Object.entries(card.rts).forEach(([rtId, rt]) => {
-      const multiplier = rt.focus.resource === 'population' 
-        ? resourceStore.resources.population.amount 
-        : 1;
+      let multiplier;
+      if (rt.focus.resource === 'population') {
+        multiplier = resourceStore.resources.population.amount;
+      } else {
+        const priority = rt.focus.priority;
+        const resourceProps = focusStore.resourceProps[rt.focus.resource];
+        multiplier = resourceProps[priority];
+      }
 
       // Check if we can afford the input costs
       const canPay = Object.entries(rt.inbound_cost).every(([resource, amount]) => {
