@@ -1,4 +1,4 @@
-import { processRTs } from "./rtManager";
+import { processRTs, processTransformations } from "./rtManager";
 
 let intervalId: number | null = null;
 
@@ -7,6 +7,7 @@ export function startGameLoop() {
 
   intervalId = window.setInterval(() => {
     processRTs();
+    processTransformations();
   }, 1000);
 }
 

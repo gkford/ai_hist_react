@@ -1,6 +1,46 @@
 import { useResourceStore } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
 
+export function processTransformations() {
+  const resourceStore = useResourceStore.getState();
+  const cardStore = useCardsStore.getState();
+
+  // Process each card's RTs
+  Object.values(cardStore.cardStates).forEach(card => {
+    if (card.discovery_state.current_status !== 'discovered') return;
+
+    Object.entries(card.rts).forEach(([rtId, rt]) => {
+      // Check if we have enough accumulated resources in both inbound and outbound
+      const canTransform = Object.entries(rt.inbound_cost).every(([resource, cost]) => 
+        (rt.inbound_paid[resource] || 0) >= cost
+      ) && Object.entries(rt.outbound_gain).every(([resource, gain]) => 
+        (rt.outbound_owed[resource] || 0) >= gain
+      );
+
+      if (canTransform) {
+        // Deduct the costs from inbound_paid
+        const newInboundPaid = { ...rt.inbound_paid };
+        Object.entries(rt.inbound_cost).forEach(([resource, cost]) => {
+          newInboundPaid[resource] = (newInboundPaid[resource] || 0) - cost;
+        });
+
+        // Deduct from outbound_owed and add to resource store
+        const newOutboundOwed = { ...rt.outbound_owed };
+        Object.entries(rt.outbound_gain).forEach(([resource, gain]) => {
+          newOutboundOwed[resource] = (newOutboundOwed[resource] || 0) - gain;
+          resourceStore.updateResource(resource, gain);
+        });
+
+        // Update the RT state with new values
+        cardStore.updateRTState(card.id, rtId, {
+          inbound_paid: newInboundPaid,
+          outbound_owed: newOutboundOwed
+        });
+      }
+    });
+  });
+}
+
 export function processRTs() {
   const resourceStore = useResourceStore.getState();
   const cardStore = useCardsStore.getState();
