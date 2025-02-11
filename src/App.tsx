@@ -2,6 +2,8 @@ import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
+import { calculateFocusPropFromPriorities } from "@/lib/focusCalculator"
+import { useFocusStore } from "@/store/useFocusStore"
 import { useEffect, useState } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
@@ -45,12 +47,39 @@ function App() {
     // Initialize cards first
     console.log("init")
     initializeCards();
+    
+    // Calculate initial focus values for all resources
+    const cardStates = useCardsStore.getState().cardStates;
+    const resourceTypes = new Set<string>();
+    
+    // Collect all unique resource types from RT focuses
+    Object.values(cardStates).forEach(card => {
+      Object.values(card.rts).forEach(rt => {
+        resourceTypes.add(rt.focus.resource);
+      });
+    });
+
+    // For each resource type, calculate focus props
+    resourceTypes.forEach(resource => {
+      const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
+      Object.values(cardStates).forEach(card => {
+        Object.values(card.rts).forEach(rt => {
+          if (rt.focus.resource === resource) {
+            rtFocusStates.push(rt.focus.priority);
+          }
+        });
+      });
+
+      const propValues = calculateFocusPropFromPriorities(rtFocusStates);
+      useFocusStore.getState().updateResourceProps(resource, propValues);
+    });
+
     setInitialized(true);
     // Then start the game loop
-    startGameLoop()
+    startGameLoop();
     // Stop it on unmount
-    return () => stopGameLoop()
-  }, [])
+    return () => stopGameLoop();
+  }, []);
 
   return (
     <div className="min-h-screen p-4 flex flex-col">
