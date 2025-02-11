@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useFocusStore } from "@/store/useFocusStore";
+import type { ResourceKey } from "@/store/useResourceStore";
 
 interface FocusSelectorProps {
   focus: FocusState;
@@ -12,8 +13,9 @@ interface FocusSelectorProps {
 }
 
 export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps) {
-  const cardStates = useCardsStore(state => state.cardStates);
-  const focusProps = useFocusStore(state => state.resourceProps[focus.resource]);
+  const focusProps = useFocusStore(state => 
+    state.resourceProps[focus.resource as keyof typeof state.resourceProps]
+  );
   const updateResourceProps = useFocusStore(state => state.updateResourceProps);
 
   const cyclePriority = async () => {
@@ -56,18 +58,18 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
   type FocusType = 'discovery' | 'rt';
   type Priority = 'none' | 'low' | 'high';
 
-  const buttonStyles: Record<FocusType, Record<Priority, string>> = {
+  const buttonStyles = {
     discovery: {
-      none: "bg-gray-100 hover:bg-gray-200",
-      low: "bg-blue-100 hover:bg-blue-200 text-blue-700",
-      high: "bg-blue-500 hover:bg-blue-600 text-white"
+      'none': "bg-gray-100 hover:bg-gray-200",
+      'low': "bg-blue-100 hover:bg-blue-200 text-blue-700",
+      'high': "bg-blue-500 hover:bg-blue-600 text-white"
     },
     rt: {
-      none: "bg-gray-100 hover:bg-gray-200",
-      low: "bg-green-100 hover:bg-green-200 text-green-700",
-      high: "bg-green-500 hover:bg-green-600 text-white"
+      'none': "bg-gray-100 hover:bg-gray-200",
+      'low': "bg-green-100 hover:bg-green-200 text-green-700",
+      'high': "bg-green-500 hover:bg-green-600 text-white"
     }
-  };
+  } as const;
 
   return (
     <div className={cn(

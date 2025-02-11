@@ -4,7 +4,7 @@ import { allCards } from "@/data/cards";
 import type { CardDefinition, DiscoveryStatus, rtConfig, FocusConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
 
 // State extensions of the base configs
-interface FocusState extends FocusConfig {
+export interface FocusState extends FocusConfig {
   priority: 'low' | 'high' | 'none';
 }
 
