@@ -21,11 +21,20 @@ export function processRTs() {
           // Deduct the resources
           resourceStore.updateResource(resource, -amount);
           
-          // Update the paid amount
+          // Update both paid and owed amounts
           cardStore.updateRTState(card.id, rtId, {
             inbound_paid: {
               ...rt.inbound_paid,
               [resource]: (rt.inbound_paid[resource] || 0) + amount
+            },
+            outbound_owed: {
+              ...rt.outbound_owed,
+              ...Object.fromEntries(
+                rt.outbound.map(({ resource: outResource, amount: outAmount }) => [
+                  outResource,
+                  (rt.outbound_owed[outResource] || 0) + outAmount
+                ])
+              )
             }
           });
         }
