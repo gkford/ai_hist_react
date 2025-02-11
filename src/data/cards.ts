@@ -77,8 +77,8 @@ export const allCards: CardDefinition[] = [
     imageSrc: "/card_images/gatherFood.png",
     description: "Gather food from the environment",
     discovery_stats: {
-      thought_to_imagine: 5,
-      further_thought_to_discover: 15,
+      thought_to_imagine: 0,
+      further_thought_to_discover: 0,
       focus: {
         resource: 'thought'
       }
@@ -90,7 +90,7 @@ export const allCards: CardDefinition[] = [
           humanEnergy: 1
         },
         outbound_gain: {
-          food: 2
+          food: 1
         },
         focus: {
           resource: 'humanEnergy'
