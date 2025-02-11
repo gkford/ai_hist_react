@@ -13,6 +13,7 @@ interface RTState extends Omit<rtConfig, 'focus'> {
   inbound_paid: Partial<Record<ResourceKey, number>>;
   outbound_owed: Partial<Record<ResourceKey, number>>;
   focus: FocusState;
+  last_process_time?: number;
 }
 
 interface EffectState extends Omit<EffectConfig, 'focus'> {
