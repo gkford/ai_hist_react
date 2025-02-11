@@ -17,7 +17,7 @@ export function processRTPayments() {
         multiplier = resourceStore.resources.population.amount;
       } else {
         const priority = rt.focus.priority;
-        const resourceProps = focusStore.resourceProps[rt.focus.resource];
+        const resourceProps = useFocusStore.getState().resourceProps[rt.focus.resource];
         multiplier = resourceProps[priority];
       }
 
