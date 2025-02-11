@@ -78,16 +78,20 @@ export function processTransformations() {
                             Object.values(flooredOutboundOwed).every(value => value >= 1);
 
       if (allValuesValid) {
+        // Track the actual amounts being transformed
+        const transformedInbound = { ...flooredInboundPaid };
+        const transformedOutbound = { ...flooredOutboundOwed };
+
         // Deduct floored values from actual paid/owed values
         const newInboundPaid = { ...rt.inbound_paid };
         const newOutboundOwed = { ...rt.outbound_owed };
 
-        Object.entries(flooredInboundPaid).forEach(([resource, amount]) => {
+        Object.entries(transformedInbound).forEach(([resource, amount]) => {
           const key = resource as ResourceKey;
           newInboundPaid[key] = (rt.inbound_paid[key] || 0) - amount;
         });
 
-        Object.entries(flooredOutboundOwed).forEach(([resource, amount]) => {
+        Object.entries(transformedOutbound).forEach(([resource, amount]) => {
           const key = resource as ResourceKey;
           newOutboundOwed[key] = (rt.outbound_owed[key] || 0) - amount;
           // Add the deducted amount to the resource store
@@ -95,8 +99,8 @@ export function processTransformations() {
         });
 
         console.log(`RT ${rtId} transformation completed:`, {
-          newInboundPaid,
-          newOutboundOwed
+          transformedInbound,
+          transformedOutbound
         });
 
         cardStore.updateRTState(card.id, rtId, {
