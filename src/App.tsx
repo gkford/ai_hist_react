@@ -3,7 +3,7 @@ import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect } from "react"
-import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
+// import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
 function initializeCards() {
   const cardStore = useCardsStore.getState();
@@ -29,11 +29,12 @@ function App() {
 
   useEffect(() => {
     // Initialize cards first
+    console.log("init")
     initializeCards();
     // Then start the game loop
-    startGameLoop()
-    // Stop it on unmount
-    return () => stopGameLoop()
+    // startGameLoop()
+    // // Stop it on unmount
+    // return () => stopGameLoop()
   }, [])
 
   return (
