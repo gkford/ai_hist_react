@@ -1,3 +1,4 @@
+import type { ResourceKey } from "@/store/useResourceStore";
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
