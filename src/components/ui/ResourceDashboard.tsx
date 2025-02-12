@@ -41,12 +41,20 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
             <div className="mt-1">
               <div className="w-full h-1 bg-gray-200 rounded">
                 <div 
-                  className="h-full bg-blue-500 rounded transition-all duration-300" 
-                  style={{ width: `${(resource.usage || 0) * 100}%` }}
+                  className={cn(
+                    "h-full rounded transition-all duration-300",
+                    resource.usage === null ? "bg-gray-400" : "bg-blue-500"
+                  )}
+                  style={{ 
+                    width: resource.usage === null ? "100%" : `${resource.usage * 100}%` 
+                  }}
                 />
               </div>
               <div className="text-xs mt-1">
-                Usage: {Math.round((resource.usage || 0) * 100)}%
+                {resource.usage === null 
+                  ? "No production" 
+                  : `Usage: ${Math.round(resource.usage * 100)}%`
+                }
               </div>
             </div>
           )}

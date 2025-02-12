@@ -8,7 +8,7 @@ interface Resource {
   key: ResourceKey;
   isRate?: boolean;
   amountProduced?: number; // Track how much was produced this tick
-  usage?: number; // percentage of resource used in last tick (0-1)
+  usage: number | null; // can be null when no production occurred
 }
 
 interface ResourceStore {
@@ -36,13 +36,13 @@ export const useResourceStore = create<ResourceStore>((set) => ({
         }
       }
     })),
-  setResourceUsage: (key: ResourceKey, usage: number) =>
+  setResourceUsage: (key: ResourceKey, usage: number | null) =>
     set((state) => ({
       resources: {
         ...state.resources,
         [key]: {
           ...state.resources[key],
-          usage: Math.min(1, Math.max(0, usage))
+          usage: usage === null ? null : Math.min(1, Math.max(0, usage))
         }
       }
     })),

@@ -26,6 +26,9 @@ export function startGameLoop() {
         const consumed = resource.amountProduced - resource.amount;
         const usage = consumed / resource.amountProduced;
         store.setResourceUsage(resourceKey as ResourceKey, usage);
+      } else {
+        // If nothing was produced, set usage to null
+        store.setResourceUsage(resourceKey as ResourceKey, null);
       }
       // Reset rate resource to 0
       store.updateResource(resourceKey as ResourceKey, -resource.amount);
