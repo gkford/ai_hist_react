@@ -191,5 +191,10 @@ export const allCards: CardDefinition[] = [
         resource: 'humanEnergy',
       },
     },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 10,
+      },
+    },
   },
 ]
