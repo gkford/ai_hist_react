@@ -23,7 +23,7 @@ function initializeCards() {
     }
   });
 
-  cardStore.createCard('think', {
+  cardStore.createCard('think_l1', {  // Changed from 'think' to 'think_l1'
     discovery_state: {
       current_status: 'discovered'
     }
