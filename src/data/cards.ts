@@ -44,24 +44,17 @@ export interface CardDefinition {
   rts?: rtConfig[]
   ongoingEffects?: OngoingEffects
   OnDiscoveryEffects?: OnDiscoveryEffects
-  discovery_stats: DiscoveryStats
+  discovery_stats?: DiscoveryStats
 }
 
 export const allCards: CardDefinition[] = [
   {
     id: 'hominids',
-    title: 'Hominids',
+    title: 'Hominids L1',
     column: 1,
     icon: '👥',
     imageSrc: '/card_images/hominids.png',
     description: 'Your early human population',
-    discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 20,
-      focus: {
-        resource: 'thoughts',
-      },
-    },
     rts: [
       {
         id: 'eat_food',
@@ -73,6 +66,154 @@ export const allCards: CardDefinition[] = [
         },
         focus: {
           resource: 'population',
+        },
+      },
+    ],
+  },
+  {
+    id: 'grunters',
+    title: 'Grunters L2',
+    column: 1,
+    icon: '👥',
+    description: 'More advanced human population',
+    rts: [
+      {
+        id: 'eat_food',
+        inbound_cost: {
+          food: 0.1,
+        },
+        outbound_gain: {
+          humanEnergy: 0.12,
+        },
+        focus: {
+          resource: 'population',
+        },
+      },
+    ],
+  },
+  {
+    id: 'talkers',
+    title: 'Talkers L3',
+    column: 1,
+    icon: '👥',
+    description: 'Language-capable human population',
+    rts: [
+      {
+        id: 'eat_food',
+        inbound_cost: {
+          food: 0.1,
+        },
+        outbound_gain: {
+          humanEnergy: 0.12,
+        },
+        focus: {
+          resource: 'population',
+        },
+      },
+    ],
+  },
+  {
+    id: 'storytellers',
+    title: 'Storytellers L4',
+    column: 1,
+    icon: '👥',
+    description: 'Culture-bearing human population',
+    rts: [
+      {
+        id: 'eat_food',
+        inbound_cost: {
+          food: 0.1,
+        },
+        outbound_gain: {
+          humanEnergy: 0.12,
+        },
+        focus: {
+          resource: 'population',
+        },
+      },
+    ],
+  },
+  {
+    id: 'think_l1',
+    title: 'Think L1',
+    column: 1,
+    icon: '🧠',
+    imageSrc: '/card_images/think.webp',
+    description: 'Basic thinking',
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 1,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+  },
+  {
+    id: 'think_l2',
+    title: 'Think L2',
+    column: 1,
+    icon: '🧠',
+    description: 'Advanced thinking',
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 10,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+  },
+  {
+    id: 'think_l3',
+    title: 'Think L3',
+    column: 1,
+    icon: '🧠',
+    description: 'Complex thinking',
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 100,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+  },
+  {
+    id: 'think_l4',
+    title: 'Think L4',
+    column: 1,
+    icon: '🧠',
+    description: 'Abstract thinking',
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 1000,
+        },
+        focus: {
+          resource: 'humanEnergy',
         },
       },
     ],
@@ -99,35 +240,6 @@ export const allCards: CardDefinition[] = [
         },
         outbound_gain: {
           food: 1,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
-      },
-    ],
-  },
-  {
-    id: 'think',
-    title: 'Think',
-    column: 1,
-    icon: '🧠',
-    imageSrc: '/card_images/think.webp',
-    description: 'Convert human energy into thoughts',
-    discovery_stats: {
-      thought_to_imagine: 0,
-      further_thought_to_discover: 0,
-      focus: {
-        resource: 'thoughts',
-      },
-    },
-    rts: [
-      {
-        id: 'think',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          thoughts: 1,
         },
         focus: {
           resource: 'humanEnergy',
