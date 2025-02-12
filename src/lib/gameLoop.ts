@@ -29,6 +29,8 @@ export function startGameLoop() {
       }
       // Reset rate resource to 0
       store.updateResource(resourceKey as ResourceKey, -resource.amount);
+
+
     });
     
   }, 1000);
