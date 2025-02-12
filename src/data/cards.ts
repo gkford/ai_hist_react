@@ -266,6 +266,65 @@ export const allCards: CardDefinition[] = [
     ],
   },
   {
+    id: 'non_verbal_communication',
+    title: 'Non-verbal Communication',
+    type: 'science',
+    icon: '👋',
+    imageSrc: '/card_images/nonVerbalCommunication.png',
+    description: 'Basic gestures and expressions that enable coordination',
+    discovery_stats: {
+      thought_to_imagine: 1,
+      further_thought_to_discover: 1,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: ['hunt', 'early_stone_tools', 'gift_giving'],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        humanEnergy: 1.05,
+        thoughts: 1.05,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 5,
+      },
+    },
+  },
+  {
+    id: 'gift_giving',
+    title: 'Gift Giving',
+    type: 'science',
+    icon: '🎁',
+    imageSrc: '/card_images/giftGiving.png',
+    description: 'Share resources to build social bonds',
+    discovery_stats: {
+      thought_to_imagine: 2,
+      further_thought_to_discover: 2,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts: 1.1,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 5,
+      },
+    },
+  },
+  {
     id: 'hunt',
     title: 'Hunt',
     type: 'production',
@@ -278,7 +337,7 @@ export const allCards: CardDefinition[] = [
       focus: {
         resource: 'thoughts',
       },
-      discovery_unlocks: ['hunt', 'think_l2'],
+      discovery_unlocks: [],
     },
     rts: [
       {
@@ -313,7 +372,7 @@ export const allCards: CardDefinition[] = [
       focus: {
         resource: 'thoughts',
       },
-      discovery_unlocks: ['hunt'],
+      discovery_unlocks: [],
     },
     ongoingEffects: {
       resourceModifiers: {
