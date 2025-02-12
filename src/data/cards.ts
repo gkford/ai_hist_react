@@ -388,4 +388,100 @@ export const allCards: CardDefinition[] = [
       },
     },
   },
+  {
+    id: 'hand_axe',
+    title: 'Hand Axe',
+    type: 'science',
+    icon: '🪓',
+    imageSrc: '/card_images/handAxe.png',
+    description: 'More sophisticated stone tools with multiple uses',
+    discovery_stats: {
+      thought_to_imagine: 5,
+      further_thought_to_discover: 5,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        humanEnergy: 1.15, // Better than early stone tools
+        food: 1.1, // Helps with food processing
+      },
+      focus: {
+        resource: 'humanEnergy',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 15,
+      },
+    },
+  },
+  {
+    id: 'cooperative_hunting',
+    title: 'Cooperative Hunting',
+    type: 'production',
+    icon: '👥🦌',
+    imageSrc: '/card_images/cooperativeHunting.png',
+    description: 'Hunt in coordinated groups for better results',
+    discovery_stats: {
+      thought_to_imagine: 5,
+      further_thought_to_discover: 5,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    rts: [
+      {
+        id: 'cooperative_hunt',
+        inbound_cost: {
+          humanEnergy: 1.5, // Takes more energy than basic hunting
+        },
+        outbound_gain: {
+          food: 2, // But produces significantly more food
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 15,
+      },
+    },
+  },
+  {
+    id: 'fire_domestication',
+    title: 'Fire Domestication',
+    type: 'science',
+    icon: '🔥',
+    imageSrc: '/card_images/fireDomestication.png',
+    description: 'Control and maintain fire for cooking and protection',
+    discovery_stats: {
+      thought_to_imagine: 8,
+      further_thought_to_discover: 8,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        humanEnergy: 1.2, // Better rest at night
+        food: 1.2, // Cooked food is more nutritious
+        thoughts: 1.1, // More time to think around the fire
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 20,
+      },
+    },
+  },
 ]
