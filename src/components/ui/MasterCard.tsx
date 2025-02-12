@@ -44,7 +44,11 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
           </div>
         </div>
         <div className="flex-1">
-          {cardDef.imageSrc && <CardImage imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc} />}
+          {cardDef.imageSrc && 
+            (cardState.discovery_state.current_status === 'imagined' || 
+             cardState.discovery_state.current_status === 'discovered') && (
+            <CardImage imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc} />
+          )}
           {cardDef.description && (
             <CardInfo>
               <p>{isUnthoughtof ? obscureText(cardDef.description) : cardDef.description}</p>
