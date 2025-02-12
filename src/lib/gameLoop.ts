@@ -9,6 +9,7 @@ export function startGameLoop() {
 
   intervalId = window.setInterval(() => {
     const store = useResourceStore.getState();
+    console.log("Start of loop - thoughts:", store.resources.thoughts.amount);
     
     // Store previous amounts for all resources
     Object.keys(store.resources).forEach(key => {
@@ -16,12 +17,15 @@ export function startGameLoop() {
       const resource = store.resources[resourceKey];
       store.updateResource(resourceKey, 0, { previousAmount: resource.amount });
     });
+    console.log("After storing previous - thoughts:", store.resources.thoughts.amount);
 
     // Process transformations which generate resources
     processTransformations();
+    console.log("After transformations - thoughts:", store.resources.thoughts.amount);
 
     // Process discoveries
     processDiscoveries();
+    console.log("After discoveries - thoughts:", store.resources.thoughts.amount);
     
     // Calculate raw production and apply bonuses for all resources
     Object.entries(store.resources).forEach(([key, resource]) => {
@@ -38,6 +42,7 @@ export function startGameLoop() {
         store.updateResource(resourceKey, additionalFromBonus);
       }
     });
+    console.log("After bonuses - thoughts:", store.resources.thoughts.amount);
 
     // Get all rate-type resources
     const rateResources = Object.entries(store.resources)
@@ -53,6 +58,7 @@ export function startGameLoop() {
     
     // Process payments which consume resources
     processRTPayments();
+    console.log("After RT payments - thoughts:", store.resources.thoughts.amount);
     
     // Calculate usage for rate resources
     rateResources.forEach(resourceKey => {
@@ -67,6 +73,7 @@ export function startGameLoop() {
       // Reset rate resource to 0
       store.updateResource(resourceKey, -resource.amount);
     });
+    console.log("End of loop - thoughts:", store.resources.thoughts.amount);
     
   }, 1000);
 }

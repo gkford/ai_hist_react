@@ -59,9 +59,6 @@ export function processDiscoveries() {
     return total + (priority === 'high' ? 3 : priority === 'low' ? 1 : 0);
   }, 0);
 
-  console.log('Thoughts produced this tick:', thoughtsProduced);
-  console.log('Total focus points:', totalFocusPoints);
-  console.log('Eligible cards:', eligibleCards.length);
 
   if (totalFocusPoints <= 0) return;
 
@@ -98,12 +95,6 @@ export function processDiscoveries() {
       // Store previous status to check for transitions
       const previousStatus = card.discovery_state.current_status;
 
-      console.log('Investing thoughts in card:', {
-        cardId,
-        thoughtsToInvest,
-        currentTotal: card.discovery_state.thought_invested,
-        newTotal: newThoughtInvested
-      });
 
       // Update the card state
       cardStore.updateCardState(cardId, {
