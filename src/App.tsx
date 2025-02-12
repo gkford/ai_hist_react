@@ -94,8 +94,17 @@ function App() {
       <ResourceDashboard className="mb-4" />
 
       <div className="flex gap-8">
-        {initialized && Object.values(useCardsStore.getState().cardStates).map((cardState) => (
-          <MasterCard key={cardState.id} id={cardState.id} />
+        {[1, 2, 3, 4].map((columnNumber) => (
+          <div key={columnNumber} className="flex flex-col gap-4">
+            <h2 className="font-semibold text-lg">Column {columnNumber}</h2>
+            {initialized && 
+              Object.values(useCardsStore.getState().cardStates)
+                .filter(cardState => cardState.column === columnNumber)
+                .map((cardState) => (
+                  <MasterCard key={cardState.id} id={cardState.id} />
+                ))
+            }
+          </div>
         ))}
       </div>
 

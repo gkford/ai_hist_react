@@ -50,7 +50,7 @@ export interface CardDefinition {
 export const allCards: CardDefinition[] = [
   {
     id: 'hominids',
-    title: 'Hominids L1',
+    title: 'Hominids (L1)',
     column: 1,
     icon: '👥',
     imageSrc: '/card_images/hominids.png',
@@ -72,7 +72,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'grunters',
-    title: 'Grunters L2',
+    title: 'Grunters (L2)',
     column: 1,
     icon: '👥',
     description: 'More advanced human population',
@@ -93,7 +93,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'talkers',
-    title: 'Talkers L3',
+    title: 'Talkers (L3)',
     column: 1,
     icon: '👥',
     description: 'Language-capable human population',
@@ -114,7 +114,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'storytellers',
-    title: 'Storytellers L4',
+    title: 'Storytellers (L4)',
     column: 1,
     icon: '👥',
     description: 'Culture-bearing human population',
@@ -135,7 +135,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'think_l1',
-    title: 'Think L1',
+    title: 'Think (L1)',
     column: 1,
     icon: '🧠',
     imageSrc: '/card_images/think.webp',
@@ -157,7 +157,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'think_l2',
-    title: 'Think L2',
+    title: 'Think (L2)',
     column: 1,
     icon: '🧠',
     description: 'Advanced thinking',
@@ -178,7 +178,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'think_l3',
-    title: 'Think L3',
+    title: 'Think (L3)',
     column: 1,
     icon: '🧠',
     description: 'Complex thinking',
@@ -199,7 +199,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'think_l4',
-    title: 'Think L4',
+    title: 'Think (L4)',
     column: 1,
     icon: '🧠',
     description: 'Abstract thinking',
