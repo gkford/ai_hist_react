@@ -100,6 +100,16 @@ export function processTransformations() {
         Object.entries(transformedOutbound).forEach(([resource, amount]) => {
           const key = resource as ResourceKey;
           newOutboundOwed[key] = (rt.outbound_owed[key] || 0) - amount;
+          
+          // Add debug logging for thoughts production
+          if (key === 'thoughts') {
+            console.log('Debug - RT producing thoughts:', {
+              rtId,
+              amount,
+              cardId: card.id
+            });
+          }
+          
           // Add the deducted amount to the resource store
           resourceStore.updateResource(key, amount);
         });
