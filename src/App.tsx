@@ -46,17 +46,14 @@ function initializeCards() {
     }
   });
 
-  cardStore.createCard('think_l1', {  // Changed from 'think' to 'think_l1'
+  cardStore.createCard('think_l1', {
     discovery_state: {
       current_status: 'discovered'
     }
   });
 
-  // Add hunt card without specifying discovery state
-  cardStore.createCard('hunt');
-  
-  // Add early stone tools card
-  cardStore.createCard('early_stone_tools');
+  // Add non verbal communication card without specifying discovery state
+  cardStore.createCard('non_verbal_communication');
 }
 
 function App() {
