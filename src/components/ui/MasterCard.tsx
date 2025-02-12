@@ -8,6 +8,7 @@ import { CardInfo } from '@/components/ui/CardInfo'
 import { RTViewer } from '@/components/ui/RTViewer'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
+import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string // This is now the only required prop
@@ -83,6 +84,16 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
             cardState.discovery_state.current_status === 'discovered') && (
             <OnDiscoveryEffectsViewer
               effects={cardDef.OnDiscoveryEffects}
+              isDiscovered={
+                cardState.discovery_state.current_status === 'discovered'
+              }
+            />
+          )}
+        {cardDef.ongoingEffects &&
+          (cardState.discovery_state.current_status === 'imagined' ||
+            cardState.discovery_state.current_status === 'discovered') && (
+            <OngoingEffectsViewer
+              effects={cardDef.ongoingEffects}
               isDiscovered={
                 cardState.discovery_state.current_status === 'discovered'
               }
