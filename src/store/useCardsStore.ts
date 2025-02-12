@@ -16,7 +16,7 @@ export interface RTState extends Omit<rtConfig, 'focus'> {
   last_process_time?: number;
 }
 
-interface EffectState extends Omit<EffectConfig, 'focus'> {
+interface OngoingEffectsState extends Omit<OngoingEffects, 'focus'> {
   active: boolean;
   focus: FocusState;
 }
@@ -28,9 +28,10 @@ export interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
 }
 
 // The full card state extends CardDefinition
-interface CardState extends Omit<CardDefinition, 'rts' | 'effects' | 'discovery_stats'> {
+interface CardState extends Omit<CardDefinition, 'rts' | 'ongoingEffects' | 'onCreateEffects' | 'discovery_stats'> {
   rts: Record<string, RTState>;
-  effects: Record<string, EffectState>;
+  ongoingEffects?: OngoingEffectsState;
+  hasProcessedOnCreate: boolean;
   discovery_state: DiscoveryState;
 }
 
