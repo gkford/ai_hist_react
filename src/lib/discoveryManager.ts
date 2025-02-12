@@ -140,6 +140,17 @@ export function processDiscoveries() {
         
         // Recalculate all resource bonuses
         recalculateResourceBonuses();
+
+        // Handle unlocking new cards
+        const cardDef = allCards.find(c => c.id === cardId);
+        if (cardDef?.discovery_stats?.discovery_unlocks) {
+          cardDef.discovery_stats.discovery_unlocks.forEach(unlockId => {
+            // Only create if it doesn't already exist
+            if (!cardStore.cardStates[unlockId]) {
+              cardStore.createCard(unlockId);
+            }
+          });
+        }
       }
     }
   });

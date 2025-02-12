@@ -14,7 +14,7 @@ export interface FocusConfig {
 export interface DiscoveryStats {
   thought_to_imagine: number
   further_thought_to_discover: number
-  dependencies?: string[] // Array of card IDs this card depends on
+  discovery_unlocks?: string[] // Array of card IDs that this card unlocks when discovered
   focus: FocusConfig
 }
 
@@ -278,6 +278,7 @@ export const allCards: CardDefinition[] = [
       focus: {
         resource: 'thoughts',
       },
+      discovery_unlocks: ['hunt', 'think_l2'],
     },
     rts: [
       {
