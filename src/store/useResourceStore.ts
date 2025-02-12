@@ -6,7 +6,7 @@ interface Resource {
   amount: number;
   icon: string;
   key: ResourceKey;
-  isRate?: boolean;
+  isRate: boolean;
   amountProduced?: number; // Track how much was produced this tick
   usage: number | null; // can be null when no production occurred
   bonus: number;
@@ -23,11 +23,11 @@ interface ResourceStore {
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: 30, icon: "🍖", key: "food", usage: 0, bonus: 1 },
-    knowledge: { amount: 0, icon: "📚", key: "knowledge", usage: 0, bonus: 1 },
+    food: { amount: 30, icon: "🍖", key: "food", isRate: false, usage: 0, bonus: 1 },
+    knowledge: { amount: 0, icon: "📚", key: "knowledge", isRate: false, usage: 0, bonus: 1 },
     thoughts: { amount: 0, icon: "💭", key: "thoughts", isRate: true, usage: 0, bonus: 1 },
     humanEnergy: { amount: 0, icon: "⚡", key: "humanEnergy", isRate: true, usage: 0, bonus: 1 },
-    population: { amount: 10, icon: "👥", key: "population", usage: 0, bonus: 1 },
+    population: { amount: 10, icon: "👥", key: "population", isRate: false, usage: 0, bonus: 1 },
   },
   updateResource: (key: ResourceKey, delta: number) =>
     set((state) => ({

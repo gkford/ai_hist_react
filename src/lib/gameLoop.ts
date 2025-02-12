@@ -16,28 +16,31 @@ export function startGameLoop() {
     // Process discoveries
     processDiscoveries();
     
-    // Track how much was produced
-    store.trackProducedAmount('thoughts');
-    store.trackProducedAmount('humanEnergy');
+    // Get all rate-type resources
+    const rateResources = Object.entries(store.resources)
+      .filter(([_, resource]) => resource.isRate)
+      .map(([key]) => key as ResourceKey);
+    
+    // Track produced amounts for all rate resources
+    rateResources.forEach(resourceKey => {
+      store.trackProducedAmount(resourceKey);
+    });
     
     // Process payments which consume resources
     processRTPayments();
     
     // Calculate usage for rate resources
-    ['thoughts', 'humanEnergy'].forEach(resourceKey => {
-      const resource = store.resources[resourceKey as ResourceKey];
+    rateResources.forEach(resourceKey => {
+      const resource = store.resources[resourceKey];
       if (resource.amountProduced && resource.amountProduced > 0) {
         const consumed = resource.amountProduced - resource.amount;
         const usage = consumed / resource.amountProduced;
-        store.setResourceUsage(resourceKey as ResourceKey, usage);
+        store.setResourceUsage(resourceKey, usage);
       } else {
-        // If nothing was produced, set usage to null
-        store.setResourceUsage(resourceKey as ResourceKey, 0);
+        store.setResourceUsage(resourceKey, 0);
       }
       // Reset rate resource to 0
-      store.updateResource(resourceKey as ResourceKey, -resource.amount);
-
-
+      store.updateResource(resourceKey, -resource.amount);
     });
     
   }, 1000);
