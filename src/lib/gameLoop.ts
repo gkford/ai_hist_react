@@ -20,11 +20,6 @@ export function startGameLoop() {
     // Process transformations which generate resources
     processTransformations();
 
-    // Track produced thoughts specifically
-    const thoughtsResource = store.resources.thoughts;
-    const thoughtsProduced = thoughtsResource.amount - thoughtsResource.previousAmount;
-    store.updateResource('thoughts', 0, { amountProduced: thoughtsProduced });
-    
     // Process discoveries
     processDiscoveries();
     
