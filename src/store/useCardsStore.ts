@@ -31,15 +31,13 @@ export interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
 interface CardState extends Omit<CardDefinition, 'rts' | 'ongoingEffects' | 'onCreateEffects' | 'discovery_stats'> {
   rts: Record<string, RTState>;
   ongoingEffects?: OngoingEffectsState;
-  hasProcessedOnCreate: boolean;
   discovery_state: DiscoveryState;
 }
 
 interface CardsStore {
   cardStates: Record<string, CardState>;
   createCard: (id: string, initialState?: { 
-    discovery_state?: Partial<DiscoveryState>,
-    hasProcessedOnCreate?: boolean
+    discovery_state?: Partial<DiscoveryState>
   }) => void;
   updateCardState: (id: string, partial: Partial<CardState>) => void;
   updateRTState: (cardId: string, rtId: string, partial: Partial<RTState>) => void;
@@ -84,17 +82,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
               priority: 'none'
             }
           } : undefined,
-          hasProcessedOnCreate: false,
-          // Process onCreate effects if they exist
-          ...(cardDef.onCreateEffects && !initialState?.hasProcessedOnCreate ? (() => {
-            const resources = useResourceStore.getState();
-            Object.entries(cardDef.onCreateEffects.resourceBonuses).forEach(([resource, amount]) => {
-              if (amount !== undefined) {
-                resources.addResource(resource as ResourceKey, amount);
-              }
-            });
-            return {};
-          })() : {}),
           discovery_state: {
             thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
             further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
