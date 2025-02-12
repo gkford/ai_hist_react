@@ -63,6 +63,7 @@ interface CardsStore {
     cardId: string,
     partial: Partial<OngoingEffectsState>
   ) => void
+  removeCard: (id: string) => void
 }
 
 export const useCardsStore = create<CardsStore>((set) => ({
@@ -176,4 +177,9 @@ export const useCardsStore = create<CardsStore>((set) => ({
         },
       },
     })),
+  removeCard: (id: string) => 
+    set((state) => {
+      const { [id]: removed, ...remaining } = state.cardStates;
+      return { cardStates: remaining };
+    }),
 }))

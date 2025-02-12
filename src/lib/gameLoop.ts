@@ -1,5 +1,6 @@
 import { processRTPayments, processTransformations } from "./rtManager";
 import { processDiscoveries } from "./discoveryManager";
+import { processKnowledgeLevel } from "./knowledgeManager";
 import { useResourceStore, type ResourceKey } from "@/store/useResourceStore";
 import { logger } from "./logger";
 
@@ -14,6 +15,10 @@ export function startGameLoop() {
 
   intervalId = window.setInterval(() => {
     logger.log("=== Game Loop Start ===");
+    
+    // Process knowledge level before other updates
+    processKnowledgeLevel();
+    
     const store = useResourceStore.getState();
     
     // Store previous amounts for all resources
