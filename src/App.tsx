@@ -140,30 +140,6 @@ function App() {
       {/* Developer Dashboard - only show when devMode is true */}
       {devMode && (
         <div className="ml-8 flex flex-col gap-4">
-        <div className="p-4 border border-gray-200 rounded">
-          <h2 className="font-semibold mb-2">Developer Dashboard</h2>
-          <p>Food: {formatNumber(food.amount)}</p>
-          <p>Knowledge: {formatNumber(knowledge.amount)}</p>
-          <p>Thoughts: {formatNumber(thoughts.amount)}</p>
-          <p>Human Energy: {formatNumber(humanEnergy.amount)}</p>
-          <p>Population: {formatNumber(population.amount)}</p>
-        </div>
-        
-        <div className="p-4 border border-gray-200 rounded">
-          <h2 className="font-semibold mb-2">Card States</h2>
-          {Object.entries(useCardsStore.getState().cardStates).map(([cardId, state]) => (
-            <div key={cardId} className="mb-2">
-              <h3 className="font-medium">{cardId}</h3>
-              <pre className="text-xs">
-                {JSON.stringify(state, null, 2)}
-              </pre>
-            </div>
-          ))}
-        </div>
-
-      {/* Developer Dashboard - only show when devMode is true */}
-      {devMode && (
-        <div className="ml-8 flex flex-col gap-4">
           <div className="p-4 border border-gray-200 rounded">
             <h2 className="font-semibold mb-2">Developer Dashboard</h2>
             <p>Food: {formatNumber(food.amount)}</p>
