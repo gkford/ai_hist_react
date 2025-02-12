@@ -4,6 +4,9 @@ import { useFocusStore } from "@/store/useFocusStore";
 import { allCards } from "@/data/cards";
 import type { ResourceKey } from "@/store/useResourceStore";
 
+// Define the possible card discovery states
+type DiscoveryStatus = "unthoughtof" | "imagined" | "discovered" | "obsolete";
+
 function recalculateResourceBonuses() {
   const cardStore = useCardsStore.getState();
   const resourceStore = useResourceStore.getState();
@@ -78,15 +81,15 @@ export function processDiscoveries() {
       const newThoughtInvested = card.discovery_state.thought_invested + thoughtsToInvest;
       
       // Determine new status based on thoughts invested
-      let newStatus = card.discovery_state.current_status;
+      let newStatus: DiscoveryStatus = card.discovery_state.current_status;
       
       if (newStatus === 'unthoughtof' && 
           newThoughtInvested >= card.discovery_state.thought_to_imagine) {
-        newStatus = 'imagined' as const;
+        newStatus = 'imagined';
       } else if (newStatus === 'imagined' && 
                  newThoughtInvested >= (card.discovery_state.thought_to_imagine + 
                                       card.discovery_state.further_thought_to_discover)) {
-        newStatus = 'discovered' as const;
+        newStatus = 'discovered';
       }
 
       // Store previous status to check for transitions
