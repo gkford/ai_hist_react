@@ -49,24 +49,27 @@ export function processDiscoveries() {
   
   if (thoughtsProduced <= 0) return;
 
-  // Get the focus proportions for thoughts
-  const thoughtsFocus = focusStore.resourceProps.thoughts;
-  
-  // Calculate total focus points for normalization
-  const totalFocusPoints = thoughtsFocus.high * 3 + thoughtsFocus.low * 1;
-  
+  // First, filter eligible cards and calculate total focus points
+  const eligibleCards = Object.entries(cardStore.cardStates).filter(([_, card]) => 
+    card.discovery_state.current_status !== 'discovered'
+  );
+
+  const totalFocusPoints = eligibleCards.reduce((total, [_, card]) => {
+    const priority = card.discovery_state.focus.priority;
+    return total + (priority === 'high' ? 3 : priority === 'low' ? 1 : 0);
+  }, 0);
+
+  console.log('Thoughts produced this tick:', thoughtsProduced);
+  console.log('Total focus points:', totalFocusPoints);
+  console.log('Eligible cards:', eligibleCards.length);
+
   if (totalFocusPoints <= 0) return;
 
-  // Process each card's discovery state
-  Object.entries(cardStore.cardStates).forEach(([cardId, card]) => {
-    // Skip if card is already discovered
-    if (card.discovery_state.current_status === 'discovered') return;
-
-    // Get this card's focus priority
+  // Process each eligible card
+  eligibleCards.forEach(([cardId, card]) => {
     const cardFocus = card.discovery_state.focus.priority;
-    
-    // Calculate the proportion of thoughts this card should receive
     let thoughtsProportion = 0;
+    
     if (cardFocus === 'high') {
       thoughtsProportion = 3 / totalFocusPoints;
     } else if (cardFocus === 'low') {
@@ -94,6 +97,13 @@ export function processDiscoveries() {
 
       // Store previous status to check for transitions
       const previousStatus = card.discovery_state.current_status;
+
+      console.log('Investing thoughts in card:', {
+        cardId,
+        thoughtsToInvest,
+        currentTotal: card.discovery_state.thought_invested,
+        newTotal: newThoughtInvested
+      });
 
       // Update the card state
       cardStore.updateCardState(cardId, {
