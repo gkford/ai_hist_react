@@ -1,4 +1,6 @@
 import type { ResourceKey } from "@/store/useResourceStore";
+import { DevControls } from "@/components/ui/DevControls"
+import { useDevStore } from "@/store/useDevStore"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
@@ -58,6 +60,7 @@ function initializeCards() {
 }
 
 function App() {
+  const { devMode } = useDevStore()
   const formatNumber = (n: number): string => {
     const trimmed = parseFloat(n.toFixed(3));
     return trimmed.toString();
@@ -111,6 +114,8 @@ function App() {
 
   return (
     <div className="min-h-screen p-4 flex flex-col">
+      <DevControls />
+      
       {/* Resources Dashboard at the top */}
       <ResourceDashboard className="mb-4" />
 
@@ -132,8 +137,9 @@ function App() {
         ))}
       </div>
 
-      {/* Developer Dashboard - moved to the right */}
-      <div className="ml-8 flex flex-col gap-4">
+      {/* Developer Dashboard - only show when devMode is true */}
+      {devMode && (
+        <div className="ml-8 flex flex-col gap-4">
         <div className="p-4 border border-gray-200 rounded">
           <h2 className="font-semibold mb-2">Developer Dashboard</h2>
           <p>Food: {formatNumber(food.amount)}</p>
