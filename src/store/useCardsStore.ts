@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { useResourceStore } from "./useResourceStore";
 import type { ResourceKey } from "./useResourceStore";
 import { allCards } from "@/data/cards";
-import type { CardDefinition, DiscoveryStatus, rtConfig, FocusConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
+import type { CardDefinition, DiscoveryStatus, rtConfig, FocusConfig, DiscoveryStats, OngoingEffects } from "@/data/cards";
 
 // State extensions of the base configs
 export interface FocusState extends FocusConfig {
@@ -38,11 +38,12 @@ interface CardState extends Omit<CardDefinition, 'rts' | 'ongoingEffects' | 'onC
 interface CardsStore {
   cardStates: Record<string, CardState>;
   createCard: (id: string, initialState?: { 
-    discovery_state?: Partial<DiscoveryState> 
+    discovery_state?: Partial<DiscoveryState>,
+    hasProcessedOnCreate?: boolean
   }) => void;
   updateCardState: (id: string, partial: Partial<CardState>) => void;
   updateRTState: (cardId: string, rtId: string, partial: Partial<RTState>) => void;
-  updateEffectState: (cardId: string, effectId: string, partial: Partial<EffectState>) => void;
+  updateEffectState: (cardId: string, partial: Partial<OngoingEffectsState>) => void;
 }
 
 export const useCardsStore = create<CardsStore>((set) => ({

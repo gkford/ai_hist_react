@@ -16,6 +16,7 @@ interface ResourceStore {
   updateResource: (key: ResourceKey, delta: number) => void;
   setResourceUsage: (key: ResourceKey, usage: number) => void;
   trackProducedAmount: (key: ResourceKey) => void; // New function to snapshot produced amount
+  addResource: (key: ResourceKey, amount: number) => void;
 }
 
 export const useResourceStore = create<ResourceStore>((set) => ({
@@ -53,6 +54,16 @@ export const useResourceStore = create<ResourceStore>((set) => ({
         [key]: {
           ...state.resources[key],
           amountProduced: state.resources[key].amount
+        }
+      }
+    })),
+  addResource: (key: ResourceKey, amount: number) =>
+    set((state) => ({
+      resources: {
+        ...state.resources,
+        [key]: {
+          ...state.resources[key],
+          amount: state.resources[key].amount + amount
         }
       }
     }))
