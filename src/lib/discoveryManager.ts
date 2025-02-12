@@ -82,11 +82,11 @@ export function processDiscoveries() {
       
       if (newStatus === 'unthoughtof' && 
           newThoughtInvested >= card.discovery_state.thought_to_imagine) {
-        newStatus = 'imagined';
+        newStatus = 'imagined' as const;
       } else if (newStatus === 'imagined' && 
                  newThoughtInvested >= (card.discovery_state.thought_to_imagine + 
                                       card.discovery_state.further_thought_to_discover)) {
-        newStatus = 'discovered';
+        newStatus = 'discovered' as const;
       }
 
       // Store previous status to check for transitions
