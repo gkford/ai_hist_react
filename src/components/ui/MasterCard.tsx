@@ -50,10 +50,13 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
               <p>{isUnthoughtof ? obscureText(cardDef.description) : cardDef.description}</p>
             </CardInfo>
           )}
-          <DiscoveryViewer 
-            discoveryState={cardState.discovery_state}
-            cardId={id}
-          />
+          {(cardState.discovery_state.current_status === 'unthoughtof' || 
+            cardState.discovery_state.current_status === 'imagined') && (
+            <DiscoveryViewer 
+              discoveryState={cardState.discovery_state}
+              cardId={id}
+            />
+          )}
         </div>
         {cardState.discovery_state.current_status === 'discovered' && 
           Object.entries(cardState.rts).map(([rtId, rtState]) => (
