@@ -7,6 +7,7 @@ import { CardImage } from "@/components/ui/CardImage";
 import { CardInfo } from "@/components/ui/CardInfo";
 import { RTViewer } from "@/components/ui/RTViewer";
 import { FocusSelector } from "@/components/ui/FocusSelector";
+import { DiscoveryViewer } from "@/components/ui/DiscoveryViewer";
 
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -49,24 +50,10 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
               <p>{isUnthoughtof ? obscureText(cardDef.description) : cardDef.description}</p>
             </CardInfo>
           )}
-          {(cardState.discovery_state.current_status === 'unthoughtof' || 
-            cardState.discovery_state.current_status === 'imagined') && (
-            <FocusSelector 
-              focus={cardState.discovery_state.focus}
-              type="discovery"
-              onFocusChange={(newFocus) => {
-                useCardsStore.getState().updateCardState(id, {
-                  discovery_state: {
-                    ...cardState.discovery_state,
-                    focus: {
-                      ...cardState.discovery_state.focus,
-                      ...newFocus
-                    }
-                  }
-                });
-              }}
-            />
-          )}
+          <DiscoveryViewer 
+            discoveryState={cardState.discovery_state}
+            cardId={id}
+          />
         </div>
         {cardState.discovery_state.current_status === 'discovered' && 
           Object.entries(cardState.rts).map(([rtId, rtState]) => (
