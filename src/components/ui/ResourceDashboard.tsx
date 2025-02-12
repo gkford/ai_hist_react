@@ -11,6 +11,7 @@ interface ResourceDisplayProps {
 
 function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
+  const resource = useResource(resourceKey)
 
   // Calculate total multiplier for this resource from card effects
   const totalMultiplier = Object.values(useCardsStore.getState().cardStates)
@@ -21,10 +22,6 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
     )
     .reduce((total, effect) => total * (effect.multiplier || 1), 1)
 
-  // TODO: Focus levels are not yet implemented. 
-  // When implemented, focus.prop and focus.priority will further modify the impact of multipliers
-
-  // Format multiplier to 2 decimal places
   const formattedMultiplier = totalMultiplier.toFixed(2)
 
   useEffect(() => {
@@ -40,6 +37,19 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
       {resourceKey !== 'population' && (
         <div className="text-xs text-gray-600 border-t pt-1">
           <div>bonus: {formattedMultiplier}x</div>
+          {resource.isRate && (
+            <div className="mt-1">
+              <div className="w-full h-1 bg-gray-200 rounded">
+                <div 
+                  className="h-full bg-blue-500 rounded transition-all duration-300" 
+                  style={{ width: `${(resource.usage || 0) * 100}%` }}
+                />
+              </div>
+              <div className="text-xs mt-1">
+                Usage: {Math.round((resource.usage || 0) * 100)}%
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
