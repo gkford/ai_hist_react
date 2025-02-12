@@ -47,6 +47,8 @@ export interface CardDefinition {
   ongoingEffects?: OngoingEffects
   OnDiscoveryEffects?: OnDiscoveryEffects
   discovery_stats?: DiscoveryStats
+  knowledge_level?: number
+  replaces?: string  // ID of the card this replaces
 }
 
 export const allCards: CardDefinition[] = [
@@ -57,6 +59,7 @@ export const allCards: CardDefinition[] = [
     icon: '👥',
     imageSrc: '/card_images/hominids.png',
     description: 'Your early human population',
+    knowledge_level: 1,
     rts: [
       {
         id: 'eat_food',
@@ -78,6 +81,8 @@ export const allCards: CardDefinition[] = [
     type: 'people',
     icon: '👥',
     description: 'More advanced human population',
+    knowledge_level: 2,
+    replaces: 'hominids',
     rts: [
       {
         id: 'eat_food',
@@ -99,6 +104,8 @@ export const allCards: CardDefinition[] = [
     type: 'people',
     icon: '👥',
     description: 'Language-capable human population',
+    knowledge_level: 3,
+    replaces: 'grunters',
     rts: [
       {
         id: 'eat_food',
@@ -120,6 +127,8 @@ export const allCards: CardDefinition[] = [
     type: 'people',
     icon: '👥',
     description: 'Culture-bearing human population',
+    knowledge_level: 4,
+    replaces: 'talkers',
     rts: [
       {
         id: 'eat_food',
@@ -142,6 +151,7 @@ export const allCards: CardDefinition[] = [
     icon: '🧠',
     imageSrc: '/card_images/think.webp',
     description: 'Basic thinking',
+    knowledge_level: 1,
     rts: [
       {
         id: 'think',
@@ -163,6 +173,8 @@ export const allCards: CardDefinition[] = [
     type: 'computation',
     icon: '🧠',
     description: 'Advanced thinking',
+    knowledge_level: 2,
+    replaces: 'think_l1',
     rts: [
       {
         id: 'think',
@@ -184,6 +196,8 @@ export const allCards: CardDefinition[] = [
     type: 'computation',
     icon: '🧠',
     description: 'Complex thinking',
+    knowledge_level: 3,
+    replaces: 'think_l2',
     rts: [
       {
         id: 'think',
@@ -205,6 +219,8 @@ export const allCards: CardDefinition[] = [
     type: 'computation',
     icon: '🧠',
     description: 'Abstract thinking',
+    knowledge_level: 4,
+    replaces: 'think_l3',
     rts: [
       {
         id: 'think',
