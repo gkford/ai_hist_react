@@ -313,6 +313,7 @@ export const allCards: CardDefinition[] = [
       focus: {
         resource: 'thoughts',
       },
+      discovery_unlocks: ['hunt'],
     },
     ongoingEffects: {
       resourceModifiers: {
