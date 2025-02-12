@@ -28,7 +28,7 @@ export function startGameLoop() {
         store.setResourceUsage(resourceKey as ResourceKey, usage);
       } else {
         // If nothing was produced, set usage to null
-        store.setResourceUsage(resourceKey as ResourceKey, null);
+        store.setResourceUsage(resourceKey as ResourceKey, 0);
       }
       // Reset rate resource to 0
       store.updateResource(resourceKey as ResourceKey, -resource.amount);
