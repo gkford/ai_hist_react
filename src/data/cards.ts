@@ -484,4 +484,258 @@ export const allCards: CardDefinition[] = [
       },
     },
   },
+  // Tier 3
+  {
+    id: 'cooking',
+    title: 'Cooking',
+    type: 'production',
+    icon: '🍖',
+    imageSrc: '/card_images/cooking.png',
+    description: 'Process food with fire for better nutrition',
+    discovery_stats: {
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    rts: [
+      {
+        id: 'cook_food',
+        inbound_cost: {
+          food: 1,
+          humanEnergy: 0.5,
+        },
+        outbound_gain: {
+          food: 1.5, // Cooking makes food more nutritious
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 25,
+      },
+    },
+  },
+  {
+    id: 'early_language',
+    title: 'Early Language',
+    type: 'science',
+    icon: '💭',
+    imageSrc: '/card_images/earlyLanguage.png',
+    description: 'Basic verbal communication',
+    discovery_stats: {
+      thought_to_imagine: 12,
+      further_thought_to_discover: 12,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: ['story_telling', 'tally_marks'],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts: 1.2,
+        humanEnergy: 1.1,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 30,
+      },
+    },
+  },
+  {
+    id: 'spear',
+    title: 'Spear',
+    type: 'science',
+    icon: '🗡️',
+    imageSrc: '/card_images/spear.png',
+    description: 'Long-range hunting weapon',
+    discovery_stats: {
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: ['complex_hunting'],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        humanEnergy: 1.2,
+      },
+      focus: {
+        resource: 'humanEnergy',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 25,
+      },
+    },
+  },
+  // Tier 4
+  {
+    id: 'story_telling',
+    title: 'Story Telling',
+    type: 'science',
+    icon: '📖',
+    imageSrc: '/card_images/storyTelling.png',
+    description: 'Share knowledge through narratives',
+    discovery_stats: {
+      thought_to_imagine: 15,
+      further_thought_to_discover: 15,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: ['cave_painting', 'complex_language'],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts: 1.3,
+        knowledge: 1.2,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 40,
+      },
+    },
+  },
+  {
+    id: 'complex_hunting',
+    title: 'Complex Hunting Techniques',
+    type: 'production',
+    icon: '🏹',
+    imageSrc: '/card_images/complexHunting.png',
+    description: 'Advanced group hunting strategies',
+    discovery_stats: {
+      thought_to_imagine: 15,
+      further_thought_to_discover: 15,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    rts: [
+      {
+        id: 'complex_hunt',
+        inbound_cost: {
+          humanEnergy: 2,
+        },
+        outbound_gain: {
+          food: 3,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 35,
+      },
+    },
+  },
+  {
+    id: 'tally_marks',
+    title: 'Tally Marks',
+    type: 'science',
+    icon: '🔢',
+    imageSrc: '/card_images/tallyMarks.png',
+    description: 'Basic counting system',
+    discovery_stats: {
+      thought_to_imagine: 15,
+      further_thought_to_discover: 15,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts: 1.2,
+        knowledge: 1.15,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 35,
+      },
+    },
+  },
+  // Tier 5
+  {
+    id: 'cave_painting',
+    title: 'Cave Painting',
+    type: 'science',
+    icon: '🎨',
+    imageSrc: '/card_images/cavePainting.png',
+    description: 'Visual storytelling and record keeping',
+    discovery_stats: {
+      thought_to_imagine: 20,
+      further_thought_to_discover: 20,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts: 1.3,
+        knowledge: 1.25,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 50,
+      },
+    },
+  },
+  {
+    id: 'complex_language',
+    title: 'Complex Language',
+    type: 'science',
+    icon: '🗣️',
+    imageSrc: '/card_images/complexLanguage.png',
+    description: 'Sophisticated verbal communication with abstract concepts',
+    discovery_stats: {
+      thought_to_imagine: 25,
+      further_thought_to_discover: 25,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: [],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts: 1.4,
+        knowledge: 1.3,
+        humanEnergy: 1.2,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 60,
+      },
+    },
+  },
 ]
