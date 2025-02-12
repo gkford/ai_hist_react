@@ -1,14 +1,14 @@
 import * as React from "react"
-import { useRTStore } from "@/store/useRTStore"
+import { useCardsStore } from "@/store/useCardsStore"
 
 interface CardImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   imageSrc?: string
-  rtId?: string
+  cardId: string
 }
 
-export function CardImage({ imageSrc, alt, rtId, ...props }: CardImageProps) {
-  const rtState = rtId ? useRTStore(state => state.states[rtId]) : null;
-  const isUnthoughtof = rtState?.status === 'unthoughtof';
+export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
+  const cardState = useCardsStore(state => state.cardStates[cardId]);
+  const isUnthoughtof = cardState?.discovery_state.current_status === 'unthoughtof';
   return (
     <div className="relative w-[400px] h-[133px] overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
