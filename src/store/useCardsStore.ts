@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { useResourceStore } from './useResourceStore'
 import type { ResourceKey } from './useResourceStore'
 import { allCards } from '@/data/cards'
 import type {
@@ -106,18 +105,29 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 },
               }
             : undefined,
-          discovery_state: {
-            thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
-            further_thought_to_discover:
-              cardDef.discovery_stats.further_thought_to_discover,
-            current_status: 'unthoughtof',
-            thought_invested: 0,
-            focus: {
-              resource: cardDef.discovery_stats.focus.resource,
-              priority: 'none',
-            },
-            ...(initialState?.discovery_state || {}), // This will override only the provided values
-          },
+          discovery_state: cardDef.discovery_stats 
+            ? {
+                thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
+                further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
+                current_status: 'unthoughtof',
+                thought_invested: 0,
+                focus: {
+                  resource: cardDef.discovery_stats.focus.resource,
+                  priority: 'none',
+                },
+                ...(initialState?.discovery_state || {}),
+              }
+            : {
+                thought_to_imagine: 0,
+                further_thought_to_discover: 0,
+                current_status: 'unthoughtof',
+                thought_invested: 0,
+                focus: {
+                  resource: 'thoughts',
+                  priority: 'none',
+                },
+                ...(initialState?.discovery_state || {}),
+              },
         },
       },
     }))
