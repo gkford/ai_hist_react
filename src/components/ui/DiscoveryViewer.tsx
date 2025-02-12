@@ -36,9 +36,9 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
   const getStatusText = () => {
     switch (discoveryState.current_status) {
       case 'unthoughtof':
-        return 'Thinking of possibility...';
+        return 'Imagine what could be ...';
       case 'imagined':
-        return 'Working towards discovery...';
+        return 'Research ...';
       case 'discovered':
         return 'Discovered!';
       default:

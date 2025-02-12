@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import type { ResourceKey } from './useResourceStore';
 
-type Priority = 'none' | 'low' | 'high';
-
 interface FocusResourceProps {
   high: number;
   low: number;
