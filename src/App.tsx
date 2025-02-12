@@ -1,4 +1,25 @@
 import type { ResourceKey } from "@/store/useResourceStore";
+import type { CardType } from "@/data/cards";
+import type { DiscoveryStatus } from "@/data/cards";
+import { allCards } from "@/data/cards";
+
+function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
+  if (discoveryStatus === 'unthoughtof' || discoveryStatus === 'imagined') {
+    return 4;
+  }
+  
+  switch (type) {
+    case 'people':
+    case 'computation':
+      return 1;
+    case 'production':
+      return 2;
+    case 'science':
+      return 3;
+    default:
+      return 4;
+  }
+}
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
@@ -99,7 +120,10 @@ function App() {
             <h2 className="font-semibold text-lg">Column {columnNumber}</h2>
             {initialized && 
               Object.values(useCardsStore.getState().cardStates)
-                .filter(cardState => cardState.column === columnNumber)
+                .filter(cardState => {
+                  const cardDef = allCards.find(c => c.id === cardState.id);
+                  return cardDef && getCardColumn(cardDef.type, cardState.discovery_state.current_status) === columnNumber;
+                })
                 .map((cardState) => (
                   <MasterCard key={cardState.id} id={cardState.id} />
                 ))

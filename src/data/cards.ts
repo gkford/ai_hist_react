@@ -34,10 +34,12 @@ export interface OnDiscoveryEffects {
   resourceBonuses: Partial<Record<ResourceKey, number>> // Resource keys mapped to their one-time bonus amounts
 }
 
+export type CardType = 'people' | 'computation' | 'science' | 'production';
+
 export interface CardDefinition {
   id: string
   title: string
-  column: number
+  type: CardType
   icon?: string
   imageSrc?: string
   description?: string
@@ -51,7 +53,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'hominids',
     title: 'Hominids (L1)',
-    column: 1,
+    type: 'people',
     icon: '👥',
     imageSrc: '/card_images/hominids.png',
     description: 'Your early human population',
@@ -73,7 +75,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'grunters',
     title: 'Grunters (L2)',
-    column: 1,
+    type: 'people',
     icon: '👥',
     description: 'More advanced human population',
     rts: [
@@ -94,7 +96,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'talkers',
     title: 'Talkers (L3)',
-    column: 1,
+    type: 'people',
     icon: '👥',
     description: 'Language-capable human population',
     rts: [
@@ -115,7 +117,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'storytellers',
     title: 'Storytellers (L4)',
-    column: 1,
+    type: 'people',
     icon: '👥',
     description: 'Culture-bearing human population',
     rts: [
@@ -136,7 +138,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'think_l1',
     title: 'Think (L1)',
-    column: 1,
+    type: 'computation',
     icon: '🧠',
     imageSrc: '/card_images/think.webp',
     description: 'Basic thinking',
@@ -158,7 +160,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'think_l2',
     title: 'Think (L2)',
-    column: 1,
+    type: 'computation',
     icon: '🧠',
     description: 'Advanced thinking',
     rts: [
@@ -179,7 +181,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'think_l3',
     title: 'Think (L3)',
-    column: 1,
+    type: 'computation',
     icon: '🧠',
     description: 'Complex thinking',
     rts: [
@@ -200,7 +202,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'think_l4',
     title: 'Think (L4)',
-    column: 1,
+    type: 'computation',
     icon: '🧠',
     description: 'Abstract thinking',
     rts: [
@@ -221,7 +223,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'gather_food',
     title: 'Gather Food',
-    column: 2,
+    type: 'production',
     icon: '⚙️',
     imageSrc: '/card_images/gatherFood.png',
     description: 'Gather food from the environment',
@@ -250,7 +252,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'hunt',
     title: 'Hunt',
-    column: 2,
+    type: 'production',
     icon: '🦌',
     imageSrc: '/card_images/hunt.webp',
     description: 'Hunt animals for food',
@@ -284,7 +286,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'early_stone_tools',
     title: 'Early Stone Tools',
-    column: 2,
+    type: 'science',
     icon: '🪨',
     imageSrc: '/card_images/earlyStoneTools.png',
     description: 'Basic tools that improve work efficiency',
