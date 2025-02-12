@@ -56,11 +56,6 @@ export function startGameLoop() {
     });
     console.log("After bonuses - thoughts:", store.resources.thoughts.amount);
 
-    // Get all rate-type resources
-    const rateResources = Object.entries(store.resources)
-      .filter(([_, resource]) => resource.isRate)
-      .map(([key]) => key as ResourceKey);
-    
     // Track final produced amounts for rate resources
     rateResources.forEach(resourceKey => {
       const resource = store.resources[resourceKey];
