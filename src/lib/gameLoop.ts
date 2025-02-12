@@ -10,20 +10,45 @@ export function startGameLoop() {
   intervalId = window.setInterval(() => {
     const store = useResourceStore.getState();
     
-    // First process transformations which generate resources
+    // Store previous amounts for all resources
+    Object.keys(store.resources).forEach(key => {
+      const resourceKey = key as ResourceKey;
+      const resource = store.resources[resourceKey];
+      store.updateResource(resourceKey, 0, { previousAmount: resource.amount });
+    });
+
+    // Process transformations which generate resources
     processTransformations();
     
     // Process discoveries
     processDiscoveries();
     
+    // Calculate raw production and apply bonuses for all resources
+    Object.entries(store.resources).forEach(([key, resource]) => {
+      const resourceKey = key as ResourceKey;
+      const rawProduction = resource.amount - resource.previousAmount;
+      
+      // Store raw production amount
+      store.updateResource(resourceKey, 0, { rawProduction });
+      
+      // Apply bonus to production if there was any
+      if (rawProduction > 0) {
+        const bonusedProduction = rawProduction * resource.bonus;
+        const additionalFromBonus = bonusedProduction - rawProduction;
+        store.updateResource(resourceKey, additionalFromBonus);
+      }
+    });
+
     // Get all rate-type resources
     const rateResources = Object.entries(store.resources)
       .filter(([_, resource]) => resource.isRate)
       .map(([key]) => key as ResourceKey);
     
-    // Track produced amounts for all rate resources
+    // Track final produced amounts for rate resources
     rateResources.forEach(resourceKey => {
-      store.trackProducedAmount(resourceKey);
+      const resource = store.resources[resourceKey];
+      const finalProduction = resource.amount - resource.previousAmount;
+      store.updateResource(resourceKey, 0, { amountProduced: finalProduction });
     });
     
     // Process payments which consume resources

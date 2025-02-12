@@ -8,6 +8,8 @@ interface Resource {
   key: ResourceKey;
   isRate: boolean;
   amountProduced?: number; // Track how much was produced this tick
+  previousAmount: number;  // Track previous round's amount
+  rawProduction: number;   // Track raw production before bonuses
   usage: number | null; // can be null when no production occurred
   bonus: number;
 }
@@ -23,19 +25,20 @@ interface ResourceStore {
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: 30, icon: "🍖", key: "food", isRate: false, usage: 0, bonus: 1 },
-    knowledge: { amount: 0, icon: "📚", key: "knowledge", isRate: false, usage: 0, bonus: 1 },
-    thoughts: { amount: 0, icon: "💭", key: "thoughts", isRate: true, usage: 0, bonus: 1 },
-    humanEnergy: { amount: 0, icon: "⚡", key: "humanEnergy", isRate: true, usage: 0, bonus: 1 },
-    population: { amount: 10, icon: "👥", key: "population", isRate: false, usage: 0, bonus: 1 },
+    food: { amount: 30, icon: "🍖", key: "food", isRate: false, usage: 0, bonus: 1, previousAmount: 30, rawProduction: 0 },
+    knowledge: { amount: 0, icon: "📚", key: "knowledge", isRate: false, usage: 0, bonus: 1, previousAmount: 0, rawProduction: 0 },
+    thoughts: { amount: 0, icon: "💭", key: "thoughts", isRate: true, usage: 0, bonus: 1, previousAmount: 0, rawProduction: 0 },
+    humanEnergy: { amount: 0, icon: "⚡", key: "humanEnergy", isRate: true, usage: 0, bonus: 1, previousAmount: 0, rawProduction: 0 },
+    population: { amount: 10, icon: "👥", key: "population", isRate: false, usage: 0, bonus: 1, previousAmount: 10, rawProduction: 0 },
   },
-  updateResource: (key: ResourceKey, delta: number) =>
+  updateResource: (key: ResourceKey, delta: number, additionalUpdates = {}) =>
     set((state) => ({
       resources: {
         ...state.resources,
         [key]: {
           ...state.resources[key],
-          amount: Math.max(0, state.resources[key].amount + delta)
+          amount: Math.max(0, state.resources[key].amount + delta),
+          ...additionalUpdates
         }
       }
     })),
