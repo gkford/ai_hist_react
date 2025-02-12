@@ -1,5 +1,5 @@
 import { processRTPayments, processTransformations } from "./rtManager";
-import { useResourceStore } from "@/store/useResourceStore";
+import { useResourceStore, type ResourceKey } from "@/store/useResourceStore";
 
 let intervalId: number | null = null;
 
