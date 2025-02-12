@@ -1,6 +1,7 @@
 import { useResourceStore } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
 import { useFocusStore } from "@/store/useFocusStore";
+import { allCards } from "@/data/cards";
 
 export function processDiscoveries() {
   const resourceStore = useResourceStore.getState();
@@ -55,6 +56,9 @@ export function processDiscoveries() {
         newStatus = 'discovered';
       }
 
+      // Store previous status to check for transitions
+      const previousStatus = card.discovery_state.current_status;
+
       // Update the card state
       cardStore.updateCardState(cardId, {
         discovery_state: {
@@ -63,6 +67,18 @@ export function processDiscoveries() {
           thought_invested: newThoughtInvested
         }
       });
+
+      // Check if we just discovered it and apply one-time effects
+      if (previousStatus === 'imagined' && newStatus === 'discovered') {
+        const cardDef = allCards.find(c => c.id === cardId);
+        if (cardDef?.OnDiscoveryEffects?.resourceBonuses) {
+          Object.entries(cardDef.OnDiscoveryEffects.resourceBonuses).forEach(
+            ([resource, amount]) => {
+              resourceStore.addResource(resource as ResourceKey, amount);
+            }
+          );
+        }
+      }
     }
   });
 }
