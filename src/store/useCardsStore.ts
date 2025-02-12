@@ -20,7 +20,7 @@ interface EffectState extends Omit<EffectConfig, 'focus'> {
   focus: FocusState;
 }
 
-interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
+export interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
   current_status: DiscoveryStatus;
   thought_invested: number;
   focus: FocusState;
