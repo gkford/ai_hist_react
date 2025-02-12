@@ -157,6 +157,11 @@ export const allCards: CardDefinition[] = [
           resource: 'humanEnergy'
         }
       }
-    ]
+    ],
+    onCreateEffects: {
+      resourceBonuses: {
+        knowledge: 5
+      }
+    }
   }
 ];
