@@ -1,4 +1,5 @@
 import { processRTPayments, processTransformations } from "./rtManager";
+import { processDiscoveries } from "./discoveryManager";
 import { useResourceStore, type ResourceKey } from "@/store/useResourceStore";
 
 let intervalId: number | null = null;
@@ -11,6 +12,9 @@ export function startGameLoop() {
     
     // First process transformations which generate resources
     processTransformations();
+    
+    // Process discoveries
+    processDiscoveries();
     
     // Track how much was produced
     store.trackProducedAmount('thoughts');
