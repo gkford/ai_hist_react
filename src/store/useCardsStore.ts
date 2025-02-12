@@ -4,12 +4,13 @@ import type { ResourceKey } from './useResourceStore'
 import { allCards } from '@/data/cards'
 import type {
   CardDefinition,
-  DiscoveryStatus,
   rtConfig,
   FocusConfig,
   DiscoveryStats,
   OngoingEffects,
 } from '@/data/cards'
+
+export type DiscoveryStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete'
 
 // State extensions of the base configs
 export interface FocusState extends FocusConfig {
