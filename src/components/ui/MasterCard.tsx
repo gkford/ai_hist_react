@@ -7,7 +7,7 @@ import { CardImage } from '@/components/ui/CardImage'
 import { CardInfo } from '@/components/ui/CardInfo'
 import { RTViewer } from '@/components/ui/RTViewer'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
-import { OnDiscoveryEffectsViewer } from '@/components/ui/OnDiscoveryEffectsViewer'
+import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string // This is now the only required prop
