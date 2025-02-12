@@ -23,6 +23,18 @@ export function startGameLoop() {
     processTransformations();
     console.log("After transformations - thoughts:", store.resources.thoughts.amount);
 
+    // Get rate resources for tracking production
+    const rateResources = Object.entries(store.resources)
+      .filter(([_, resource]) => resource.isRate)
+      .map(([key]) => key as ResourceKey);
+
+    // Track production amounts for rate resources
+    rateResources.forEach(resourceKey => {
+      const resource = store.resources[resourceKey];
+      const production = resource.amount - resource.previousAmount;
+      store.updateResource(resourceKey, 0, { amountProduced: production });
+    });
+
     // Process discoveries
     processDiscoveries();
     console.log("After discoveries - thoughts:", store.resources.thoughts.amount);
