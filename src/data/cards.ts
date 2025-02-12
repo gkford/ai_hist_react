@@ -143,8 +143,8 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/hunt.webp',
     description: 'Hunt animals for food',
     discovery_stats: {
-      thought_to_imagine: 5,
-      further_thought_to_discover: 5,
+      thought_to_imagine: 2,
+      further_thought_to_discover: 2,
       focus: {
         resource: 'thoughts',
       },
@@ -166,6 +166,29 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       resourceBonuses: {
         knowledge: 5,
+      },
+    },
+  },
+  {
+    id: 'early_stone_tools',
+    title: 'Early Stone Tools',
+    column: 2,
+    icon: '🪨',
+    imageSrc: '/card_images/earlyStoneTools.png',
+    description: 'Basic tools that improve work efficiency',
+    discovery_stats: {
+      thought_to_imagine: 2,
+      further_thought_to_discover: 2,
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        humanEnergy: 1.1,
+      },
+      focus: {
+        resource: 'humanEnergy',
       },
     },
   },

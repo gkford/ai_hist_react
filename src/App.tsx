@@ -31,6 +31,9 @@ function initializeCards() {
 
   // Add hunt card without specifying discovery state
   cardStore.createCard('hunt');
+  
+  // Add early stone tools card
+  cardStore.createCard('early_stone_tools');
 }
 
 function App() {
