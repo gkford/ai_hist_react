@@ -20,11 +20,13 @@ export interface rtConfig {
   focus: FocusConfig;
 }
 
-export interface EffectConfig {
-  id: string;
-  resource: ResourceKey;
-  multiplier: number;
+export interface OngoingEffects {
+  resourceModifiers: Partial<Record<ResourceKey, number>>; // Resource keys mapped to their multipliers
   focus: FocusConfig;
+}
+
+export interface OnCreateEffects {
+  resourceBonuses: Partial<Record<ResourceKey, number>>; // Resource keys mapped to their one-time bonus amounts
 }
 
 export interface CardDefinition {
@@ -35,7 +37,8 @@ export interface CardDefinition {
   imageSrc?: string;
   description?: string;
   rts?: rtConfig[];
-  effects?: EffectConfig[];
+  ongoingEffects?: OngoingEffects;
+  onCreateEffects?: OnCreateEffects;
   discovery_stats: DiscoveryStats;
 }
 

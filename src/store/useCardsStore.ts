@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useResourceStore } from "./useResourceStore";
 import type { ResourceKey } from "./useResourceStore";
 import { allCards } from "@/data/cards";
 import type { CardDefinition, DiscoveryStatus, rtConfig, FocusConfig, EffectConfig, DiscoveryStats } from "@/data/cards";
@@ -73,19 +74,25 @@ export const useCardsStore = create<CardsStore>((set) => ({
               }
             ])
           ),
-          effects: Object.fromEntries(
-            (cardDef.effects || []).map((effect: EffectConfig) => [
-              effect.id,
-              {
-                ...effect,
-                active: false,
-                focus: {
-                  resource: effect.focus.resource,
-                  priority: 'none'
-                }
+          ongoingEffects: cardDef.ongoingEffects ? {
+            resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
+            active: false,
+            focus: {
+              resource: cardDef.ongoingEffects.focus.resource,
+              priority: 'none'
+            }
+          } : undefined,
+          hasProcessedOnCreate: false,
+          // Process onCreate effects if they exist
+          ...(cardDef.onCreateEffects && !initialState?.hasProcessedOnCreate ? (() => {
+            const resources = useResourceStore.getState();
+            Object.entries(cardDef.onCreateEffects.resourceBonuses).forEach(([resource, amount]) => {
+              if (amount !== undefined) {
+                resources.addResource(resource as ResourceKey, amount);
               }
-            ])
-          ),
+            });
+            return {};
+          })() : {}),
           discovery_state: {
             thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
             further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
@@ -130,19 +137,16 @@ export const useCardsStore = create<CardsStore>((set) => ({
       }
     })),
 
-  updateEffectState: (cardId, effectId, partial) =>
+  updateEffectState: (cardId, partial: Partial<OngoingEffectsState>) =>
     set((state) => ({
       cardStates: {
         ...state.cardStates,
         [cardId]: {
           ...state.cardStates[cardId],
-          effects: {
-            ...state.cardStates[cardId].effects,
-            [effectId]: {
-              ...state.cardStates[cardId].effects[effectId],
-              ...partial
-            }
-          }
+          ongoingEffects: state.cardStates[cardId].ongoingEffects ? {
+            ...state.cardStates[cardId].ongoingEffects,
+            ...partial
+          } : undefined
         }
       }
     }))
