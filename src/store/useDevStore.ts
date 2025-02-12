@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { setVerboseLogging } from '@/lib/gameLoop'
 
 interface DevStore {
   devMode: boolean

@@ -1,4 +1,4 @@
-import { useDevStore, setVerboseLogging } from "@/store/useDevStore"
+import { useDevStore } from "@/store/useDevStore"
 import { useResourceStore, type ResourceKey } from "@/store/useResourceStore"
 import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
 import { Button } from "./button"
