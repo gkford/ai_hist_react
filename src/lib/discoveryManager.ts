@@ -2,6 +2,39 @@ import { useResourceStore } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
 import { useFocusStore } from "@/store/useFocusStore";
 import { allCards } from "@/data/cards";
+import type { ResourceKey } from "@/store/useResourceStore";
+
+function recalculateResourceBonuses() {
+  const cardStore = useCardsStore.getState();
+  const resourceStore = useResourceStore.getState();
+  
+  // Start with base multiplier of 1 for each resource
+  const bonuses: Record<ResourceKey, number> = {
+    food: 1,
+    knowledge: 1,
+    thoughts: 1,
+    humanEnergy: 1,
+    population: 1
+  };
+
+  // Go through all discovered cards with ongoing effects
+  Object.values(cardStore.cardStates).forEach(card => {
+    if (card.discovery_state.current_status === 'discovered' && 
+        card.ongoingEffects?.active && 
+        card.ongoingEffects.resourceModifiers) {
+      
+      // Multiply the current bonuses by the card's modifiers
+      Object.entries(card.ongoingEffects.resourceModifiers).forEach(([resource, modifier]) => {
+        bonuses[resource as ResourceKey] *= modifier;
+      });
+    }
+  });
+
+  // Apply the calculated bonuses to each resource
+  Object.entries(bonuses).forEach(([resource, bonus]) => {
+    resourceStore.setResourceBonus(resource as ResourceKey, bonus);
+  });
+}
 
 export function processDiscoveries() {
   const resourceStore = useResourceStore.getState();
@@ -78,6 +111,16 @@ export function processDiscoveries() {
             }
           );
         }
+
+        // If the card has ongoing effects, activate them
+        if (cardDef?.ongoingEffects) {
+          cardStore.updateEffectState(cardId, {
+            active: true
+          });
+        }
+        
+        // Recalculate all resource bonuses
+        recalculateResourceBonuses();
       }
     }
   });
