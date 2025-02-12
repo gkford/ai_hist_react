@@ -1,10 +1,12 @@
 import { useDevStore } from "@/store/useDevStore"
 import { useResourceStore, type ResourceKey } from "@/store/useResourceStore"
+import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
 import { Button } from "./button"
 
 export function DevControls() {
   const { devMode, toggleDevMode } = useDevStore()
   const resourceStore = useResourceStore()
+  const { level: knowledgeLevel, thresholds } = useKnowledgeLevelStore()
 
   const handleResourceChange = (key: ResourceKey, value: string) => {
     const numValue = parseFloat(value)
@@ -27,6 +29,11 @@ export function DevControls() {
       {/* Dev Controls - Only visible in dev mode */}
       {devMode && (
         <div className="fixed top-16 right-4 p-4 bg-white border rounded-lg shadow-lg z-40">
+          <div className="mb-4 p-2 bg-gray-50 rounded">
+            <h3 className="font-semibold mb-2">Knowledge Level Info</h3>
+            <p>Current Level: {knowledgeLevel}</p>
+            <p>Next Threshold: {thresholds[knowledgeLevel]}</p>
+          </div>
           <h3 className="font-semibold mb-4">Resource Controls</h3>
           {Object.entries(resourceStore.resources).map(([key, resource]) => (
             <div key={key} className="mb-2 flex items-center gap-2">

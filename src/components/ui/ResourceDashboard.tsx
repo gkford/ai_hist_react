@@ -2,6 +2,7 @@ import { useResource, ResourceKey } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { useCardsStore } from "@/store/useCardsStore"
+import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
 
 interface ResourceDisplayProps {
   icon: string
@@ -61,6 +62,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const thoughts = useResource('thoughts')
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
+  const { level: knowledgeLevel } = useKnowledgeLevelStore()
 
   const resources = [
     { icon: food.icon, amount: food.amount, key: food.key },
@@ -71,7 +73,11 @@ export function ResourceDashboard({ className }: { className?: string }) {
   ]
 
   return (
-    <div className={cn("flex gap-4 p-4 bg-gray-50 rounded-lg", className)}>
+    <div className={cn("flex gap-4 p-4 bg-gray-50 rounded-lg items-center", className)}>
+      <div className="flex items-center gap-2 border-r pr-4 mr-4">
+        <span className="font-semibold">Knowledge Level:</span>
+        <span className="text-lg">{knowledgeLevel}</span>
+      </div>
       {resources.map((resource, index) => (
         <ResourceDisplay 
           key={index} 
