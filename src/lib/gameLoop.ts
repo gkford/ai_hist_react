@@ -6,8 +6,14 @@ export function startGameLoop() {
   if (intervalId) return;
 
   intervalId = window.setInterval(() => {
-    processRTPayments();
+    
     processTransformations();
+    // Measure produced amounts of rate resources here
+    processRTPayments();
+    // Measure remaining amounts of rate resources here, and update usage proportion, then reset rate resources to 0
+
+
+    
   }, 1000);
 }
 
