@@ -13,14 +13,13 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
   const resource = useResource(resourceKey)
 
-  // Calculate total multiplier for this resource from card effects
+  // Calculate total multiplier for this resource from ongoing effects
   const totalMultiplier = Object.values(useCardsStore.getState().cardStates)
-    .flatMap(card => Object.values(card.effects))
-    .filter(effect => 
-      effect.resource === resourceKey 
-      && effect.active
+    .filter(card => card.ongoingEffects?.active && card.ongoingEffects.resourceModifiers[resourceKey])
+    .reduce((total, card) => 
+      total * (card.ongoingEffects?.resourceModifiers[resourceKey] || 1), 
+      1
     )
-    .reduce((total, effect) => total * (effect.multiplier || 1), 1)
 
   const formattedMultiplier = totalMultiplier.toFixed(2)
 
