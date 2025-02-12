@@ -8,6 +8,7 @@ import { CardInfo } from "@/components/ui/CardInfo";
 import { RTViewer } from "@/components/ui/RTViewer";
 import { FocusSelector } from "@/components/ui/FocusSelector";
 import { DiscoveryViewer } from "@/components/ui/DiscoveryViewer";
+import { OnCreateEffectsViewer } from "@/components/ui/OnCreateEffectsViewer";
 
 
 export interface MasterCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -62,6 +63,14 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
             />
           )}
         </div>
+        {cardDef.onCreateEffects && 
+          (cardState.discovery_state.current_status === 'imagined' || 
+           cardState.discovery_state.current_status === 'discovered') && (
+          <OnCreateEffectsViewer 
+            effects={cardDef.onCreateEffects}
+            isDiscovered={cardState.discovery_state.current_status === 'discovered'}
+          />
+        )}
         {cardState.discovery_state.current_status === 'discovered' && 
           Object.entries(cardState.rts).map(([rtId, rtState]) => (
             <RTViewer 
