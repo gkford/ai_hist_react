@@ -1,4 +1,5 @@
 import { processRTPayments, processTransformations } from "./rtManager";
+import { useResourceStore } from "@/store/useResourceStore";
 
 let intervalId: number | null = null;
 
@@ -6,13 +7,29 @@ export function startGameLoop() {
   if (intervalId) return;
 
   intervalId = window.setInterval(() => {
+    const store = useResourceStore.getState();
     
+    // First process transformations which generate resources
     processTransformations();
-    // Measure produced amounts of rate resources here
+    
+    // Track how much was produced
+    store.trackProducedAmount('thoughts');
+    store.trackProducedAmount('humanEnergy');
+    
+    // Process payments which consume resources
     processRTPayments();
-    // Measure remaining amounts of rate resources here, and update usage proportion, then reset rate resources to 0
-
-
+    
+    // Calculate usage for rate resources
+    ['thoughts', 'humanEnergy'].forEach(resourceKey => {
+      const resource = store.resources[resourceKey as ResourceKey];
+      if (resource.amountProduced && resource.amountProduced > 0) {
+        const consumed = resource.amountProduced - resource.amount;
+        const usage = consumed / resource.amountProduced;
+        store.setResourceUsage(resourceKey as ResourceKey, usage);
+      }
+      // Reset rate resource to 0
+      store.updateResource(resourceKey as ResourceKey, -resource.amount);
+    });
     
   }, 1000);
 }
