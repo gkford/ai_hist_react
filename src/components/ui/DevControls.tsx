@@ -11,7 +11,12 @@ export function DevControls() {
   const handleResourceChange = (key: ResourceKey, value: string) => {
     const numValue = parseFloat(value)
     if (!isNaN(numValue)) {
-      resourceStore.updateResource(key, numValue - resourceStore.resources[key].amount)
+      const currentAmount = resourceStore.resources[key].amount[0]
+      if (numValue > currentAmount) {
+        resourceStore.produceResource(key, numValue - currentAmount)
+      } else if (numValue < currentAmount) {
+        resourceStore.spendResource(key, currentAmount - numValue)
+      }
     }
   }
 
@@ -48,7 +53,7 @@ export function DevControls() {
                 <span>{resource.icon}</span>
                 <input
                   type="number"
-                  value={Math.floor(resource.amount)}
+                  value={Math.floor(resource.amount[0])}
                   onChange={(e) => handleResourceChange(key as ResourceKey, e.target.value)}
                   className="w-24 px-2 py-1 border rounded"
                 />
