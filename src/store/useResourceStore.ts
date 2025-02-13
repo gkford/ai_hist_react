@@ -2,156 +2,112 @@ import { create } from "zustand"
 
 export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'population'
 
-interface TransformationState {
-  focusProp: number  // Between 0 and 1
-}
-
-interface ResourceConfig {
-  storable: boolean
-  negable: boolean
-  icon: string
-}
-
-interface ResourceState {
-  amount: number
+interface Resource {
+  amount: number[];
+  icon: string;
+  key: ResourceKey;
+  isRate: boolean;
+  bonus: number;
+  amountProducedThisSecond: number[];
+  amountSpentThisSecond: number[];
 }
 
 interface ResourceStore {
-  resources: Record<ResourceKey, ResourceState>
-  config: Record<ResourceKey, ResourceConfig>
-  transformations: Record<string, TransformationState>
-  
-  setResourceAmount: (resource: ResourceKey, amount: number) => void
-  addResource: (resource: ResourceKey, amount: number) => number  // Returns whole number increase
-  subtractResource: (resource: ResourceKey, amount: number) => number | null  // Returns whole number decrease or null if not possible
-  setTransformationFocus: (transformationId: string, focus: number) => void
+  resources: Record<ResourceKey, Resource>;
+  spendResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) => void;
+  produceResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) => void;
+  setResourceBonus: (key: ResourceKey, bonus: number) => void;
+  progressToNextSecond: () => void;
 }
 
-const resourceConfigs: Record<ResourceKey, ResourceConfig> = {
-  food: { storable: true, negable: false, icon: '🍗' },
-  knowledge: { storable: true, negable: false, icon: '📚' },
-  thoughts: { storable: false, negable: false, icon: '💭' },
-  humanEnergy: { storable: false, negable: false, icon: '⚡' },
-  population: { storable: true, negable: false, icon: '👤' }
-}
-
-export const useResourceStore = create<ResourceStore>((set, get) => ({
-  transformations: {
-    "eating_chicken": {
-      focusProp: 1
-    }
-  },
-
+export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: 5 },
-    knowledge: { amount: 0 },
-    thoughts: { amount: 0 },
-    humanEnergy: { amount: 0 },
-    population: { amount: 10 }
+    food: { amount: [30], icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts: { amount: [0], icon: "💭", key: "thoughts", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    population: { amount: [10], icon: "👥", key: "population", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
   },
-  
-  config: resourceConfigs,
+  progressToNextSecond: () => 
+    set((state) => {
+      const newResources = { ...state.resources };
+      
+      // Process each resource
+      Object.entries(newResources).forEach(([key, resource]) => {
+        // Add new values at start of arrays and trim to 6 items
+        newResources[key as ResourceKey] = {
+          ...resource,
+          amount: [resource.amount[0], ...resource.amount].slice(0, 6),
+          amountProducedThisSecond: [0, ...resource.amountProducedThisSecond].slice(0, 6),
+          amountSpentThisSecond: [0, ...resource.amountSpentThisSecond].slice(0, 6)
+        };
+      });
 
-  setResourceAmount: (resource, amount) => set(state => ({
-    resources: {
-      ...state.resources,
-      [resource]: {
-        amount: Number(amount.toFixed(3))
-      }
-    }
-  })),
+      return { resources: newResources };
+    }),
 
-  addResource: (resource, amountToAdd) => {
-    const currentAmount = get().resources[resource].amount
-    const newAmount = Number((currentAmount + amountToAdd).toFixed(3))
-    
-    // Calculate whole number increase
-    const previousWholeNumber = Math.floor(currentAmount)
-    const newWholeNumber = Math.floor(newAmount)
-    const wholeNumberIncrease = newWholeNumber - previousWholeNumber
-
-    // Update the store
-    set(state => ({
+  spendResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
+    set((state) => ({
       resources: {
         ...state.resources,
-        [resource]: {
-          amount: newAmount
+        [key]: {
+          ...state.resources[key],
+          amount: [
+            Math.max(0, state.resources[key].amount[0] - amount),
+            ...state.resources[key].amount.slice(1)
+          ],
+          amountSpentThisSecond: [
+            amount,
+            ...state.resources[key].amountSpentThisSecond
+          ],
+          ...additionalUpdates
+        }
+      }
+    })),
+  produceResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
+    set((state) => ({
+      resources: {
+        ...state.resources,
+        [key]: {
+          ...state.resources[key],
+          amount: [
+            state.resources[key].amount[0] + (amount * state.resources[key].bonus),
+            ...state.resources[key].amount.slice(1)
+          ],
+          amountProducedThisSecond: [
+            amount * state.resources[key].bonus,
+            ...state.resources[key].amountProducedThisSecond
+          ],
+          ...additionalUpdates
+        }
+      }
+    })),
+  addResource: (key: ResourceKey, amount: number) =>
+    set((state) => ({
+      resources: {
+        ...state.resources,
+        [key]: {
+          ...state.resources[key],
+          amount: [
+            state.resources[key].amount[0] + amount,
+            ...state.resources[key].amount.slice(1)
+          ]
+        }
+      }
+    })),
+  setResourceBonus: (key: ResourceKey, bonus: number) =>
+    set((state) => ({
+      resources: {
+        ...state.resources,
+        [key]: {
+          ...state.resources[key],
+          bonus: Math.max(0, bonus)
         }
       }
     }))
+}));
 
-    return wholeNumberIncrease
-  },
-
-  subtractResource: (resource, amountToSubtract) => {
-    const currentAmount = get().resources[resource].amount
-    const newAmount = Number((currentAmount - amountToSubtract).toFixed(3))
-
-    if (newAmount < 0) {
-      return null  // Cannot subtract this amount
-    }
-    
-    // Simple whole number decrease calculation
-    const startNumber = Math.floor(currentAmount)
-    const endNumber = Math.floor(newAmount)
-    const wholeNumberDecrease = startNumber - endNumber
-    
-    // If the starting number was exactly whole, subtract 1 from the decrease
-    const startAdjustment = Number.isInteger(currentAmount) ? 1 : 0
-    // If the ending number is exactly whole, add 1 to the decrease
-    const endAdjustment = Number.isInteger(newAmount) ? 1 : 0
-    
-    const finalDecrease = Math.max(0, wholeNumberDecrease - startAdjustment + endAdjustment)
-
-    // Add animation-focused debug logs
-    console.log('Resource Change:', {
-      type: 'subtract',
-      resource,
-      icon: get().config[resource].icon,
-      from: currentAmount,
-      to: newAmount,
-      decrease: finalDecrease,
-      willAnimate: finalDecrease > 0
-    })
-    
-    // Update the store
-    set(state => ({
-      resources: {
-        ...state.resources,
-        [resource]: {
-          amount: newAmount
-        }
-      }
-    }))
-
-    return finalDecrease
-  },
-
-  setTransformationFocus: (transformationId, focus) => set(state => ({
-    transformations: {
-      ...state.transformations,
-      [transformationId]: {
-        ...state.transformations[transformationId],
-        focusProp: Math.max(0, Math.min(1, focus)) // Clamp between 0 and 1
-      }
-    }
-  })),
-
-}))
-
-// Helper hooks for cleaner component usage
-export const useTransformation = (transformationId: string) => {
-  const store = useResourceStore()
-  return {
-    focusProp: store.transformations[transformationId]?.focusProp ?? 0,
-    setFocus: (focus: number) => store.setTransformationFocus(transformationId, focus)
-  }
-}
-export const useResource = (resource: ResourceKey) => {
-  const store = useResourceStore()
-  return {
-    amount: store.resources[resource].amount,
-    icon: store.config[resource].icon,
-    setAmount: (amount: number) => store.setResourceAmount(resource, amount)
-  }
-}
+// Helper hook for cleaner component usage
+export const useResource = (key: ResourceKey) => {
+  return useResourceStore((state) => state.resources[key]);
+};

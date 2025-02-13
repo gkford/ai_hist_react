@@ -1,41 +1,44 @@
 import { useEffect, useState, useRef } from "react"
-
-import { useResourceStore } from "@/store/useResourceStore"
+import { useResource } from "@/store/useResourceStore"
 
 export function FallingFood() {
-  const { netFoodRate } = useResourceStore()
   const containerRef = useRef<HTMLDivElement>(null)
   const [drumsticks, setDrumsticks] = useState<Array<{ id: number; x: number; y: number; vx: number; vy: number }>>([])
   const [counter, setCounter] = useState(0)
+  const food = useResource('food')
 
-  // Spawns "rate" drumsticks each second at random x-positions along the top
+  // Update drumsticks based on food amount every second
   useEffect(() => {
     const interval = setInterval(() => {
-      if (netFoodRate !== 0) {
-        if (netFoodRate > 0) {
-          setDrumsticks((prev) => {
-            const width = containerRef.current?.clientWidth || 400
-            const newDrumsticks = Array.from({ length: netFoodRate }).map((_, i) => {
-              const randomX = Math.floor(Math.random() * width)
-              return { id: counter + i, x: randomX, y: 0, vx: 0, vy: 0 }
-            })
-            return [...prev, ...newDrumsticks]
-          })
-          setCounter((prev) => prev + netFoodRate)
-        } else {
-          setDrumsticks((prev) => {
-            const sorted = [...prev].sort((a, b) => {
-              const yDiff = a.y - b.y;
-              if (Math.abs(yDiff) > 1) return yDiff;
-              return Math.abs(a.vy) - Math.abs(b.vy);
-            });
-            return sorted.slice(-netFoodRate);
+      const currentFood = Math.floor(food.amount);
+      const currentDrumsticks = drumsticks.length;
+      
+      if (currentFood > currentDrumsticks) {
+        // Need to add drumsticks
+        setDrumsticks(prev => {
+          const width = containerRef.current?.clientWidth || 400;
+          const newDrumsticks = Array.from({ length: currentFood - currentDrumsticks }).map((_, i) => {
+            const randomX = Math.floor(Math.random() * width);
+            return { id: counter + i, x: randomX, y: 0, vx: 0, vy: 0 };
           });
-        }
+          setCounter(prev => prev + (currentFood - currentDrumsticks));
+          return [...prev, ...newDrumsticks];
+        });
+      } else if (currentFood < currentDrumsticks) {
+        // Remove drumsticks one at a time
+        setDrumsticks(prev => {
+          const sorted = [...prev].sort((a, b) => {
+            const yDiff = a.y - b.y;
+            if (Math.abs(yDiff) > 1) return yDiff;
+            return Math.abs(a.vy) - Math.abs(b.vy);
+          });
+          // Remove only one drumstick at a time
+          return sorted.slice(0, Math.max(currentDrumsticks - 1, currentFood));
+        });
       }
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [netFoodRate, counter])
+    }, 100); // Changed interval to 100ms for smoother removal
+    return () => clearInterval(interval);
+  }, [food.amount, drumsticks.length, counter]);
 
   // Moves the drumsticks downward with physics including horizontal movement
   useEffect(() => {
