@@ -21,15 +21,6 @@ export function startGameLoop() {
     
     const store = useResourceStore.getState();
     
-    // Store previous amounts for all resources
-    Object.keys(store.resources).forEach(key => {
-      const resourceKey = key as ResourceKey;
-      const resource = store.resources[resourceKey];
-      store.updateResource(resourceKey, 0, { previousAmount: resource.amount });
-    });
-    logger.log("Previous Resource States:", Object.fromEntries(
-      Object.entries(store.resources).map(([key, r]) => [key, r.previousAmount])
-    ));
 
     // Process transformations which generate resources
     logger.log("Processing Transformations...");
@@ -54,24 +45,6 @@ export function startGameLoop() {
     logger.log("Processing Discoveries...");
     processDiscoveries();
     
-    // Calculate raw production and apply bonuses for all resources
-    logger.log("Calculating Production and Bonuses...");
-    Object.entries(store.resources).forEach(([key, resource]) => {
-      const resourceKey = key as ResourceKey;
-      const rawProduction = resource.amount - resource.previousAmount;
-      logger.log(`${resourceKey} raw production:`, rawProduction);
-      
-      // Store raw production amount
-      store.updateResource(resourceKey, 0, { rawProduction });
-      
-      // Apply bonus to production if there was any
-      if (rawProduction > 0) {
-        const bonusedProduction = rawProduction * resource.bonus;
-        const additionalFromBonus = bonusedProduction - rawProduction;
-        store.updateResource(resourceKey, additionalFromBonus);
-        logger.log(`${resourceKey} bonus production:`, additionalFromBonus);
-      }
-    });
 
     // Track final produced amounts for rate resources
     rateResources.forEach(resourceKey => {
