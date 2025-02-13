@@ -10,13 +10,13 @@ interface ResourceDisplayProps {
 }
 
 function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
-  const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
+  const [displayAmount, setDisplayAmount] = useState(Math.floor(amount[0]))
   const resource = useResource(resourceKey)
 
   const formattedMultiplier = resource.bonus.toFixed(2)
 
   useEffect(() => {
-    setDisplayAmount(Math.floor(amount))
+    setDisplayAmount(Math.floor(amount[0]))
   }, [amount])
 
   return (
