@@ -136,27 +136,17 @@ export const useCardsStore = create<CardsStore>((set) => ({
         [id]: newCardState,
       };
 
-      // Calculate focus props after state update
-      const resourceTypes = new Set<ResourceKey>();
+      // Calculate focus props just for thoughts resource
+      const thoughtFocusStates: Array<'none' | 'low' | 'high'> = [];
       Object.values(newCardStates).forEach(card => {
-        Object.values(card.rts).forEach(rt => {
-          resourceTypes.add(rt.focus.resource);
-        });
+        if (card.discovery_state.current_status === 'unthoughtof' || 
+            card.discovery_state.current_status === 'imagined') {
+          thoughtFocusStates.push(card.discovery_state.focus.priority);
+        }
       });
 
-      resourceTypes.forEach(resource => {
-        const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
-        Object.values(newCardStates).forEach(card => {
-          Object.values(card.rts).forEach(rt => {
-            if (rt.focus.resource === resource) {
-              rtFocusStates.push(rt.focus.priority);
-            }
-          });
-        });
-
-        const propValues = calculateFocusPropFromPriorities(rtFocusStates);
-        useFocusStore.getState().updateResourceProps(resource, propValues);
-      });
+      const propValues = calculateFocusPropFromPriorities(thoughtFocusStates);
+      useFocusStore.getState().updateResourceProps('thoughts', propValues);
 
       return { 
         cardStates: newCardStates,
