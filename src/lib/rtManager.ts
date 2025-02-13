@@ -75,7 +75,19 @@ export function processTransformations() {
         });
 
         if (!canAfford) {
-          console.warn(`Skipping transformation for RT ${rtId} in card ${card.id} - insufficient resources`);
+          // Reset the RT state when we can't afford the transformation
+          cardStore.updateRTState(card.id, rtId, {
+            inbound_paid: {},
+            outbound_owed: {}
+          });
+          
+          console.warn(
+            `Skipping transformation for RT ${rtId} in card ${card.id} - insufficient resources.\n` +
+            `Required resources: ${Object.entries(flooredInboundPaid)
+              .map(([resource, amount]) => `${amount} ${resource}`)
+              .join(', ')}\n` +
+            `RT state has been reset.`
+          );
           return;
         }
 
