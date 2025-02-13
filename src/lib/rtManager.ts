@@ -32,15 +32,23 @@ export function processTransformations() {
       const population = resourceStore.resources.population.amount[0];
       
       // Get the first (and should be only) inbound cost for population-based RTs
-      const [resource, ratio] = Object.entries(rt.inbound_cost)[0];
+      const [inboundResource, inboundRatio] = Object.entries(rt.inbound_cost)[0];
       // Simply multiply population by the ratio to get amount to process
-      amountToProcess = population * ratio;
+      amountToProcess = population * inboundRatio;
       
       // Check how much of the resource is actually available
-      const availableResource = resourceStore.resources[resource as ResourceKey].amount[0];
+      const availableResource = resourceStore.resources[inboundResource as ResourceKey].amount[0];
       
       // Use whichever is smaller - what population allows or what's available
       amountToProcess = Math.min(amountToProcess, availableResource);
+
+      // Calculate the ratio between outbound and inbound
+      const [outboundResource, outboundRatio] = Object.entries(rt.outbound_gain)[0];
+      const conversionRatio = outboundRatio / inboundRatio;
+
+      // Set the actual costs and gains
+      actualInboundCosts[inboundResource as ResourceKey] = amountToProcess;
+      actualOutboundGains[outboundResource as ResourceKey] = amountToProcess * conversionRatio;
     } else {
       // Original non-population logic
       const resourceProps = focusStore.resourceProps[rt.focus.resource];
