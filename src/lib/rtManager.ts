@@ -121,13 +121,13 @@ export function processTransformations() {
 
         if (!canAfford) {
           // Reset the RT state when we can't afford the transformation
-          cardStore.updateRTState(card.id, rtId, {
+          cardStore.updateRTState(cardId, rtId, {
             inbound_paid: {},
             outbound_owed: {},
           })
 
           console.warn(
-            `Skipping transformation for RT ${rtId} in card ${card.id} - insufficient resources.\n` +
+            `Skipping transformation for RT ${rtId} in card ${cardId} - insufficient resources.\n` +
               `Required resources: ${Object.entries(flooredInboundPaid)
                 .map(([resource, amount]) => `${amount} ${resource}`)
                 .join(', ')}\n` +
@@ -162,11 +162,10 @@ export function processTransformations() {
           newOutboundOwed[key] = (rt.outbound_owed[key] || 0) - amount
         })
 
-        cardStore.updateRTState(card.id, rtId, {
+        cardStore.updateRTState(cardId, rtId, {
           inbound_paid: newInboundPaid,
           outbound_owed: newOutboundOwed,
         })
       }
-    })
-  })
+    }
 }
