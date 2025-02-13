@@ -5,6 +5,8 @@ export const logger = {
     verbose = v;
   },
   
+  isVerbose: () => verbose,
+  
   log: (...args: any[]) => {
     if (verbose) {
       console.log(...args);
