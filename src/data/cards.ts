@@ -248,8 +248,8 @@ export const allCards: CardDefinition[] = [
   // Tier 2 (knowledge_level = 2)
   // ------------------------------
   {
-    id: 'grunters',
-    title: 'Grunters (L2)',
+    id: 'grunts',
+    title: 'Grunts (L2)',
     type: 'people',
     icon: '👥',
     description: 'More advanced human population',
