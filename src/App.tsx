@@ -139,11 +139,11 @@ function App() {
         <div className="ml-8 flex flex-col gap-4">
           <div className="p-4 border border-gray-200 rounded">
             <h2 className="font-semibold mb-2">Developer Dashboard</h2>
-            <p>Food: {formatNumber(food.amount)}</p>
-            <p>Knowledge: {formatNumber(knowledge.amount)}</p>
-            <p>Thoughts: {formatNumber(thoughts.amount)}</p>
-            <p>Human Energy: {formatNumber(humanEnergy.amount)}</p>
-            <p>Population: {formatNumber(population.amount)}</p>
+            <p>Food: {formatNumber(food.amount[0])}</p>
+            <p>Knowledge: {formatNumber(knowledge.amount[0])}</p>
+            <p>Thoughts: {formatNumber(thoughts.amount[0])}</p>
+            <p>Human Energy: {formatNumber(humanEnergy.amount[0])}</p>
+            <p>Population: {formatNumber(population.amount[0])}</p>
           </div>
           
           <div className="p-4 border border-gray-200 rounded">
