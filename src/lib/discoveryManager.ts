@@ -46,7 +46,7 @@ export function processDiscoveries() {
 
   // Get the current thoughts amount before it resets
   const thoughtsAmount = resourceStore.resources.thoughts.amount;
-  logger.log("Thoughts available this turn:", thoughtsAmount);
+  logger.log("Thoughts available this turn:", thoughtsAmount[0]);
   
   if (thoughtsAmount[0] <= 0) {
     logger.log("No thoughts produced, skipping discovery processing");
