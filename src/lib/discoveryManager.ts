@@ -1,5 +1,6 @@
 import { useResourceStore } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
+import { useFocusStore } from "@/store/useFocusStore";
 import { allCards } from "@/data/cards";
 import type { ResourceKey } from "@/store/useResourceStore";
 import { logger } from "./logger";
@@ -53,41 +54,28 @@ export function processDiscoveries() {
     return;
   }
 
-  // First, filter eligible cards and calculate total focus points
+  // Get eligible cards
   const eligibleCards = Object.entries(cardStore.cardStates).filter(([id, card]) => {
     const cardDef = allCards.find(c => c.id === id);
     return (card.discovery_state.current_status === 'unthoughtof' || 
             card.discovery_state.current_status === 'imagined') &&
-           cardDef?.discovery_stats; // Only include cards that have discovery stats
+           cardDef?.discovery_stats;
   });
   logger.log("Eligible cards:", eligibleCards.map(([id]) => id));
 
-  const totalFocusPoints = eligibleCards.reduce((total, [_, card]) => {
-    const priority = card.discovery_state.focus.priority;
-    return total + (priority === 'high' ? 3 : priority === 'low' ? 1 : 0);
-  }, 0);
-  logger.log("Total focus points:", totalFocusPoints);
-
-  if (totalFocusPoints <= 0) {
-    logger.log("No focus points allocated, skipping discovery processing");
-    return;
-  }
-
-  // Process each eligible card
+  // Process each eligible card using focus props from store
   eligibleCards.forEach(([cardId, card]) => {
     logger.log(`\nProcessing card: ${cardId}`);
     const cardFocus = card.discovery_state.focus.priority;
-    let thoughtsProportion = 0;
     
-    if (cardFocus === 'high') {
-      thoughtsProportion = 3 / totalFocusPoints;
-    } else if (cardFocus === 'low') {
-      thoughtsProportion = 1 / totalFocusPoints;
-    }
-    logger.log(`Focus priority: ${cardFocus}, proportion: ${thoughtsProportion}`);
+    // Get the focus proportion directly from the store
+    const thoughtsFocusProps = useFocusStore.getState().resourceProps.thoughts;
+    const focusProportion = thoughtsFocusProps[cardFocus];
+    
+    logger.log(`Focus priority: ${cardFocus}, proportion: ${focusProportion}`);
 
-    // Calculate thoughts to invest in this card
-    const thoughtsToInvest = thoughtsAmount[0] * thoughtsProportion;
+    // Calculate thoughts to invest using the focus prop
+    const thoughtsToInvest = thoughtsAmount[0] * focusProportion;
     logger.log(`Thoughts to invest: ${thoughtsToInvest}`);
 
     if (thoughtsToInvest > 0) {
