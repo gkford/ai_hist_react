@@ -117,8 +117,8 @@ export const allCards: CardDefinition[] = [
     description: 'Basic gestures and expressions that enable coordination',
     knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 10,
+      thought_to_imagine: 2,
+      further_thought_to_discover: 5,
       focus: {
         resource: 'thoughts',
       },
@@ -135,7 +135,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 20,
+        knowledge: 30,
       },
     },
   },
@@ -148,8 +148,8 @@ export const allCards: CardDefinition[] = [
     description: 'Share resources to build social bonds',
     knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 10,
+      thought_to_imagine: 5,
+      further_thought_to_discover: 5,
       focus: {
         resource: 'thoughts',
       },
@@ -163,7 +163,7 @@ export const allCards: CardDefinition[] = [
           humanEnergy: 1,
         },
         outbound_gain: {
-          knowledge: 0.05,
+          knowledge: 2,
         },
         focus: {
           resource: 'humanEnergy',
@@ -180,7 +180,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 20,
+        knowledge: 50,
       },
     },
   },
@@ -193,8 +193,8 @@ export const allCards: CardDefinition[] = [
     description: 'Hunt animals for food',
     knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 10,
+      thought_to_imagine: 2,
+      further_thought_to_discover: 5,
       focus: {
         resource: 'thoughts',
       },
@@ -302,8 +302,8 @@ export const allCards: CardDefinition[] = [
     description: 'Basic tools that improve work efficiency',
     knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 100,
-      further_thought_to_discover: 100,
+      thought_to_imagine: 50,
+      further_thought_to_discover: 50,
       focus: {
         resource: 'thoughts',
       },
@@ -332,8 +332,8 @@ export const allCards: CardDefinition[] = [
     description: 'More sophisticated stone tools with multiple uses',
     knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 120,
-      further_thought_to_discover: 120,
+      thought_to_imagine: 60,
+      further_thought_to_discover: 60,
       focus: {
         resource: 'thoughts',
       },
@@ -363,8 +363,8 @@ export const allCards: CardDefinition[] = [
     description: 'Hunt in coordinated groups for better results',
     knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 150,
-      further_thought_to_discover: 150,
+      thought_to_imagine: 75,
+      further_thought_to_discover: 75,
       focus: {
         resource: 'thoughts',
       },
@@ -399,8 +399,8 @@ export const allCards: CardDefinition[] = [
     description: 'Control and maintain fire for cooking and protection',
     knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 200,
-      further_thought_to_discover: 200,
+      thought_to_imagine: 100,
+      further_thought_to_discover: 100,
       focus: {
         resource: 'thoughts',
       },
@@ -431,8 +431,8 @@ export const allCards: CardDefinition[] = [
     description: 'Long-range hunting weapon',
     knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 100,
-      further_thought_to_discover: 100,
+      thought_to_imagine: 50,
+      further_thought_to_discover: 50,
       focus: {
         resource: 'thoughts',
       },
@@ -511,8 +511,8 @@ export const allCards: CardDefinition[] = [
     description: 'Process food with fire for better nutrition',
     knowledge_level: 3,
     discovery_stats: {
-      thought_to_imagine: 1000,
-      further_thought_to_discover: 1000,
+      thought_to_imagine: 500,
+      further_thought_to_discover: 500,
       focus: {
         resource: 'thoughts',
       },
@@ -548,8 +548,8 @@ export const allCards: CardDefinition[] = [
     description: 'Basic verbal communication',
     knowledge_level: 3,
     discovery_stats: {
-      thought_to_imagine: 1200,
-      further_thought_to_discover: 1200,
+      thought_to_imagine: 600,
+      further_thought_to_discover: 600,
       focus: {
         resource: 'thoughts',
       },
@@ -579,8 +579,8 @@ export const allCards: CardDefinition[] = [
     description: 'Advanced group hunting strategies',
     knowledge_level: 3,
     discovery_stats: {
-      thought_to_imagine: 1500,
-      further_thought_to_discover: 1500,
+      thought_to_imagine: 750,
+      further_thought_to_discover: 750,
       focus: {
         resource: 'thoughts',
       },
@@ -665,8 +665,8 @@ export const allCards: CardDefinition[] = [
     description: 'Share knowledge through narratives',
     knowledge_level: 4,
     discovery_stats: {
-      thought_to_imagine: 10000,
-      further_thought_to_discover: 10000,
+      thought_to_imagine: 5000,
+      further_thought_to_discover: 5000,
       focus: {
         resource: 'thoughts',
       },
@@ -711,8 +711,8 @@ export const allCards: CardDefinition[] = [
     description: 'Basic counting system',
     knowledge_level: 4,
     discovery_stats: {
-      thought_to_imagine: 12000,
-      further_thought_to_discover: 12000,
+      thought_to_imagine: 6000,
+      further_thought_to_discover: 6000,
       focus: {
         resource: 'thoughts',
       },
@@ -742,8 +742,8 @@ export const allCards: CardDefinition[] = [
     description: 'Visual storytelling and record keeping',
     knowledge_level: 4,
     discovery_stats: {
-      thought_to_imagine: 14000,
-      further_thought_to_discover: 14000,
+      thought_to_imagine: 7000,
+      further_thought_to_discover: 7000,
       focus: {
         resource: 'thoughts',
       },
@@ -787,8 +787,8 @@ export const allCards: CardDefinition[] = [
     description: 'Sophisticated verbal communication with abstract concepts',
     knowledge_level: 4,
     discovery_stats: {
-      thought_to_imagine: 16000,
-      further_thought_to_discover: 16000,
+      thought_to_imagine: 8000,
+      further_thought_to_discover: 8000,
       focus: {
         resource: 'thoughts',
       },

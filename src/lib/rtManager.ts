@@ -38,7 +38,7 @@ export function processTransformations() {
       // Get the first (and should be only) inbound cost for population-based RTs
       const [inboundResource, inboundRatio] = Object.entries(rt.inbound_cost)[0];
       // Simply multiply population by the ratio to get amount to process
-      amountToProcess = population * inboundRatio;
+      amountToProcess = inboundRatio;
       
       // Check how much of the resource is actually available
       const availableResource = resourceStore.resources[inboundResource as ResourceKey].amount[0];

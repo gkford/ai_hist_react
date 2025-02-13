@@ -26,8 +26,6 @@ import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { MasterCard } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
-import { calculateFocusPropFromPriorities } from "@/lib/focusCalculator"
-import { useFocusStore } from "@/store/useFocusStore"
 import { useEffect, useState } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
