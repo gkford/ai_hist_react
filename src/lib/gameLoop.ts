@@ -22,11 +22,7 @@ export function startGameLoop() {
     logger.log('Progressing to next second...')
     store.progressToNextSecond()
 
-    // Process payments which consume resources
-    logger.log('Processing RT Payments...')
-    updateRTs()
-
-    // Process transformations which generate resources
+    // Process resource transformations
     logger.log('Processing Transformations...')
     processTransformations()
 
