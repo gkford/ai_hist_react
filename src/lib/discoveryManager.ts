@@ -1,6 +1,5 @@
 import { useResourceStore } from "@/store/useResourceStore";
 import { useCardsStore } from "@/store/useCardsStore";
-import { useFocusStore } from "@/store/useFocusStore";
 import { allCards } from "@/data/cards";
 import type { ResourceKey } from "@/store/useResourceStore";
 import { logger } from "./logger";
@@ -44,7 +43,6 @@ export function processDiscoveries() {
   logger.log("=== Discovery Processing Start ===");
   const resourceStore = useResourceStore.getState();
   const cardStore = useCardsStore.getState();
-  const focusStore = useFocusStore.getState();
 
   // Get the amount of thoughts produced this turn
   const thoughtsProduced = resourceStore.resources.thoughts.amountProduced || 0;
@@ -126,7 +124,7 @@ export function processDiscoveries() {
         if (cardDef?.OnDiscoveryEffects?.resourceBonuses) {
           Object.entries(cardDef.OnDiscoveryEffects.resourceBonuses).forEach(
             ([resource, amount]) => {
-              resourceStore.addResource(resource as ResourceKey, amount);
+              resourceStore.produceResource(resource as ResourceKey, amount);
             }
           );
         }
