@@ -27,9 +27,20 @@ export function processKnowledgeLevel() {
       if (newCard.replaces) {
         const oldCard = cardStore.cardStates[newCard.replaces];
         if (oldCard) {
-          // Create the new card
+          // Create the new card, preserving RT states and focus priorities
           cardStore.createCard(newCard.id, {
-            discovery_state: oldCard.discovery_state
+            discovery_state: {
+              ...oldCard.discovery_state,
+              current_status: 'discovered' // Ensure the new card starts discovered
+            }
+          });
+          
+          // Copy over RT focus priorities from old card to new card
+          Object.entries(oldCard.rts).forEach(([rtId, rtState]) => {
+            cardStore.updateRTState(newCard.id, rtId, {
+              focus: rtState.focus,
+              last_process_time: rtState.last_process_time
+            });
           });
           
           // Remove old card
