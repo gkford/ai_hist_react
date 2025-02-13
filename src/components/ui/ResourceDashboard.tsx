@@ -1,7 +1,6 @@
 import { useResource, ResourceKey } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
-import { useCardsStore } from "@/store/useCardsStore"
 import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
 
 interface ResourceDisplayProps {
@@ -29,27 +28,6 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
       {resourceKey !== 'population' && (
         <div className="text-xs text-gray-600 border-t pt-1">
           <div>bonus: {formattedMultiplier}x</div>
-          {resource.isRate && (
-            <div className="mt-1">
-              <div className="w-full h-1 bg-gray-200 rounded">
-                <div 
-                  className={cn(
-                    "h-full rounded transition-all duration-300",
-                    resource.usage === null ? "bg-gray-400" : "bg-blue-500"
-                  )}
-                  style={{ 
-                    width: resource.usage === null ? "100%" : `${resource.usage * 100}%` 
-                  }}
-                />
-              </div>
-              <div className="text-xs mt-1">
-                {resource.usage === null 
-                  ? "No production" 
-                  : `Usage: ${Math.round(resource.usage * 100)}%`
-                }
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>
