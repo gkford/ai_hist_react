@@ -8,6 +8,8 @@ interface Resource {
   key: ResourceKey;
   isRate: boolean;
   bonus: number;
+  amountProducedThisSecond: number[];
+  amountSpentThisSecond: number[];
 }
 
 interface ResourceStore {
@@ -19,11 +21,11 @@ interface ResourceStore {
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: 30, icon: "🍖", key: "food", isRate: false, bonus: 1 },
-    knowledge: { amount: 0, icon: "📚", key: "knowledge", isRate: false, bonus: 1 },
-    thoughts: { amount: 0, icon: "💭", key: "thoughts", isRate: true, bonus: 1 },
-    humanEnergy: { amount: 0, icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1 },
-    population: { amount: 10, icon: "👥", key: "population", isRate: false, bonus: 1 },
+    food: { amount: 30, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    knowledge: { amount: 0, icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts: { amount: 0, icon: "💭", key: "thoughts", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    humanEnergy: { amount: 0, icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    population: { amount: 10, icon: "👥", key: "population", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
   },
   spendResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
     set((state) => ({
@@ -32,6 +34,10 @@ export const useResourceStore = create<ResourceStore>((set) => ({
         [key]: {
           ...state.resources[key],
           amount: Math.max(0, state.resources[key].amount - amount),
+          amountSpentThisSecond: [
+            amount,
+            ...state.resources[key].amountSpentThisSecond
+          ],
           ...additionalUpdates
         }
       }
@@ -43,6 +49,10 @@ export const useResourceStore = create<ResourceStore>((set) => ({
         [key]: {
           ...state.resources[key],
           amount: state.resources[key].amount + amount,
+          amountProducedThisSecond: [
+            amount,
+            ...state.resources[key].amountProducedThisSecond
+          ],
           ...additionalUpdates
         }
       }
