@@ -60,6 +60,7 @@ export const MasterCard = React.forwardRef<HTMLDivElement, MasterCardProps>(
               cardState.discovery_state.current_status === 'discovered') && (
               <CardImage
                 imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc}
+                cardId={id}
               />
             )}
           {cardDef.description && (
