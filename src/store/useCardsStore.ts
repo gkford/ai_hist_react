@@ -76,69 +76,67 @@ export const useCardsStore = create<CardsStore>((set) => ({
     if (!cardDef) return
 
     set((state) => {
-      const newCardState = {
-          ...cardDef,
-          rts: Object.fromEntries(
-            (cardDef.rts || []).map((rt: rtConfig) => [
-              rt.id,
-              {
-                ...rt,
-                inbound_paid: Object.fromEntries(
-                  Object.keys(rt.inbound_cost).map((resource) => [resource, 0])
-                ),
-                outbound_owed: Object.fromEntries(
-                  Object.keys(rt.outbound_gain).map((resource) => [resource, 0])
-                ),
-                focus: {
-                  resource: rt.focus.resource,
-                  priority: 'none',
-                },
+      const newCardState: CardState = {
+        ...cardDef,
+        rts: Object.fromEntries(
+          (cardDef.rts || []).map((rt: rtConfig) => [
+            rt.id,
+            {
+              ...rt,
+              inbound_paid: Object.fromEntries(
+                Object.keys(rt.inbound_cost).map((resource) => [resource, 0])
+              ),
+              outbound_owed: Object.fromEntries(
+                Object.keys(rt.outbound_gain).map((resource) => [resource, 0])
+              ),
+              focus: {
+                resource: rt.focus.resource,
+                priority: 'none',
               },
-            ])
-          ),
-          ongoingEffects: cardDef.ongoingEffects
-            ? {
-                resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
-                active: false,
-                focus: {
-                  resource: cardDef.ongoingEffects.focus.resource,
-                  priority: 'none',
-                },
-              }
-            : undefined,
-          discovery_state: cardDef.discovery_stats 
-            ? {
-                thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
-                further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
-                current_status: 'unthoughtof',
-                thought_invested: 0,
-                focus: {
-                  resource: cardDef.discovery_stats.focus.resource,
-                  priority: 'none',
-                },
-                ...(initialState?.discovery_state || {}),
-              }
-            : {
-                thought_to_imagine: 0,
-                further_thought_to_discover: 0,
-                current_status: 'unthoughtof',
-                thought_invested: 0,
-                focus: {
-                  resource: 'thoughts',
-                  priority: 'none',
-                },
-                ...(initialState?.discovery_state || {}),
+            },
+          ])
+        ),
+        ongoingEffects: cardDef.ongoingEffects
+          ? {
+              resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
+              active: false,
+              focus: {
+                resource: cardDef.ongoingEffects.focus.resource,
+                priority: 'none',
               },
-        },
+            }
+          : undefined,
+        discovery_state: cardDef.discovery_stats 
+          ? {
+              thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
+              further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
+              current_status: 'unthoughtof',
+              thought_invested: 0,
+              focus: {
+                resource: cardDef.discovery_stats.focus.resource,
+                priority: 'none',
+              },
+              ...(initialState?.discovery_state || {}),
+            }
+          : {
+              thought_to_imagine: 0,
+              further_thought_to_discover: 0,
+              current_status: 'unthoughtof',
+              thought_invested: 0,
+              focus: {
+                resource: 'thoughts',
+                priority: 'none',
+              },
+              ...(initialState?.discovery_state || {}),
+            }
       };
 
-      // Calculate focus props for each resource after adding the new card
       const newCardStates = {
         ...state.cardStates,
         [id]: newCardState,
       };
 
-      // Get all unique resources from RTs across all cards
+      // Calculate focus props after state update
       const resourceTypes = new Set<ResourceKey>();
       Object.values(newCardStates).forEach(card => {
         Object.values(card.rts).forEach(rt => {
@@ -146,7 +144,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
         });
       });
 
-      // Update focus props for each resource
       resourceTypes.forEach(resource => {
         const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
         Object.values(newCardStates).forEach(card => {
@@ -161,7 +158,14 @@ export const useCardsStore = create<CardsStore>((set) => ({
         useFocusStore.getState().updateResourceProps(resource, propValues);
       });
 
-      return { cardStates: newCardStates };
+      return { 
+        cardStates: newCardStates,
+        createCard: state.createCard,
+        updateCardState: state.updateCardState,
+        updateRTState: state.updateRTState,
+        updateEffectState: state.updateEffectState,
+        removeCard: state.removeCard
+      };
     })
   },
 
