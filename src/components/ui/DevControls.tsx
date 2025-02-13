@@ -1,6 +1,8 @@
 import { useDevStore } from "@/store/useDevStore"
 import { useResourceStore, type ResourceKey } from "@/store/useResourceStore"
 import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
+import { useGameLoopStore } from "@/store/useGameLoopStore"
+import { processTick } from "@/lib/gameLoop"
 import { Button } from "./button"
 
 export function DevControls() {
@@ -36,6 +38,22 @@ export function DevControls() {
         >
           {devMode ? "Hide Dev Tools" : "Show Dev Tools"}
         </Button>
+        <Button
+          variant="outline"
+          onClick={useGameLoopStore.getState().toggleRunning}
+          disabled={useGameLoopStore.getState().processingTick}
+        >
+          {useGameLoopStore.getState().isRunning ? "⏸️ Pause" : "▶️ Play"}
+        </Button>
+        {!useGameLoopStore.getState().isRunning && (
+          <Button
+            variant="outline"
+            onClick={processTick}
+            disabled={useGameLoopStore.getState().processingTick}
+          >
+            ⏭️ Step
+          </Button>
+        )}
       </div>
 
       {/* Dev Controls - Only visible in dev mode */}
