@@ -55,7 +55,9 @@ export function processDiscoveries() {
 
   // First, filter eligible cards and calculate total focus points
   const eligibleCards = Object.entries(cardStore.cardStates).filter(([_, card]) => 
-    card.discovery_state.current_status !== 'discovered'
+    (card.discovery_state.current_status === 'unthoughtof' || 
+     card.discovery_state.current_status === 'imagined') &&
+    card.discovery_stats // Only include cards that have discovery stats
   );
   logger.log("Eligible cards:", eligibleCards.map(([id]) => id));
 
