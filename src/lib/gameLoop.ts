@@ -11,7 +11,51 @@ export function setVerboseLogging(verbose: boolean) {
   logger.setVerbose(verbose)
 }
 
-export function processTick() {
+const handleFoodShortage = async () => {
+  const gameLoopStore = useGameLoopStore.getState()
+  const resourceStore = useResourceStore.getState()
+  
+  // Pause the game
+  gameLoopStore.setRunning(false)
+  
+  // Increment shortage counter
+  gameLoopStore.incrementFoodShortage()
+  
+  let message = ''
+  if (gameLoopStore.foodShortageCount === 1) {
+    message = "You've run out of food! Luckily, you've found 10 more food. Just lucky this time I guess, but if that happens again, your people will starve."
+    resourceStore.produceResource('food', 10)
+  } else {
+    message = "Your people are now very low on energy due to food shortages."
+  }
+  
+  // Show alert and wait for user acknowledgment
+  await new Promise(resolve => {
+    window.alert(message)
+    resolve(null)
+  })
+  
+  // Resume the game
+  gameLoopStore.setRunning(true)
+}
+
+const checkAndHandleResources = async () => {
+  const resourceStore = useResourceStore.getState()
+  const food = resourceStore.resources.food.amount[0]
+  const humanEnergy = resourceStore.resources.humanEnergy.amount[0]
+  
+  // Handle food shortage
+  if (food <= 0) {
+    await handleFoodShortage()
+  }
+  
+  // Free energy boost when both food and energy are depleted
+  if (food <= 0 && humanEnergy <= 0) {
+    resourceStore.produceResource('humanEnergy', 5)
+  }
+}
+
+export async function processTick() {
   const gameLoopStore = useGameLoopStore.getState()
   
   if (gameLoopStore.processingTick) return
@@ -25,16 +69,22 @@ export function processTick() {
     logger.log('Progressing to next second...')
     store.progressToNextSecond()
 
-    // Process resource transformations
-    logger.log('Processing Transformations...')
-    processTransformations()
+    // Check resources before processing
+    await checkAndHandleResources()
 
-    // Process knowledge level before other updates
-    processKnowledgeLevel()
+    // Only continue processing if the game is still running
+    if (gameLoopStore.getState().isRunning) {
+      // Process resource transformations
+      logger.log('Processing Transformations...')
+      processTransformations()
 
-    // Process discoveries
-    logger.log('Processing Discoveries...')
-    processDiscoveries()
+      // Process knowledge level before other updates
+      processKnowledgeLevel()
+
+      // Process discoveries
+      logger.log('Processing Discoveries...')
+      processDiscoveries()
+    }
 
     logger.log('=== Game Loop End ===')
   } finally {
