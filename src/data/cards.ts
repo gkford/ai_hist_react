@@ -1,11 +1,11 @@
-import type { ResourceKey } from '@/store/useResourceStore'
-
 export type DiscoveryStatus =
   | 'hidden'
   | 'unthoughtof'
   | 'imagined'
   | 'discovered'
   | 'obsolete'
+
+import type { ResourceKey } from '@/store/useResourceStore'
 
 export interface FocusConfig {
   resource: ResourceKey
@@ -52,6 +52,9 @@ export interface CardDefinition {
 }
 
 export const allCards: CardDefinition[] = [
+  // ------------------------------
+  // Tier 1 (knowledge_level = 1)
+  // ------------------------------
   {
     id: 'hominids',
     title: 'Hominids (L1)',
@@ -64,174 +67,13 @@ export const allCards: CardDefinition[] = [
       {
         id: 'eat_food',
         inbound_cost: {
-          food: 0.1,
+          food: 1,
         },
         outbound_gain: {
-          humanEnergy: 0.12,
+          humanEnergy: 1.2,
         },
         focus: {
           resource: 'population',
-        },
-      },
-    ],
-  },
-  {
-    id: 'grunters',
-    title: 'Grunters (L2)',
-    type: 'people',
-    icon: '👥',
-    description: 'More advanced human population',
-    knowledge_level: 2,
-    replaces: 'hominids',
-    rts: [
-      {
-        id: 'eat_food',
-        inbound_cost: {
-          food: 0.1,
-        },
-        outbound_gain: {
-          humanEnergy: 0.12,
-        },
-        focus: {
-          resource: 'population',
-        },
-      },
-    ],
-  },
-  {
-    id: 'talkers',
-    title: 'Talkers (L3)',
-    type: 'people',
-    icon: '👥',
-    description: 'Language-capable human population',
-    knowledge_level: 3,
-    replaces: 'grunters',
-    rts: [
-      {
-        id: 'eat_food',
-        inbound_cost: {
-          food: 0.1,
-        },
-        outbound_gain: {
-          humanEnergy: 0.12,
-        },
-        focus: {
-          resource: 'population',
-        },
-      },
-    ],
-  },
-  {
-    id: 'storytellers',
-    title: 'Storytellers (L4)',
-    type: 'people',
-    icon: '👥',
-    description: 'Culture-bearing human population',
-    knowledge_level: 4,
-    replaces: 'talkers',
-    rts: [
-      {
-        id: 'eat_food',
-        inbound_cost: {
-          food: 0.1,
-        },
-        outbound_gain: {
-          humanEnergy: 0.12,
-        },
-        focus: {
-          resource: 'population',
-        },
-      },
-    ],
-  },
-  {
-    id: 'think_l1',
-    title: 'Think (L1)',
-    type: 'computation',
-    icon: '🧠',
-    imageSrc: '/card_images/think.webp',
-    description: 'Basic thinking',
-    knowledge_level: 1,
-    rts: [
-      {
-        id: 'think',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          thoughts: 1,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
-      },
-    ],
-  },
-  {
-    id: 'think_l2',
-    title: 'Think (L2)',
-    type: 'computation',
-    icon: '🧠',
-    description: 'Advanced thinking',
-    knowledge_level: 2,
-    replaces: 'think_l1',
-    rts: [
-      {
-        id: 'think',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          thoughts: 10,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
-      },
-    ],
-  },
-  {
-    id: 'think_l3',
-    title: 'Think (L3)',
-    type: 'computation',
-    icon: '🧠',
-    description: 'Complex thinking',
-    knowledge_level: 3,
-    replaces: 'think_l2',
-    rts: [
-      {
-        id: 'think',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          thoughts: 100,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
-      },
-    ],
-  },
-  {
-    id: 'think_l4',
-    title: 'Think (L4)',
-    type: 'computation',
-    icon: '🧠',
-    description: 'Abstract thinking',
-    knowledge_level: 4,
-    replaces: 'think_l3',
-    rts: [
-      {
-        id: 'think',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          thoughts: 1000,
-        },
-        focus: {
-          resource: 'humanEnergy',
         },
       },
     ],
@@ -243,6 +85,7 @@ export const allCards: CardDefinition[] = [
     icon: '⚙️',
     imageSrc: '/card_images/gatherFood.png',
     description: 'Gather food from the environment',
+    knowledge_level: 1,
     discovery_stats: {
       thought_to_imagine: 0,
       further_thought_to_discover: 0,
@@ -272,9 +115,10 @@ export const allCards: CardDefinition[] = [
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
     description: 'Basic gestures and expressions that enable coordination',
+    knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 1,
-      further_thought_to_discover: 1,
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
       focus: {
         resource: 'thoughts',
       },
@@ -291,7 +135,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 5,
+        knowledge: 20,
       },
     },
   },
@@ -302,14 +146,30 @@ export const allCards: CardDefinition[] = [
     icon: '🎁',
     imageSrc: '/card_images/giftGiving.png',
     description: 'Share resources to build social bonds',
+    knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 2,
-      further_thought_to_discover: 2,
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
       focus: {
         resource: 'thoughts',
       },
       discovery_unlocks: [],
     },
+    rts: [
+      // Cultural route: slowly convert human energy into knowledge
+      {
+        id: 'cultural_exchange',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          knowledge: 0.05,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
     ongoingEffects: {
       resourceModifiers: {
         thoughts: 1.1,
@@ -320,7 +180,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 5,
+        knowledge: 20,
       },
     },
   },
@@ -331,9 +191,10 @@ export const allCards: CardDefinition[] = [
     icon: '🦌',
     imageSrc: '/card_images/hunt.webp',
     description: 'Hunt animals for food',
+    knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 2,
-      further_thought_to_discover: 2,
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
       focus: {
         resource: 'thoughts',
       },
@@ -355,9 +216,82 @@ export const allCards: CardDefinition[] = [
     ],
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 5,
+        knowledge: 10,
       },
     },
+  },
+  {
+    id: 'think_l1',
+    title: 'Think (L1)',
+    type: 'computation',
+    icon: '🧠',
+    imageSrc: '/card_images/think.webp',
+    description: 'Basic thinking',
+    knowledge_level: 1,
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 1,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+  },
+
+  // ------------------------------
+  // Tier 2 (knowledge_level = 2)
+  // ------------------------------
+  {
+    id: 'grunters',
+    title: 'Grunters (L2)',
+    type: 'people',
+    icon: '👥',
+    description: 'More advanced human population',
+    knowledge_level: 2,
+    replaces: 'hominids',
+    rts: [
+      {
+        id: 'eat_food',
+        inbound_cost: {
+          food: 0.1,
+        },
+        outbound_gain: {
+          humanEnergy: 0.12,
+        },
+        focus: {
+          resource: 'population',
+        },
+      },
+    ],
+  },
+  {
+    id: 'think_l2',
+    title: 'Think (L2)',
+    type: 'computation',
+    icon: '🧠',
+    description: 'Advanced thinking',
+    knowledge_level: 2,
+    replaces: 'think_l1',
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 10,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
   },
   {
     id: 'early_stone_tools',
@@ -366,9 +300,10 @@ export const allCards: CardDefinition[] = [
     icon: '🪨',
     imageSrc: '/card_images/earlyStoneTools.png',
     description: 'Basic tools that improve work efficiency',
+    knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 2,
-      further_thought_to_discover: 2,
+      thought_to_imagine: 100,
+      further_thought_to_discover: 100,
       focus: {
         resource: 'thoughts',
       },
@@ -384,7 +319,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 10,
+        knowledge: 50,
       },
     },
   },
@@ -395,9 +330,10 @@ export const allCards: CardDefinition[] = [
     icon: '🪓',
     imageSrc: '/card_images/handAxe.png',
     description: 'More sophisticated stone tools with multiple uses',
+    knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 5,
-      further_thought_to_discover: 5,
+      thought_to_imagine: 120,
+      further_thought_to_discover: 120,
       focus: {
         resource: 'thoughts',
       },
@@ -414,7 +350,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 15,
+        knowledge: 60,
       },
     },
   },
@@ -425,9 +361,10 @@ export const allCards: CardDefinition[] = [
     icon: '👥🦌',
     imageSrc: '/card_images/cooperativeHunting.png',
     description: 'Hunt in coordinated groups for better results',
+    knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 5,
-      further_thought_to_discover: 5,
+      thought_to_imagine: 150,
+      further_thought_to_discover: 150,
       focus: {
         resource: 'thoughts',
       },
@@ -449,7 +386,7 @@ export const allCards: CardDefinition[] = [
     ],
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 15,
+        knowledge: 70,
       },
     },
   },
@@ -460,9 +397,10 @@ export const allCards: CardDefinition[] = [
     icon: '🔥',
     imageSrc: '/card_images/fireDomestication.png',
     description: 'Control and maintain fire for cooking and protection',
+    knowledge_level: 2,
     discovery_stats: {
-      thought_to_imagine: 8,
-      further_thought_to_discover: 8,
+      thought_to_imagine: 200,
+      further_thought_to_discover: 200,
       focus: {
         resource: 'thoughts',
       },
@@ -480,11 +418,90 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 20,
+        knowledge: 80,
       },
     },
   },
-  // Tier 3
+  {
+    id: 'spear',
+    title: 'Spear',
+    type: 'science',
+    icon: '🗡️',
+    imageSrc: '/card_images/spear.png',
+    description: 'Long-range hunting weapon',
+    knowledge_level: 2,
+    discovery_stats: {
+      thought_to_imagine: 100,
+      further_thought_to_discover: 100,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: ['complex_hunting'],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        humanEnergy: 1.2,
+      },
+      focus: {
+        resource: 'humanEnergy',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 50,
+      },
+    },
+  },
+
+  // ------------------------------
+  // Tier 3 (knowledge_level = 3)
+  // ------------------------------
+  {
+    id: 'talkers',
+    title: 'Talkers (L3)',
+    type: 'people',
+    icon: '👥',
+    description: 'Language-capable human population',
+    knowledge_level: 3,
+    replaces: 'grunters',
+    rts: [
+      {
+        id: 'eat_food',
+        inbound_cost: {
+          food: 0.1,
+        },
+        outbound_gain: {
+          humanEnergy: 0.12,
+        },
+        focus: {
+          resource: 'population',
+        },
+      },
+    ],
+  },
+  {
+    id: 'think_l3',
+    title: 'Think (L3)',
+    type: 'computation',
+    icon: '🧠',
+    description: 'Complex thinking',
+    knowledge_level: 3,
+    replaces: 'think_l2',
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 100,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+  },
   {
     id: 'cooking',
     title: 'Cooking',
@@ -492,9 +509,10 @@ export const allCards: CardDefinition[] = [
     icon: '🍖',
     imageSrc: '/card_images/cooking.png',
     description: 'Process food with fire for better nutrition',
+    knowledge_level: 3,
     discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 10,
+      thought_to_imagine: 1000,
+      further_thought_to_discover: 1000,
       focus: {
         resource: 'thoughts',
       },
@@ -517,7 +535,7 @@ export const allCards: CardDefinition[] = [
     ],
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 25,
+        knowledge: 100,
       },
     },
   },
@@ -528,9 +546,10 @@ export const allCards: CardDefinition[] = [
     icon: '💭',
     imageSrc: '/card_images/earlyLanguage.png',
     description: 'Basic verbal communication',
+    knowledge_level: 3,
     discovery_stats: {
-      thought_to_imagine: 12,
-      further_thought_to_discover: 12,
+      thought_to_imagine: 1200,
+      further_thought_to_discover: 1200,
       focus: {
         resource: 'thoughts',
       },
@@ -547,67 +566,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 30,
-      },
-    },
-  },
-  {
-    id: 'spear',
-    title: 'Spear',
-    type: 'science',
-    icon: '🗡️',
-    imageSrc: '/card_images/spear.png',
-    description: 'Long-range hunting weapon',
-    discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 10,
-      focus: {
-        resource: 'thoughts',
-      },
-      discovery_unlocks: ['complex_hunting'],
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        humanEnergy: 1.2,
-      },
-      focus: {
-        resource: 'humanEnergy',
-      },
-    },
-    OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 25,
-      },
-    },
-  },
-  // Tier 4
-  {
-    id: 'story_telling',
-    title: 'Story Telling',
-    type: 'science',
-    icon: '📖',
-    imageSrc: '/card_images/storyTelling.png',
-    description: 'Share knowledge through narratives',
-    discovery_stats: {
-      thought_to_imagine: 15,
-      further_thought_to_discover: 15,
-      focus: {
-        resource: 'thoughts',
-      },
-      discovery_unlocks: ['cave_painting', 'complex_language'],
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        thoughts: 1.3,
-        knowledge: 1.2,
-      },
-      focus: {
-        resource: 'thoughts',
-      },
-    },
-    OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 40,
+        knowledge: 120,
       },
     },
   },
@@ -618,9 +577,10 @@ export const allCards: CardDefinition[] = [
     icon: '🏹',
     imageSrc: '/card_images/complexHunting.png',
     description: 'Advanced group hunting strategies',
+    knowledge_level: 3,
     discovery_stats: {
-      thought_to_imagine: 15,
-      further_thought_to_discover: 15,
+      thought_to_imagine: 1500,
+      further_thought_to_discover: 1500,
       focus: {
         resource: 'thoughts',
       },
@@ -642,7 +602,103 @@ export const allCards: CardDefinition[] = [
     ],
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 35,
+        knowledge: 140,
+      },
+    },
+  },
+
+  // ------------------------------
+  // Tier 4 (knowledge_level = 4)
+  // ------------------------------
+  {
+    id: 'storytellers',
+    title: 'Storytellers (L4)',
+    type: 'people',
+    icon: '👥',
+    description: 'Culture-bearing human population',
+    knowledge_level: 4,
+    replaces: 'talkers',
+    rts: [
+      {
+        id: 'eat_food',
+        inbound_cost: {
+          food: 0.1,
+        },
+        outbound_gain: {
+          humanEnergy: 0.12,
+        },
+        focus: {
+          resource: 'population',
+        },
+      },
+    ],
+  },
+  {
+    id: 'think_l4',
+    title: 'Think (L4)',
+    type: 'computation',
+    icon: '🧠',
+    description: 'Abstract thinking',
+    knowledge_level: 4,
+    replaces: 'think_l3',
+    rts: [
+      {
+        id: 'think',
+        inbound_cost: {
+          humanEnergy: 1,
+        },
+        outbound_gain: {
+          thoughts: 1000,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+  },
+  {
+    id: 'story_telling',
+    title: 'Story Telling',
+    type: 'science',
+    icon: '📖',
+    imageSrc: '/card_images/storyTelling.png',
+    description: 'Share knowledge through narratives',
+    knowledge_level: 4,
+    discovery_stats: {
+      thought_to_imagine: 10000,
+      further_thought_to_discover: 10000,
+      focus: {
+        resource: 'thoughts',
+      },
+      discovery_unlocks: ['cave_painting', 'complex_language'],
+    },
+    rts: [
+      // Another cultural route: human energy → knowledge
+      {
+        id: 'share_stories',
+        inbound_cost: {
+          humanEnergy: 2,
+        },
+        outbound_gain: {
+          knowledge: 0.5,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts: 1.3,
+        knowledge: 1.2,
+      },
+      focus: {
+        resource: 'thoughts',
+      },
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 200,
       },
     },
   },
@@ -653,9 +709,10 @@ export const allCards: CardDefinition[] = [
     icon: '🔢',
     imageSrc: '/card_images/tallyMarks.png',
     description: 'Basic counting system',
+    knowledge_level: 4,
     discovery_stats: {
-      thought_to_imagine: 15,
-      further_thought_to_discover: 15,
+      thought_to_imagine: 12000,
+      further_thought_to_discover: 12000,
       focus: {
         resource: 'thoughts',
       },
@@ -672,11 +729,10 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 35,
+        knowledge: 220,
       },
     },
   },
-  // Tier 5
   {
     id: 'cave_painting',
     title: 'Cave Painting',
@@ -684,14 +740,29 @@ export const allCards: CardDefinition[] = [
     icon: '🎨',
     imageSrc: '/card_images/cavePainting.png',
     description: 'Visual storytelling and record keeping',
+    knowledge_level: 4,
     discovery_stats: {
-      thought_to_imagine: 20,
-      further_thought_to_discover: 20,
+      thought_to_imagine: 14000,
+      further_thought_to_discover: 14000,
       focus: {
         resource: 'thoughts',
       },
       discovery_unlocks: [],
     },
+    rts: [
+      {
+        id: 'paint_caves',
+        inbound_cost: {
+          humanEnergy: 3,
+        },
+        outbound_gain: {
+          knowledge: 1,
+        },
+        focus: {
+          resource: 'humanEnergy',
+        },
+      },
+    ],
     ongoingEffects: {
       resourceModifiers: {
         thoughts: 1.3,
@@ -703,7 +774,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 50,
+        knowledge: 240,
       },
     },
   },
@@ -714,9 +785,10 @@ export const allCards: CardDefinition[] = [
     icon: '🗣️',
     imageSrc: '/card_images/complexLanguage.png',
     description: 'Sophisticated verbal communication with abstract concepts',
+    knowledge_level: 4,
     discovery_stats: {
-      thought_to_imagine: 25,
-      further_thought_to_discover: 25,
+      thought_to_imagine: 16000,
+      further_thought_to_discover: 16000,
       focus: {
         resource: 'thoughts',
       },
@@ -734,7 +806,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
-        knowledge: 60,
+        knowledge: 300,
       },
     },
   },
