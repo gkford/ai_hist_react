@@ -34,12 +34,10 @@ export const useResourceStore = create<ResourceStore>((set) => ({
       
       // Process each resource
       Object.entries(newResources).forEach(([key, resource]) => {
-        const currentAmount = resource.isRate ? 0 : resource.amount[0];
-        
         // Add new values at start of arrays and trim to 6 items
         newResources[key as ResourceKey] = {
           ...resource,
-          amount: [currentAmount, ...resource.amount].slice(0, 6),
+          amount: [resource.amount[0], ...resource.amount].slice(0, 6),
           amountProducedThisSecond: [0, ...resource.amountProducedThisSecond].slice(0, 6),
           amountSpentThisSecond: [0, ...resource.amountSpentThisSecond].slice(0, 6)
         };
