@@ -148,6 +148,28 @@ export const useCardsStore = create<CardsStore>((set) => ({
       const propValues = calculateFocusPropFromPriorities(thoughtFocusStates);
       useFocusStore.getState().updateResourceProps('thoughts', propValues);
 
+      // Calculate focus props for RT resources
+      const rtResourceTypes = new Set<ResourceKey>();
+      Object.values(newCardStates).forEach(card => {
+        Object.values(card.rts || {}).forEach(rt => {
+          rtResourceTypes.add(rt.focus.resource);
+        });
+      });
+
+      rtResourceTypes.forEach(resource => {
+        const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
+        Object.values(newCardStates).forEach(card => {
+          Object.values(card.rts || {}).forEach(rt => {
+            if (rt.focus.resource === resource) {
+              rtFocusStates.push(rt.focus.priority);
+            }
+          });
+        });
+
+        const rtPropValues = calculateFocusPropFromPriorities(rtFocusStates);
+        useFocusStore.getState().updateResourceProps(resource, rtPropValues);
+      });
+
       return { 
         cardStates: newCardStates,
         createCard: state.createCard,
