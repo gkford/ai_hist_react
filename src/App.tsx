@@ -72,38 +72,12 @@ function App() {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    // Initialize cards first
+    // Initialize cards
     console.log("init")
     initializeCards();
     
-    // Calculate initial focus values for all resources
-    const cardStates = useCardsStore.getState().cardStates;
-    const resourceTypes = new Set<ResourceKey>();
-    
-    // Collect all unique resource types from RT focuses
-    Object.values(cardStates).forEach(card => {
-      Object.values(card.rts).forEach(rt => {
-        resourceTypes.add(rt.focus.resource);
-      });
-    });
-
-    // For each resource type, calculate focus props
-    resourceTypes.forEach(resource => {
-      const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
-      Object.values(cardStates).forEach(card => {
-        Object.values(card.rts).forEach(rt => {
-          if (rt.focus.resource === resource) {
-            rtFocusStates.push(rt.focus.priority);
-          }
-        });
-      });
-
-      const propValues = calculateFocusPropFromPriorities(rtFocusStates);
-      useFocusStore.getState().updateResourceProps(resource, propValues);
-    });
-
     setInitialized(true);
-    // Then start the game loop
+    // Start the game loop
     startGameLoop();
     // Stop it on unmount
     return () => stopGameLoop();

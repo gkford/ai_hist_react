@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import type { ResourceKey } from './useResourceStore'
 import { allCards } from '@/data/cards'
+import { calculateFocusPropFromPriorities } from '@/lib/focusCalculator'
+import { useFocusStore } from '@/store/useFocusStore'
 import type {
   CardDefinition,
   rtConfig,
@@ -73,10 +75,8 @@ export const useCardsStore = create<CardsStore>((set) => ({
     const cardDef = allCards.find((c: CardDefinition) => c.id === id)
     if (!cardDef) return
 
-    set((state) => ({
-      cardStates: {
-        ...state.cardStates,
-        [id]: {
+    set((state) => {
+      const newCardState = {
           ...cardDef,
           rts: Object.fromEntries(
             (cardDef.rts || []).map((rt: rtConfig) => [
@@ -130,8 +130,39 @@ export const useCardsStore = create<CardsStore>((set) => ({
                 ...(initialState?.discovery_state || {}),
               },
         },
-      },
-    }))
+      };
+
+      // Calculate focus props for each resource after adding the new card
+      const newCardStates = {
+        ...state.cardStates,
+        [id]: newCardState,
+      };
+
+      // Get all unique resources from RTs across all cards
+      const resourceTypes = new Set<ResourceKey>();
+      Object.values(newCardStates).forEach(card => {
+        Object.values(card.rts).forEach(rt => {
+          resourceTypes.add(rt.focus.resource);
+        });
+      });
+
+      // Update focus props for each resource
+      resourceTypes.forEach(resource => {
+        const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
+        Object.values(newCardStates).forEach(card => {
+          Object.values(card.rts).forEach(rt => {
+            if (rt.focus.resource === resource) {
+              rtFocusStates.push(rt.focus.priority);
+            }
+          });
+        });
+
+        const propValues = calculateFocusPropFromPriorities(rtFocusStates);
+        useFocusStore.getState().updateResourceProps(resource, propValues);
+      });
+
+      return { cardStates: newCardStates };
+    })
   },
 
   updateCardState: (id, partial) =>
