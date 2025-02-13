@@ -5,7 +5,7 @@ import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
 
 interface ResourceDisplayProps {
   icon: string
-  amount: number
+  amount: number[]
   resourceKey: ResourceKey
 }
 
@@ -17,7 +17,7 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
 
   useEffect(() => {
     setDisplayAmount(Math.floor(amount[0]))
-  }, [amount])
+  }, [amount[0]])
 
   return (
     <div className="w-32 px-4 py-2 bg-white rounded-md shadow-sm">
