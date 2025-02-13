@@ -92,7 +92,7 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
         >
           {focus.priority === 'none' ? 'lowest priority' : 
            focus.priority === 'low' ? 'low priority' : 
-           'high priority'}
+           'highest priority'}
         </Button>
       </div>
     </div>
