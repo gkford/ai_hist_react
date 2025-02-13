@@ -16,10 +16,10 @@ interface Resource {
 
 interface ResourceStore {
   resources: Record<ResourceKey, Resource>;
-  updateResource: (key: ResourceKey, delta: number, additionalUpdates?: Record<string, any>) => void;
+  spendResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) => void;
+  produceResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) => void;
   setResourceUsage: (key: ResourceKey, usage: number) => void;
   trackProducedAmount: (key: ResourceKey) => void; // New function to snapshot produced amount
-  addResource: (key: ResourceKey, amount: number) => void;
   setResourceBonus: (key: ResourceKey, bonus: number) => void;
 }
 
@@ -31,13 +31,25 @@ export const useResourceStore = create<ResourceStore>((set) => ({
     humanEnergy: { amount: 0, icon: "⚡", key: "humanEnergy", isRate: true, usage: 0, bonus: 1, previousAmount: 0, rawProduction: 0 },
     population: { amount: 10, icon: "👥", key: "population", isRate: false, usage: 0, bonus: 1, previousAmount: 10, rawProduction: 0 },
   },
-  updateResource: (key: ResourceKey, delta: number, additionalUpdates?: Record<string, any>) =>
+  spendResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
     set((state) => ({
       resources: {
         ...state.resources,
         [key]: {
           ...state.resources[key],
-          amount: Math.max(0, state.resources[key].amount + delta),
+          amount: Math.max(0, state.resources[key].amount - amount),
+          ...additionalUpdates
+        }
+      }
+    })),
+  produceResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
+    set((state) => ({
+      resources: {
+        ...state.resources,
+        [key]: {
+          ...state.resources[key],
+          amount: state.resources[key].amount + amount,
+          rawProduction: state.resources[key].rawProduction + amount,
           ...additionalUpdates
         }
       }

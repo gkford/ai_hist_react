@@ -33,7 +33,7 @@ export function processRTPayments() {
         Object.entries(rt.inbound_cost).forEach(([resource, amount]) => {
           const adjustedAmount = amount * multiplier;
           const resourceKey = resource as ResourceKey;
-          resourceStore.updateResource(resourceKey, -adjustedAmount);
+          resourceStore.spendResource(resourceKey, adjustedAmount);
         });
 
         // Update inbound_paid and outbound_owed
@@ -103,7 +103,7 @@ export function processTransformations() {
           
           
           // Add the deducted amount to the resource store
-          resourceStore.updateResource(key, amount);
+          resourceStore.produceResource(key, amount);
         });
 
         // console.log(`RT ${rtId} transformation completed:`, {
