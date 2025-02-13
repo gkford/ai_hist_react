@@ -26,6 +26,10 @@ export function processTransformations() {
     // Get focus proportion
     let focusProportion;
     let amountToProcess;
+    
+    // Initialize costs and gains tracking
+    const actualInboundCosts: Partial<Record<ResourceKey, number>> = {}
+    const actualOutboundGains: Partial<Record<ResourceKey, number>> = {}
 
     if (rt.focus.resource === 'population') {
       focusProportion = 1; // Population always uses 100%
@@ -70,10 +74,6 @@ export function processTransformations() {
 
       amountToProcess = limitingResource.maxProcessable * focusProportion;
     }
-
-    // Calculate actual costs and gains
-    const actualInboundCosts: Partial<Record<ResourceKey, number>> = {}
-    const actualOutboundGains: Partial<Record<ResourceKey, number>> = {}
 
     // Calculate costs
     let shortfallWarning = false;
