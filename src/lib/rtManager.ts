@@ -1,5 +1,5 @@
 import { useResourceStore, type ResourceKey } from '@/store/useResourceStore'
-import { useCardsStore, type RTState } from '@/store/useCardsStore'
+import { useCardsStore } from '@/store/useCardsStore'
 import { useFocusStore } from '@/store/useFocusStore'
 import { logger } from './logger'
 
@@ -33,8 +33,6 @@ export function processTransformations() {
 
     if (rt.focus.resource === 'population') {
       focusProportion = 1; // Population always uses 100%
-      const population = resourceStore.resources.population.amount[0];
-      
       // Get the first (and should be only) inbound cost for population-based RTs
       const [inboundResource, inboundRatio] = Object.entries(rt.inbound_cost)[0];
       // Simply multiply population by the ratio to get amount to process
@@ -76,14 +74,12 @@ export function processTransformations() {
     }
 
     // Calculate costs
-    let shortfallWarning = false;
     Object.entries(rt.inbound_cost).forEach(([resource, ratio]) => {
       const key = resource as ResourceKey
       const cost = amountToProcess * ratio
       const available = resourceStore.resources[key].amount[0]
       
       if (available < cost && (cost - available) > EPSILON) {
-        shortfallWarning = true;
         logger.log(
           `RT ${cardId}:${rtId} has resource shortfall:`,
           `${key} needs ${cost} but only has ${available}`,

@@ -4,7 +4,6 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useFocusStore } from "@/store/useFocusStore";
-import type { ResourceKey } from "@/store/useResourceStore";
 
 interface FocusSelectorProps {
   focus: FocusState;
@@ -55,8 +54,6 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
     updateResourceProps(focus.resource, propValues);
   };
 
-  type FocusType = 'discovery' | 'rt';
-  type Priority = 'none' | 'low' | 'high';
 
   const buttonStyles = {
     discovery: {
