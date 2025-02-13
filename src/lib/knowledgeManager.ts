@@ -9,7 +9,7 @@ export function processKnowledgeLevel() {
   const cardStore = useCardsStore.getState();
   const knowledgeLevelStore = useKnowledgeLevelStore.getState();
   
-  const currentKnowledge = resourceStore.resources.knowledge.amount;
+  const currentKnowledge = resourceStore.resources.knowledge.amount[0];
   const { level, thresholds } = knowledgeLevelStore;
   
   // Check if we should level up
