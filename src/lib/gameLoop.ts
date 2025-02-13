@@ -1,4 +1,4 @@
-import { updateRTs, processTransformations } from './rtManager'
+import { processTransformations } from './rtManager'
 import { processDiscoveries } from './discoveryManager'
 import { processKnowledgeLevel } from './knowledgeManager'
 import { useResourceStore } from '@/store/useResourceStore'
