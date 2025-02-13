@@ -89,7 +89,10 @@ export const useResourceStore = create<ResourceStore>((set) => ({
         ...state.resources,
         [key]: {
           ...state.resources[key],
-          amount: state.resources[key].amount + amount
+          amount: [
+            state.resources[key].amount[0] + amount,
+            ...state.resources[key].amount.slice(1)
+          ]
         }
       }
     })),
