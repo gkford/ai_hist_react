@@ -29,12 +29,12 @@ export function processTransformations() {
 
     if (rt.focus.resource === 'population') {
       focusProportion = 1; // Population always uses 100%
-      // For population RTs, calculate max processable based on population * inbound ratio
       const population = resourceStore.resources.population.amount[0];
       
       // Get the first (and should be only) inbound cost for population-based RTs
       const [resource, ratio] = Object.entries(rt.inbound_cost)[0];
-      const maxProcessableByPopulation = population * ratio;
+      // Each population unit can process 1/ratio resources per tick
+      const maxProcessableByPopulation = population * (1/ratio);
       
       // Check how much of the resource is actually available
       const availableResource = resourceStore.resources[resource as ResourceKey].amount[0];
