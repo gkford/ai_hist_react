@@ -90,7 +90,9 @@ export function FocusSelector({ focus, onFocusChange, type }: FocusSelectorProps
           onClick={cyclePriority}
           className={cn(buttonStyles[type][focus.priority])}
         >
-          {focus.priority === 'none' ? 'Off' : focus.priority}
+          {focus.priority === 'none' ? 'lowest priority' : 
+           focus.priority === 'low' ? 'low priority' : 
+           'high priority'}
         </Button>
       </div>
     </div>
