@@ -93,6 +93,23 @@ export function processTransformations() {
       actualOutboundGains[key] = amountToProcess * ratio
     });
 
+    // Add verbose logging of RT processing
+    if (logger.isVerbose()) {
+      logger.log(
+        `Processing RT ${cardId}:${rtId}`,
+        `\n  Focus: ${rt.focus.resource} (${focusProportion * 100}%)`,
+        `\n  Processing amount: ${amountToProcess}`,
+        `\n  Inputs:`,
+        ...Object.entries(actualInboundCosts).map(
+          ([resource, amount]) => `\n    ${resource}: ${amount.toFixed(3)}`
+        ),
+        `\n  Outputs:`,
+        ...Object.entries(actualOutboundGains).map(
+          ([resource, amount]) => `\n    ${resource}: ${amount.toFixed(3)}`
+        )
+      );
+    }
+
     // Spend resources
     Object.entries(actualInboundCosts).forEach(([resource, amount]) => {
       const key = resource as ResourceKey
