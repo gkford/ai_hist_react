@@ -10,7 +10,7 @@ export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
   const cardState = useCardsStore(state => state.cardStates[cardId]);
   const isUnthoughtof = cardState?.discovery_state.current_status === 'unthoughtof';
   return (
-    <div className="relative w-[400px] h-[133px] overflow-hidden">
+    <div className="relative w-[480px] h-[160px] overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
         <img
           src={isUnthoughtof 
