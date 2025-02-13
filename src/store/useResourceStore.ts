@@ -17,6 +17,7 @@ interface ResourceStore {
   spendResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) => void;
   produceResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) => void;
   setResourceBonus: (key: ResourceKey, bonus: number) => void;
+  progressToNextSecond: () => void;
 }
 
 export const useResourceStore = create<ResourceStore>((set) => ({

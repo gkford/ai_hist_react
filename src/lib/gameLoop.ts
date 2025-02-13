@@ -1,7 +1,7 @@
 import { processRTPayments, processTransformations } from "./rtManager";
 import { processDiscoveries } from "./discoveryManager";
 import { processKnowledgeLevel } from "./knowledgeManager";
-import { useResourceStore, type ResourceKey } from "@/store/useResourceStore";
+import { useResourceStore } from "@/store/useResourceStore";
 import { logger } from "./logger";
 
 let intervalId: number | null = null;
