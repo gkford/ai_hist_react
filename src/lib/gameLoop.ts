@@ -16,11 +16,14 @@ export function startGameLoop() {
   intervalId = window.setInterval(() => {
     logger.log("=== Game Loop Start ===");
     
-    // Process knowledge level before other updates
-    processKnowledgeLevel();
-    
     const store = useResourceStore.getState();
     
+    // Progress to next second (handles resetting rate resources)
+    logger.log("Progressing to next second...");
+    store.progressToNextSecond();
+
+    // Process knowledge level before other updates
+    processKnowledgeLevel();
 
     // Process transformations which generate resources
     logger.log("Processing Transformations...");
@@ -33,13 +36,6 @@ export function startGameLoop() {
     // Process payments which consume resources
     logger.log("Processing RT Payments...");
     processRTPayments();
-
-    // Reset rate resources to 0
-    Object.entries(store.resources)
-      .filter(([_, resource]) => resource.isRate)
-      .forEach(([key]) => {
-        store.spendResource(key as ResourceKey, store.resources[key as ResourceKey].amount);
-      });
     
     logger.log("=== Game Loop End ===");
   }, 1000);
