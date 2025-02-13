@@ -14,8 +14,8 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
   const resource = useResource(resourceKey)
 
   const formattedMultiplier = resource.bonus.toFixed(2)
-  const producedThisSecond = Math.floor(resource.amountProducedThisSecond[0])
-  const spentThisSecond = Math.floor(resource.amountSpentThisSecond[0])
+  const producedThisSecond = resource.amountProducedThisSecond[0].toFixed(2)
+  const spentThisSecond = resource.amountSpentThisSecond[0].toFixed(2)
 
   useEffect(() => {
     setDisplayAmount(Math.floor(amount[0]))
@@ -35,7 +35,7 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
             <span className="text-red-600">-{spentThisSecond}</span>
           </div>
           <div className="text-gray-500">
-            net: {producedThisSecond - spentThisSecond}
+            net: {(resource.amountProducedThisSecond[0] - resource.amountSpentThisSecond[0]).toFixed(2)}
           </div>
         </div>
       )}
