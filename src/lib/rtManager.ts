@@ -25,30 +25,43 @@ export function processTransformations() {
   for (const { cardId, rtId, rt } of allRTs) {
     // Get focus proportion
     let focusProportion;
+    let amountToProcess;
+
     if (rt.focus.resource === 'population') {
       focusProportion = 1; // Population always uses 100%
+      // For population RTs, calculate max processable based on population * inbound ratio
+      const population = resourceStore.resources.population.amount[0];
+      
+      // Get the first (and should be only) inbound cost for population-based RTs
+      const [resource, ratio] = Object.entries(rt.inbound_cost)[0];
+      const maxProcessableByPopulation = population * ratio;
+      
+      // Check how much of the resource is actually available
+      const availableResource = resourceStore.resources[resource as ResourceKey].amount[0];
+      
+      // Use whichever is smaller - what population can process or what's available
+      amountToProcess = Math.min(maxProcessableByPopulation, availableResource);
     } else {
-      const resourceProps = focusStore.resourceProps[rt.focus.resource]
-      focusProportion = resourceProps[rt.focus.priority]
+      // Original non-population logic
+      const resourceProps = focusStore.resourceProps[rt.focus.resource];
+      focusProportion = resourceProps[rt.focus.priority];
+
+      // Get the limiting input resource
+      const inputResourceAmounts = Object.entries(rt.inbound_cost).map(([resource, ratio]) => {
+        const currentAmount = resourceStore.resources[resource as ResourceKey].amount[0];
+        return {
+          resource,
+          available: currentAmount,
+          maxProcessable: currentAmount / ratio
+        };
+      });
+
+      const limitingResource = inputResourceAmounts.reduce((prev, curr) => 
+        prev.maxProcessable < curr.maxProcessable ? prev : curr
+      );
+
+      amountToProcess = limitingResource.maxProcessable * focusProportion;
     }
-
-    // Get the limiting input resource (the one that will limit how much we can process)
-    const inputResourceAmounts = Object.entries(rt.inbound_cost).map(([resource, ratio]) => {
-      const currentAmount = resourceStore.resources[resource as ResourceKey].amount[0]
-      return {
-        resource,
-        available: currentAmount,
-        maxProcessable: currentAmount / ratio
-      }
-    });
-
-    // Find the resource that limits how much we can process
-    const limitingResource = inputResourceAmounts.reduce((prev, curr) => 
-      prev.maxProcessable < curr.maxProcessable ? prev : curr
-    );
-
-    // Calculate how much we'll actually process based on focus proportion
-    const amountToProcess = limitingResource.maxProcessable * focusProportion;
 
     // Calculate actual costs and gains
     const actualInboundCosts: Partial<Record<ResourceKey, number>> = {}
