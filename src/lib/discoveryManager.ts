@@ -79,6 +79,8 @@ export function processDiscoveries() {
     logger.log(`Thoughts to invest: ${thoughtsToInvest}`);
 
     if (thoughtsToInvest > 0) {
+      // Spend the thoughts we're about to invest
+      resourceStore.spendResource('thoughts', thoughtsToInvest);
       // Update the card's thought_invested
       const newThoughtInvested = card.discovery_state.thought_invested + thoughtsToInvest;
       logger.log(`New total thoughts invested: ${newThoughtInvested}`);
