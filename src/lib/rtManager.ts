@@ -76,7 +76,7 @@ export function processTransformations() {
       
       if (available < cost && (cost - available) > EPSILON) {
         shortfallWarning = true;
-        logger.warn(
+        logger.log(
           `RT ${cardId}:${rtId} has resource shortfall:`,
           `${key} needs ${cost} but only has ${available}`,
           `shortfall: ${cost - available}`
