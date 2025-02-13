@@ -48,7 +48,7 @@ export function processDiscoveries() {
   const thoughtsAmount = resourceStore.resources.thoughts.amount;
   logger.log("Thoughts available this turn:", thoughtsAmount);
   
-  if (thoughtsAmount <= 0) {
+  if (thoughtsAmount[0] <= 0) {
     logger.log("No thoughts produced, skipping discovery processing");
     return;
   }
@@ -84,7 +84,7 @@ export function processDiscoveries() {
     logger.log(`Focus priority: ${cardFocus}, proportion: ${thoughtsProportion}`);
 
     // Calculate thoughts to invest in this card
-    const thoughtsToInvest = thoughtsAmount * thoughtsProportion;
+    const thoughtsToInvest = thoughtsAmount[0] * thoughtsProportion;
     logger.log(`Thoughts to invest: ${thoughtsToInvest}`);
 
     if (thoughtsToInvest > 0) {
