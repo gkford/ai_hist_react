@@ -14,20 +14,29 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
   const resource = useResource(resourceKey)
 
   const formattedMultiplier = resource.bonus.toFixed(2)
+  const producedThisSecond = Math.floor(resource.amountProducedThisSecond[0])
+  const spentThisSecond = Math.floor(resource.amountSpentThisSecond[0])
 
   useEffect(() => {
     setDisplayAmount(Math.floor(amount[0]))
   }, [amount[0]])
 
   return (
-    <div className="w-32 px-4 py-2 bg-white rounded-md shadow-sm">
+    <div className="w-48 px-4 py-2 bg-white rounded-md shadow-sm">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xl">{icon}</span>
         <span className="font-medium tabular-nums">{displayAmount}</span>
       </div>
       {resourceKey !== 'population' && (
-        <div className="text-xs text-gray-600 border-t pt-1">
+        <div className="text-xs text-gray-600 border-t pt-1 space-y-1">
           <div>bonus: {formattedMultiplier}x</div>
+          <div className="flex justify-between">
+            <span className="text-green-600">+{producedThisSecond}</span>
+            <span className="text-red-600">-{spentThisSecond}</span>
+          </div>
+          <div className="text-gray-500">
+            net: {producedThisSecond - spentThisSecond}
+          </div>
         </div>
       )}
     </div>
