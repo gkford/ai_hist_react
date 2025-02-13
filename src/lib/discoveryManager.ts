@@ -54,11 +54,12 @@ export function processDiscoveries() {
   }
 
   // First, filter eligible cards and calculate total focus points
-  const eligibleCards = Object.entries(cardStore.cardStates).filter(([_, card]) => 
-    (card.discovery_state.current_status === 'unthoughtof' || 
-     card.discovery_state.current_status === 'imagined') &&
-    card.discovery_stats // Only include cards that have discovery stats
-  );
+  const eligibleCards = Object.entries(cardStore.cardStates).filter(([id, card]) => {
+    const cardDef = allCards.find(c => c.id === id);
+    return (card.discovery_state.current_status === 'unthoughtof' || 
+            card.discovery_state.current_status === 'imagined') &&
+           cardDef?.discovery_stats; // Only include cards that have discovery stats
+  });
   logger.log("Eligible cards:", eligibleCards.map(([id]) => id));
 
   const totalFocusPoints = eligibleCards.reduce((total, [_, card]) => {
