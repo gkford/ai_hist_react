@@ -73,7 +73,7 @@ export async function processTick() {
     await checkAndHandleResources()
 
     // Only continue processing if the game is still running
-    if (gameLoopStore.getState().isRunning) {
+    if (useGameLoopStore.getState().isRunning) {
       // Process resource transformations
       logger.log('Processing Transformations...')
       processTransformations()
