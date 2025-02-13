@@ -1,6 +1,32 @@
 import { useResourceStore, type ResourceKey } from '@/store/useResourceStore'
-import { useCardsStore } from '@/store/useCardsStore'
+import { useCardsStore, type RTState } from '@/store/useCardsStore'
 import { useFocusStore } from '@/store/useFocusStore'
+
+const RT_PRIORITY_ORDER: ResourceKey[] = [
+  'humanEnergy',  // Process these first
+  'thoughts',     // Then these
+  // Any resources not listed will be processed after, in their default order
+];
+
+// Helper function to get priority of a resource
+function getResourcePriority(resource: ResourceKey): number {
+  const index = RT_PRIORITY_ORDER.indexOf(resource);
+  return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+}
+
+// Helper function to get the priority of an RT based on its outbound resources
+function getRTPriority(rt: RTState): number {
+  let highestPriority = Number.MAX_SAFE_INTEGER;
+  
+  Object.keys(rt.outbound_gain).forEach((resource) => {
+    const priority = getResourcePriority(resource as ResourceKey);
+    if (priority < highestPriority) {
+      highestPriority = priority;
+    }
+  });
+  
+  return highestPriority;
+}
 
 // First phase: Just accumulate desired transformations in RT state
 export function updateRTs() {
@@ -36,7 +62,7 @@ export function updateRTs() {
         newOutboundOwed[key] = (newOutboundOwed[key] || 0) + amount * multiplier
       })
 
-      cardStore.updateRTState(card.id, rtId, {
+      cardStore.updateRTState(cardId, rtId, {
         inbound_paid: newInboundPaid,
         outbound_owed: newOutboundOwed,
       })
@@ -48,10 +74,21 @@ export function processTransformations() {
   const resourceStore = useResourceStore.getState()
   const cardStore = useCardsStore.getState()
 
-  Object.values(cardStore.cardStates).forEach((card) => {
-    if (card.discovery_state.current_status !== 'discovered') return
+  // Get all discovered cards and their RTs, and sort them
+  const allRTs = Object.values(cardStore.cardStates)
+    .filter(card => card.discovery_state.current_status === 'discovered')
+    .flatMap(card => 
+      Object.entries(card.rts).map(([rtId, rt]) => ({
+        cardId: card.id,
+        rtId,
+        rt,
+        priority: getRTPriority(rt)
+      }))
+    )
+    .sort((a, b) => a.priority - b.priority);
 
-    Object.entries(card.rts).forEach(([rtId, rt]) => {
+  // Process RTs in priority order
+  for (const { cardId, rtId, rt } of allRTs) {
       // Create copies of the paid and owed values
       const flooredInboundPaid = { ...rt.inbound_paid }
       const flooredOutboundOwed = { ...rt.outbound_owed }
