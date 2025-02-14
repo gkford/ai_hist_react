@@ -79,7 +79,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
     set((state) => {
       const newCardState: CardState = {
         ...cardDef,
-        assigned_workers: 0,
+        assigned_workers: initialState?.assigned_workers || 0,
         rts: Object.fromEntries(
           (cardDef.rts || []).map((rt: rtConfig) => [
             rt.id,
