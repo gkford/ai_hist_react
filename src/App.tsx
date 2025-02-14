@@ -3,7 +3,8 @@ import { useDevStore } from "@/store/useDevStore"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
-import { DndContext } from '@dnd-kit/core'
+import { DndContext, DragOverlay } from '@dnd-kit/core'
+import { useState } from 'react'
 
 function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
   if (discoveryStatus === 'unthoughtof' || discoveryStatus === 'imagined') {
@@ -52,7 +53,16 @@ function initializeCards() {
   });
 }
 
+function WorkerIcon() {
+  return (
+    <span className="text-sm flex justify-center cursor-grabbing">
+      👤
+    </span>
+  )
+}
+
 function App() {
+  const [isDragging, setIsDragging] = useState(false)
   const { devMode } = useDevStore()
   const formatNumber = (n: number): string => {
     const trimmed = parseFloat(n.toFixed(3));
@@ -80,7 +90,10 @@ function App() {
   }, []);
 
   return (
-    <DndContext onDragEnd={(event) => {
+    <DndContext 
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={(event) => {
+        setIsDragging(false)
       const { active, over } = event
       if (!over) return
 
@@ -150,6 +163,9 @@ function App() {
         </div>
       )}
       </div>
+      <DragOverlay>
+        {isDragging && <WorkerIcon />}
+      </DragOverlay>
     </DndContext>
   )
 }

@@ -17,8 +17,7 @@ function DraggableWorker({ id, index }: DraggableWorkerProps) {
   })
 
   const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-    cursor: 'grab'
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
   } : undefined
 
   return (
@@ -27,7 +26,7 @@ function DraggableWorker({ id, index }: DraggableWorkerProps) {
       {...listeners}
       {...attributes}
       style={style}
-      className="text-sm flex justify-center cursor-grab active:cursor-grabbing"
+      className="text-sm flex justify-center"
     >
       👤
     </span>
