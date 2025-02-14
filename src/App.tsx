@@ -40,7 +40,8 @@ function initializeCards() {
   cardStore.createCard('gather_food', {
     discovery_state: {
       current_status: 'discovered'
-    }
+    },
+    assigned_workers: 10
   });
 }
 
