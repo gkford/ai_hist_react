@@ -10,10 +10,10 @@ export function processDiscoveries() {
   
   // Get all thought resources for this turn
   const thoughtLevels = [
-    resourceStore.resources.thoughts1.amountProducedThisSecond[0],
-    resourceStore.resources.thoughts2.amountProducedThisSecond[0],
-    resourceStore.resources.thoughts3.amountProducedThisSecond[0],
-    resourceStore.resources.thoughts4.amountProducedThisSecond[0],
+    resourceStore.resources.thoughts1.amountProducedThisTick[0],
+    resourceStore.resources.thoughts2.amountProducedThisTick[0],
+    resourceStore.resources.thoughts3.amountProducedThisTick[0],
+    resourceStore.resources.thoughts4.amountProducedThisTick[0],
   ]
 
   // If no thoughts were produced at any level, return early
