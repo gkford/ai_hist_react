@@ -69,7 +69,7 @@ export function WorkerTracker({
     <div 
       ref={setDroppableRef}
       className={cn("flex items-center gap-2 p-2", className)} 
-      {...(({ cardId, ...rest }) => rest)(props)}
+      {...props}
     >
       <Button 
         variant="outline" 
