@@ -51,7 +51,8 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const produced4 = thoughts4.amountProducedThisSecond[0]
   
   // Only check if ALL thoughts are zero
-  const allThoughtsZero = produced1 === 0 && produced2 === 0 && produced3 === 0 && produced4 === 0;
+  const allThoughtsZero = thoughts1.amount[0] === 0 && thoughts2.amount[0] === 0 && 
+    thoughts3.amount[0] === 0 && thoughts4.amount[0] === 0;
 
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
@@ -82,34 +83,34 @@ export function ResourceDashboard({ className }: { className?: string }) {
       <div className="flex flex-col gap-2">
         {!allThoughtsZero ? (
           <>
-            {produced1 > 0 && (
+            {thoughts1.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 1 Thoughts`}
-                amount={thoughts1.amountProducedThisSecond[0]}
+                amount={thoughts1.amount[0]}
                 perSecond={produced1}
                 icon="💭"
               />
             )}
-            {produced2 > 0 && (
+            {thoughts2.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 2 Thoughts`}
-                amount={thoughts2.amountProducedThisSecond[0]}
+                amount={thoughts2.amount[0]}
                 perSecond={produced2}
                 icon="💭💭"
               />
             )}
-            {produced3 > 0 && (
+            {thoughts3.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 3 Thoughts`}
-                amount={thoughts3.amountProducedThisSecond[0]}
+                amount={thoughts3.amount[0]}
                 perSecond={produced3}
                 icon="💭💭💭"
               />
             )}
-            {produced4 > 0 && (
+            {thoughts4.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 4 Thoughts`}
-                amount={thoughts4.amountProducedThisSecond[0]}
+                amount={thoughts4.amount[0]}
                 perSecond={produced4}
                 icon="💭💭💭💭"
               />
