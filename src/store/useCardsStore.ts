@@ -54,6 +54,7 @@ interface CardsStore {
     id: string,
     initialState?: {
       discovery_state?: Partial<DiscoveryState>
+      assigned_workers?: number
     }
   ) => void
   updateCardState: (id: string, partial: Partial<CardState>) => void
