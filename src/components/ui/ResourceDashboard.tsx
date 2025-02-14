@@ -67,9 +67,11 @@ export function ResourceDashboard({ className }: { className?: string }) {
             ))}
           </div>
         </div>
-        {food.amount[0] < 5 && (
+        {food.amount[0] <= 0 ? (
+          <div className="text-sm text-red-600">No Food!! Workers cannot produce resources while hungry!</div>
+        ) : food.amount[0] < 5 ? (
           <div className="text-sm text-red-600">Low Food!!</div>
-        )}
+        ) : null}
         {food.amount[0] === (food.max_storage ?? 20) && (
           <div className="text-sm text-green-600">Food Storage at Capacity!</div>
         )}

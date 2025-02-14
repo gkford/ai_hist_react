@@ -130,9 +130,14 @@ export async function processTick() {
       logger.log('Processing Food Consumption...')
       processFoodConsumption()
 
-      // Generate resources from workers
-      logger.log('Processing Worker Production...')
-      processWorkerProduction()
+      // Only process production if there is food
+      const food = useResourceStore.getState().resources.food.amount[0]
+      if (food > 0) {
+        logger.log('Processing Worker Production...')
+        processWorkerProduction()
+      } else {
+        logger.log('Skipping Worker Production due to food shortage')
+      }
 
       // Process knowledge level before other updates
       processKnowledgeLevel()
