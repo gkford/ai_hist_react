@@ -8,6 +8,6 @@ interface KnowledgeLevelState {
 
 export const useKnowledgeLevelStore = create<KnowledgeLevelState>((set) => ({
   level: 1,
-  thresholds: [0, 10, 100, 1000], // Knowledge amounts needed for each level
+  thresholds: [0, 20, 50, 75], // Knowledge amounts needed for each level
   setLevel: (level) => set({ level }),
 }))
