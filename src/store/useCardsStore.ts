@@ -16,6 +16,7 @@ interface OngoingEffectsState extends OngoingEffects {
 export interface DiscoveryState extends DiscoveryStats {
   current_status: DiscoveryStatus
   thought_invested: number
+  priority: 'on' | 'off'
 }
 
 // The full card state extends CardDefinition
@@ -70,6 +71,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
               further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
               current_status: 'unthoughtof',
               thought_invested: 0,
+              priority: 'off',
               ...(initialState?.discovery_state || {}),
             }
           : {
