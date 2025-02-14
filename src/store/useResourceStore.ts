@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-export type ResourceKey = 'food' | 'knowledge' | 'thoughts' | 'humanEnergy' | 'population'
+export type ResourceKey = 'food' | 'knowledge' | 'thoughts1' | 'thoughts2' | 'thoughts3' | 'thoughts4' | 'humanEnergy' | 'population'
 
 interface Resource {
   amount: number[];
@@ -27,7 +27,10 @@ export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
     food: { amount: [15], max_storage: 20, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts: { amount: [0], icon: "💭", key: "thoughts", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts1: { amount: [0], icon: "💭", key: "thoughts1", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts2: { amount: [0], icon: "💭💭", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts3: { amount: [0], icon: "💭💭💭", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts4: { amount: [0], icon: "💭💭💭💭", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     population: { 
       amount: [10], 

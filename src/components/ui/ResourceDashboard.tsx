@@ -39,7 +39,10 @@ function ResourceRow({ label, amount, perSecond, icon }: ResourceRowProps) {
 
 export function ResourceDashboard({ className }: { className?: string }) {
   const food = useResource('food')
-  const thoughts = useResource('thoughts')
+  const thoughts1 = useResource('thoughts1')
+  const thoughts2 = useResource('thoughts2')
+  const thoughts3 = useResource('thoughts3')
+  const thoughts4 = useResource('thoughts4')
   const { level: knowledgeLevel } = useKnowledgeLevelStore()
 
   return (
@@ -66,11 +69,32 @@ export function ResourceDashboard({ className }: { className?: string }) {
           <div className="text-sm text-green-600">Food Storage at Capacity!</div>
         )}
       </div>
-      <ResourceRow 
-        label={`${thoughts.amountProducedThisSecond[0]} Thoughts/s`}
-        amount={thoughts.amountProducedThisSecond[0]}
-        icon="💭"
-      />
+      <div className="flex flex-col gap-2">
+        <ResourceRow 
+          label={`Level 1 Thoughts`}
+          amount={thoughts1.amountProducedThisSecond[0]}
+          perSecond={thoughts1.amountProducedThisSecond[0]}
+          icon="💭"
+        />
+        <ResourceRow 
+          label={`Level 2 Thoughts`}
+          amount={thoughts2.amountProducedThisSecond[0]}
+          perSecond={thoughts2.amountProducedThisSecond[0]}
+          icon="💭💭"
+        />
+        <ResourceRow 
+          label={`Level 3 Thoughts`}
+          amount={thoughts3.amountProducedThisSecond[0]}
+          perSecond={thoughts3.amountProducedThisSecond[0]}
+          icon="💭💭💭"
+        />
+        <ResourceRow 
+          label={`Level 4 Thoughts`}
+          amount={thoughts4.amountProducedThisSecond[0]}
+          perSecond={thoughts4.amountProducedThisSecond[0]}
+          icon="💭💭💭💭"
+        />
+      </div>
       <div className="flex items-center gap-4">
         <span className="font-medium w-30">Knowledge:</span>
         <span>{useResource('knowledge').amount[0]} 📚</span>
