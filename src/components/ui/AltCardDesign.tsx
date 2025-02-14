@@ -54,14 +54,16 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
             )}
           </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col items-center">
           {cardDef.imageSrc &&
             (cardState.discovery_state.current_status === 'imagined' ||
               cardState.discovery_state.current_status === 'discovered') && (
-              <CardImage
-                imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc}
-                cardId={id}
-              />
+              <div className="my-2">
+                <CardImage
+                  imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc}
+                  cardId={id}
+                />
+              </div>
             )}
           {cardDef.description && (
             <CardInfo>
