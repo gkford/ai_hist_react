@@ -1,7 +1,7 @@
 import { useKnowledgeLevelStore } from '@/store/useKnowledgeLevelStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useCardsStore } from '@/store/useCardsStore'
-import { allCards } from '@/data/cards'
+import { allCards, CardType } from '@/data/cards'
 import { logger } from './logger'
 
 // Helper to find replacement card for a given level
