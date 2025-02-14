@@ -23,7 +23,7 @@ export function WorkerTracker({
   return (
     <div 
       className={cn("flex items-center gap-2 p-2", className)} 
-      {...props}
+      {...(({ cardId, ...rest }) => rest)(props)}
     >
       <Button 
         variant="outline" 
