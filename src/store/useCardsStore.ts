@@ -43,7 +43,6 @@ interface CardsStore {
     partial: Partial<OngoingEffectsState>
   ) => void
   removeCard: (id: string) => void
-  updateAssignedWorkers: (cardId: string, newValue: number) => void
 }
 
 export const useCardsStore = create<CardsStore>((set) => ({

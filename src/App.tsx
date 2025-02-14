@@ -43,7 +43,6 @@ function initializeCards() {
     discovery_state: {
       current_status: 'discovered'
     },
-    assigned_workers: 10
   });
 
   cardStore.createCard('think_l1', {
