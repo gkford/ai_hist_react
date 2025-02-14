@@ -24,7 +24,7 @@ export function RTViewer({ rtState, cardId, rtId }: RTViewerProps) {
         }}
       />
       
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <div className="flex-1">
           <h4 className="text-sm font-medium mb-1">Paid</h4>
           {Object.entries(rtState.inbound_paid).map(([resource, amount]) => (
@@ -41,7 +41,7 @@ export function RTViewer({ rtState, cardId, rtId }: RTViewerProps) {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
