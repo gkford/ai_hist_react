@@ -11,7 +11,7 @@ interface DraggableWorkerProps {
 }
 
 function DraggableWorker({ id, index }: DraggableWorkerProps) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `${id}-worker-${index}`,
     data: { cardId: id, index }
   })
@@ -28,7 +28,7 @@ function DraggableWorker({ id, index }: DraggableWorkerProps) {
       style={style}
       className="text-sm flex justify-center"
     >
-      👤
+      {!isDragging && '👤'}
     </span>
   )
 }
