@@ -2,7 +2,33 @@ import { processDiscoveries } from './discoveryManager'
 import { processKnowledgeLevel } from './knowledgeManager'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
+import { useCardsStore } from '@/store/useCardsStore'
 import { logger } from './logger'
+
+function processFoodConsumption() {
+  const resourceStore = useResourceStore.getState()
+  const population = resourceStore.resources.population.amount[0]
+  
+  // Each population unit consumes 1 food
+  resourceStore.consumeResource('food', population)
+  logger.log(`Population ${population} consumed ${population} food`)
+}
+
+function processWorkerProduction() {
+  const cardStore = useCardsStore.getState()
+  const resourceStore = useResourceStore.getState()
+
+  // Process each card that has workers assigned and is discovered
+  Object.values(cardStore.cardStates).forEach(card => {
+    if (card.discovery_state.current_status === 'discovered' && 
+        card.assigned_workers > 0 && 
+        card.generates) {
+      const amount = card.generates.amount * card.assigned_workers
+      resourceStore.produceResource(card.generates.resource, amount)
+      logger.log(`Card ${card.id} produced ${amount} ${card.generates.resource}`)
+    }
+  })
+}
 
 let intervalId: number | null = null
 
@@ -77,8 +103,13 @@ export async function processTick() {
 
     // Only continue processing if the game is still running
     if (useGameLoopStore.getState().isRunning) {
-      // Process resource transformations
-      logger.log('Processing Transformations...')
+      // Deduct food based on population
+      logger.log('Processing Food Consumption...')
+      processFoodConsumption()
+
+      // Generate resources from workers
+      logger.log('Processing Worker Production...')
+      processWorkerProduction()
 
       // Process knowledge level before other updates
       processKnowledgeLevel()
