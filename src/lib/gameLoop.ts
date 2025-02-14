@@ -21,6 +21,8 @@ function processWorkerProduction() {
   const resourceStore = useResourceStore.getState()
   const workersStore = useWorkersStore.getState()
 
+  logger.log('=== Starting Worker Production ===')
+
   // Process each card that has workers assigned and is discovered
   Object.values(cardStore.cardStates).forEach(card => {
     if (card.discovery_state.current_status === 'discovered' && card.generates) {
@@ -30,6 +32,7 @@ function processWorkerProduction() {
         // For computation cards, check if there's food before generating thoughts
         if (allCards.find(c => c.id === card.id)?.type === 'computation') {
           const food = resourceStore.resources.food.amount[0]
+          logger.log(`Processing computation card ${card.id}. Food available: ${food}`)
           if (food > 0) {
             // Group workers by level
             const workersByLevel = workers.reduce((acc, worker) => {
@@ -37,12 +40,15 @@ function processWorkerProduction() {
               return acc
             }, {} as Record<number, number>)
 
+            logger.log(`Workers by level for ${card.id}:`, workersByLevel)
+
             // Generate thoughts for each worker level
             Object.entries(workersByLevel).forEach(([level, count]) => {
               const thoughtLevel = `thoughts${level}` as ResourceKey
               const amount = (card.generates?.amount ?? 0) * count
+              logger.log(`Attempting to produce ${amount} ${thoughtLevel}`)
               resourceStore.produceResource(thoughtLevel, amount)
-              logger.log(`Card ${card.id} produced ${amount} ${thoughtLevel}`)
+              logger.log(`After production, ${thoughtLevel} amount:`, resourceStore.resources[thoughtLevel].amount[0])
             })
           } else {
             logger.log(`Card ${card.id} cannot generate thoughts - no food`)
@@ -56,6 +62,8 @@ function processWorkerProduction() {
       }
     }
   })
+  
+  logger.log('=== Ending Worker Production ===')
 }
 
 let intervalId: number | null = null
