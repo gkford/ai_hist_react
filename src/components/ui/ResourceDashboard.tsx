@@ -45,14 +45,14 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const thoughts4 = useResource('thoughts4')
   const { level: knowledgeLevel } = useKnowledgeLevelStore()
   // Use the actual produced amounts from this second
-  const produced1 = thoughts1.amountProducedThisSecond[0]
-  const produced2 = thoughts2.amountProducedThisSecond[0]
-  const produced3 = thoughts3.amountProducedThisSecond[0]
-  const produced4 = thoughts4.amountProducedThisSecond[0]
+  const produced1 = thoughts1.amountProducedThisSecond[1]
+  const produced2 = thoughts2.amountProducedThisSecond[1]
+  const produced3 = thoughts3.amountProducedThisSecond[1]
+  const produced4 = thoughts4.amountProducedThisSecond[1]
   
   // Only check if ALL thoughts are zero
-  const allThoughtsZero = thoughts1.amount[0] === 0 && thoughts2.amount[0] === 0 && 
-    thoughts3.amount[0] === 0 && thoughts4.amount[0] === 0;
+  const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
+    produced3 === 0 && produced4 === 0;
 
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
@@ -86,7 +86,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {thoughts1.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 1 Thoughts`}
-                amount={thoughts1.amount[0]}
+                amount={produced1}
                 perSecond={produced1}
                 icon="💭"
               />
@@ -94,7 +94,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {thoughts2.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 2 Thoughts`}
-                amount={thoughts2.amount[0]}
+                amount={produced2}
                 perSecond={produced2}
                 icon="💭💭"
               />
@@ -102,7 +102,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {thoughts3.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 3 Thoughts`}
-                amount={thoughts3.amount[0]}
+                amount={produced3}
                 perSecond={produced3}
                 icon="💭💭💭"
               />
@@ -110,7 +110,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {thoughts4.amount[0] > 0 && (
               <ResourceRow 
                 label={`Level 4 Thoughts`}
-                amount={thoughts4.amount[0]}
+                amount={produced4}
                 perSecond={produced4}
                 icon="💭💭💭💭"
               />
