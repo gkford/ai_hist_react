@@ -9,6 +9,7 @@ import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
+import { PopulationTracker } from './PopulationTracker'
 
 export interface AltCardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string // This is now the only required prop
@@ -74,7 +75,11 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                     : cardDef.description}
                 </p>
               </CardInfo>
-              {cardDef.type !== 'people' && (
+              {cardDef.type === 'people' ? (
+                <PopulationTracker 
+                  className="w-full px-4"
+                />
+              ) : (
                 <WorkerTracker 
                   className="w-full px-4"
                   cardId={id}
