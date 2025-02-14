@@ -18,7 +18,8 @@ export function GenerationTracker({
   
   if (!cardState.generates) return null
 
-  const workers = useWorkersStore(state => state.getWorkersByAssignment(cardId))
+  const allWorkers = useWorkersStore(state => state.workers)
+  const workers = React.useMemo(() => allWorkers.filter(w => w.assignedTo === cardId), [allWorkers, cardId])
   // This is where we would implement rules that make it so different workers generate different amounts,
   // but for the time being, each worker contributes the same generates.amount regardless of worker level.
   const workersCount = workers.length
