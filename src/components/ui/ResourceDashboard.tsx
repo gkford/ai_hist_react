@@ -55,8 +55,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
       />
       <ResourceRow 
         label="Thoughts"
-        amount={thoughts.amount[0]}
-        perSecond={thoughts.amountProducedThisSecond[0]}
+        amount={thoughts.amountProducedThisSecond[0]}
         icon="💭"
       />
     </div>
