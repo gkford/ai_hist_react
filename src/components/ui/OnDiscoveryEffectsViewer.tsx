@@ -1,4 +1,5 @@
 import { OnDiscoveryEffects } from '@/data/cards'
+import { useResourceStore } from '@/store/useResourceStore'
 
 interface OnDiscoveryEffectsViewerProps {
   effects: OnDiscoveryEffects
@@ -16,15 +17,20 @@ export function OnDiscoveryEffectsViewer({
     return null
   }
 
-  const bonusText = Object.entries(effects.resourceBonuses)
-    .map(([resource, amount]) => `${amount} ${resource}`)
-    .join(' and ')
+  const resources = useResourceStore(state => state.resources)
+  
+  const bonusElements = Object.entries(effects.resourceBonuses).map(([resource, amount]) => (
+    <span key={resource} className="flex items-center gap-1">
+      +{amount} {resources[resource as keyof typeof resources].icon}
+    </span>
+  ))
 
   return (
-    <div className="p-2 text-sm border-t border-gray-200 text-gray-600">
-      {isDiscovered
-        ? `Gave ${bonusText} when it was discovered`
-        : `Gives ${bonusText} on discovery`}
+    <div className="p-2 text-sm border-t border-gray-200 text-gray-600 flex gap-2 items-center">
+      <div className="flex gap-2 items-center">
+        {bonusElements}
+      </div>
+      {isDiscovered ? ' awarded' : ' on discovery'}
     </div>
   )
 }
