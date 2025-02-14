@@ -1,23 +1,30 @@
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useResource } from '@/store/useResourceStore'
+import { useResource, useResourceStore } from '@/store/useResourceStore'
+import { useCardsStore } from '@/store/useCardsStore'
 
 interface WorkerTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
-  onWorkersChange?: (newWorkers: number) => void
+  cardId: string
 }
 
 export function WorkerTracker({ 
-  onWorkersChange,
+  cardId,
   className,
   ...props 
 }: WorkerTrackerProps) {
   const population = useResource('population')
+  const cardState = useCardsStore(state => state.cardStates[cardId])
   
   const handleChange = (delta: number) => {
-    const newAvailable = Math.max(0, Math.min(population.total, (population.available || 0) + delta))
+    if (delta > 0 && (population.available || 0) <= 0) return
+    if (delta < 0 && cardState.assigned_workers <= 0) return
+    
+    const newAssigned = cardState.assigned_workers + delta
+    const newAvailable = (population.available || 0) - delta
+    
+    useCardsStore.getState().updateAssignedWorkers(cardId, newAssigned)
     useResourceStore.getState().produceResource('population', 0, { available: newAvailable })
-    onWorkersChange?.(newAvailable)
   }
 
   return (
@@ -29,7 +36,7 @@ export function WorkerTracker({
         variant="outline" 
         size="sm"
         onClick={() => handleChange(-1)}
-        disabled={(population.available || 0) <= 0}
+        disabled={cardState.assigned_workers <= 0}
       >
         -
       </Button>
@@ -37,7 +44,7 @@ export function WorkerTracker({
       <div className="flex-1 grid grid-cols-10 gap-1">
         {[...Array(population.total)].map((_, i) => (
           <span key={i} className="text-sm flex justify-center">
-            {i < (population.available || 0) ? '👤' : '·'}
+            {i < cardState.assigned_workers ? '👤' : '·'}
           </span>
         ))}
       </div>
