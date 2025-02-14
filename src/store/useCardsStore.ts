@@ -27,7 +27,6 @@ interface CardState
   > {
   ongoingEffects?: OngoingEffectsState
   discovery_state: DiscoveryState
-  assigned_workers: number
 }
 
 interface CardsStore {
@@ -36,7 +35,6 @@ interface CardsStore {
     id: string,
     initialState?: {
       discovery_state?: Partial<DiscoveryState>
-      assigned_workers?: number
     }
   ) => void
   updateCardState: (id: string, partial: Partial<CardState>) => void
@@ -58,7 +56,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
     set((state) => {
       const newCardState: CardState = {
         ...cardDef,
-        assigned_workers: initialState?.assigned_workers || 0,
         ongoingEffects: cardDef.ongoingEffects
           ? {
               resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
@@ -138,14 +135,4 @@ export const useCardsStore = create<CardsStore>((set) => ({
       return { cardStates: remaining };
     }),
     
-  updateAssignedWorkers: (cardId: string, newValue: number) =>
-    set((state) => ({
-      cardStates: {
-        ...state.cardStates,
-        [cardId]: {
-          ...state.cardStates[cardId],
-          assigned_workers: Math.max(0, newValue)
-        }
-      }
-    })),
 }))

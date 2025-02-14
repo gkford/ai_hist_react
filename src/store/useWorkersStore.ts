@@ -29,7 +29,7 @@ export const useWorkersStore = create<WorkersStore>((set, get) => ({
     id: `worker-${i}`,
     level: 1,
     icon: WORKER_ICONS[1],
-    assignedTo: 'population'
+    assignedTo: 'gather_food'
   })),
 
   addWorker: (worker) =>
