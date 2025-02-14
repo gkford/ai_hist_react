@@ -10,7 +10,6 @@ import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
-import { RTViewer } from './RTViewer'
 
 export interface AltCardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string // This is now the only required prop
@@ -116,10 +115,6 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
               }
             />
           )}
-        {cardState.discovery_state.current_status === 'discovered' &&
-          Object.entries(cardState.rts).map(([rtId, rtState]) => (
-            <RTViewer key={rtId} rtState={rtState} cardId={id} rtId={rtId} />
-          ))}
       </Card>
     )
   }
