@@ -139,12 +139,12 @@ export async function processTick() {
       logger.log('Processing Worker Production...')
       processWorkerProduction()
 
-      // Process knowledge level before other updates
-      processKnowledgeLevel()
-
-      // Process discoveries
+      // Process discoveries (must happen after worker production but before next second)
       logger.log('Processing Discoveries...')
       processDiscoveries()
+
+      // Process knowledge level after discoveries
+      processKnowledgeLevel()
     }
 
     logger.log('=== Game Loop End ===')

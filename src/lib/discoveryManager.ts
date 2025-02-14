@@ -15,6 +15,8 @@ export function processDiscoveries() {
     resourceStore.resources.thoughts3.amountProducedThisSecond[0],
     resourceStore.resources.thoughts4.amountProducedThisSecond[0],
   ]
+  
+  logger.log('Thought levels produced:', thoughtLevels)
 
   // If no thoughts were produced at any level, return early
   if (thoughtLevels.every(amount => amount <= 0)) {
