@@ -25,16 +25,31 @@ export function GenerationTracker({
 
   // Special handling for computation type cards
   if (cardDefinition?.type === 'computation' && cardState.generates) {
-    // Group workers by level
-    const workersByLevel = workers.reduce((acc, worker) => {
-      acc[worker.level] = (acc[worker.level] || 0) + 1
-      return acc
-    }, {} as Record<number, number>)
+    const food = useResource('food')
+    const noFood = food.amount[0] <= 0
 
     const resourceThought1 = useResource('thoughts1')
     const resourceThought2 = useResource('thoughts2')
     const resourceThought3 = useResource('thoughts3')
     const resourceThought4 = useResource('thoughts4')
+
+    // If there's no food, show warning instead of production
+    if (noFood) {
+      return (
+        <div 
+          className={cn("flex flex-col gap-2 p-2", className)}
+          {...props}
+        >
+          <div className="text-sm text-red-600 text-center">Cannot think while hungry!</div>
+        </div>
+      )
+    }
+
+    // Group workers by level
+    const workersByLevel = workers.reduce((acc, worker) => {
+      acc[worker.level] = (acc[worker.level] || 0) + 1
+      return acc
+    }, {} as Record<number, number>)
 
     const resourceByLevel: Record<string, { icon: string }> = {
       "1": resourceThought1,

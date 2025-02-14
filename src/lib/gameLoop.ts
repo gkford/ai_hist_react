@@ -27,21 +27,26 @@ function processWorkerProduction() {
       const workers = workersStore.workers.filter(w => w.assignedTo === card.id)
       
       if (workers.length > 0) {
-        // For computation cards, each worker level generates that level of thought
+        // For computation cards, check if there's food before generating thoughts
         if (allCards.find(c => c.id === card.id)?.type === 'computation') {
-          // Group workers by level
-          const workersByLevel = workers.reduce((acc, worker) => {
-            acc[worker.level] = (acc[worker.level] || 0) + 1
-            return acc
-          }, {} as Record<number, number>)
+          const food = resourceStore.resources.food.amount[0]
+          if (food > 0) {
+            // Group workers by level
+            const workersByLevel = workers.reduce((acc, worker) => {
+              acc[worker.level] = (acc[worker.level] || 0) + 1
+              return acc
+            }, {} as Record<number, number>)
 
-          // Generate thoughts for each worker level
-          Object.entries(workersByLevel).forEach(([level, count]) => {
-            const thoughtLevel = `thoughts${level}` as ResourceKey
-            const amount = (card.generates?.amount ?? 0) * count
-            resourceStore.produceResource(thoughtLevel, amount)
-            logger.log(`Card ${card.id} produced ${amount} ${thoughtLevel}`)
-          })
+            // Generate thoughts for each worker level
+            Object.entries(workersByLevel).forEach(([level, count]) => {
+              const thoughtLevel = `thoughts${level}` as ResourceKey
+              const amount = (card.generates?.amount ?? 0) * count
+              resourceStore.produceResource(thoughtLevel, amount)
+              logger.log(`Card ${card.id} produced ${amount} ${thoughtLevel}`)
+            })
+          } else {
+            logger.log(`Card ${card.id} cannot generate thoughts - no food`)
+          }
         } else {
           // For non-computation cards, all workers contribute to the same resource
           const amount = card.generates.amount * workers.length
@@ -130,14 +135,9 @@ export async function processTick() {
       logger.log('Processing Food Consumption...')
       processFoodConsumption()
 
-      // Only process production if there is food
-      const food = useResourceStore.getState().resources.food.amount[0]
-      if (food > 0) {
-        logger.log('Processing Worker Production...')
-        processWorkerProduction()
-      } else {
-        logger.log('Skipping Worker Production due to food shortage')
-      }
+      // Always process worker production
+      logger.log('Processing Worker Production...')
+      processWorkerProduction()
 
       // Process knowledge level before other updates
       processKnowledgeLevel()
