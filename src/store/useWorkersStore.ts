@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-const WORKER_ICONS = {
+export const WORKER_ICONS = {
   1: '😊',  // Basic worker
   2: '🤔',  // Thinker
   3: '🧙‍♂️', // Storyteller
