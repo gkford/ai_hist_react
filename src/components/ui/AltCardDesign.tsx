@@ -11,7 +11,7 @@ import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
 import { GenerationTracker } from './GenerationTracker'
-import { KnowledgeTracker } from './KnowledgeTracker'
+import { WorkerLevelTracker } from './WorkerLevelTracker'
 
 export interface AltCardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string // This is now the only required prop
@@ -104,7 +104,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
           )}
           {cardDef.type === 'people' ? (
             <>
-              <KnowledgeTracker 
+              <WorkerLevelTracker 
                 className="w-full px-4"
               />
               <PopulationTracker 
