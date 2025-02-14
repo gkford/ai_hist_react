@@ -9,6 +9,7 @@ import { RTViewer } from '@/components/ui/RTViewer'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
+import { WorkerTracker } from './WorkerTracker'
 
 export interface AltCardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string // This is now the only required prop
@@ -66,13 +67,19 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
               </div>
             )}
           {cardDef.description && (
-            <CardInfo>
-              <p>
-                {isUnthoughtof
-                  ? obscureText(cardDef.description)
-                  : cardDef.description}
-              </p>
-            </CardInfo>
+            <>
+              <CardInfo>
+                <p>
+                  {isUnthoughtof
+                    ? obscureText(cardDef.description)
+                    : cardDef.description}
+                </p>
+              </CardInfo>
+              <WorkerTracker 
+                className="w-full px-4" 
+                onPopulationChange={(pop) => console.log('Population changed:', pop)}
+              />
+            </>
           )}
           {(cardState.discovery_state.current_status === 'unthoughtof' ||
             cardState.discovery_state.current_status === 'imagined') && (
