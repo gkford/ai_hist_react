@@ -19,8 +19,8 @@ function ResourceRow({ label, amount, perSecond, icon }: ResourceRowProps) {
 
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-2">
-        <span className="font-medium w-20">{label}:</span>
+      <div className="flex items-center gap-4">
+        <span className="font-medium w-30">{label}:</span>
         <div className="flex gap-1">
           {[...Array(displayAmount)].map((_, i) => (
             <span key={i}>{icon}</span>
@@ -49,8 +49,8 @@ export function ResourceDashboard({ className }: { className?: string }) {
         <span className="text-lg">{knowledgeLevel}</span>
       </div>
       <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <span className="font-medium w-20">{`${food.amount[0]} / ${food.max_storage ?? 20} Food:`}</span>
+        <div className="flex items-center gap-4">
+          <span className="font-medium w-30">{`${food.amount[0]} / ${food.max_storage ?? 20} Food:`}</span>
           <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${food.max_storage ?? 20}, 1fr)` }}>
             {[...Array(food.max_storage ?? 20)].map((_, i) => (
               <span key={i} className="text-xl text-center">
