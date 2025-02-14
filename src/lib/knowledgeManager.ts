@@ -49,7 +49,8 @@ function handleCardReplacements(newLevel: number) {
         thought_invested: 0,
         priority: 'off',
         thought_to_imagine: 0,
-        further_thought_to_discover: 0
+        further_thought_to_discover: 0,
+        thought_level: 1
       }
     })
 
