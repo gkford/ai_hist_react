@@ -50,9 +50,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const produced4 = thoughts4.amountProducedThisSecond[0]
   const allThoughtsZero = produced1 === 0 && produced2 === 0 && produced3 === 0 && produced4 === 0;
 
-  // Debug logging
-  console.log('Thoughts production:', { produced1, produced2, produced3, produced4 })
-
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
       <div className="flex items-center gap-2 border-b pb-2 mb-2">
