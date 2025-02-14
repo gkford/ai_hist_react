@@ -1,6 +1,6 @@
 import { processDiscoveries } from './discoveryManager'
 import { processKnowledgeLevel } from './knowledgeManager'
-import { useResourceStore } from '@/store/useResourceStore'
+import { useResourceStore, ResourceKey } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { useCardsStore } from '@/store/useCardsStore'
 import { useWorkersStore } from '@/store/useWorkersStore'
@@ -38,7 +38,7 @@ function processWorkerProduction() {
           // Generate thoughts for each worker level
           Object.entries(workersByLevel).forEach(([level, count]) => {
             const thoughtLevel = `thoughts${level}` as ResourceKey
-            const amount = card.generates.amount * count
+            const amount = (card.generates?.amount ?? 0) * count
             resourceStore.produceResource(thoughtLevel, amount)
             logger.log(`Card ${card.id} produced ${amount} ${thoughtLevel}`)
           })
