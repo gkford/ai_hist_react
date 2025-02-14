@@ -10,6 +10,7 @@ import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
+import { GenerationTracker } from './GenerationTracker'
 
 export interface AltCardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string // This is now the only required prop
@@ -80,10 +81,18 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                   className="w-full px-4"
                 />
               ) : (
-                <WorkerTracker 
-                  className="w-full px-4"
-                  cardId={id}
-                />
+                <>
+                  <WorkerTracker 
+                    className="w-full px-4"
+                    cardId={id}
+                  />
+                  {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
+                    <GenerationTracker
+                      className="w-full px-4"
+                      cardId={id}
+                    />
+                  )}
+                </>
               )}
             </>
           )}
