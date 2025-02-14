@@ -35,6 +35,7 @@ export function WorkerLevelTracker({ className, ...props }: WorkerLevelTrackerPr
         <span className="text-sm">{WORKER_ICONS[primaryLevel as keyof typeof WORKER_ICONS]}</span>
         <span className="text-sm text-gray-600">→</span>
         <span className="text-sm">{WORKER_ICONS[nextLevel as keyof typeof WORKER_ICONS]}</span>
+        <span className="text-xs text-gray-600">L{primaryLevel} to L{nextLevel}</span>
       </div>
       <Progress value={Math.min(100, Math.max(0, progress))} className="h-2" />
     </div>
