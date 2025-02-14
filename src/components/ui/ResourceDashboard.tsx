@@ -85,7 +85,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced1 > 0 && (
               <ResourceRow 
                 label={`Level 1 Thoughts`}
-                amount={thoughts1.amount[0]}
+                amount={thoughts1.amountProducedThisSecond[0]}
                 perSecond={produced1}
                 icon="💭"
               />
@@ -93,7 +93,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced2 > 0 && (
               <ResourceRow 
                 label={`Level 2 Thoughts`}
-                amount={thoughts2.amount[0]}
+                amount={thoughts2.amountProducedThisSecond[0]}
                 perSecond={produced2}
                 icon="💭💭"
               />
@@ -101,7 +101,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced3 > 0 && (
               <ResourceRow 
                 label={`Level 3 Thoughts`}
-                amount={thoughts3.amount[0]}
+                amount={thoughts3.amountProducedThisSecond[0]}
                 perSecond={produced3}
                 icon="💭💭💭"
               />
@@ -109,7 +109,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced4 > 0 && (
               <ResourceRow 
                 label={`Level 4 Thoughts`}
-                amount={thoughts4.amount[0]}
+                amount={thoughts4.amountProducedThisSecond[0]}
                 perSecond={produced4}
                 icon="💭💭💭💭"
               />
