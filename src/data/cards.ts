@@ -55,10 +55,6 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/hominids.png',
     description: 'Your early human population',
     knowledge_level: 1,
-    generates: {
-      resource: 'humanEnergy',
-      amount: 1.2
-    },
   },
   {
     id: 'gather_food',
@@ -71,9 +67,6 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 0,
       further_thought_to_discover: 0,
-      focus: {
-        resource: 'thoughts',
-      },
     },
     generates: {
       resource: 'food',
@@ -91,9 +84,6 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 2,
       further_thought_to_discover: 5,
-      focus: {
-        resource: 'thoughts',
-      },
       discovery_unlocks: ['hunt', 'early_stone_tools', 'gift_giving'],
     },
     ongoingEffects: {
@@ -119,9 +109,6 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 5,
       further_thought_to_discover: 5,
-      focus: {
-        resource: 'thoughts',
-      },
       discovery_unlocks: [],
     },
     generates: {
@@ -150,9 +137,6 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 2,
       further_thought_to_discover: 5,
-      focus: {
-        resource: 'thoughts',
-      },
       discovery_unlocks: [],
     },
     generates: {
