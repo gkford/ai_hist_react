@@ -7,27 +7,19 @@ export type DiscoveryStatus =
 
 import type { ResourceKey } from '@/store/useResourceStore'
 
-export interface FocusConfig {
-  resource: ResourceKey
-}
-
 export interface DiscoveryStats {
   thought_to_imagine: number
   further_thought_to_discover: number
   discovery_unlocks?: string[] // Array of card IDs that this card unlocks when discovered
-  focus: FocusConfig
 }
 
-export interface rtConfig {
-  id: string
-  inbound_cost: Partial<Record<ResourceKey, number>>
-  outbound_gain: Partial<Record<ResourceKey, number>>
-  focus: FocusConfig
+export interface Generates {
+  resource: ResourceKey
+  amount: number
 }
 
 export interface OngoingEffects {
   resourceModifiers: Partial<Record<ResourceKey, number>> // Resource keys mapped to their multipliers
-  focus: FocusConfig
 }
 
 export interface OnDiscoveryEffects {
@@ -43,7 +35,7 @@ export interface CardDefinition {
   icon?: string
   imageSrc?: string
   description?: string
-  rt?: rtConfig
+  generates?: Generates
   ongoingEffects?: OngoingEffects
   OnDiscoveryEffects?: OnDiscoveryEffects
   discovery_stats?: DiscoveryStats
@@ -63,17 +55,9 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/hominids.png',
     description: 'Your early human population',
     knowledge_level: 1,
-    rt: {
-      id: 'eat_food',
-      inbound_cost: {
-        food: 1,
-      },
-      outbound_gain: {
-        humanEnergy: 1.2,
-      },
-      focus: {
-        resource: 'population',
-      },
+    generates: {
+      resource: 'humanEnergy',
+      amount: 1.2
     },
   },
   {
@@ -91,17 +75,9 @@ export const allCards: CardDefinition[] = [
         resource: 'thoughts',
       },
     },
-    rt: {
-      id: 'gather_food',
-      inbound_cost: {
-        humanEnergy: 1,
-      },
-      outbound_gain: {
-        food: 1,
-      },
-      focus: {
-        resource: 'humanEnergy',
-      },
+    generates: {
+      resource: 'food',
+      amount: 1
     },
   },
   {
@@ -151,17 +127,9 @@ export const allCards: CardDefinition[] = [
       },
       discovery_unlocks: [],
     },
-    rt: {
-      id: 'cultural_exchange',
-      inbound_cost: {
-        humanEnergy: 1,
-      },
-      outbound_gain: {
-        knowledge: 2,
-      },
-      focus: {
-        resource: 'humanEnergy',
-      },
+    generates: {
+      resource: 'knowledge',
+      amount: 2
     },
     ongoingEffects: {
       resourceModifiers: {
@@ -193,17 +161,9 @@ export const allCards: CardDefinition[] = [
       },
       discovery_unlocks: [],
     },
-    rt: {
-      id: 'hunt',
-      inbound_cost: {
-        humanEnergy: 1,
-      },
-      outbound_gain: {
-        food: 1.1,
-      },
-      focus: {
-        resource: 'humanEnergy',
-      },
+    generates: {
+      resource: 'food',
+      amount: 1.1
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
@@ -219,17 +179,9 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/think.webp',
     description: 'Basic thinking',
     knowledge_level: 1,
-    rt: {
-      id: 'think',
-      inbound_cost: {
-        humanEnergy: 1,
-      },
-      outbound_gain: {
-        thoughts: 1,
-      },
-      focus: {
-        resource: 'humanEnergy',
-      },
+    generates: {
+      resource: 'thoughts',
+      amount: 1
     },
   },
 

@@ -14,35 +14,21 @@ import type {
 export type DiscoveryStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete'
 
 // State extensions of the base configs
-export interface FocusState extends FocusConfig {
-  priority: 'low' | 'high' | 'none'
-}
-
-export interface RTState extends Omit<rtConfig, 'focus'> {
-  inbound_paid: Partial<Record<ResourceKey, number>>
-  outbound_owed: Partial<Record<ResourceKey, number>>
-  focus: FocusState
-  last_process_time?: number
-}
-
-interface OngoingEffectsState extends Omit<OngoingEffects, 'focus'> {
+interface OngoingEffectsState extends OngoingEffects {
   active: boolean
-  focus: FocusState
 }
 
-export interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
+export interface DiscoveryState extends DiscoveryStats {
   current_status: DiscoveryStatus
   thought_invested: number
-  focus: FocusState
 }
 
 // The full card state extends CardDefinition
 interface CardState
   extends Omit<
     CardDefinition,
-    'rt' | 'ongoingEffects' | 'OnDiscoveryEffects' | 'discovery_stats'
+    'ongoingEffects' | 'OnDiscoveryEffects' | 'discovery_stats'
   > {
-  rt?: RTState
   ongoingEffects?: OngoingEffectsState
   discovery_state: DiscoveryState
   assigned_workers: number
