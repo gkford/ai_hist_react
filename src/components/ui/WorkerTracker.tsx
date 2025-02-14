@@ -8,12 +8,16 @@ import { DndContext, DragEndEvent, useDraggable, useDroppable } from '@dnd-kit/c
 interface DraggableWorkerProps {
   id: string
   index: number
+  cardState: any
 }
 
-function DraggableWorker({ id, index }: DraggableWorkerProps) {
+function DraggableWorker({ id, index, cardState }: DraggableWorkerProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `${id}-worker-${index}`,
-    data: { cardId: id, index }
+    data: { 
+      cardId: id, 
+      index: cardState.assigned_workers - 1 // Always use the last worker's index
+    }
   })
 
   const style = transform ? {
@@ -79,7 +83,7 @@ export function WorkerTracker({
       <div className="flex-1 grid grid-cols-10 gap-1">
         {[...Array(population.total)].map((_, i) => (
           i < cardState.assigned_workers ? (
-            <DraggableWorker key={i} id={cardId} index={i} />
+            <DraggableWorker key={i} id={cardId} index={i} cardState={cardState} />
           ) : (
             <span key={i} className="text-sm flex justify-center">·</span>
           )
