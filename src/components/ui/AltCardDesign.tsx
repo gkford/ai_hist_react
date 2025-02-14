@@ -68,6 +68,16 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
               </div>
             )}
           <CardInfo />
+          {cardDef.OnDiscoveryEffects &&
+            (cardState.discovery_state.current_status === 'imagined' ||
+              cardState.discovery_state.current_status === 'discovered') && (
+            <OnDiscoveryEffectsViewer
+              effects={cardDef.OnDiscoveryEffects}
+              isDiscovered={
+                cardState.discovery_state.current_status === 'discovered'
+              }
+            />
+          )}
           {cardDef.ongoingEffects &&
             (cardState.discovery_state.current_status === 'imagined' ||
               cardState.discovery_state.current_status === 'discovered') && (
@@ -77,6 +87,13 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                   cardState.discovery_state.current_status === 'discovered'
                 }
               />
+          )}
+          {(cardState.discovery_state.current_status === 'unthoughtof' ||
+            cardState.discovery_state.current_status === 'imagined') && (
+            <DiscoveryViewer
+              discoveryState={cardState.discovery_state}
+              cardId={id}
+            />
           )}
           {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
             <GenerationTracker
@@ -104,16 +121,6 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
             />
           )}
         </div>
-        {cardDef.OnDiscoveryEffects &&
-          (cardState.discovery_state.current_status === 'imagined' ||
-            cardState.discovery_state.current_status === 'discovered') && (
-            <OnDiscoveryEffectsViewer
-              effects={cardDef.OnDiscoveryEffects}
-              isDiscovered={
-                cardState.discovery_state.current_status === 'discovered'
-              }
-            />
-          )}
       </Card>
     )
   }
