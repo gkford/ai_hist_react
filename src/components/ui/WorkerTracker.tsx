@@ -4,19 +4,19 @@ import { cn } from '@/lib/utils'
 import { useResource, useResourceStore } from '@/store/useResourceStore'
 import { useCardsStore } from '@/store/useCardsStore'
 import { DndContext, DragEndEvent, useDraggable, useDroppable } from '@dnd-kit/core'
+import { useWorkersStore, Worker } from '@/store/useWorkersStore'
 
 interface DraggableWorkerProps {
-  id: string
-  index: number
-  cardState: any
+  worker: Worker
+  cardId: string
 }
 
-function DraggableWorker({ id, index, cardState }: DraggableWorkerProps) {
+function DraggableWorker({ worker, cardId }: DraggableWorkerProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: `${id}-worker-${index}`,
+    id: worker.id,
     data: { 
-      cardId: id, 
-      index: cardState.assigned_workers - 1 // Always use the last worker's index
+      workerId: worker.id,
+      from: cardId
     }
   })
 
@@ -48,22 +48,31 @@ export function WorkerTracker({
 }: WorkerTrackerProps) {
   const population = useResource('population')
   const cardState = useCardsStore(state => state.cardStates[cardId])
+  const assignedWorkers = useWorkersStore(state => state.getWorkersByAssignment(cardId))
+  const availableWorkers = useWorkersStore(state => state.getWorkersByAssignment('population'))
   
   const handleChange = (delta: number) => {
-    if (delta > 0 && (population.available || 0) <= 0) return
-    if (delta < 0 && cardState.assigned_workers <= 0) return
+    if (delta > 0 && availableWorkers.length <= 0) return
+    if (delta < 0 && assignedWorkers.length <= 0) return
     
-    const newAssigned = cardState.assigned_workers + delta
-    const newAvailable = (population.available || 0) - delta
+    const workersStore = useWorkersStore.getState()
     
-    useCardsStore.getState().updateAssignedWorkers(cardId, newAssigned)
-    useResourceStore.getState().produceResource('population', 0, { available: newAvailable })
+    if (delta > 0) {
+      const workerToAssign = availableWorkers[0]
+      if (workerToAssign) {
+        workersStore.assignWorker(workerToAssign.id, cardId)
+      }
+    } else {
+      const workerToUnassign = assignedWorkers[assignedWorkers.length - 1]
+      if (workerToUnassign) {
+        workersStore.assignWorker(workerToUnassign.id, 'population')
+      }
+    }
   }
 
   const { setNodeRef: setDroppableRef } = useDroppable({
-    id: `${cardId}-tracker`
+    id: cardId
   })
-
 
   return (
     <div 
@@ -75,26 +84,27 @@ export function WorkerTracker({
         variant="outline" 
         size="sm"
         onClick={() => handleChange(-1)}
-        disabled={cardState.assigned_workers <= 0}
+        disabled={assignedWorkers.length <= 0}
       >
         -
       </Button>
 
       <div className="flex-1 grid grid-cols-10 gap-1">
-        {[...Array(population.total)].map((_, i) => (
-          i < cardState.assigned_workers ? (
-            <DraggableWorker key={i} id={cardId} index={i} cardState={cardState} />
+        {[...Array(population.total)].map((_, i) => {
+          const worker = assignedWorkers[i]
+          return worker ? (
+            <DraggableWorker key={worker.id} worker={worker} cardId={cardId} />
           ) : (
             <span key={i} className="text-sm flex justify-center">·</span>
           )
-        ))}
+        })}
       </div>
 
       <Button 
         variant="outline" 
         size="sm"
         onClick={() => handleChange(1)}
-        disabled={(population.available || 0) <= 0}
+        disabled={availableWorkers.length <= 0}
       >
         +
       </Button>

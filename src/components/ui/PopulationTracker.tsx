@@ -2,11 +2,15 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { useResource } from '@/store/useResourceStore'
 import { useDraggable, useDroppable } from '@dnd-kit/core'
+import { useWorkersStore } from '@/store/useWorkersStore'
 
-function DraggablePopulationWorker({ index }: { index: number }) {
+function DraggablePopulationWorker({ worker }: { worker: { id: string } }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: `population-worker-${index}`,
-    data: { from: 'population' }
+    id: worker.id,
+    data: { 
+      workerId: worker.id,
+      from: 'population' 
+    }
   });
   const style = transform
     ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
@@ -31,8 +35,9 @@ export function PopulationTracker({
   ...props 
 }: PopulationTrackerProps) {
   const population = useResource('population')
+  const availableWorkers = useWorkersStore(state => state.getWorkersByAssignment('population'))
   
-  const { setNodeRef: setPopulationRef } = useDroppable({ id: 'population-tracker' });
+  const { setNodeRef: setPopulationRef } = useDroppable({ id: 'population' });
 
   return (
     <div 
@@ -41,11 +46,14 @@ export function PopulationTracker({
       {...props}
     >
       <div className="flex-1 grid grid-cols-10 gap-1">
-        {[...Array(population.total)].map((_, i) =>
-          i < (population.available || 0)
-            ? <DraggablePopulationWorker key={i} index={i} />
-            : <span key={i} className="text-sm flex justify-center">·</span>
-        )}
+        {[...Array(population.total)].map((_, i) => {
+          const worker = availableWorkers[i]
+          return worker ? (
+            <DraggablePopulationWorker key={worker.id} worker={worker} />
+          ) : (
+            <span key={i} className="text-sm flex justify-center">·</span>
+          )
+        })}
       </div>
     </div>
   )
