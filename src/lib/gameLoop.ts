@@ -130,10 +130,6 @@ export async function processTick() {
     logger.log('=== Game Loop Start ===')
     const store = useResourceStore.getState()
 
-    // Progress to next second (handles resetting rate resources)
-    logger.log('Progressing to next second...')
-    store.progressToNextSecond()
-
     // Check resources before processing
     await checkAndHandleResources()
 
@@ -147,12 +143,16 @@ export async function processTick() {
       logger.log('Processing Worker Production...')
       processWorkerProduction()
 
-      // Process discoveries (must happen after worker production but before next second)
+      // Process discoveries using the produced thoughts
       logger.log('Processing Discoveries...')
       processDiscoveries()
 
       // Process knowledge level after discoveries
       processKnowledgeLevel()
+
+      // Progress to next second (handles resetting rate resources) - moved to end
+      logger.log('Progressing to next second...')
+      store.progressToNextSecond()
     }
 
     logger.log('=== Game Loop End ===')
