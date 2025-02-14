@@ -1,5 +1,6 @@
 import type { DiscoveryState } from "@/store/useCardsStore";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useCardsStore } from "@/store/useCardsStore";
 
 interface DiscoveryViewerProps {
@@ -30,12 +31,25 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
 
   return (
     <div className="p-2 border-t border-gray-200">
-      <Button 
-        onClick={togglePriority}
-        variant={discoveryState.priority === 'on' ? 'destructive' : 'default'}
-      >
-        {getButtonText()}
-      </Button>
+      <div className="flex flex-col gap-2">
+        {discoveryState.current_status === 'unthoughtof' && (
+          <div className="space-y-2">
+            <Progress 
+              value={(discoveryState.thought_invested / discoveryState.thought_to_imagine) * 100} 
+              className="h-2"
+            />
+            <div className="text-sm text-gray-600">
+              Progress: {discoveryState.thought_invested.toFixed(1)} / {discoveryState.thought_to_imagine.toFixed(1)}
+            </div>
+          </div>
+        )}
+        <Button 
+          onClick={togglePriority}
+          variant={discoveryState.priority === 'on' ? 'destructive' : 'default'}
+        >
+          {getButtonText()}
+        </Button>
+      </div>
     </div>
   );
 }
