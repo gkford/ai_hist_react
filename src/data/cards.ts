@@ -69,6 +69,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 0,
       further_thought_to_discover: 0,
+      thought_level: 1,
     },
     generates: {
       resource: 'food',

@@ -63,8 +63,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
           : undefined,
         discovery_state: cardDef.discovery_stats 
           ? {
-              thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
-              further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
+              ...cardDef.discovery_stats,
               current_status: 'unthoughtof',
               thought_invested: 0,
               priority: 'off',
@@ -73,6 +72,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
           : {
               thought_to_imagine: 0,
               further_thought_to_discover: 0,
+              thought_level: 1,
               current_status: 'unthoughtof',
               thought_invested: 0,
               priority: 'off',
