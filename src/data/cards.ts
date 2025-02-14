@@ -73,7 +73,7 @@ export const allCards: CardDefinition[] = [
     },
     generates: {
       resource: 'food',
-      amount: 1
+      amount: 1.2
     },
   },
   {
@@ -147,7 +147,7 @@ export const allCards: CardDefinition[] = [
     },
     generates: {
       resource: 'food',
-      amount: 1.1
+      amount: 1.5
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
