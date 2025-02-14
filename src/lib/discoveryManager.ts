@@ -29,11 +29,28 @@ export function processDiscoveries() {
 
   logger.log(`Adding ${thoughtsProduced} thoughts to ${priorityCard.id}. Total: ${newThoughtInvested}`)
 
-  // Update the card's discovery state with new thought investment
-  cardStore.updateCardState(priorityCard.id, {
-    discovery_state: {
-      ...priorityCard.discovery_state,
-      thought_invested: newThoughtInvested
-    }
-  })
+  // Check if we need to transition from unthoughtof to imagined
+  if (priorityCard.discovery_state.current_status === 'unthoughtof' && 
+      newThoughtInvested >= priorityCard.discovery_state.thought_to_imagine) {
+    
+    logger.log(`Card ${priorityCard.id} has been imagined!`)
+    
+    // Update to imagined status and reset thought investment
+    cardStore.updateCardState(priorityCard.id, {
+      discovery_state: {
+        ...priorityCard.discovery_state,
+        current_status: 'imagined',
+        thought_invested: 0,
+        priority: 'off' // Turn off priority when transitioning
+      }
+    })
+  } else {
+    // Just update thought investment
+    cardStore.updateCardState(priorityCard.id, {
+      discovery_state: {
+        ...priorityCard.discovery_state,
+        thought_invested: newThoughtInvested
+      }
+    })
+  }
 }
