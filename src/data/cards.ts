@@ -100,10 +100,7 @@ export const allCards: CardDefinition[] = [
       resourceModifiers: {
         humanEnergy: 1.05,
         thoughts: 1.05,
-      },
-      focus: {
-        resource: 'thoughts',
-      },
+      }
     },
     OnDiscoveryEffects: {
       resourceBonuses: {
@@ -134,10 +131,7 @@ export const allCards: CardDefinition[] = [
     ongoingEffects: {
       resourceModifiers: {
         thoughts: 1.1,
-      },
-      focus: {
-        resource: 'thoughts',
-      },
+      }
     },
     OnDiscoveryEffects: {
       resourceBonuses: {

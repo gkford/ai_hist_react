@@ -1,12 +1,8 @@
 import { create } from 'zustand'
 import type { ResourceKey } from './useResourceStore'
 import { allCards } from '@/data/cards'
-import { calculateFocusPropFromPriorities } from '@/lib/focusCalculator'
-import { useFocusStore } from '@/store/useFocusStore'
 import type {
   CardDefinition,
-  rtConfig,
-  FocusConfig,
   DiscoveryStats,
   OngoingEffects,
 } from '@/data/cards'
@@ -84,11 +80,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
         ongoingEffects: cardDef.ongoingEffects
           ? {
               resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
-              active: false,
-              focus: {
-                resource: cardDef.ongoingEffects.focus.resource,
-                priority: 'none',
-              },
+              active: false
             }
           : undefined,
         discovery_state: cardDef.discovery_stats 
@@ -97,10 +89,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
               further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
               current_status: 'unthoughtof',
               thought_invested: 0,
-              focus: {
-                resource: cardDef.discovery_stats.focus.resource,
-                priority: 'none',
-              },
               ...(initialState?.discovery_state || {}),
             }
           : {
@@ -108,10 +96,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
               further_thought_to_discover: 0,
               current_status: 'unthoughtof',
               thought_invested: 0,
-              focus: {
-                resource: 'thoughts',
-                priority: 'none',
-              },
               ...(initialState?.discovery_state || {}),
             }
       };
@@ -121,37 +105,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
         [id]: newCardState,
       };
 
-      // Calculate focus props just for thoughts resource
-      const thoughtFocusStates: Array<'none' | 'low' | 'high'> = [];
-      Object.values(newCardStates).forEach(card => {
-        if (card.discovery_state.current_status === 'unthoughtof' || 
-            card.discovery_state.current_status === 'imagined') {
-          thoughtFocusStates.push(card.discovery_state.focus.priority);
-        }
-      });
-
-      const propValues = calculateFocusPropFromPriorities(thoughtFocusStates);
-      useFocusStore.getState().updateResourceProps('thoughts', propValues);
-
-      // Calculate focus props for RT resources
-      const rtResourceTypes = new Set<ResourceKey>();
-      Object.values(newCardStates).forEach(card => {
-        if (card.rt) {
-          rtResourceTypes.add(card.rt.focus.resource);
-        }
-      });
-
-      rtResourceTypes.forEach(resource => {
-        const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
-        Object.values(newCardStates).forEach(card => {
-          if (card.rt && card.rt.focus.resource === resource) {
-            rtFocusStates.push(card.rt.focus.priority);
-          }
-        });
-
-        const rtPropValues = calculateFocusPropFromPriorities(rtFocusStates);
-        useFocusStore.getState().updateResourceProps(resource, rtPropValues);
-      });
 
       return { 
         cardStates: newCardStates,
