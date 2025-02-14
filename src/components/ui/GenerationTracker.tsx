@@ -51,7 +51,7 @@ export function GenerationTracker({
         {Object.entries(workersByLevel).map(([level, count]) => (
           <div key={level} className="flex items-center gap-2 justify-center">
             <span className="text-sm">{resourceByLevel[level]?.icon}</span>
-            <span className="text-sm">+{(cardState.generates.amount * count).toFixed(1)}/s</span>
+            <span className="text-sm">+{(cardState.generates?.amount ?? 0 * count).toFixed(1)}/s</span>
             <span className="text-xs text-gray-500">({count} L{level} workers)</span>
           </div>
         ))}
