@@ -71,6 +71,11 @@ export function ResourceDashboard({ className }: { className?: string }) {
         amount={thoughts.amountProducedThisSecond[0]}
         icon="💭"
       />
+      <ResourceRow 
+        label="Knowledge"
+        amount={useResource('knowledge').amount[0]}
+        icon="📚"
+      />
     </div>
   )
 }
