@@ -50,6 +50,12 @@ function initializeCards() {
       current_status: 'discovered'
     }
   });
+
+  cardStore.createCard('hunt', {
+    discovery_state: {
+      current_status: 'unthoughtof'
+    }
+  });
 }
 
 function WorkerIcon() {
