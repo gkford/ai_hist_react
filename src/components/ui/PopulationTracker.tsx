@@ -4,7 +4,9 @@ import { useResource } from '@/store/useResourceStore'
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { useWorkersStore } from '@/store/useWorkersStore'
 
-function DraggablePopulationWorker({ worker }: { worker: { id: string } }) {
+import { Worker } from '@/store/useWorkersStore'
+
+function DraggablePopulationWorker({ worker }: { worker: Worker }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: worker.id,
     data: { 
@@ -23,7 +25,7 @@ function DraggablePopulationWorker({ worker }: { worker: { id: string } }) {
       style={style}
       className="text-sm flex justify-center"
     >
-      {!isDragging && '👤'}
+      {!isDragging && worker.icon}
     </span>
   );
 }

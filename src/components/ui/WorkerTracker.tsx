@@ -32,7 +32,7 @@ function DraggableWorker({ worker, cardId }: DraggableWorkerProps) {
       style={style}
       className="text-sm flex justify-center"
     >
-      {!isDragging && '👤'}
+      {!isDragging && worker.icon}
     </span>
   )
 }
