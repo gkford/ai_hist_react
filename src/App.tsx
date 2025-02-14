@@ -93,24 +93,60 @@ function App() {
       onDragStart={() => setIsDragging(true)}
       onDragEnd={(event) => {
         setIsDragging(false)
-      const { active, over } = event
-      if (!over) return
+        const { active, over } = event
+        if (!over) return
 
-      const sourceCardId = active.data.current?.cardId
-      const targetCardId = over.id.toString().split('-')[0]
-
-      if (sourceCardId && targetCardId && sourceCardId !== targetCardId) {
-        // Get source card's store methods
-        const sourceCard = useCardsStore.getState().cardStates[sourceCardId]
-        const targetCard = useCardsStore.getState().cardStates[targetCardId]
+        const sourceId = active.id.toString()
+        const targetId = over.id.toString()
         
-        if (sourceCard && targetCard) {
-          // Remove worker from source card
-          useCardsStore.getState().updateAssignedWorkers(sourceCardId, sourceCard.assigned_workers - 1)
-          // Add worker to target card
-          useCardsStore.getState().updateAssignedWorkers(targetCardId, targetCard.assigned_workers + 1)
+        // Case 1: Dragging from card to population tracker
+        if (sourceId.includes('-worker-') && targetId === 'population-tracker') {
+          const sourceCardId = active.data.current?.cardId
+          if (!sourceCardId) return
+          
+          const sourceCard = useCardsStore.getState().cardStates[sourceCardId]
+          if (sourceCard && sourceCard.assigned_workers > 0) {
+            // Remove worker from source card
+            useCardsStore.getState().updateAssignedWorkers(sourceCardId, sourceCard.assigned_workers - 1)
+            // Add to available population
+            const population = useResourceStore.getState().resources.population
+            useResourceStore.getState().produceResource('population', 0, { 
+              available: (population.available || 0) + 1 
+            })
+          }
+          return
         }
-      }
+
+        // Case 2: Dragging from population tracker to card
+        if (sourceId.includes('population-worker-') && targetId.includes('-tracker')) {
+          const targetCardId = targetId.split('-tracker')[0]
+          const population = useResourceStore.getState().resources.population
+          const targetCard = useCardsStore.getState().cardStates[targetCardId]
+          
+          if (targetCard && (population.available || 0) > 0) {
+            // Add worker to target card
+            useCardsStore.getState().updateAssignedWorkers(targetCardId, targetCard.assigned_workers + 1)
+            // Remove from available population
+            useResourceStore.getState().produceResource('population', 0, { 
+              available: (population.available || 0) - 1 
+            })
+          }
+          return
+        }
+
+        // Case 3: Dragging between cards (existing functionality)
+        const sourceCardId = active.data.current?.cardId
+        const targetCardId = targetId.split('-tracker')[0]
+
+        if (sourceCardId && targetCardId && sourceCardId !== targetCardId) {
+          const sourceCard = useCardsStore.getState().cardStates[sourceCardId]
+          const targetCard = useCardsStore.getState().cardStates[targetCardId]
+          
+          if (sourceCard && targetCard) {
+            useCardsStore.getState().updateAssignedWorkers(sourceCardId, sourceCard.assigned_workers - 1)
+            useCardsStore.getState().updateAssignedWorkers(targetCardId, targetCard.assigned_workers + 1)
+          }
+        }
     }}>
       <div className="min-h-screen p-4 flex flex-col">
       <DevControls />
