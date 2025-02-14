@@ -32,6 +32,7 @@ export function processDiscoveries() {
   // Update the card's discovery state with new thought investment
   cardStore.updateCardState(priorityCard.id, {
     discovery_state: {
+      ...priorityCard.discovery_state,
       thought_invested: newThoughtInvested
     }
   })

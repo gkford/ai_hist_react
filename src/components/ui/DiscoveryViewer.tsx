@@ -13,6 +13,7 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
   const togglePriority = () => {
     updateCardState(cardId, {
       discovery_state: {
+        ...discoveryState,
         priority: discoveryState.priority === 'on' ? 'off' : 'on'
       }
     });
