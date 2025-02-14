@@ -1,7 +1,8 @@
 import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { logger } from './logger'
-import type { OnDiscoveryEffects, ResourceKey } from '@/data/cards'
+import type { OnDiscoveryEffects } from '@/data/cards'
+import type { ResourceKey } from '@/store/useResourceStore'
 
 export function processDiscoveries() {
   const cardStore = useCardsStore.getState()
@@ -55,7 +56,7 @@ export function processDiscoveries() {
       // Apply OnDiscoveryEffects if they exist
       if (priorityCard.OnDiscoveryEffects?.resourceBonuses) {
         Object.entries(priorityCard.OnDiscoveryEffects.resourceBonuses).forEach(([resource, amount]) => {
-          resourceStore.produceResource(resource as ResourceKey, amount)
+          resourceStore.produceResource(resource as ResourceKey, Number(amount))
           logger.log(`Applied discovery bonus: ${amount} ${resource}`)
         })
       }

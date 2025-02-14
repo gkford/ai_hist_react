@@ -23,7 +23,7 @@ export interface DiscoveryState extends DiscoveryStats {
 interface CardState
   extends Omit<
     CardDefinition,
-    'ongoingEffects' | 'OnDiscoveryEffects' | 'discovery_stats'
+    'ongoingEffects' | 'discovery_stats'
   > {
   ongoingEffects?: OngoingEffectsState
   discovery_state: DiscoveryState
