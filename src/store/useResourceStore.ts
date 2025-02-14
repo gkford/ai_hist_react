@@ -10,6 +10,8 @@ interface Resource {
   bonus: number;
   amountProducedThisSecond: number[];
   amountSpentThisSecond: number[];
+  available?: number;
+  total?: number;
 }
 
 interface ResourceStore {
@@ -26,7 +28,17 @@ export const useResourceStore = create<ResourceStore>((set) => ({
     knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     thoughts: { amount: [0], icon: "💭", key: "thoughts", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    population: { amount: [10], icon: "👥", key: "population", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    population: { 
+      amount: [10], 
+      icon: "👥", 
+      key: "population", 
+      isRate: false, 
+      bonus: 1, 
+      amountProducedThisSecond: [0], 
+      amountSpentThisSecond: [0],
+      available: 0,
+      total: 10
+    },
   },
   progressToNextSecond: () => 
     set((state) => {

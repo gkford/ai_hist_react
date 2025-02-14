@@ -1,24 +1,23 @@
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useResource } from '@/store/useResourceStore'
 
 interface WorkerTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
-  population?: number
-  onPopulationChange?: (newPopulation: number) => void
+  onWorkersChange?: (newWorkers: number) => void
 }
 
 export function WorkerTracker({ 
-  population = 10,
-  onPopulationChange,
+  onWorkersChange,
   className,
   ...props 
 }: WorkerTrackerProps) {
-  const [currentPopulation, setCurrentPopulation] = React.useState(population)
-
+  const population = useResource('population')
+  
   const handleChange = (delta: number) => {
-    const newPopulation = Math.max(0, currentPopulation + delta)
-    setCurrentPopulation(newPopulation)
-    onPopulationChange?.(newPopulation)
+    const newAvailable = Math.max(0, Math.min(population.total, (population.available || 0) + delta))
+    // TODO: Update the store with new available value
+    onWorkersChange?.(newAvailable)
   }
 
   return (
@@ -36,9 +35,9 @@ export function WorkerTracker({
       </Button>
 
       <div className="flex-1 grid grid-cols-10 gap-1">
-        {[...Array(10)].map((_, i) => (
+        {[...Array(population.total)].map((_, i) => (
           <span key={i} className="text-sm flex justify-center">
-            {i < currentPopulation ? '👤' : '·'}
+            {i < (population.available || 0) ? '👤' : '·'}
           </span>
         ))}
       </div>
