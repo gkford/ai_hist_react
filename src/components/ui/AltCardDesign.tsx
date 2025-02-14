@@ -82,15 +82,19 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                 />
               ) : (
                 <>
-                  <WorkerTracker 
-                    className="w-full px-4"
-                    cardId={id}
-                  />
-                  {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
-                    <GenerationTracker
-                      className="w-full px-4"
-                      cardId={id}
-                    />
+                  {cardState.discovery_state.current_status === 'discovered' && (
+                    <>
+                      <WorkerTracker 
+                        className="w-full px-4"
+                        cardId={id}
+                      />
+                      {cardDef.generates && (
+                        <GenerationTracker
+                          className="w-full px-4"
+                          cardId={id}
+                        />
+                      )}
+                    </>
                   )}
                 </>
               )}
