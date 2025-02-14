@@ -67,38 +67,34 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                 />
               </div>
             )}
-          {cardDef.description && (
-            <>
-              <CardInfo>
-                <p>
-                  {isUndiscovered
-                    ? obscureText(cardDef.description)
-                    : cardDef.description}
-                </p>
-              </CardInfo>
-              {cardDef.type === 'people' ? (
-                <PopulationTracker 
-                  className="w-full px-4"
-                />
-              ) : (
-                <>
-                  {cardState.discovery_state.current_status === 'discovered' && (
-                    <>
-                      <WorkerTracker 
-                        className="w-full px-4"
-                        cardId={id}
-                      />
-                      {cardDef.generates && (
-                        <GenerationTracker
-                          className="w-full px-4"
-                          cardId={id}
-                        />
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-            </>
+          <CardInfo />
+          {cardDef.ongoingEffects &&
+            (cardState.discovery_state.current_status === 'imagined' ||
+              cardState.discovery_state.current_status === 'discovered') && (
+              <OngoingEffectsViewer
+                effects={cardDef.ongoingEffects}
+                isDiscovered={
+                  cardState.discovery_state.current_status === 'discovered'
+                }
+              />
+          )}
+          {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
+            <GenerationTracker
+              className="w-full px-4"
+              cardId={id}
+            />
+          )}
+          {cardDef.type === 'people' ? (
+            <PopulationTracker 
+              className="w-full px-4"
+            />
+          ) : (
+            cardState.discovery_state.current_status === 'discovered' && (
+              <WorkerTracker 
+                className="w-full px-4"
+                cardId={id}
+              />
+            )
           )}
           {(cardState.discovery_state.current_status === 'unthoughtof' ||
             cardState.discovery_state.current_status === 'imagined') && (
@@ -113,16 +109,6 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
             cardState.discovery_state.current_status === 'discovered') && (
             <OnDiscoveryEffectsViewer
               effects={cardDef.OnDiscoveryEffects}
-              isDiscovered={
-                cardState.discovery_state.current_status === 'discovered'
-              }
-            />
-          )}
-        {cardDef.ongoingEffects &&
-          (cardState.discovery_state.current_status === 'imagined' ||
-            cardState.discovery_state.current_status === 'discovered') && (
-            <OngoingEffectsViewer
-              effects={cardDef.ongoingEffects}
               isDiscovered={
                 cardState.discovery_state.current_status === 'discovered'
               }
