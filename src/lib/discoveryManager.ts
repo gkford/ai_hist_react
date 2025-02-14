@@ -1,6 +1,7 @@
 import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { logger } from './logger'
+import type { OnDiscoveryEffects, ResourceKey } from '@/data/cards'
 
 export function processDiscoveries() {
   const cardStore = useCardsStore.getState()
@@ -51,6 +52,14 @@ export function processDiscoveries() {
       
       logger.log(`Card ${priorityCard.id} has been discovered!`)
       
+      // Apply OnDiscoveryEffects if they exist
+      if (priorityCard.OnDiscoveryEffects?.resourceBonuses) {
+        Object.entries(priorityCard.OnDiscoveryEffects.resourceBonuses).forEach(([resource, amount]) => {
+          resourceStore.produceResource(resource as ResourceKey, amount)
+          logger.log(`Applied discovery bonus: ${amount} ${resource}`)
+        })
+      }
+
       // Update to discovered status and turn off priority
       cardStore.updateCardState(priorityCard.id, {
         discovery_state: {
