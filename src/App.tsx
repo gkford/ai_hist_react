@@ -4,6 +4,7 @@ import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
 import { DndContext, DragOverlay } from '@dnd-kit/core'
+import { useWorkersStore } from '@/store/useWorkersStore'
 
 function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
   if (discoveryStatus === 'unthoughtof' || discoveryStatus === 'imagined') {
