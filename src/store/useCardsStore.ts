@@ -68,6 +68,7 @@ interface CardsStore {
     partial: Partial<OngoingEffectsState>
   ) => void
   removeCard: (id: string) => void
+  updateAssignedWorkers: (cardId: string, newValue: number) => void
 }
 
 export const useCardsStore = create<CardsStore>((set) => ({
@@ -232,4 +233,15 @@ export const useCardsStore = create<CardsStore>((set) => ({
       const { [id]: removed, ...remaining } = state.cardStates;
       return { cardStates: remaining };
     }),
+    
+  updateAssignedWorkers: (cardId: string, newValue: number) =>
+    set((state) => ({
+      cardStates: {
+        ...state.cardStates,
+        [cardId]: {
+          ...state.cardStates[cardId],
+          assigned_workers: newValue
+        }
+      }
+    })),
 }))
