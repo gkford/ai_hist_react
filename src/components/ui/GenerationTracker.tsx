@@ -2,7 +2,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
 import { useResource } from '@/store/useResourceStore'
-import { useWorkersStore } from '@/store/useWorkersStore'
+import { useWorkersStore, WORKER_ICONS } from '@/store/useWorkersStore'
 import { allCards } from '@/data/cards'
 
 interface GenerationTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -67,7 +67,7 @@ export function GenerationTracker({
           <div key={level} className="flex items-center gap-2 justify-center">
             <span className="text-sm">{resourceByLevel[level]?.icon}</span>
             <span className="text-sm">+{((cardState.generates?.amount ?? 0) * count).toFixed(1)}/s</span>
-            <span className="text-xs text-gray-500">({count} L{level} workers)</span>
+            <span className="text-xs text-gray-500">({count} {WORKER_ICONS[level as keyof typeof WORKER_ICONS]} L{level} workers)</span>
           </div>
         ))}
       </div>
