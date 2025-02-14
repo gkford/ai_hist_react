@@ -26,7 +26,7 @@ import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { AltCardDesign } from "@/components/ui/AltCardDesign"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
 function initializeCards() {
