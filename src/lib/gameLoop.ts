@@ -10,7 +10,7 @@ function processFoodConsumption() {
   const population = resourceStore.resources.population.amount[0]
   
   // Each population unit consumes 1 food
-  resourceStore.consumeResource('food', population)
+  resourceStore.spendResource('food', population)
   logger.log(`Population ${population} consumed ${population} food`)
 }
 
