@@ -25,7 +25,7 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
 }
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { AltCardDesign } from "@/components/ui/AltCardDesign"
-import { useResource, useResourceStore } from "@/store/useResourceStore"
+import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect, useState } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
@@ -77,7 +77,7 @@ function App() {
 
   const food = useResource('food')
   const knowledge = useResource('knowledge')
-  const thoughts = useResource('thoughts')
+  const thoughts1 = useResource('thoughts1')
   const humanEnergy = useResource('humanEnergy')
   const population = useResource('population')
 
@@ -147,7 +147,7 @@ function App() {
             <h2 className="font-semibold mb-2">Developer Dashboard</h2>
             <p>Food: {formatNumber(food.amount[0])}</p>
             <p>Knowledge: {formatNumber(knowledge.amount[0])}</p>
-            <p>Thoughts: {formatNumber(thoughts.amount[0])}</p>
+            <p>Thoughts L1: {formatNumber(thoughts1.amount[0])}</p>
             <p>Human Energy: {formatNumber(humanEnergy.amount[0])}</p>
             <p>Population: {formatNumber(population.amount[0])}</p>
           </div>

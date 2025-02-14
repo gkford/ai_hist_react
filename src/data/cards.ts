@@ -90,7 +90,7 @@ export const allCards: CardDefinition[] = [
     ongoingEffects: {
       resourceModifiers: {
         humanEnergy: 1.05,
-        thoughts: 1.05,
+        thoughts1: 1.05,
       }
     },
     OnDiscoveryEffects: {
@@ -118,7 +118,7 @@ export const allCards: CardDefinition[] = [
     },
     ongoingEffects: {
       resourceModifiers: {
-        thoughts: 1.1,
+        thoughts1: 1.1,
       }
     },
     OnDiscoveryEffects: {
@@ -157,7 +157,7 @@ export const allCards: CardDefinition[] = [
     description: 'Basic thinking',
     knowledge_level: 1,
     generates: {
-      resource: 'thoughts',
+      resource: 'thoughts1',
       amount: 1
     },
   },

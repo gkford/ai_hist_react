@@ -2,7 +2,6 @@ import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useWorkersStore } from '@/store/useWorkersStore'
 import { logger } from './logger'
-import type { OnDiscoveryEffects } from '@/data/cards'
 import type { ResourceKey } from '@/store/useResourceStore'
 
 export function processDiscoveries() {
@@ -10,7 +9,7 @@ export function processDiscoveries() {
   const resourceStore = useResourceStore.getState()
   
   // Get the amount of thoughts produced this turn
-  const thoughtsProduced = resourceStore.resources.thoughts.amountProducedThisSecond[0]
+  const thoughtsProduced = resourceStore.resources.thoughts1.amountProducedThisSecond[0]
   
   if (thoughtsProduced <= 0) {
     return // No thoughts to process
