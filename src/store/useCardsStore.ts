@@ -45,6 +45,7 @@ interface CardState
   rts: Record<string, RTState>
   ongoingEffects?: OngoingEffectsState
   discovery_state: DiscoveryState
+  assigned_workers: number
 }
 
 interface CardsStore {
@@ -78,6 +79,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
     set((state) => {
       const newCardState: CardState = {
         ...cardDef,
+        assigned_workers: 0,
         rts: Object.fromEntries(
           (cardDef.rts || []).map((rt: rtConfig) => [
             rt.id,

@@ -16,7 +16,7 @@ export function WorkerTracker({
   
   const handleChange = (delta: number) => {
     const newAvailable = Math.max(0, Math.min(population.total, (population.available || 0) + delta))
-    // TODO: Update the store with new available value
+    useResourceStore.getState().produceResource('population', 0, { available: newAvailable })
     onWorkersChange?.(newAvailable)
   }
 
