@@ -119,13 +119,6 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
               />
             )
           )}
-          {(cardState.discovery_state.current_status === 'unthoughtof' ||
-            cardState.discovery_state.current_status === 'imagined') && (
-            <DiscoveryViewer
-              discoveryState={cardState.discovery_state}
-              cardId={id}
-            />
-          )}
         </div>
       </Card>
     )
