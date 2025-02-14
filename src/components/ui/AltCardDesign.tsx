@@ -76,8 +76,8 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
               </CardInfo>
               {cardDef.type !== 'people' && (
                 <WorkerTracker 
-                  className="w-full px-4" 
-                  onWorkersChange={(workers) => console.log('Workers changed:', workers)}
+                  className="w-full px-4"
+                  cardId={id}
                 />
               )}
             </>
