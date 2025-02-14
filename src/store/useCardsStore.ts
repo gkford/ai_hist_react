@@ -40,11 +40,6 @@ interface CardsStore {
     }
   ) => void
   updateCardState: (id: string, partial: Partial<CardState>) => void
-  updateRTState: (
-    cardId: string,
-    rtId: string,
-    partial: Partial<RTState>
-  ) => void
   updateEffectState: (
     cardId: string,
     partial: Partial<OngoingEffectsState>
@@ -64,19 +59,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
       const newCardState: CardState = {
         ...cardDef,
         assigned_workers: initialState?.assigned_workers || 0,
-        rt: cardDef.rt ? {
-          ...cardDef.rt,
-          inbound_paid: Object.fromEntries(
-            Object.keys(cardDef.rt.inbound_cost).map((resource) => [resource, 0])
-          ),
-          outbound_owed: Object.fromEntries(
-            Object.keys(cardDef.rt.outbound_gain).map((resource) => [resource, 0])
-          ),
-          focus: {
-            resource: cardDef.rt.focus.resource,
-            priority: 'none',
-          },
-        } : undefined,
         ongoingEffects: cardDef.ongoingEffects
           ? {
               resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
@@ -110,7 +92,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
         cardStates: newCardStates,
         createCard: state.createCard,
         updateCardState: state.updateCardState,
-        updateRTState: state.updateRTState,
         updateEffectState: state.updateEffectState,
         removeCard: state.removeCard
       };
@@ -128,22 +109,6 @@ export const useCardsStore = create<CardsStore>((set) => ({
       },
     })),
 
-  updateRTState: (cardId, rtId, partial) =>
-    set((state) => ({
-      cardStates: {
-        ...state.cardStates,
-        [cardId]: {
-          ...state.cardStates[cardId],
-          rts: {
-            ...state.cardStates[cardId].rts,
-            [rtId]: {
-              ...state.cardStates[cardId].rts[rtId],
-              ...partial,
-            },
-          },
-        },
-      },
-    })),
 
   updateEffectState: (cardId, partial: Partial<OngoingEffectsState>) =>
     set((state) => ({
