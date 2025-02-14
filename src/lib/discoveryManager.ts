@@ -1,5 +1,6 @@
 import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
 import { logger } from './logger'
 import type { OnDiscoveryEffects } from '@/data/cards'
 import type { ResourceKey } from '@/store/useResourceStore'
@@ -59,6 +60,12 @@ export function processDiscoveries() {
           resourceStore.produceResource(resource as ResourceKey, Number(amount))
           logger.log(`Applied discovery bonus: ${amount} ${resource}`)
         })
+      }
+
+      if (priorityCard.OnDiscoveryEffects?.upgradeWorkers) {
+        const count = priorityCard.OnDiscoveryEffects.upgradeWorkers;
+        useWorkersStore.getState().upgradeWorkers(count);
+        logger.log(`Upgraded ${count} workers due to discovery effect on card ${priorityCard.id}.`);
       }
 
       // Update to discovered status and turn off priority

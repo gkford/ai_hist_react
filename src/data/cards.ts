@@ -23,7 +23,8 @@ export interface OngoingEffects {
 }
 
 export interface OnDiscoveryEffects {
-  resourceBonuses: Partial<Record<ResourceKey, number>> // Resource keys mapped to their one-time bonus amounts
+  resourceBonuses?: Partial<Record<ResourceKey, number>>; // optional: resource bonus amounts
+  upgradeWorkers?: number;            // number of workers to upgrade on discovery
 }
 
 export type CardType = 'people' | 'computation' | 'science' | 'production';
@@ -144,9 +145,7 @@ export const allCards: CardDefinition[] = [
       amount: 1.1
     },
     OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 10,
-      },
+      upgradeWorkers: 5,
     },
   },
   {
