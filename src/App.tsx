@@ -3,6 +3,7 @@ import { useDevStore } from "@/store/useDevStore"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
+import { DndContext } from '@dnd-kit/core'
 
 function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
   if (discoveryStatus === 'unthoughtof' || discoveryStatus === 'imagined') {
@@ -79,7 +80,8 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen p-4 flex flex-col">
+    <DndContext>
+      <div className="min-h-screen p-4 flex flex-col">
       <DevControls />
       
       {/* Resources Dashboard at the top */}
@@ -128,7 +130,8 @@ function App() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </DndContext>
   )
 }
 
