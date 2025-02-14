@@ -3,6 +3,8 @@ import { processKnowledgeLevel } from './knowledgeManager'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { useCardsStore } from '@/store/useCardsStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
+import { allCards } from '@/data/cards'
 import { logger } from './logger'
 
 function processFoodConsumption() {
@@ -17,15 +19,36 @@ function processFoodConsumption() {
 function processWorkerProduction() {
   const cardStore = useCardsStore.getState()
   const resourceStore = useResourceStore.getState()
+  const workersStore = useWorkersStore.getState()
 
   // Process each card that has workers assigned and is discovered
   Object.values(cardStore.cardStates).forEach(card => {
-    if (card.discovery_state.current_status === 'discovered' && 
-        card.assigned_workers > 0 && 
-        card.generates) {
-      const amount = card.generates.amount * card.assigned_workers
-      resourceStore.produceResource(card.generates.resource, amount)
-      logger.log(`Card ${card.id} produced ${amount} ${card.generates.resource}`)
+    if (card.discovery_state.current_status === 'discovered' && card.generates) {
+      const workers = workersStore.workers.filter(w => w.assignedTo === card.id)
+      
+      if (workers.length > 0) {
+        // For computation cards, each worker level generates that level of thought
+        if (allCards.find(c => c.id === card.id)?.type === 'computation') {
+          // Group workers by level
+          const workersByLevel = workers.reduce((acc, worker) => {
+            acc[worker.level] = (acc[worker.level] || 0) + 1
+            return acc
+          }, {} as Record<number, number>)
+
+          // Generate thoughts for each worker level
+          Object.entries(workersByLevel).forEach(([level, count]) => {
+            const thoughtLevel = `thoughts${level}` as ResourceKey
+            const amount = card.generates.amount * count
+            resourceStore.produceResource(thoughtLevel, amount)
+            logger.log(`Card ${card.id} produced ${amount} ${thoughtLevel}`)
+          })
+        } else {
+          // For non-computation cards, all workers contribute to the same resource
+          const amount = card.generates.amount * workers.length
+          resourceStore.produceResource(card.generates.resource, amount)
+          logger.log(`Card ${card.id} produced ${amount} ${card.generates.resource}`)
+        }
+      }
     }
   })
 }
