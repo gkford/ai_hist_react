@@ -137,7 +137,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
         ...state.cardStates,
         [cardId]: {
           ...state.cardStates[cardId],
-          assigned_workers: newValue
+          assigned_workers: Math.max(0, newValue)
         }
       }
     })),
