@@ -51,9 +51,9 @@ export function ResourceDashboard({ className }: { className?: string }) {
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
           <span className="font-medium w-20">Food:</span>
-          <div className="flex gap-1">
+          <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${food.max_storage ?? 20}, 1fr)` }}>
             {[...Array(food.max_storage ?? 20)].map((_, i) => (
-              <span key={i} className="text-xl">
+              <span key={i} className="text-xl text-center">
                 {i < food.amount[0] ? "🍖" : "·"}
               </span>
             ))}
