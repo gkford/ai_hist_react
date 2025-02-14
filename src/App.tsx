@@ -22,7 +22,7 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
   }
 }
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
-import { MasterCard } from "@/components/ui/MasterCard"
+import { AltCardDesign } from "@/components/ui/AltCardDesign"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect, useState } from "react"
@@ -89,7 +89,7 @@ function App() {
                   return cardDef && getCardColumn(cardDef.type, cardState.discovery_state.current_status) === columnNumber;
                 })
                 .map((cardState) => (
-                  <MasterCard key={cardState.id} id={cardState.id} />
+                  <AltCardDesign key={cardState.id} id={cardState.id} />
                 ))
             }
           </div>
