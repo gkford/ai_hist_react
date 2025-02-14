@@ -53,6 +53,7 @@ export function WorkerTracker({
         variant="outline" 
         size="sm"
         onClick={() => handleChange(1)}
+        disabled={(population.available || 0) <= 0}
       >
         +
       </Button>
