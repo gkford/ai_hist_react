@@ -40,9 +40,9 @@ export interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
 interface CardState
   extends Omit<
     CardDefinition,
-    'rts' | 'ongoingEffects' | 'OnDiscoveryEffects' | 'discovery_stats'
+    'rt' | 'ongoingEffects' | 'OnDiscoveryEffects' | 'discovery_stats'
   > {
-  rts: Record<string, RTState>
+  rt?: RTState
   ongoingEffects?: OngoingEffectsState
   discovery_state: DiscoveryState
   assigned_workers: number
@@ -82,24 +82,19 @@ export const useCardsStore = create<CardsStore>((set) => ({
       const newCardState: CardState = {
         ...cardDef,
         assigned_workers: initialState?.assigned_workers || 0,
-        rts: Object.fromEntries(
-          (cardDef.rts || []).map((rt: rtConfig) => [
-            rt.id,
-            {
-              ...rt,
-              inbound_paid: Object.fromEntries(
-                Object.keys(rt.inbound_cost).map((resource) => [resource, 0])
-              ),
-              outbound_owed: Object.fromEntries(
-                Object.keys(rt.outbound_gain).map((resource) => [resource, 0])
-              ),
-              focus: {
-                resource: rt.focus.resource,
-                priority: 'none',
-              },
-            },
-          ])
-        ),
+        rt: cardDef.rt ? {
+          ...cardDef.rt,
+          inbound_paid: Object.fromEntries(
+            Object.keys(cardDef.rt.inbound_cost).map((resource) => [resource, 0])
+          ),
+          outbound_owed: Object.fromEntries(
+            Object.keys(cardDef.rt.outbound_gain).map((resource) => [resource, 0])
+          ),
+          focus: {
+            resource: cardDef.rt.focus.resource,
+            priority: 'none',
+          },
+        } : undefined,
         ongoingEffects: cardDef.ongoingEffects
           ? {
               resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
@@ -155,19 +150,17 @@ export const useCardsStore = create<CardsStore>((set) => ({
       // Calculate focus props for RT resources
       const rtResourceTypes = new Set<ResourceKey>();
       Object.values(newCardStates).forEach(card => {
-        Object.values(card.rts || {}).forEach(rt => {
-          rtResourceTypes.add(rt.focus.resource);
-        });
+        if (card.rt) {
+          rtResourceTypes.add(card.rt.focus.resource);
+        }
       });
 
       rtResourceTypes.forEach(resource => {
         const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
         Object.values(newCardStates).forEach(card => {
-          Object.values(card.rts || {}).forEach(rt => {
-            if (rt.focus.resource === resource) {
-              rtFocusStates.push(rt.focus.priority);
-            }
-          });
+          if (card.rt && card.rt.focus.resource === resource) {
+            rtFocusStates.push(card.rt.focus.priority);
+          }
         });
 
         const rtPropValues = calculateFocusPropFromPriorities(rtFocusStates);

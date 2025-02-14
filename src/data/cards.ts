@@ -43,7 +43,7 @@ export interface CardDefinition {
   icon?: string
   imageSrc?: string
   description?: string
-  rts?: rtConfig[]
+  rt?: rtConfig
   ongoingEffects?: OngoingEffects
   OnDiscoveryEffects?: OnDiscoveryEffects
   discovery_stats?: DiscoveryStats
@@ -63,20 +63,18 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/hominids.png',
     description: 'Your early human population',
     knowledge_level: 1,
-    rts: [
-      {
-        id: 'eat_food',
-        inbound_cost: {
-          food: 1,
-        },
-        outbound_gain: {
-          humanEnergy: 1.2,
-        },
-        focus: {
-          resource: 'population',
-        },
+    rt: {
+      id: 'eat_food',
+      inbound_cost: {
+        food: 1,
       },
-    ],
+      outbound_gain: {
+        humanEnergy: 1.2,
+      },
+      focus: {
+        resource: 'population',
+      },
+    },
   },
   {
     id: 'gather_food',
@@ -93,20 +91,18 @@ export const allCards: CardDefinition[] = [
         resource: 'thoughts',
       },
     },
-    rts: [
-      {
-        id: 'gather_food',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          food: 1,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
+    rt: {
+      id: 'gather_food',
+      inbound_cost: {
+        humanEnergy: 1,
       },
-    ],
+      outbound_gain: {
+        food: 1,
+      },
+      focus: {
+        resource: 'humanEnergy',
+      },
+    },
   },
   {
     id: 'non_verbal_communication',
@@ -155,21 +151,18 @@ export const allCards: CardDefinition[] = [
       },
       discovery_unlocks: [],
     },
-    rts: [
-      // Cultural route: slowly convert human energy into knowledge
-      {
-        id: 'cultural_exchange',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          knowledge: 2,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
+    rt: {
+      id: 'cultural_exchange',
+      inbound_cost: {
+        humanEnergy: 1,
       },
-    ],
+      outbound_gain: {
+        knowledge: 2,
+      },
+      focus: {
+        resource: 'humanEnergy',
+      },
+    },
     ongoingEffects: {
       resourceModifiers: {
         thoughts: 1.1,
@@ -200,20 +193,18 @@ export const allCards: CardDefinition[] = [
       },
       discovery_unlocks: [],
     },
-    rts: [
-      {
-        id: 'hunt',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          food: 1.1,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
+    rt: {
+      id: 'hunt',
+      inbound_cost: {
+        humanEnergy: 1,
       },
-    ],
+      outbound_gain: {
+        food: 1.1,
+      },
+      focus: {
+        resource: 'humanEnergy',
+      },
+    },
     OnDiscoveryEffects: {
       resourceBonuses: {
         knowledge: 10,
@@ -228,20 +219,18 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/think.webp',
     description: 'Basic thinking',
     knowledge_level: 1,
-    rts: [
-      {
-        id: 'think',
-        inbound_cost: {
-          humanEnergy: 1,
-        },
-        outbound_gain: {
-          thoughts: 1,
-        },
-        focus: {
-          resource: 'humanEnergy',
-        },
+    rt: {
+      id: 'think',
+      inbound_cost: {
+        humanEnergy: 1,
       },
-    ],
+      outbound_gain: {
+        thoughts: 1,
+      },
+      focus: {
+        resource: 'humanEnergy',
+      },
+    },
   },
 
   // ------------------------------
