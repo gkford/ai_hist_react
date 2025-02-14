@@ -42,15 +42,6 @@ function initializeCards() {
       current_status: 'discovered'
     }
   });
-
-  cardStore.createCard('think_l1', {
-    discovery_state: {
-      current_status: 'discovered'
-    }
-  });
-
-  // Add non verbal communication card without specifying discovery state
-  cardStore.createCard('non_verbal_communication');
 }
 
 function App() {
