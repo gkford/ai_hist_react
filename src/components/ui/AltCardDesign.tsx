@@ -5,7 +5,6 @@ import { useCardsStore } from '@/store/useCardsStore'
 import { allCards } from '@/data/cards'
 import { CardImage } from '@/components/ui/CardImage'
 import { CardInfo } from '@/components/ui/CardInfo'
-import { RTViewer } from '@/components/ui/RTViewer'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
@@ -75,10 +74,12 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                     : cardDef.description}
                 </p>
               </CardInfo>
-              <WorkerTracker 
-                className="w-full px-4" 
-                onPopulationChange={(pop) => console.log('Population changed:', pop)}
-              />
+              {cardDef.type !== 'people' && (
+                <WorkerTracker 
+                  className="w-full px-4" 
+                  onPopulationChange={(pop) => console.log('Population changed:', pop)}
+                />
+              )}
             </>
           )}
           {(cardState.discovery_state.current_status === 'unthoughtof' ||
@@ -109,10 +110,6 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
               }
             />
           )}
-        {cardState.discovery_state.current_status === 'discovered' &&
-          Object.entries(cardState.rts).map(([rtId, rtState]) => (
-            <RTViewer key={rtId} rtState={rtState} cardId={id} rtId={rtId} />
-          ))}
       </Card>
     )
   }
