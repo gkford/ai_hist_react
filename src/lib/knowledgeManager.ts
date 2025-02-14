@@ -5,7 +5,8 @@ import { allCards } from '@/data/cards'
 import { logger } from './logger'
 
 // Helper to find replacement card for a given level
-function findReplacementCard(type: 'people' | 'computation', level: number) {
+function findReplacementCard(type: CardType, level: number) {
+  if (type !== 'people' && type !== 'computation') return undefined
   return allCards.find(card => 
     card.type === type && 
     card.knowledge_level === level
@@ -46,7 +47,9 @@ function handleCardReplacements(newLevel: number) {
       discovery_state: {
         current_status: 'discovered',
         thought_invested: 0,
-        priority: 'off'
+        priority: 'off',
+        thought_to_imagine: 0,
+        further_thought_to_discover: 0
       }
     })
 
