@@ -24,8 +24,8 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
 
     if (!cardDef || !cardState) return null
 
-    const isUnthoughtof =
-      cardState.discovery_state.current_status === 'unthoughtof'
+    const isUnthoughtof = cardState.discovery_state.current_status === 'unthoughtof'
+    const isUndiscovered = cardState.discovery_state.current_status !== 'discovered'
 
     // Function to replace text with question marks
     const obscureText = (text: string) => {
@@ -40,7 +40,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
       >
         <div className="flex items-center justify-between p-4">
           <h3 className="text-xl font-semibold">
-            {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
+            {isUndiscovered ? obscureText(cardDef.title) : cardDef.title}
           </h3>
           <div className="flex gap-2">
             {cardDef.icon && (
@@ -51,7 +51,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                   justifyContent: 'center',
                 }}
               >
-                {isUnthoughtof ? '?' : cardDef.icon}
+                {isUndiscovered ? '?' : cardDef.icon}
               </span>
             )}
           </div>
@@ -71,7 +71,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
             <>
               <CardInfo>
                 <p>
-                  {isUnthoughtof
+                  {isUndiscovered
                     ? obscureText(cardDef.description)
                     : cardDef.description}
                 </p>
