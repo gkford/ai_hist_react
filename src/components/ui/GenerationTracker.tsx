@@ -31,6 +31,18 @@ export function GenerationTracker({
       return acc
     }, {} as Record<number, number>)
 
+    const resourceThought1 = useResource('thoughts1')
+    const resourceThought2 = useResource('thoughts2')
+    const resourceThought3 = useResource('thoughts3')
+    const resourceThought4 = useResource('thoughts4')
+
+    const resourceByLevel: Record<string, { icon: string }> = {
+      "1": resourceThought1,
+      "2": resourceThought2,
+      "3": resourceThought3,
+      "4": resourceThought4,
+    }
+
     return (
       <div 
         className={cn("flex flex-col gap-2 p-2", className)}
@@ -38,7 +50,7 @@ export function GenerationTracker({
       >
         {Object.entries(workersByLevel).map(([level, count]) => (
           <div key={level} className="flex items-center gap-2 justify-center">
-            <span className="text-sm">{useResource(`thoughts${level}` as any).icon}</span>
+            <span className="text-sm">{resourceByLevel[level]?.icon}</span>
             <span className="text-sm">+{(cardState.generates.amount * count).toFixed(1)}/s</span>
             <span className="text-xs text-gray-500">({count} L{level} workers)</span>
           </div>
