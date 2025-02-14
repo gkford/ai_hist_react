@@ -85,8 +85,8 @@ export function processDiscoveries() {
         logger.log(`Upgraded ${count} workers due to discovery effect on card ${card.id}.`);
       }
 
-      if (card.discovery_stats?.discovery_unlocks?.length) {
-        card.discovery_stats.discovery_unlocks.forEach(cardId => {
+      if (card.discovery_state?.discovery_unlocks?.length) {
+        card.discovery_state.discovery_unlocks.forEach((cardId: string) => {
           // Create each unlocked card
           cardStore.createCard(cardId)
           logger.log(`Unlocked new card: ${cardId} due to discovering ${card.id}`)
