@@ -24,7 +24,7 @@ export function GenerationTracker({
   const workers = React.useMemo(() => allWorkers.filter(w => w.assignedTo === cardId), [allWorkers, cardId])
 
   // Special handling for computation type cards
-  if (cardDefinition?.type === 'computation') {
+  if (cardDefinition?.type === 'computation' && cardState.generates) {
     // Group workers by level
     const workersByLevel = workers.reduce((acc, worker) => {
       acc[worker.level] = (acc[worker.level] || 0) + 1
