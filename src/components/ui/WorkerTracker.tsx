@@ -3,6 +3,36 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useResource, useResourceStore } from '@/store/useResourceStore'
 import { useCardsStore } from '@/store/useCardsStore'
+import { DndContext, DragEndEvent, useDraggable, useDroppable } from '@dnd-kit/core'
+
+interface DraggableWorkerProps {
+  id: string
+  index: number
+}
+
+function DraggableWorker({ id, index }: DraggableWorkerProps) {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: `${id}-worker-${index}`,
+    data: { cardId: id, index }
+  })
+
+  const style = transform ? {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    cursor: 'grab'
+  } : undefined
+
+  return (
+    <span 
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      style={style}
+      className="text-sm flex justify-center cursor-grab active:cursor-grabbing"
+    >
+      👤
+    </span>
+  )
+}
 
 interface WorkerTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
@@ -27,11 +57,38 @@ export function WorkerTracker({
     useResourceStore.getState().produceResource('population', 0, { available: newAvailable })
   }
 
+  const { setNodeRef: setDroppableRef } = useDroppable({
+    id: `${cardId}-tracker`
+  })
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over) return
+
+    const sourceCardId = active.data.current?.cardId
+    const targetCardId = over.id.toString().split('-')[0]
+
+    if (sourceCardId && targetCardId && sourceCardId !== targetCardId) {
+      // Get source card's store methods
+      const sourceCard = useCardsStore.getState().cardStates[sourceCardId]
+      const targetCard = useCardsStore.getState().cardStates[targetCardId]
+      
+      if (sourceCard && targetCard) {
+        // Remove worker from source card
+        useCardsStore.getState().updateAssignedWorkers(sourceCardId, sourceCard.assigned_workers - 1)
+        // Add worker to target card
+        useCardsStore.getState().updateAssignedWorkers(targetCardId, targetCard.assigned_workers + 1)
+      }
+    }
+  }
+
   return (
-    <div 
-      className={cn("flex items-center gap-2 p-2", className)} 
-      {...(({ cardId, ...rest }) => rest)(props)}
-    >
+    <DndContext onDragEnd={handleDragEnd}>
+      <div 
+        ref={setDroppableRef}
+        className={cn("flex items-center gap-2 p-2", className)} 
+        {...(({ cardId, ...rest }) => rest)(props)}
+      >
       <Button 
         variant="outline" 
         size="sm"
@@ -43,9 +100,11 @@ export function WorkerTracker({
 
       <div className="flex-1 grid grid-cols-10 gap-1">
         {[...Array(population.total)].map((_, i) => (
-          <span key={i} className="text-sm flex justify-center">
-            {i < cardState.assigned_workers ? '👤' : '·'}
-          </span>
+          i < cardState.assigned_workers ? (
+            <DraggableWorker key={i} id={cardId} index={i} />
+          ) : (
+            <span key={i} className="text-sm flex justify-center">·</span>
+          )
         ))}
       </div>
 
@@ -57,6 +116,7 @@ export function WorkerTracker({
       >
         +
       </Button>
-    </div>
+      </div>
+    </DndContext>
   )
 }
