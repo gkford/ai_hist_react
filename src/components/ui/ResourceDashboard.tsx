@@ -50,6 +50,9 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const produced4 = thoughts4.amountProducedThisSecond[0]
   const allThoughtsZero = produced1 === 0 && produced2 === 0 && produced3 === 0 && produced4 === 0;
 
+  // Debug logging
+  console.log('Thoughts production:', { produced1, produced2, produced3, produced4 })
+
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
       <div className="flex items-center gap-2 border-b pb-2 mb-2">
@@ -82,7 +85,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced1 > 0 && (
               <ResourceRow 
                 label={`Level 1 Thoughts`}
-                amount={produced1}
+                amount={thoughts1.amountProducedThisSecond[0]}
                 perSecond={produced1}
                 icon="💭"
               />
@@ -90,7 +93,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced2 > 0 && (
               <ResourceRow 
                 label={`Level 2 Thoughts`}
-                amount={produced2}
+                amount={thoughts2.amountProducedThisSecond[0]}
                 perSecond={produced2}
                 icon="💭💭"
               />
@@ -98,7 +101,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced3 > 0 && (
               <ResourceRow 
                 label={`Level 3 Thoughts`}
-                amount={produced3}
+                amount={thoughts3.amountProducedThisSecond[0]}
                 perSecond={produced3}
                 icon="💭💭💭"
               />
@@ -106,7 +109,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             {produced4 > 0 && (
               <ResourceRow 
                 label={`Level 4 Thoughts`}
-                amount={produced4}
+                amount={thoughts4.amountProducedThisSecond[0]}
                 perSecond={produced4}
                 icon="💭💭💭💭"
               />
