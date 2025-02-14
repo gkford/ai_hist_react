@@ -4,7 +4,6 @@ import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
 import { DndContext, DragOverlay } from '@dnd-kit/core'
-import { useState } from 'react'
 
 function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
   if (discoveryStatus === 'unthoughtof' || discoveryStatus === 'imagined') {
@@ -27,7 +26,7 @@ import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { AltCardDesign } from "@/components/ui/AltCardDesign"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
 
 function initializeCards() {
