@@ -44,6 +44,11 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const thoughts3 = useResource('thoughts3')
   const thoughts4 = useResource('thoughts4')
   const { level: knowledgeLevel } = useKnowledgeLevelStore()
+  const produced1 = thoughts1.amountProducedThisSecond[0]
+  const produced2 = thoughts2.amountProducedThisSecond[0]
+  const produced3 = thoughts3.amountProducedThisSecond[0]
+  const produced4 = thoughts4.amountProducedThisSecond[0]
+  const allThoughtsZero = produced1 === 0 && produced2 === 0 && produced3 === 0 && produced4 === 0;
 
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
@@ -70,30 +75,49 @@ export function ResourceDashboard({ className }: { className?: string }) {
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <ResourceRow 
-          label={`Level 1 Thoughts`}
-          amount={thoughts1.amountProducedThisSecond[0]}
-          perSecond={thoughts1.amountProducedThisSecond[0]}
-          icon="💭"
-        />
-        <ResourceRow 
-          label={`Level 2 Thoughts`}
-          amount={thoughts2.amountProducedThisSecond[0]}
-          perSecond={thoughts2.amountProducedThisSecond[0]}
-          icon="💭💭"
-        />
-        <ResourceRow 
-          label={`Level 3 Thoughts`}
-          amount={thoughts3.amountProducedThisSecond[0]}
-          perSecond={thoughts3.amountProducedThisSecond[0]}
-          icon="💭💭💭"
-        />
-        <ResourceRow 
-          label={`Level 4 Thoughts`}
-          amount={thoughts4.amountProducedThisSecond[0]}
-          perSecond={thoughts4.amountProducedThisSecond[0]}
-          icon="💭💭💭💭"
-        />
+        {!allThoughtsZero ? (
+          <>
+            {produced1 > 0 && (
+              <ResourceRow 
+                label={`Level 1 Thoughts`}
+                amount={produced1}
+                perSecond={produced1}
+                icon="💭"
+              />
+            )}
+            {produced2 > 0 && (
+              <ResourceRow 
+                label={`Level 2 Thoughts`}
+                amount={produced2}
+                perSecond={produced2}
+                icon="💭💭"
+              />
+            )}
+            {produced3 > 0 && (
+              <ResourceRow 
+                label={`Level 3 Thoughts`}
+                amount={produced3}
+                perSecond={produced3}
+                icon="💭💭💭"
+              />
+            )}
+            {produced4 > 0 && (
+              <ResourceRow 
+                label={`Level 4 Thoughts`}
+                amount={produced4}
+                perSecond={produced4}
+                icon="💭💭💭💭"
+              />
+            )}
+          </>
+        ) : (
+          <ResourceRow 
+            label="Thoughts"
+            amount={0}
+            perSecond={0}
+            icon="💭"
+          />
+        )}
       </div>
       <div className="flex items-center gap-4">
         <span className="font-medium w-30">Knowledge:</span>
