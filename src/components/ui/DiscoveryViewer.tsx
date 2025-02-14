@@ -32,14 +32,22 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
   return (
     <div className="p-2 border-t border-gray-200">
       <div className="flex flex-col gap-2">
-        {discoveryState.current_status === 'unthoughtof' && (
+        {(discoveryState.current_status === 'unthoughtof' || discoveryState.current_status === 'imagined') && (
           <div className="space-y-2">
             <Progress 
-              value={(discoveryState.thought_invested / discoveryState.thought_to_imagine) * 100} 
+              value={(discoveryState.thought_invested / (
+                discoveryState.current_status === 'unthoughtof' 
+                  ? discoveryState.thought_to_imagine 
+                  : discoveryState.further_thought_to_discover
+              )) * 100} 
               className="h-2"
             />
             <div className="text-sm text-gray-600">
-              Progress: {discoveryState.thought_invested.toFixed(1)} / {discoveryState.thought_to_imagine.toFixed(1)}
+              Progress: {discoveryState.thought_invested.toFixed(1)} / {(
+                discoveryState.current_status === 'unthoughtof'
+                  ? discoveryState.thought_to_imagine
+                  : discoveryState.further_thought_to_discover
+              ).toFixed(1)}
             </div>
           </div>
         )}

@@ -45,12 +45,29 @@ export function processDiscoveries() {
       }
     })
   } else {
-    // Just update thought investment
-    cardStore.updateCardState(priorityCard.id, {
-      discovery_state: {
-        ...priorityCard.discovery_state,
-        thought_invested: newThoughtInvested
-      }
-    })
+    // Check if card is imagined and has reached discovery threshold
+    if (priorityCard.discovery_state.current_status === 'imagined' && 
+        newThoughtInvested >= priorityCard.discovery_state.further_thought_to_discover) {
+      
+      logger.log(`Card ${priorityCard.id} has been discovered!`)
+      
+      // Update to discovered status and turn off priority
+      cardStore.updateCardState(priorityCard.id, {
+        discovery_state: {
+          ...priorityCard.discovery_state,
+          current_status: 'discovered',
+          thought_invested: newThoughtInvested,
+          priority: 'off' // Turn off priority when discovered
+        }
+      })
+    } else {
+      // Just update thought investment
+      cardStore.updateCardState(priorityCard.id, {
+        discovery_state: {
+          ...priorityCard.discovery_state,
+          thought_invested: newThoughtInvested
+        }
+      })
+    }
   }
 }
