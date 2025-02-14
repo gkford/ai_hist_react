@@ -35,9 +35,11 @@ export function WorkerTracker({
         -
       </Button>
 
-      <div className="flex-1 flex items-center justify-center gap-1">
-        {[...Array(currentPopulation)].map((_, i) => (
-          <span key={i} className="text-sm">👤</span>
+      <div className="flex-1 grid grid-cols-10 gap-1">
+        {[...Array(10)].map((_, i) => (
+          <span key={i} className="text-sm flex justify-center">
+            {i < currentPopulation ? '👤' : '·'}
+          </span>
         ))}
       </div>
 
