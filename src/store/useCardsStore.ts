@@ -79,6 +79,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
               further_thought_to_discover: 0,
               current_status: 'unthoughtof',
               thought_invested: 0,
+              priority: 'off',
               ...(initialState?.discovery_state || {}),
             }
       };
