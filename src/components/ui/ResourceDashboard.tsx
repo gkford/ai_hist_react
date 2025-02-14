@@ -88,7 +88,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 label={`Level 1 Thoughts`}
                 amount={produced1}
                 perSecond={produced1}
-                icon="💭"
+                icon={thoughts1.icon}
               />
             )}
             {thoughts2.amount[0] > 0 && (
@@ -96,7 +96,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 label={`Level 2 Thoughts`}
                 amount={produced2}
                 perSecond={produced2}
-                icon="💭💭"
+                icon={thoughts2.icon}
               />
             )}
             {thoughts3.amount[0] > 0 && (
@@ -104,7 +104,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 label={`Level 3 Thoughts`}
                 amount={produced3}
                 perSecond={produced3}
-                icon="💭💭💭"
+                icon={thoughts3.icon}
               />
             )}
             {thoughts4.amount[0] > 0 && (
@@ -112,7 +112,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 label={`Level 4 Thoughts`}
                 amount={produced4}
                 perSecond={produced4}
-                icon="💭💭💭💭"
+                icon={thoughts4.icon}
               />
             )}
           </>
@@ -121,7 +121,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             label="Thoughts"
             amount={0}
             perSecond={0}
-            icon="💭"
+            icon={thoughts1.icon}
           />
         )}
       </div>
