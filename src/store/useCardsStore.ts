@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import type { ResourceKey } from './useResourceStore'
 import { allCards } from '@/data/cards'
 import type {
   CardDefinition,
