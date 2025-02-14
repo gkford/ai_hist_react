@@ -143,7 +143,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 2,
       further_thought_to_discover: 5,
       thought_level: 1,
-      discovery_unlocks: [],
+      discovery_unlocks: ['early_stone_tools'],
     },
     generates: {
       resource: 'food',
@@ -151,6 +151,32 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
+    },
+  },
+  {
+    id: 'early_stone_tools',
+    title: 'Early Stone Tools',
+    type: 'science',
+    icon: '🪨',
+    imageSrc: '/card_images/earlyStoneTools.png',
+    description: 'Basic tools that improve work efficiency',
+    knowledge_level: 1,
+    discovery_stats: {
+      thought_to_imagine: 50,
+      further_thought_to_discover: 50,
+      thought_level: 1,
+      discovery_unlocks: [],
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        humanEnergy: 1.1,
+      }
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 50,
+      },
+      upgradeWorkers: 5
     },
   },
   {
@@ -170,31 +196,5 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   // Tier 2 (knowledge_level = 2)
   // ------------------------------
-  {
-    id: 'early_stone_tools',
-    title: 'Early Stone Tools',
-    type: 'science',
-    icon: '🪨',
-    imageSrc: '/card_images/earlyStoneTools.png',
-    description: 'Basic tools that improve work efficiency',
-    knowledge_level: 2,
-    discovery_stats: {
-      thought_to_imagine: 50,
-      further_thought_to_discover: 50,
-      thought_level: 2,
-      discovery_unlocks: [],
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        humanEnergy: 1.1,
-      }
-    },
-    OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 50,
-      },
-      upgradeWorkers: 5
-    },
-  },
  
 ]
