@@ -43,6 +43,12 @@ function initializeCards() {
     },
     assigned_workers: 10
   });
+
+  cardStore.createCard('think_l1', {
+    discovery_state: {
+      current_status: 'discovered'
+    }
+  });
 }
 
 function App() {
