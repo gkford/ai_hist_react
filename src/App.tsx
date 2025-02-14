@@ -80,7 +80,26 @@ function App() {
   }, []);
 
   return (
-    <DndContext>
+    <DndContext onDragEnd={(event) => {
+      const { active, over } = event
+      if (!over) return
+
+      const sourceCardId = active.data.current?.cardId
+      const targetCardId = over.id.toString().split('-')[0]
+
+      if (sourceCardId && targetCardId && sourceCardId !== targetCardId) {
+        // Get source card's store methods
+        const sourceCard = useCardsStore.getState().cardStates[sourceCardId]
+        const targetCard = useCardsStore.getState().cardStates[targetCardId]
+        
+        if (sourceCard && targetCard) {
+          // Remove worker from source card
+          useCardsStore.getState().updateAssignedWorkers(sourceCardId, sourceCard.assigned_workers - 1)
+          // Add worker to target card
+          useCardsStore.getState().updateAssignedWorkers(targetCardId, targetCard.assigned_workers + 1)
+        }
+      }
+    }}>
       <div className="min-h-screen p-4 flex flex-col">
       <DevControls />
       

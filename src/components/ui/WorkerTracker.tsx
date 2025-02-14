@@ -61,34 +61,13 @@ export function WorkerTracker({
     id: `${cardId}-tracker`
   })
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-    if (!over) return
-
-    const sourceCardId = active.data.current?.cardId
-    const targetCardId = over.id.toString().split('-')[0]
-
-    if (sourceCardId && targetCardId && sourceCardId !== targetCardId) {
-      // Get source card's store methods
-      const sourceCard = useCardsStore.getState().cardStates[sourceCardId]
-      const targetCard = useCardsStore.getState().cardStates[targetCardId]
-      
-      if (sourceCard && targetCard) {
-        // Remove worker from source card
-        useCardsStore.getState().updateAssignedWorkers(sourceCardId, sourceCard.assigned_workers - 1)
-        // Add worker to target card
-        useCardsStore.getState().updateAssignedWorkers(targetCardId, targetCard.assigned_workers + 1)
-      }
-    }
-  }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <div 
-        ref={setDroppableRef}
-        className={cn("flex items-center gap-2 p-2", className)} 
-        {...(({ cardId, ...rest }) => rest)(props)}
-      >
+    <div 
+      ref={setDroppableRef}
+      className={cn("flex items-center gap-2 p-2", className)} 
+      {...(({ cardId, ...rest }) => rest)(props)}
+    >
       <Button 
         variant="outline" 
         size="sm"
@@ -116,7 +95,6 @@ export function WorkerTracker({
       >
         +
       </Button>
-      </div>
-    </DndContext>
+    </div>
   )
 }
