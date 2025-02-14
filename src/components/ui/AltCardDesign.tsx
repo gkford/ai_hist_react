@@ -33,7 +33,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
     return (
       <Card
         ref={ref}
-        className={cn('w-[480px] overflow-hidden flex flex-col', className)}
+        className={cn('w-[320px] h-[480px] overflow-hidden flex flex-col', className)}
         {...props}
       >
         <div className="flex items-center justify-between p-4">
