@@ -35,7 +35,11 @@ export function PopulationTracker({
   ...props 
 }: PopulationTrackerProps) {
   const population = useResource('population')
-  const availableWorkers = useWorkersStore(state => state.getWorkersByAssignment('population'))
+  const workers = useWorkersStore(state => state.workers)
+  const availableWorkers = React.useMemo(
+    () => workers.filter(worker => worker.assignedTo === 'population'),
+    [workers]
+  )
   
   const { setNodeRef: setPopulationRef } = useDroppable({ id: 'population' });
 

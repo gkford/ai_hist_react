@@ -48,8 +48,15 @@ export function WorkerTracker({
 }: WorkerTrackerProps) {
   const population = useResource('population')
   const cardState = useCardsStore(state => state.cardStates[cardId])
-  const assignedWorkers = useWorkersStore(state => state.getWorkersByAssignment(cardId))
-  const availableWorkers = useWorkersStore(state => state.getWorkersByAssignment('population'))
+  const workers = useWorkersStore(state => state.workers)
+  const assignedWorkers = React.useMemo(
+    () => workers.filter(worker => worker.assignedTo === cardId),
+    [workers, cardId]
+  )
+  const availableWorkers = React.useMemo(
+    () => workers.filter(worker => worker.assignedTo === 'population'),
+    [workers]
+  )
   
   const handleChange = (delta: number) => {
     if (delta > 0 && availableWorkers.length <= 0) return
