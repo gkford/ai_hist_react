@@ -42,12 +42,17 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
               )) * 100} 
               className="h-2"
             />
-            <div className="text-sm text-gray-600">
-              Progress: {discoveryState.thought_invested.toFixed(1)} / {(
-                discoveryState.current_status === 'unthoughtof'
-                  ? discoveryState.thought_to_imagine
-                  : discoveryState.further_thought_to_discover
-              ).toFixed(1)}
+            <div className="flex flex-col gap-1">
+              <div className="text-sm text-gray-600">
+                Progress: {discoveryState.thought_invested.toFixed(1)} / {(
+                  discoveryState.current_status === 'unthoughtof'
+                    ? discoveryState.thought_to_imagine
+                    : discoveryState.further_thought_to_discover
+                ).toFixed(1)}
+              </div>
+              <div className="text-sm text-gray-500">
+                Needs level {discoveryState.thought_level} thought
+              </div>
             </div>
           </div>
         )}

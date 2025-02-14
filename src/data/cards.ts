@@ -10,6 +10,7 @@ import type { ResourceKey } from '@/store/useResourceStore'
 export interface DiscoveryStats {
   thought_to_imagine: number
   further_thought_to_discover: number
+  thought_level: number
   discovery_unlocks?: string[] // Array of card IDs that this card unlocks when discovered
 }
 
@@ -85,6 +86,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 2,
       further_thought_to_discover: 5,
+      thought_level: 1,
       discovery_unlocks: ['hunt', 'early_stone_tools', 'gift_giving'],
     },
     ongoingEffects: {
@@ -110,6 +112,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 5,
       further_thought_to_discover: 5,
+      thought_level: 1,
       discovery_unlocks: [],
     },
     generates: {
@@ -138,6 +141,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 2,
       further_thought_to_discover: 5,
+      thought_level: 1,
       discovery_unlocks: [],
     },
     generates: {
