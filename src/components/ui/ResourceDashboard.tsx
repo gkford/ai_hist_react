@@ -54,7 +54,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
           <div className="flex gap-1">
             {[...Array(food.max_storage ?? 20)].map((_, i) => (
               <span key={i} className="text-xl">
-                {i < food.amount[0] ? "●" : "○"}
+                {i < food.amount[0] ? "🍖" : "·"}
               </span>
             ))}
           </div>
