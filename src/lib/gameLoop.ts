@@ -135,11 +135,7 @@ export async function processTick() {
 
     // Only continue processing if the game is still running
     if (useGameLoopStore.getState().isRunning) {
-      // Deduct food based on population
-      logger.log('Processing Food Consumption...')
-      processFoodConsumption()
-
-      // Always process worker production
+      // Always process worker production first
       logger.log('Processing Worker Production...')
       processWorkerProduction()
 
@@ -150,7 +146,11 @@ export async function processTick() {
       // Process knowledge level after discoveries
       processKnowledgeLevel()
 
-      // Progress to next second (handles resetting rate resources) - moved to end
+      // Deduct food based on population (moved to end)
+      logger.log('Processing Food Consumption...')
+      processFoodConsumption()
+
+      // Progress to next second (handles resetting rate resources)
       logger.log('Progressing to next second...')
       store.progressToNextSecond()
     }
