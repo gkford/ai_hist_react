@@ -24,7 +24,7 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
 }
 import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { AltCardDesign } from "@/components/ui/AltCardDesign"
-import { useResource } from "@/store/useResourceStore"
+import { useResource, useResourceStore } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect, useState } from "react"
 import { startGameLoop, stopGameLoop } from "@/lib/gameLoop"
