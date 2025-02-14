@@ -47,48 +47,46 @@ export function processDiscoveries() {
     // Update the thought_invested for the card
     const newThoughtInvested = card.discovery_state.thought_invested + thoughtsProduced
 
-  logger.log(`Adding ${thoughtsProduced} thoughts to ${priorityCard.id}. Total: ${newThoughtInvested}`)
+    logger.log(`Adding ${thoughtsProduced} thoughts to ${card.id}. Total: ${newThoughtInvested}`)
 
-  // Check if we need to transition from unthoughtof to imagined
-  if (priorityCard.discovery_state.current_status === 'unthoughtof' && 
-      newThoughtInvested >= priorityCard.discovery_state.thought_to_imagine) {
-    
-    logger.log(`Card ${priorityCard.id} has been imagined!`)
-    
-    // Update to imagined status and reset thought investment
-    cardStore.updateCardState(priorityCard.id, {
-      discovery_state: {
-        ...priorityCard.discovery_state,
-        current_status: 'imagined',
-        thought_invested: 0,
-        priority: 'off' // Turn off priority when transitioning
-      }
-    })
-  } else {
-    // Check if card is imagined and has reached discovery threshold
-    if (priorityCard.discovery_state.current_status === 'imagined' && 
-        newThoughtInvested >= priorityCard.discovery_state.further_thought_to_discover) {
+    // Check if we need to transition from unthoughtof to imagined
+    if (card.discovery_state.current_status === 'unthoughtof' && 
+        newThoughtInvested >= card.discovery_state.thought_to_imagine) {
       
-      logger.log(`Card ${priorityCard.id} has been discovered!`)
+      logger.log(`Card ${card.id} has been imagined!`)
+      
+      // Update to imagined status and reset thought investment
+      cardStore.updateCardState(card.id, {
+        discovery_state: {
+          ...card.discovery_state,
+          current_status: 'imagined',
+          thought_invested: 0,
+          priority: 'off' // Turn off priority when transitioning
+        }
+      })
+    } else if (card.discovery_state.current_status === 'imagined' && 
+               newThoughtInvested >= card.discovery_state.further_thought_to_discover) {
+      
+      logger.log(`Card ${card.id} has been discovered!`)
       
       // Apply OnDiscoveryEffects if they exist
-      if (priorityCard.OnDiscoveryEffects?.resourceBonuses) {
-        Object.entries(priorityCard.OnDiscoveryEffects.resourceBonuses).forEach(([resource, amount]) => {
+      if (card.OnDiscoveryEffects?.resourceBonuses) {
+        Object.entries(card.OnDiscoveryEffects.resourceBonuses).forEach(([resource, amount]) => {
           resourceStore.produceResource(resource as ResourceKey, Number(amount))
           logger.log(`Applied discovery bonus: ${amount} ${resource}`)
         })
       }
 
-      if (priorityCard.OnDiscoveryEffects?.upgradeWorkers) {
-        const count = priorityCard.OnDiscoveryEffects.upgradeWorkers;
+      if (card.OnDiscoveryEffects?.upgradeWorkers) {
+        const count = card.OnDiscoveryEffects.upgradeWorkers;
         useWorkersStore.getState().upgradeWorkers(count);
-        logger.log(`Upgraded ${count} workers due to discovery effect on card ${priorityCard.id}.`);
+        logger.log(`Upgraded ${count} workers due to discovery effect on card ${card.id}.`);
       }
 
       // Update to discovered status and turn off priority
-      cardStore.updateCardState(priorityCard.id, {
+      cardStore.updateCardState(card.id, {
         discovery_state: {
-          ...priorityCard.discovery_state,
+          ...card.discovery_state,
           current_status: 'discovered',
           thought_invested: newThoughtInvested,
           priority: 'off' // Turn off priority when discovered
@@ -96,12 +94,12 @@ export function processDiscoveries() {
       })
     } else {
       // Just update thought investment
-      cardStore.updateCardState(priorityCard.id, {
+      cardStore.updateCardState(card.id, {
         discovery_state: {
-          ...priorityCard.discovery_state,
+          ...card.discovery_state,
           thought_invested: newThoughtInvested
         }
       })
     }
-  }
+  })
 }
