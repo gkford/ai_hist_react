@@ -8,26 +8,44 @@ export function processDiscoveries() {
   const cardStore = useCardsStore.getState()
   const resourceStore = useResourceStore.getState()
   
-  // Get the amount of thoughts produced this turn
-  const thoughtsProduced = resourceStore.resources.thoughts1.amountProducedThisSecond[0]
-  
-  if (thoughtsProduced <= 0) {
-    return // No thoughts to process
+  // Get all thought resources for this turn
+  const thoughtLevels = [
+    resourceStore.resources.thoughts1.amountProducedThisSecond[0],
+    resourceStore.resources.thoughts2.amountProducedThisSecond[0],
+    resourceStore.resources.thoughts3.amountProducedThisSecond[0],
+    resourceStore.resources.thoughts4.amountProducedThisSecond[0],
+  ]
+
+  // If no thoughts were produced at any level, return early
+  if (thoughtLevels.every(amount => amount <= 0)) {
+    return
   }
 
-  // Find the first card with priority 'on' that's either unthoughtof or imagined
-  const priorityCard = Object.values(cardStore.cardStates).find(card => 
-    (card.discovery_state.current_status === 'unthoughtof' || 
-     card.discovery_state.current_status === 'imagined') &&
-    card.discovery_state.priority === 'on'
-  )
+  // Find all cards with priority 'on' that are either unthoughtof or imagined
+  const priorityCards = Object.values(cardStore.cardStates)
+    .filter(card => 
+      (card.discovery_state.current_status === 'unthoughtof' || 
+       card.discovery_state.current_status === 'imagined') &&
+      card.discovery_state.priority === 'on'
+    )
+    .sort((a, b) => a.discovery_state.thought_level - b.discovery_state.thought_level)
 
-  if (!priorityCard) {
-    return // No card with priority on found
+  if (priorityCards.length === 0) {
+    return // No cards with priority on found
   }
 
-  // Update the thought_invested for the priority card
-  const newThoughtInvested = priorityCard.discovery_state.thought_invested + thoughtsProduced
+  // Process each thought level separately
+  thoughtLevels.forEach((thoughtsProduced, index) => {
+    const thoughtLevel = index + 1
+    
+    if (thoughtsProduced <= 0) return // Skip if no thoughts at this level
+
+    // Find the first card that can use this thought level
+    const card = priorityCards.find(c => c.discovery_state.thought_level <= thoughtLevel)
+    if (!card) return // No card can use this thought level
+
+    // Update the thought_invested for the card
+    const newThoughtInvested = card.discovery_state.thought_invested + thoughtsProduced
 
   logger.log(`Adding ${thoughtsProduced} thoughts to ${priorityCard.id}. Total: ${newThoughtInvested}`)
 
