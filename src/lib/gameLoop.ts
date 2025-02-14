@@ -1,4 +1,3 @@
-import { processTransformations } from './rtManager'
 import { processDiscoveries } from './discoveryManager'
 import { processKnowledgeLevel } from './knowledgeManager'
 import { useResourceStore } from '@/store/useResourceStore'
@@ -80,7 +79,6 @@ export async function processTick() {
     if (useGameLoopStore.getState().isRunning) {
       // Process resource transformations
       logger.log('Processing Transformations...')
-      processTransformations()
 
       // Process knowledge level before other updates
       processKnowledgeLevel()
