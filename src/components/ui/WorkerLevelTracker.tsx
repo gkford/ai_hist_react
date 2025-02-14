@@ -32,10 +32,10 @@ export function WorkerLevelTracker({ className, ...props }: WorkerLevelTrackerPr
   return (
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
       <div className="flex items-center gap-2">
-        <span className="text-sm">{WORKER_ICONS[primaryLevel as keyof typeof WORKER_ICONS]}</span>
+      <span className="text-xs text-gray-600">Progress to next level:</span>
+        <span className="text-sm text-gray-600">L{primaryLevel} {WORKER_ICONS[primaryLevel as keyof typeof WORKER_ICONS]}</span>
         <span className="text-sm text-gray-600">→</span>
-        <span className="text-sm">{WORKER_ICONS[nextLevel as keyof typeof WORKER_ICONS]}</span>
-        <span className="text-xs text-gray-600">L{primaryLevel} to L{nextLevel}</span>
+        <span className="text-sm text-gray-600">L{nextLevel} {WORKER_ICONS[nextLevel as keyof typeof WORKER_ICONS]}</span>
       </div>
       <Progress value={Math.min(100, Math.max(0, progress))} className="h-2" />
     </div>
