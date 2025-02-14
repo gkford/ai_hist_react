@@ -107,6 +107,11 @@ export const useCardsStore = create<CardsStore>((set) => ({
         [id]: {
           ...state.cardStates[id],
           ...partial,
+          discovery_state: {
+            ...state.cardStates[id].discovery_state,
+            ...(partial.discovery_state || {}),
+            priority: partial.discovery_state?.priority ?? state.cardStates[id].discovery_state.priority
+          }
         },
       },
     })),
