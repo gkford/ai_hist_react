@@ -3,7 +3,7 @@ import { create } from 'zustand'
 const WORKER_ICONS = {
   1: '😊',  // Basic worker
   2: '🤔',  // Thinker
-  3: '👨‍🏫', // Teacher
+  3: '🧙‍♂️', // Storyteller
   4: '🧑‍🔬'  // Scientist
 } as const;
 
