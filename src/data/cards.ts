@@ -159,8 +159,7 @@ export const allCards: CardDefinition[] = [
       further_thought_to_discover: 5,
       thought_level: 1,
       discovery_unlocks: ['early_stone_tools'],
-      zoomFocalPoint: { x: "15%", y: "15%" },
-      zoomLevel: 6  // More zoomed in than default
+      zoomFocalPoint: { x: "15%", y: "15%" }
     },
 
   },
@@ -177,6 +176,8 @@ export const allCards: CardDefinition[] = [
       further_thought_to_discover: 50,
       thought_level: 1,
       discovery_unlocks: [],
+      zoomLevel: 6  // More zoomed in than default
+
     },
     ongoingEffects: {
       resourceModifiers: {
