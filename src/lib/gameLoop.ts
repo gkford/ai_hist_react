@@ -14,17 +14,22 @@ function processFoodConsumption() {
   const currentFood = resourceStore.resources.food.amount[0]
   
   logger.log(`Food before consumption: ${currentFood}`)
+  logger.log(`Population consuming: ${population}`)
   
   // Each population unit consumes 1 food
   resourceStore.spendResource('food', population)
   
+  const afterConsumption = resourceStore.resources.food.amount[0]
+  logger.log(`Food after population consumption: ${afterConsumption}`)
+  
   // After consumption, if remaining food exceeds storage, reduce to max storage
-  const remainingFood = resourceStore.resources.food.amount[0]
-  if (maxStorage && remainingFood > maxStorage) {
-    resourceStore.spendResource('food', remainingFood - maxStorage)
+  if (maxStorage && afterConsumption > maxStorage) {
+    const excess = afterConsumption - maxStorage
+    logger.log(`Excess food above storage (${maxStorage}): ${excess}`)
+    resourceStore.spendResource('food', excess)
   }
   
-  logger.log(`Food after consumption and storage cap: ${resourceStore.resources.food.amount[0]}`)
+  logger.log(`Final food amount: ${resourceStore.resources.food.amount[0]}`)
 }
 
 function processWorkerProduction() {
