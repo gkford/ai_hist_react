@@ -72,6 +72,12 @@ function initializeCards() {
     }
   });
 
+  cardStore.createCard('hand_axe', {
+    discovery_state: {
+      current_status: 'imagined'
+    }
+  });
+
   cardStore.createCard('fire_domestication', {
     discovery_state: {
       current_status: 'imagined'

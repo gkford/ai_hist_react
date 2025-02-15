@@ -230,5 +230,26 @@ export const allCards: CardDefinition[] = [
       }
     },
     OnDiscoveryEffects: {}
+  },
+  {
+    id: 'hand_axe',
+    title: 'Hand Axe',
+    type: 'science',
+    icon: '🪓',
+    imageSrc: '/card_images/handAxe.png',
+    description: 'A versatile stone tool for cutting and chopping',
+    knowledge_level: 2,
+    discovery_stats: {
+      thought_to_imagine: 20,
+      further_thought_to_discover: 20,
+      thought_level: 2,
+      discovery_unlocks: []
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        food: "+50%"
+      }
+    },
+    OnDiscoveryEffects: {}
   }
 ]
