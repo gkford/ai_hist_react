@@ -149,6 +149,9 @@ export const allCards: CardDefinition[] = [
     generates: {
       resource: 'food',
       amount: 1.3
+    },
+    OnDiscoveryEffects: {
+      upgradeWorkers: 5,
     }
   },
   
