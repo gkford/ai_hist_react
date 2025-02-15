@@ -37,7 +37,7 @@ export function OnDiscoveryEffectsViewer({
 
   const workerUpgradeElement = effects.upgradeWorkers ? (
     <span className="flex items-center gap-1">
-      Upgrade {effects.upgradeWorkers} {WORKER_ICONS[1]} → {WORKER_ICONS[2]}
+      Upgrade {effects.upgradeWorkers} workers, L1 {WORKER_ICONS[1]} → L2 {WORKER_ICONS[2]}
     </span>
   ) : null
 

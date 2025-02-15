@@ -21,9 +21,11 @@ export function OngoingEffectsViewer({
   
   const modifierElements = Object.entries(effects.resourceModifiers).map(([resource, modifier]) => {
     const resourceInfo = resources[resource as keyof typeof resources]
+    // Extract level number for thought resources
+    const thoughtLevel = resource.match(/thoughts(\d+)/)?.[1]
     return (
       <span key={resource} className="flex items-center gap-1">
-        {modifier} {resourceInfo.icon}
+        {modifier} {thoughtLevel ? `L${thoughtLevel} thoughts ` : ''}{resourceInfo.icon}
       </span>
     )
   })
