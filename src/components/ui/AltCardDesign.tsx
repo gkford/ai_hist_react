@@ -5,7 +5,6 @@ import { useCardsStore } from '@/store/useCardsStore'
 import { useWorkersStore, WORKER_TYPES } from '@/store/useWorkersStore'
 import { allCards } from '@/data/cards'
 import { CardImage } from '@/components/ui/CardImage'
-import { CardInfo } from '@/components/ui/CardInfo'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
@@ -27,7 +26,6 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
     if (!cardDef || !cardState) return null
 
     const isUnthoughtof = cardState.discovery_state.current_status === 'unthoughtof'
-    const isUndiscovered = cardState.discovery_state.current_status !== 'discovered'
 
     // Function to replace text with question marks
     const obscureText = (text: string) => {
