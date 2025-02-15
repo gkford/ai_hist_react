@@ -11,6 +11,7 @@ interface Resource {
   isRate: boolean;
   bonus: number;
   amountProducedThisSecond: number[];
+  rawAmountProducedThisSecond: number[];  // NEW: tracks base (raw) production before bonuses
   amountSpentThisSecond: number[];
   available?: number;
   total?: number;
@@ -27,13 +28,13 @@ interface ResourceStore {
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: [5], max_storage: 20, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts1: { amount: [0], icon: "💭", key: "thoughts1", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts2: { amount: [0], icon: "🧠", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts3: { amount: [0], icon: "⚡", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts4: { amount: [0], icon: "💻", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    food: { amount: [5], max_storage: 20, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts1: { amount: [0], icon: "💭", key: "thoughts1", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts2: { amount: [0], icon: "🧠", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts3: { amount: [0], icon: "⚡", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts4: { amount: [0], icon: "💻", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     population: { 
       amount: [10], 
       icon: "👥", 
@@ -57,6 +58,7 @@ export const useResourceStore = create<ResourceStore>((set) => ({
           ...resource,
           amount: [resource.amount[0], ...resource.amount].slice(0, 6),
           amountProducedThisSecond: [0, ...resource.amountProducedThisSecond].slice(0, 6),
+          rawAmountProducedThisSecond: [0, ...resource.rawAmountProducedThisSecond].slice(0, 6),
           amountSpentThisSecond: [0, ...resource.amountSpentThisSecond].slice(0, 6)
         };
       });
@@ -124,6 +126,10 @@ export const useResourceStore = create<ResourceStore>((set) => ({
             amountProducedThisSecond: [
               totalProduction,
               ...resource.amountProducedThisSecond
+            ],
+            rawAmountProducedThisSecond: [
+              baseProduction,
+              ...resource.rawAmountProducedThisSecond
             ],
             ...additionalUpdates
           }

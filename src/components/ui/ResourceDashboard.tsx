@@ -8,6 +8,7 @@ interface ResourceRowProps {
   amount: number
   perSecond?: number
   icon: string
+  rawProduction?: number  // NEW: base (raw) production amount
 }
 
 function ResourceRow({ label, amount, perSecond, icon }: ResourceRowProps) {
@@ -33,6 +34,11 @@ function ResourceRow({ label, amount, perSecond, icon }: ResourceRowProps) {
           <span>+{perSecond.toFixed(1)}/s</span>
         </div>
       )}
+      {rawProduction !== undefined && (
+        <div className="text-xs text-gray-600">
+          Base: {rawProduction.toFixed(1)} | Bonus: {(amount - rawProduction).toFixed(1)}
+        </div>
+      )}
     </div>
   )
 }
@@ -46,9 +52,13 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const { level: knowledgeLevel } = useKnowledgeLevelStore()
   // Use the actual produced amounts from this second
   const produced1 = thoughts1.amountProducedThisSecond[1]
+  const rawProduced1 = thoughts1.rawAmountProducedThisSecond[1] || 0
   const produced2 = thoughts2.amountProducedThisSecond[1]
+  const rawProduced2 = thoughts2.rawAmountProducedThisSecond[1] || 0
   const produced3 = thoughts3.amountProducedThisSecond[1]
+  const rawProduced3 = thoughts3.rawAmountProducedThisSecond[1] || 0
   const produced4 = thoughts4.amountProducedThisSecond[1]
+  const rawProduced4 = thoughts4.rawAmountProducedThisSecond[1] || 0
   
   // Only check if ALL thoughts are zero
   const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
@@ -89,6 +99,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 amount={produced1}
                 perSecond={produced1}
                 icon={thoughts1.icon}
+                rawProduction={rawProduced1}
               />
             )}
             {thoughts2.amount[0] > 0 && (
@@ -97,6 +108,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 amount={produced2}
                 perSecond={produced2}
                 icon={thoughts2.icon}
+                rawProduction={rawProduced2}
               />
             )}
             {thoughts3.amount[0] > 0 && (
@@ -105,6 +117,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 amount={produced3}
                 perSecond={produced3}
                 icon={thoughts3.icon}
+                rawProduction={rawProduced3}
               />
             )}
             {thoughts4.amount[0] > 0 && (
@@ -113,6 +126,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
                 amount={produced4}
                 perSecond={produced4}
                 icon={thoughts4.icon}
+                rawProduction={rawProduced4}
               />
             )}
           </>
