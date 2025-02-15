@@ -153,27 +153,6 @@ export const allCards: CardDefinition[] = [
   },
   
   {
-    id: 'early_stone_tools',
-    title: 'Early Stone Tools',
-    type: 'science',
-    icon: '🪨',
-    imageSrc: '/card_images/earlyStoneTools.png',
-    discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 10,
-      thought_level: 1,
-      discovery_unlocks: [],
-      zoomLevel: 6,  // More zoomed in than default
-      zoomFocalPoint: { x: "55%", y: "50%" }
-
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        food: "+5%",
-      }
-    },
-  },
-  {
     id: 'think',
     title: 'Think',
     type: 'computation',
@@ -252,5 +231,25 @@ export const allCards: CardDefinition[] = [
       }
     },
     OnDiscoveryEffects: {}
+  },
+  {
+    id: 'early_stone_tools',
+    title: 'Early Stone Tools',
+    type: 'science',
+    icon: '🪨',
+    imageSrc: '/card_images/earlyStoneTools.png',
+    discovery_stats: {
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
+      thought_level: 2,
+      discovery_unlocks: [],
+      zoomLevel: 6,  // More zoomed in than default
+      zoomFocalPoint: { x: "55%", y: "50%" }
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        food: "+5%",
+      }
+    },
   }
 ]
