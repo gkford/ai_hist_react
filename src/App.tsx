@@ -151,7 +151,7 @@ function App() {
               Object.values(useCardsStore.getState().cardStates)
                 .filter(cardState => {
                   const cardDef = allCards.find(c => c.id === cardState.id);
-                  return cardDef && getCardColumn(cardDef.type, cardState.discovery_state.current_status) === columnNumber;
+                  return cardDef && getCardColumn(cardDef.type, cardState.discovery_stats?.current_status || 'unthoughtof') === columnNumber;
                 })
                 .sort(sortCardsInColumn)
                 .map((cardState) => (
