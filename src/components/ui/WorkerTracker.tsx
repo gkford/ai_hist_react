@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useResource, useResourceStore } from '@/store/useResourceStore'
+import { useResource } from '@/store/useResourceStore'
 import { useCardsStore } from '@/store/useCardsStore'
-import { DndContext, DragEndEvent, useDraggable, useDroppable } from '@dnd-kit/core'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { useWorkersStore, Worker } from '@/store/useWorkersStore'
 
 interface DraggableWorkerProps {
@@ -47,7 +47,6 @@ export function WorkerTracker({
   ...props 
 }: WorkerTrackerProps) {
   const population = useResource('population')
-  const cardState = useCardsStore(state => state.cardStates[cardId])
   const workers = useWorkersStore(state => state.workers)
   const assignedWorkers = React.useMemo(
     () => workers.filter(worker => worker.assignedTo === cardId),
