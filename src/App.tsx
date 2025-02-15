@@ -53,7 +53,13 @@ function initializeCards() {
 
   cardStore.createCard('hunt', {
     discovery_state: {
-      current_status: 'unthoughtof'
+      current_status: 'imagined'
+    }
+  });
+
+  cardStore.createCard('early_stone_tools', {
+    discovery_state: {
+      current_status: 'imagined'
     }
   });
 }
