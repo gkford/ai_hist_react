@@ -246,7 +246,9 @@ export const allCards: CardDefinition[] = [
       discovery_unlocks: ['early_language']
     },
     // TODO: Should increase max food storage by 10
-    OnDiscoveryEffects: {}
+    OnDiscoveryEffects: {
+      upgradeWorkers: 5,
+    }
   },
   // ------------------------------
   // Tier 3 (knowledge_level = 3)
@@ -293,6 +295,20 @@ export const allCards: CardDefinition[] = [
     generates: {
       resource: 'food',
       amount: 1.4
+    }
+  },
+  {
+    id: 'trading',
+    title: 'Trading',
+    type: 'production',
+    icon: '🤝',
+    imageSrc: '/card_images/trading.png',
+    // TODO: Implement trading mechanics:
+    // - Max 2 workers can trade at once
+    // - Should have some cost in another resource
+    generates: {
+      resource: 'food',
+      amount: 1.5
     }
   },
 ]
