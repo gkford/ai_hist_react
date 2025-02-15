@@ -116,7 +116,8 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                 />
               </>
             ) : (
-              cardState.discovery_state.current_status === 'discovered' && (
+              cardState.discovery_state.current_status === 'discovered' && 
+              cardDef.generates && (
                 <WorkerTracker 
                   className="w-full px-4"
                   cardId={id}
