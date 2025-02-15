@@ -33,9 +33,9 @@ export function OngoingEffectsViewer({
   return (
     <div className="p-2 text-sm border-t border-gray-200 text-gray-600 flex gap-2 items-center justify-center">
       <div className="flex gap-2 items-center justify-center">
-        {modifierElements}
+      {isDiscovered ? ' Active' : 'Will give'}:{modifierElements}
       </div>
-      {isDiscovered ? ' active' : ' when discovered'}
+
     </div>
   )
 }
