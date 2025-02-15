@@ -20,6 +20,16 @@ export interface DiscoveryState extends DiscoveryStats {
   discovery_timestamp?: number
 }
 
+export interface DiscoveryStats {
+  thought_to_imagine: number
+  further_thought_to_discover: number
+  thought_level: number
+  discovery_unlocks?: string[] // Array of card IDs that this card unlocks when discovered
+  zoomFocalPoint?: { x: string, y: string }  // Values like "center", "25%", etc
+  zoomLevel?: number  // Default is 4, higher numbers = more zoom
+  discovery_timestamp?: number
+}
+
 // The full card state extends CardDefinition
 export interface CardState
   extends Omit<
