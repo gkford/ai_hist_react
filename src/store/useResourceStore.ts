@@ -81,23 +81,34 @@ export const useResourceStore = create<ResourceStore>((set) => ({
       }
     })),
   produceResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
-    set((state) => ({
-      resources: {
-        ...state.resources,
-        [key]: {
-          ...state.resources[key],
-          amount: [
-            state.resources[key].amount[0] + (amount * state.resources[key].bonus),
-            ...state.resources[key].amount.slice(1)
-          ],
-          amountProducedThisSecond: [
-            amount * state.resources[key].bonus,
-            ...state.resources[key].amountProducedThisSecond
-          ],
-          ...additionalUpdates
+    set((state) => {
+      const resource = state.resources[key];
+      const bonus = resource.bonus;
+      const newAmount = amount * bonus;
+      
+      // If this is food and has a max_storage, cap the amount
+      const finalAmount = resource.max_storage 
+        ? Math.min(resource.amount[0] + newAmount, resource.max_storage)
+        : resource.amount[0] + newAmount;
+
+      return {
+        resources: {
+          ...state.resources,
+          [key]: {
+            ...resource,
+            amount: [
+              finalAmount,
+              ...resource.amount.slice(1)
+            ],
+            amountProducedThisSecond: [
+              newAmount,
+              ...resource.amountProducedThisSecond
+            ],
+            ...additionalUpdates
+          }
         }
-      }
-    })),
+      };
+    }),
   addResource: (key: ResourceKey, amount: number) =>
     set((state) => ({
       resources: {
