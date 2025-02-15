@@ -12,7 +12,6 @@ export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
   const cardDef = allCards.find(card => card.id === cardId);
   const isUnthoughtof = cardState?.discovery_state.current_status === 'unthoughtof';
 
-  console.log('CardDef for', cardId, ':', cardDef?.imagePosition);
 
   return (
     <div className="relative w-[200px] h-[200px] mx-auto overflow-hidden">
