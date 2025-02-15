@@ -21,11 +21,19 @@ export function OnDiscoveryEffectsViewer({
   const resources = useResourceStore(state => state.resources)
   
   const bonusElements = effects.resourceBonuses ? 
-    Object.entries(effects.resourceBonuses).map(([resource, amount]) => (
-      <span key={resource} className="flex items-center gap-1">
-        +{amount} {resources[resource as keyof typeof resources].icon}
-      </span>
-    )) : []
+    Object.entries(effects.resourceBonuses).map(([resource, amount]) => {
+      const resourceInfo = resources[resource as keyof typeof resources]
+      // Handle percentage values
+      const displayAmount = amount.toString().includes('%') 
+        ? amount 
+        : `+${amount}`
+      
+      return (
+        <span key={resource} className="flex items-center gap-1">
+          {displayAmount} {resourceInfo.icon}
+        </span>
+      )
+    }) : []
 
   const workerUpgradeElement = effects.upgradeWorkers ? (
     <span className="flex items-center gap-1">
