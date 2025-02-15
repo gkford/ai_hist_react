@@ -1,6 +1,16 @@
 import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
+
+interface ResourceRowProps {
+  label: string
+  amount: number
+  perSecond?: number
+  icon: string
+  rawProduction?: number
+}
+
+function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
 
   useEffect(() => {
