@@ -2,6 +2,7 @@ import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 
+// @ts-ignore -- Will be used when thought tracking is re-enabled
 interface ResourceRowProps {
   label: string
   amount: number

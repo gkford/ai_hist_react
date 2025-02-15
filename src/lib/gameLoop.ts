@@ -147,7 +147,6 @@ export async function processTick() {
   
   try {
     logger.log('=== Game Loop Start ===')
-    const store = useResourceStore.getState()
 
     // Check resources before processing
     await checkAndHandleResources()
@@ -175,7 +174,7 @@ export async function processTick() {
 
       // Progress to next second (handles resetting rate resources)
       logger.log('Progressing to next second...')
-      store.progressToNextSecond()
+      useResourceStore.getState().progressToNextSecond()
     }
 
     logger.log('=== Game Loop End ===')
