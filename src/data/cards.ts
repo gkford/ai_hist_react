@@ -12,6 +12,8 @@ export interface DiscoveryStats {
   further_thought_to_discover: number
   thought_level: number
   discovery_unlocks?: string[] // Array of card IDs that this card unlocks when discovered
+  zoomFocalPoint?: { x: string, y: string }  // Values like "center", "25%", etc
+  zoomLevel?: number  // Default is 4, higher numbers = more zoom
 }
 
 export interface Generates {
@@ -36,7 +38,6 @@ export interface CardDefinition {
   type: CardType
   icon?: string
   imageSrc?: string
-  imagePosition?: { x: string, y: string }  // Add this line - values like "center", "25%", etc
   description?: string
   generates?: Generates
   ongoingEffects?: OngoingEffects
