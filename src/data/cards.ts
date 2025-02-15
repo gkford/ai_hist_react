@@ -245,8 +245,7 @@ export const allCards: CardDefinition[] = [
       thought_level: 2,
       discovery_unlocks: ['early_language']
     },
-    // TODO: Should increase max food storage by 10%
-    ongoingEffects: {},
+    // TODO: Should increase max food storage by 10
     OnDiscoveryEffects: {}
   },
   // ------------------------------
@@ -274,7 +273,7 @@ export const allCards: CardDefinition[] = [
     },
     ongoingEffects: {
       resourceModifiers: {
-        food: "+50%"
+        food: "+5%"
       }
     },
     OnDiscoveryEffects: {}
