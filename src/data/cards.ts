@@ -142,7 +142,7 @@ export const allCards: CardDefinition[] = [
     description: 'Hunt animals for food',
     knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 2,
+      thought_to_imagine: 10,
       further_thought_to_discover: 5,
       thought_level: 1,
       discovery_unlocks: ['early_stone_tools'],
@@ -166,22 +166,20 @@ export const allCards: CardDefinition[] = [
     description: 'Basic tools that improve work efficiency',
     knowledge_level: 1,
     discovery_stats: {
-      thought_to_imagine: 50,
-      further_thought_to_discover: 50,
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
       thought_level: 1,
       discovery_unlocks: [],
-      zoomLevel: 6  // More zoomed in than default
+      zoomLevel: 6,  // More zoomed in than default
+      zoomFocalPoint: { x: "55%", y: "50%" }
 
     },
     ongoingEffects: {
       resourceModifiers: {
-        humanEnergy: 1.1,
+        food: 1.1,
       }
     },
     OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 50,
-      },
       upgradeWorkers: 5
     },
   },
