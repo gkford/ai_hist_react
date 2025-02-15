@@ -68,10 +68,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
   
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
-      <div className="flex items-center gap-2 border-b pb-2 mb-2">
-        <span className="font-semibold">Knowledge Level:</span>
-        <span className="text-lg">{knowledgeLevel}</span>
-      </div>
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-4">
           <span className="font-medium w-30">{`${Math.floor(food.amount[0])} / ${food.max_storage ?? 20} Food:`}</span>
