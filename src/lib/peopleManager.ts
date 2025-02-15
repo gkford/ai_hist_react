@@ -23,7 +23,7 @@ export function processPeopleLevel() {
       logger.log('All workers above level 1 - upgrading hominids card')
       
       // Create the level 2 card first
-      cardStore.createCard('homo_erectus', {
+      cardStore.createCard('grunts', {
         discovery_state: {
           current_status: 'discovered',
           thought_invested: 0,
