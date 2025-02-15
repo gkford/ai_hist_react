@@ -82,7 +82,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 10,
       further_thought_to_discover: 5,
       thought_level: 1,
-      discovery_unlocks: [],
+      discovery_unlocks: ["non_verbal_communication"],
       zoomFocalPoint: { x: "15%", y: "15%" }
     },
     generates: {
