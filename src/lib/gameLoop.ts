@@ -10,10 +10,18 @@ import { logger } from './logger'
 function processFoodConsumption() {
   const resourceStore = useResourceStore.getState()
   const population = resourceStore.resources.population.amount[0]
+  const maxStorage = resourceStore.resources.food.max_storage
   
   // Each population unit consumes 1 food
   resourceStore.spendResource('food', population)
-  logger.log(`Population ${population} consumed ${population} food`)
+  
+  // After consumption, if remaining food exceeds storage, reduce to max storage
+  const remainingFood = resourceStore.resources.food.amount[0]
+  if (maxStorage && remainingFood > maxStorage) {
+    resourceStore.spendResource('food', remainingFood - maxStorage)
+  }
+  
+  logger.log(`Population ${population} consumed ${population} food. Storage capped at ${maxStorage}`)
 }
 
 function processWorkerProduction() {

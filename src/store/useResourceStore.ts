@@ -86,18 +86,13 @@ export const useResourceStore = create<ResourceStore>((set) => ({
       const bonus = resource.bonus;
       const newAmount = amount * bonus;
       
-      // If this is food and has a max_storage, cap the amount
-      const finalAmount = resource.max_storage 
-        ? Math.min(resource.amount[0] + newAmount, resource.max_storage)
-        : resource.amount[0] + newAmount;
-
       return {
         resources: {
           ...state.resources,
           [key]: {
             ...resource,
             amount: [
-              finalAmount,
+              resource.amount[0] + newAmount,
               ...resource.amount.slice(1)
             ],
             amountProducedThisSecond: [
