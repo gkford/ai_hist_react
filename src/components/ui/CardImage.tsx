@@ -26,6 +26,9 @@ export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
             objectPosition: cardDef?.imagePosition ? 
               `${cardDef.imagePosition.x} ${cardDef.imagePosition.y}` : 
               "center center",
+            transformOrigin: cardDef?.imagePosition ? 
+              `${cardDef.imagePosition.x} ${cardDef.imagePosition.y}` : 
+              "center center",
             transform: isUnthoughtof ? 'scale(4)' : 'none',
             transition: 'all 0.3s ease-in-out'
           }}
