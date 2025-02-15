@@ -18,8 +18,10 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   
   // For non-people cards, sort by discovery timestamp (newer cards on top)
   if (cardA.type !== 'people' && cardB.type !== 'people') {
-    const timeA = cardA.discovery_state?.discovery_timestamp || 0;
-    const timeB = cardB.discovery_state?.discovery_timestamp || 0;
+    const stateA = useCardsStore.getState().cardStates[a.id];
+    const stateB = useCardsStore.getState().cardStates[b.id];
+    const timeA = stateA?.discovery_state?.discovery_timestamp || 0;
+    const timeB = stateB?.discovery_state?.discovery_timestamp || 0;
     return timeB - timeA;  // More recent timestamps (larger numbers) come first
   }
   
@@ -151,7 +153,7 @@ function App() {
               Object.values(useCardsStore.getState().cardStates)
                 .filter(cardState => {
                   const cardDef = allCards.find(c => c.id === cardState.id);
-                  return cardDef && getCardColumn(cardDef.type, cardState.discovery_state?.current_status || 'unthoughtof') === columnNumber;
+                  return cardDef && getCardColumn(cardDef.type, cardState.discovery_state.current_status) === columnNumber;
                 })
                 .sort(sortCardsInColumn)
                 .map((cardState) => (
