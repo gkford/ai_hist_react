@@ -144,15 +144,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
           />
         )}
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-4">
-          <span className="font-medium w-30">Knowledge:</span>
-          <span>{Math.floor(knowledge.amount[0])} 📚</span>
-        </div>
-        <div className="text-xs text-gray-600">
-          Per Second Production: Base: {(knowledge.rawAmountProducedThisSecond[1] || 0).toFixed(1)} | {(((knowledge.amountProducedThisSecond[1] || 0) / (knowledge.rawAmountProducedThisSecond[1] || 1) - 1) * 100).toFixed(0)}% Bonus of {((knowledge.amountProducedThisSecond[1] || 0) - (knowledge.rawAmountProducedThisSecond[1] || 0)).toFixed(1)} | Total: {(knowledge.amountProducedThisSecond[1] || 0).toFixed(1)}
-        </div>
-      </div>
     </div>
   )
 }

@@ -229,10 +229,6 @@ export const allCards: CardDefinition[] = [
         thoughts2: "+20%"
       }
     },
-    OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 100
-      }
-    }
+    OnDiscoveryEffects: {}
   }
 ]
