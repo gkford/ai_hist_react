@@ -222,7 +222,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 15,
       further_thought_to_discover: 15,
       thought_level: 2,
-      discovery_unlocks: []
+      discovery_unlocks: ['spear']
     },
     ongoingEffects: {
       resourceModifiers: {
@@ -242,6 +242,27 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 20,
       further_thought_to_discover: 20,
+      thought_level: 2,
+      discovery_unlocks: []
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        food: "+50%"
+      }
+    },
+    OnDiscoveryEffects: {}
+  },
+  {
+    id: 'spear',
+    title: 'Spear',
+    type: 'science',
+    icon: '🗡️',
+    imageSrc: '/card_images/spear.png',
+    description: 'A ranged weapon for hunting and defense',
+    knowledge_level: 2,
+    discovery_stats: {
+      thought_to_imagine: 25,
+      further_thought_to_discover: 25,
       thought_level: 2,
       discovery_unlocks: []
     },
