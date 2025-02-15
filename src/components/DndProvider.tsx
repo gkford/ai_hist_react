@@ -1,6 +1,7 @@
 import { DndContext, DragEndEvent } from '@dnd-kit/core'
 import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
 
 function handleDragEnd(event: DragEndEvent) {
   const { active, over } = event;
