@@ -1,5 +1,6 @@
 import * as React from "react"
 import { useCardsStore } from "@/store/useCardsStore"
+import { allCards } from "@/data/cards"
 
 interface CardImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   imageSrc?: string
@@ -8,6 +9,7 @@ interface CardImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
   const cardState = useCardsStore(state => state.cardStates[cardId]);
+  const cardDef = allCards.find(card => card.id === cardId);
   const isUnthoughtof = cardState?.discovery_state.current_status === 'unthoughtof';
 
   return (
@@ -19,8 +21,10 @@ export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
           className="w-full h-full object-cover object-center"
           style={{
             objectFit: "cover",
-            objectPosition: "center",
-            transform: isUnthoughtof ? 'scale(2.5)' : 'none',
+            objectPosition: cardDef?.imagePosition ? 
+              `${cardDef.imagePosition.x} ${cardDef.imagePosition.y}` : 
+              "center",
+            transform: isUnthoughtof ? 'scale(4)' : 'none',
             transition: 'transform 0.3s ease-in-out'
           }}
           {...props}

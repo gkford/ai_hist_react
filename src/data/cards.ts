@@ -36,6 +36,7 @@ export interface CardDefinition {
   type: CardType
   icon?: string
   imageSrc?: string
+  imagePosition?: { x: string, y: string }  // Add this line - values like "center", "25%", etc
   description?: string
   generates?: Generates
   ongoingEffects?: OngoingEffects
