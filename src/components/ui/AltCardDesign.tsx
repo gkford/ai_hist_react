@@ -42,7 +42,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
       >
         <div className="flex items-center justify-between p-4">
           <h3 className="text-xl font-semibold">
-            {isUndiscovered ? obscureText(cardDef.title) : cardDef.title}
+            {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
           </h3>
           <div className="flex gap-2">
             {cardDef.icon && (
@@ -53,7 +53,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                   justifyContent: 'center',
                 }}
               >
-                {isUndiscovered ? '?' : cardDef.icon}
+                {isUnthoughtof ? '?' : cardDef.icon}
               </span>
             )}
           </div>
