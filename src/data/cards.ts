@@ -169,11 +169,8 @@ export const allCards: CardDefinition[] = [
     },
     ongoingEffects: {
       resourceModifiers: {
-        food: "+10%",
+        food: "+5%",
       }
-    },
-    OnDiscoveryEffects: {
-      upgradeWorkers: 5
     },
   },
   {
