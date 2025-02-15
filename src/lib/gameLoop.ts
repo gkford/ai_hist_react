@@ -19,7 +19,8 @@ function processFoodConsumption() {
   // Each population unit consumes 1 food
   resourceStore.spendResource('food', population)
   
-  const afterConsumption = resourceStore.resources.food.amount[0]
+  // Get fresh state after spending
+  const afterConsumption = useResourceStore.getState().resources.food.amount[0]
   logger.log(`Food after population consumption: ${afterConsumption}`)
   
   // After consumption, if remaining food exceeds storage, reduce to max storage
@@ -29,7 +30,8 @@ function processFoodConsumption() {
     resourceStore.spendResource('food', excess)
   }
   
-  logger.log(`Final food amount: ${resourceStore.resources.food.amount[0]}`)
+  // Get fresh state for final amount
+  logger.log(`Final food amount: ${useResourceStore.getState().resources.food.amount[0]}`)
 }
 
 function processWorkerProduction() {
