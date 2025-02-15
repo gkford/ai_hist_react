@@ -119,7 +119,8 @@ export const allCards: CardDefinition[] = [
       resourceModifiers: {
         thoughts1: "+10%",
       }
-    },
+    }
+  },
   {
     id: 'hunt',
     title: 'Hunt',
