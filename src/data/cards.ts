@@ -94,8 +94,8 @@ export const allCards: CardDefinition[] = [
     },
     ongoingEffects: {
       resourceModifiers: {
-        humanEnergy: 1.05,
-        thoughts1: 1.05,
+        humanEnergy: "+5%",
+        thoughts1: "+5%",
       }
     },
     OnDiscoveryEffects: {
@@ -124,7 +124,7 @@ export const allCards: CardDefinition[] = [
     },
     ongoingEffects: {
       resourceModifiers: {
-        thoughts1: 1.1,
+        thoughts1: "+10%",
       }
     },
     OnDiscoveryEffects: {
@@ -176,7 +176,7 @@ export const allCards: CardDefinition[] = [
     },
     ongoingEffects: {
       resourceModifiers: {
-        food: 1.1,
+        food: "+10%",
       }
     },
     OnDiscoveryEffects: {

@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import { logger } from "@/lib/logger"
+import { useCardsStore } from '@/store/useCardsStore'
 
 export type ResourceKey = 'food' | 'knowledge' | 'thoughts1' | 'thoughts2' | 'thoughts3' | 'thoughts4' | 'humanEnergy' | 'population'
 
@@ -90,7 +91,26 @@ export const useResourceStore = create<ResourceStore>((set) => ({
     set((state) => {
       const resource = state.resources[key];
       const bonus = resource.bonus;
-      const newAmount = amount * bonus;
+      const baseProduction = amount * bonus;
+      let extraBonus = 0;
+      // Only apply bonus for food and thought resource types
+      if (["food", "thoughts1", "thoughts2", "thoughts3", "thoughts4"].includes(key)) {
+        const cards = useCardsStore.getState().cardStates;
+        Object.values(cards).forEach(card => {
+          if (card.discovery_state.current_status === 'discovered' && card.ongoingEffects?.resourceModifiers) {
+            const mod = card.ongoingEffects.resourceModifiers[key];
+            if (mod && typeof mod === 'string') {
+              // Expect modifier like "+10%"
+              const parsed = parseFloat(mod.replace(/[+\s%]/g, ''));
+              if (!isNaN(parsed)) {
+                extraBonus += parsed;  // additional percentage bonus
+              }
+            }
+          }
+        });
+      }
+      const extraProduction = baseProduction * (extraBonus / 100);
+      const totalProduction = baseProduction + extraProduction;
       
       return {
         resources: {
@@ -98,11 +118,11 @@ export const useResourceStore = create<ResourceStore>((set) => ({
           [key]: {
             ...resource,
             amount: [
-              resource.amount[0] + newAmount,
+              resource.amount[0] + totalProduction,
               ...resource.amount.slice(1)
             ],
             amountProducedThisSecond: [
-              newAmount,
+              totalProduction,
               ...resource.amountProducedThisSecond
             ],
             ...additionalUpdates
