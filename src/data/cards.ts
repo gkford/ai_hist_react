@@ -274,7 +274,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 25,
       further_thought_to_discover: 25,
       thought_level: 3,
-      discovery_unlocks: ["complex_hunting_techniques"]
+      discovery_unlocks: ["complex_hunting"]
     },
     ongoingEffects: {
       resourceModifiers: {
@@ -300,7 +300,7 @@ export const allCards: CardDefinition[] = [
       amount: 1.4
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 5,
+      upgradeWorkers: 2,
     }
   },
   {
