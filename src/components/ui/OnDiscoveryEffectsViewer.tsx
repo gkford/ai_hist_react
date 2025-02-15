@@ -37,7 +37,7 @@ export function OnDiscoveryEffectsViewer({
 
   const workerUpgradeElement = effects.upgradeWorkers ? (
     <span className="flex items-center gap-1">
-      Upgrade {effects.upgradeWorkers} workers, L1 {WORKER_ICONS[1]} → L2 {WORKER_ICONS[2]}
+            {isDiscovered ? ' Upgraded' : ' Will upgrade'} {effects.upgradeWorkers} workers: L1 {WORKER_ICONS[1]} → L2 {WORKER_ICONS[2]}
     </span>
   ) : null
 
@@ -48,7 +48,7 @@ export function OnDiscoveryEffectsViewer({
         {bonusElements.length > 0 && workerUpgradeElement && <span className="mx-1">•</span>}
         {workerUpgradeElement}
       </div>
-      {isDiscovered ? ' awarded' : ' will be awarded'}
+
     </div>
   )
 }
