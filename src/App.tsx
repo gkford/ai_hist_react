@@ -18,8 +18,8 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   
   // For non-people cards, sort by discovery timestamp (newer cards on top)
   if (cardA.type !== 'people' && cardB.type !== 'people') {
-    const timeA = cardA.discovery_state?.discovery_timestamp || 0;
-    const timeB = cardB.discovery_state?.discovery_timestamp || 0;
+    const timeA = cardA.discovery_stats?.discovery_timestamp || 0;
+    const timeB = cardB.discovery_stats?.discovery_timestamp || 0;
     return timeB - timeA;  // More recent timestamps (larger numbers) come first
   }
   
