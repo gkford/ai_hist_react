@@ -48,7 +48,7 @@ export function OnDiscoveryEffectsViewer({
         {bonusElements.length > 0 && workerUpgradeElement && <span className="mx-1">•</span>}
         {workerUpgradeElement}
       </div>
-      {isDiscovered ? ' awarded' : ' on discovery'}
+      {isDiscovered ? ' awarded' : ' will be awarded'}
     </div>
   )
 }
