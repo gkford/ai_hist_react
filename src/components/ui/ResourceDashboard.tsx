@@ -11,37 +11,37 @@ interface ResourceRowProps {
   rawProduction?: number
 }
 
-function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
-  const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
+// function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
+//   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
 
-  useEffect(() => {
-    setDisplayAmount(Math.floor(amount))
-  }, [amount])
+//   useEffect(() => {
+//     setDisplayAmount(Math.floor(amount))
+//   }, [amount])
 
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-4">
-        <span className="font-medium w-30">{label}:</span>
-        <div className="flex gap-1">
-          {[...Array(displayAmount)].map((_, i) => (
-            <span key={i}>{icon}</span>
-          ))}
-        </div>
-      </div>
-      {perSecond !== undefined && (
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span className="w-20"></span>
-          <span>+{perSecond.toFixed(1)}/s</span>
-        </div>
-      )}
-      {rawProduction !== undefined && (
-        <div className="text-xs text-gray-600">
-          Base: {rawProduction.toFixed(1)} | Bonus: {(amount - rawProduction).toFixed(1)}
-        </div>
-      )}
-    </div>
-  )
-}
+//   return (
+//     <div className="flex flex-col gap-1">
+//       <div className="flex items-center gap-4">
+//         <span className="font-medium w-30">{label}:</span>
+//         <div className="flex gap-1">
+//           {[...Array(displayAmount)].map((_, i) => (
+//             <span key={i}>{icon}</span>
+//           ))}
+//         </div>
+//       </div>
+//       {perSecond !== undefined && (
+//         <div className="flex items-center gap-2 text-sm text-gray-600">
+//           <span className="w-20"></span>
+//           <span>+{perSecond.toFixed(1)}/s</span>
+//         </div>
+//       )}
+//       {rawProduction !== undefined && (
+//         <div className="text-xs text-gray-600">
+//           Base: {rawProduction.toFixed(1)} | Bonus: {(amount - rawProduction).toFixed(1)}
+//         </div>
+//       )}
+//     </div>
+//   )
+// }
 
 export function ResourceDashboard({ className }: { className?: string }) {
   const food = useResource('food')
