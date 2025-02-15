@@ -11,7 +11,7 @@ interface ResourceRowProps {
   rawProduction?: number  // NEW: base (raw) production amount
 }
 
-function ResourceRow({ label, amount, perSecond, icon }: ResourceRowProps) {
+function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
 
   useEffect(() => {
