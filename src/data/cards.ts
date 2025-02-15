@@ -237,6 +237,14 @@ export const allCards: CardDefinition[] = [
   // Tier 3 (knowledge_level = 3)
   // ------------------------------
   {
+    id: 'storytellers',
+    title: 'Storytellers (L3)',
+    type: 'people',
+    icon: '📖',
+    imageSrc: '/card_images/storytellers.png',
+    replaces: 'grunts'
+  },
+  {
     id: 'spear',
     title: 'Spear',
     type: 'science',
