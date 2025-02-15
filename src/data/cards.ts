@@ -210,5 +210,29 @@ export const allCards: CardDefinition[] = [
     knowledge_level: 2,
     replaces: 'hominids'
   },
- 
+  {
+    id: 'fire_domestication',
+    title: 'Fire Domestication',
+    type: 'science',
+    icon: '🔥',
+    imageSrc: '/card_images/fireDomestication.png',
+    description: 'Control and maintain fire for warmth, cooking, and protection',
+    knowledge_level: 2,
+    discovery_stats: {
+      thought_to_imagine: 15,
+      further_thought_to_discover: 15,
+      thought_level: 2,
+      discovery_unlocks: []
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts2: "+20%"
+      }
+    },
+    OnDiscoveryEffects: {
+      resourceBonuses: {
+        knowledge: 100
+      }
+    }
+  }
 ]

@@ -72,6 +72,12 @@ function initializeCards() {
     }
   });
 
+  cardStore.createCard('fire_domestication', {
+    discovery_state: {
+      current_status: 'imagined'
+    }
+  });
+
   cardStore.createCard('early_stone_tools', {
     discovery_state: {
       current_status: 'imagined'
