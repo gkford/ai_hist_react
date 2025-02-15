@@ -233,6 +233,9 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {}
   },
+  // ------------------------------
+  // Tier 3 (knowledge_level = 3)
+  // ------------------------------
   {
     id: 'spear',
     title: 'Spear',
@@ -242,7 +245,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 25,
       further_thought_to_discover: 25,
-      thought_level: 2,
+      thought_level: 3,
       discovery_unlocks: []
     },
     ongoingEffects: {
@@ -252,5 +255,4 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {}
   },
-  
 ]
