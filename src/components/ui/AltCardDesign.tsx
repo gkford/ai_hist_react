@@ -57,66 +57,73 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
             )}
           </div>
         </div>
-        <div className="flex-1 flex flex-col items-center">
-          {cardDef.imageSrc && (
-            <div className="my-2">
-              <CardImage
-                imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc}
-                cardId={id}
+        <div className="flex-1 flex flex-col items-center min-h-0">
+          {/* Main scrollable content */}
+          <div className="flex-1 overflow-y-auto w-full">
+            {cardDef.imageSrc && (
+              <div className="my-2">
+                <CardImage
+                  imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc}
+                  cardId={id}
+                />
+              </div>
+            )}
+            <CardInfo />
+            {cardDef.OnDiscoveryEffects &&
+              (cardState.discovery_state.current_status === 'imagined' ||
+                cardState.discovery_state.current_status === 'discovered') && (
+              <OnDiscoveryEffectsViewer
+                effects={cardDef.OnDiscoveryEffects}
+                isDiscovered={
+                  cardState.discovery_state.current_status === 'discovered'
+                }
               />
-            </div>
-          )}
-          <CardInfo />
-          {cardDef.OnDiscoveryEffects &&
-            (cardState.discovery_state.current_status === 'imagined' ||
-              cardState.discovery_state.current_status === 'discovered') && (
-            <OnDiscoveryEffectsViewer
-              effects={cardDef.OnDiscoveryEffects}
-              isDiscovered={
-                cardState.discovery_state.current_status === 'discovered'
-              }
-            />
-          )}
-          {cardDef.ongoingEffects &&
-            (cardState.discovery_state.current_status === 'imagined' ||
-              cardState.discovery_state.current_status === 'discovered') && (
+            )}
+            {cardDef.ongoingEffects &&
+              (cardState.discovery_state.current_status === 'imagined' ||
+                cardState.discovery_state.current_status === 'discovered') && (
               <OngoingEffectsViewer
                 effects={cardDef.ongoingEffects}
                 isDiscovered={
                   cardState.discovery_state.current_status === 'discovered'
                 }
               />
-          )}
-          {(cardState.discovery_state.current_status === 'unthoughtof' ||
-            cardState.discovery_state.current_status === 'imagined') && (
-            <DiscoveryViewer
-              discoveryState={cardState.discovery_state}
-              cardId={id}
-            />
-          )}
-          {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
-            <GenerationTracker
-              className="w-full px-4"
-              cardId={id}
-            />
-          )}
-          {cardDef.type === 'people' ? (
-            <>
-              <WorkerLevelTracker 
-                className="w-full px-4"
+            )}
+          </div>
+
+          {/* Fixed bottom section */}
+          <div className="w-full">
+            {(cardState.discovery_state.current_status === 'unthoughtof' ||
+              cardState.discovery_state.current_status === 'imagined') && (
+              <DiscoveryViewer
+                discoveryState={cardState.discovery_state}
+                cardId={id}
               />
-              <PopulationTracker 
-                className="w-full px-4"
-              />
-            </>
-          ) : (
-            cardState.discovery_state.current_status === 'discovered' && (
-              <WorkerTracker 
+            )}
+            {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
+              <GenerationTracker
                 className="w-full px-4"
                 cardId={id}
               />
-            )
-          )}
+            )}
+            {cardDef.type === 'people' ? (
+              <>
+                <WorkerLevelTracker 
+                  className="w-full px-4"
+                />
+                <PopulationTracker 
+                  className="w-full px-4"
+                />
+              </>
+            ) : (
+              cardState.discovery_state.current_status === 'discovered' && (
+                <WorkerTracker 
+                  className="w-full px-4"
+                  cardId={id}
+                />
+              )
+            )}
+          </div>
         </div>
       </Card>
     )
