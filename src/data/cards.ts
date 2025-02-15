@@ -143,7 +143,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 15,
       further_thought_to_discover: 15,
-      thought_level: 2,
+      thought_level: 1,
       discovery_unlocks: ['early_stone_tools', 'fire_domestication'],
     },
     generates: {
@@ -274,7 +274,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 25,
       further_thought_to_discover: 25,
       thought_level: 3,
-      discovery_unlocks: []
+      discovery_unlocks: ["complex_hunting_techniques"]
     },
     ongoingEffects: {
       resourceModifiers: {
