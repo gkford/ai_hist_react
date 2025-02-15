@@ -311,4 +311,71 @@ export const allCards: CardDefinition[] = [
       amount: 1.5
     }
   },
+  {
+    id: 'cave_painting',
+    title: 'Cave Painting',
+    type: 'science',
+    icon: '🎨',
+    imageSrc: '/card_images/cavePainting.png',
+    discovery_stats: {
+      thought_to_imagine: 30,
+      further_thought_to_discover: 30,
+      thought_level: 3,
+      discovery_unlocks: ['early_language', 'tally_marks']
+    },
+    OnDiscoveryEffects: {
+      upgradeWorkers: 3,
+    }
+  },
+  {
+    id: 'early_language',
+    title: 'Early Language',
+    type: 'science',
+    icon: '💭',
+    imageSrc: '/card_images/earlyLanguage.png',
+    discovery_stats: {
+      thought_to_imagine: 35,
+      further_thought_to_discover: 35,
+      thought_level: 3,
+      discovery_unlocks: ['storytelling']
+    },
+    ongoingEffects: {
+      resourceModifiers: {
+        thoughts3: "+5%"
+      }
+    },
+    OnDiscoveryEffects: {
+      upgradeWorkers: 3,
+    }
+  },
+  {
+    id: 'tally_marks',
+    title: 'Tally Marks',
+    type: 'science',
+    icon: '✏️',
+    imageSrc: '/card_images/tallyMarks.png',
+    discovery_stats: {
+      thought_to_imagine: 35,
+      further_thought_to_discover: 35,
+      thought_level: 3,
+    },
+    OnDiscoveryEffects: {
+      upgradeWorkers: 3,
+    }
+  },
+  {
+    id: 'storytelling',
+    title: 'Storytelling',
+    type: 'science',
+    icon: '📚',
+    imageSrc: '/card_images/storyTelling.png',
+    discovery_stats: {
+      thought_to_imagine: 40,
+      further_thought_to_discover: 40,
+      thought_level: 4,
+    },
+    OnDiscoveryEffects: {
+      upgradeWorkers: 4,
+    }
+  }
 ]
