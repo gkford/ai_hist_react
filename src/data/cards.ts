@@ -132,6 +132,24 @@ export const allCards: CardDefinition[] = [
   },
   
   {
+    id: 'cooperative_hunting',
+    title: 'Cooperative Hunting',
+    type: 'production',
+    icon: '🏹',
+    imageSrc: '/card_images/cooperativeHunting.png',
+    discovery_stats: {
+      thought_to_imagine: 15,
+      further_thought_to_discover: 15,
+      thought_level: 2,
+      discovery_unlocks: ['early_stone_tools', 'fire_domestication'],
+    },
+    generates: {
+      resource: 'food',
+      amount: 1.3
+    }
+  },
+  
+  {
     id: 'early_stone_tools',
     title: 'Early Stone Tools',
     type: 'science',
