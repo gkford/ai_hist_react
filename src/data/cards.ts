@@ -38,7 +38,6 @@ export interface CardDefinition {
   type: CardType
   icon?: string
   imageSrc?: string
-  description?: string
   generates?: Generates
   ongoingEffects?: OngoingEffects
   OnDiscoveryEffects?: OnDiscoveryEffects
@@ -56,7 +55,6 @@ export const allCards: CardDefinition[] = [
     type: 'people',
     icon: '😊',
     imageSrc: '/card_images/hominids.png',
-    description: 'Your early human population',
   },
   {
     id: 'gather_food',
@@ -64,7 +62,6 @@ export const allCards: CardDefinition[] = [
     type: 'production',
     icon: '⚙️',
     imageSrc: '/card_images/gatherFood.png',
-    description: 'Gather food from the environment',
     discovery_stats: {
       thought_to_imagine: 0,
       further_thought_to_discover: 0,
@@ -81,7 +78,6 @@ export const allCards: CardDefinition[] = [
     type: 'science',
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
-    description: 'Basic gestures and expressions that enable coordination',
     discovery_stats: {
       thought_to_imagine: 2,
       further_thought_to_discover: 5,
@@ -103,7 +99,6 @@ export const allCards: CardDefinition[] = [
     type: 'science',
     icon: '🎁',
     imageSrc: '/card_images/giftGiving.png',
-    description: 'Share resources to build social bonds',
     discovery_stats: {
       thought_to_imagine: 5,
       further_thought_to_discover: 5,
@@ -122,7 +117,6 @@ export const allCards: CardDefinition[] = [
     type: 'production',
     icon: '🦌',
     imageSrc: '/card_images/hunt.webp',
-    description: 'Hunt animals for food',
     discovery_stats: {
       thought_to_imagine: 10,
       further_thought_to_discover: 5,
@@ -142,7 +136,6 @@ export const allCards: CardDefinition[] = [
     type: 'science',
     icon: '🪨',
     imageSrc: '/card_images/earlyStoneTools.png',
-    description: 'Basic tools that improve work efficiency',
     discovery_stats: {
       thought_to_imagine: 10,
       further_thought_to_discover: 10,
@@ -167,7 +160,6 @@ export const allCards: CardDefinition[] = [
     type: 'computation',
     icon: '🧠',
     imageSrc: '/card_images/think.webp',
-    description: 'Basic thinking',
     generates: {
       resource: 'thoughts1',
       amount: 1
@@ -183,7 +175,6 @@ export const allCards: CardDefinition[] = [
     type: 'people',
     icon: '🤔',
     imageSrc: '/card_images/grunts.png',
-    description: 'Your evolved human population with basic vocalizations',
     replaces: 'hominids'
   },
   {
@@ -192,7 +183,6 @@ export const allCards: CardDefinition[] = [
     type: 'science',
     icon: '🔥',
     imageSrc: '/card_images/fireDomestication.png',
-    description: 'Control and maintain fire for warmth, cooking, and protection',
     discovery_stats: {
       thought_to_imagine: 15,
       further_thought_to_discover: 15,
@@ -212,7 +202,6 @@ export const allCards: CardDefinition[] = [
     type: 'science',
     icon: '🪓',
     imageSrc: '/card_images/handAxe.png',
-    description: 'A versatile stone tool for cutting and chopping',
     discovery_stats: {
       thought_to_imagine: 20,
       further_thought_to_discover: 20,
@@ -232,7 +221,6 @@ export const allCards: CardDefinition[] = [
     type: 'science',
     icon: '🗡️',
     imageSrc: '/card_images/spear.png',
-    description: 'A ranged weapon for hunting and defense',
     discovery_stats: {
       thought_to_imagine: 25,
       further_thought_to_discover: 25,
