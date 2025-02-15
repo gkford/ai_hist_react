@@ -1,5 +1,6 @@
 import { processDiscoveries } from './discoveryManager'
 import { processKnowledgeLevel } from './knowledgeManager'
+import { processPeopleLevel } from './peopleManager'
 import { useResourceStore, ResourceKey } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { useCardsStore } from '@/store/useCardsStore'
@@ -163,6 +164,10 @@ export async function processTick() {
 
       // Process knowledge level after discoveries
       processKnowledgeLevel()
+
+      // Process people level upgrades
+      logger.log('Processing People Level...')
+      processPeopleLevel()
 
       // Deduct food based on population (moved to end)
       logger.log('Processing Food Consumption...')
