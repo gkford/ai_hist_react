@@ -3,8 +3,8 @@ import { create } from 'zustand'
 export const WORKER_TYPES = {
   1: { name: 'Hominids', icon: '😊' },
   2: { name: 'Grunts', icon: '🤔' },
-  3: { name: 'Storytellers', icon: '🧙‍♂️' },
-  4: { name: 'Reasoners', icon: '🧑‍🔬' }
+  3: { name: 'Reasoners', icon: '🧑‍🔬' },
+  4: { name: 'Storytellers', icon: '🧙‍♂️' }
 } as const;
 
 export const WORKER_ICONS = {
