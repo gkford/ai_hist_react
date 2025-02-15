@@ -20,14 +20,14 @@ export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
         <img
           src={imageSrc || import.meta.env.BASE_URL + "placeholder.svg"}
           alt={alt || "Card Image"}
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover"
           style={{
             objectFit: "cover",
             objectPosition: cardDef?.imagePosition ? 
               `${cardDef.imagePosition.x} ${cardDef.imagePosition.y}` : 
               "center center",
             transform: isUnthoughtof ? 'scale(4)' : 'none',
-            transition: 'transform 0.3s ease-in-out'
+            transition: 'all 0.3s ease-in-out'
           }}
           {...props}
         />
