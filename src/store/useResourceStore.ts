@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { logger } from "@/lib/logger"
 
 export type ResourceKey = 'food' | 'knowledge' | 'thoughts1' | 'thoughts2' | 'thoughts3' | 'thoughts4' | 'humanEnergy' | 'population'
 
@@ -63,23 +64,28 @@ export const useResourceStore = create<ResourceStore>((set) => ({
     }),
 
   spendResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
-    set((state) => ({
-      resources: {
-        ...state.resources,
-        [key]: {
-          ...state.resources[key],
-          amount: [
-            Math.max(0, state.resources[key].amount[0] - amount),
-            ...state.resources[key].amount.slice(1)
-          ],
-          amountSpentThisSecond: [
-            amount,
-            ...state.resources[key].amountSpentThisSecond
-          ],
-          ...additionalUpdates
+    set((state) => {
+      const currentAmount = state.resources[key].amount[0];
+      const newAmount = Math.max(0, currentAmount - amount);
+      logger.log(`spendResource: ${key} current=${currentAmount} spending=${amount} new=${newAmount}`);
+      return {
+        resources: {
+          ...state.resources,
+          [key]: {
+            ...state.resources[key],
+            amount: [
+              newAmount,
+              ...state.resources[key].amount.slice(1)
+            ],
+            amountSpentThisSecond: [
+              amount,
+              ...state.resources[key].amountSpentThisSecond
+            ],
+            ...additionalUpdates
+          }
         }
-      }
-    })),
+      };
+    }),
   produceResource: (key: ResourceKey, amount: number, additionalUpdates?: Record<string, any>) =>
     set((state) => {
       const resource = state.resources[key];
