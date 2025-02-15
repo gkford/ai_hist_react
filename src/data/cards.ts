@@ -122,12 +122,15 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 5,
       further_thought_to_discover: 5,
       thought_level: 1,
-      discovery_unlocks: [],
+      discovery_unlocks: ['trading'],
     },
     ongoingEffects: {
       resourceModifiers: {
         thoughts1: "+10%",
       }
+    },
+    OnDiscoveryEffects: {
+      upgradeWorkers: 5,
     }
   },
   
