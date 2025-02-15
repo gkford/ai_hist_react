@@ -99,7 +99,8 @@ export function processDiscoveries() {
           ...card.discovery_state,
           current_status: 'discovered',
           thought_invested: newThoughtInvested,
-          priority: 'off' // Turn off priority when discovered
+          priority: 'off', // Turn off priority when discovered
+          discovery_timestamp: Date.now()
         }
       })
     } else {

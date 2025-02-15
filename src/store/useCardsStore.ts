@@ -17,6 +17,7 @@ export interface DiscoveryState extends DiscoveryStats {
   current_status: DiscoveryStatus
   thought_invested: number
   priority: 'on' | 'off'
+  discovery_timestamp?: number
 }
 
 // The full card state extends CardDefinition
