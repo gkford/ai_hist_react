@@ -90,18 +90,15 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 2,
       further_thought_to_discover: 5,
       thought_level: 1,
-      discovery_unlocks: ['hunt', 'early_stone_tools', 'gift_giving'],
+      discovery_unlocks: [],
+    },
+    OnDiscoveryEffects: {
+      upgradeWorkers: 5,
     },
     ongoingEffects: {
       resourceModifiers: {
-        humanEnergy: "+5%",
         thoughts1: "+5%",
       }
-    },
-    OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 30,
-      },
     },
   },
   {
@@ -118,21 +115,11 @@ export const allCards: CardDefinition[] = [
       thought_level: 1,
       discovery_unlocks: [],
     },
-    generates: {
-      resource: 'knowledge',
-      amount: 2
-    },
     ongoingEffects: {
       resourceModifiers: {
         thoughts1: "+10%",
       }
     },
-    OnDiscoveryEffects: {
-      resourceBonuses: {
-        knowledge: 50,
-      },
-    },
-  },
   {
     id: 'hunt',
     title: 'Hunt',
@@ -145,15 +132,12 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 10,
       further_thought_to_discover: 5,
       thought_level: 1,
-      discovery_unlocks: ['early_stone_tools'],
+      discovery_unlocks: [],
       zoomFocalPoint: { x: "15%", y: "15%" }
     },
     generates: {
       resource: 'food',
-      amount: 1.5
-    },
-    OnDiscoveryEffects: {
-      upgradeWorkers: 5,
+      amount: 1.2
     },
 
   },
@@ -222,7 +206,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 15,
       further_thought_to_discover: 15,
       thought_level: 2,
-      discovery_unlocks: ['spear']
+      discovery_unlocks: []
     },
     ongoingEffects: {
       resourceModifiers: {
