@@ -279,4 +279,21 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {}
   },
+  {
+    id: 'complex_hunting',
+    title: 'Complex Hunting Techniques',
+    type: 'production',
+    icon: '🏹',
+    imageSrc: '/card_images/complexHunting.png',
+    discovery_stats: {
+      thought_to_imagine: 30,
+      further_thought_to_discover: 30,
+      thought_level: 3,
+      discovery_unlocks: ['cave_painting']
+    },
+    generates: {
+      resource: 'food',
+      amount: 1.4
+    }
+  },
 ]
