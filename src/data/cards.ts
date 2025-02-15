@@ -69,8 +69,27 @@ export const allCards: CardDefinition[] = [
     },
     generates: {
       resource: 'food',
+      amount: 1.1
+    },
+  },
+  {
+    id: 'hunt',
+    title: 'Hunting',
+    type: 'production',
+    icon: '🦌',
+    imageSrc: '/card_images/hunt.webp',
+    discovery_stats: {
+      thought_to_imagine: 10,
+      further_thought_to_discover: 5,
+      thought_level: 1,
+      discovery_unlocks: [],
+      zoomFocalPoint: { x: "15%", y: "15%" }
+    },
+    generates: {
+      resource: 'food',
       amount: 1.2
     },
+
   },
   {
     id: 'non_verbal_communication',
@@ -79,10 +98,10 @@ export const allCards: CardDefinition[] = [
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
     discovery_stats: {
-      thought_to_imagine: 2,
-      further_thought_to_discover: 5,
+      thought_to_imagine: 7,
+      further_thought_to_discover: 7,
       thought_level: 1,
-      discovery_unlocks: [],
+      discovery_unlocks: ["cooperative_hunting"],
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
@@ -111,25 +130,7 @@ export const allCards: CardDefinition[] = [
       }
     }
   },
-  {
-    id: 'hunt',
-    title: 'Hunt',
-    type: 'production',
-    icon: '🦌',
-    imageSrc: '/card_images/hunt.webp',
-    discovery_stats: {
-      thought_to_imagine: 10,
-      further_thought_to_discover: 5,
-      thought_level: 1,
-      discovery_unlocks: [],
-      zoomFocalPoint: { x: "15%", y: "15%" }
-    },
-    generates: {
-      resource: 'food',
-      amount: 1.2
-    },
-
-  },
+  
   {
     id: 'early_stone_tools',
     title: 'Early Stone Tools',
