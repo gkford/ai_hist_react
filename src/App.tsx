@@ -60,7 +60,7 @@ function initializeCards() {
     },
   });
 
-  cardStore.createCard('think_l1', {
+  cardStore.createCard('think', {
     discovery_state: {
       current_status: 'discovered'
     }

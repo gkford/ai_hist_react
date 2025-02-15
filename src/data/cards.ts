@@ -184,8 +184,8 @@ export const allCards: CardDefinition[] = [
     },
   },
   {
-    id: 'think_l1',
-    title: 'Think (L1)',
+    id: 'think',
+    title: 'Think',
     type: 'computation',
     icon: '🧠',
     imageSrc: '/card_images/think.webp',
