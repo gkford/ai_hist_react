@@ -1,148 +1,121 @@
-import { useResourceStore } from "@/store/useResourceStore";
-import { useCardsStore } from "@/store/useCardsStore";
-import { useFocusStore } from "@/store/useFocusStore";
-import { allCards } from "@/data/cards";
-import type { ResourceKey } from "@/store/useResourceStore";
-import { logger } from "./logger";
-
-// Define the possible card discovery states
-type DiscoveryStatus = "unthoughtof" | "imagined" | "discovered" | "obsolete";
-
-function recalculateResourceBonuses() {
-  const cardStore = useCardsStore.getState();
-  const resourceStore = useResourceStore.getState();
-  
-  // Start with base multiplier of 1 for each resource
-  const bonuses: Record<ResourceKey, number> = {
-    food: 1,
-    knowledge: 1,
-    thoughts: 1,
-    humanEnergy: 1,
-    population: 1
-  };
-
-  // Go through all discovered cards with ongoing effects
-  Object.values(cardStore.cardStates).forEach(card => {
-    if (card.discovery_state.current_status === 'discovered' && 
-        card.ongoingEffects?.active && 
-        card.ongoingEffects.resourceModifiers) {
-      
-      // Multiply the current bonuses by the card's modifiers
-      Object.entries(card.ongoingEffects.resourceModifiers).forEach(([resource, modifier]) => {
-        bonuses[resource as ResourceKey] *= modifier;
-      });
-    }
-  });
-
-  // Apply the calculated bonuses to each resource
-  Object.entries(bonuses).forEach(([resource, bonus]) => {
-    resourceStore.setResourceBonus(resource as ResourceKey, bonus);
-  });
-}
+import { useCardsStore } from '@/store/useCardsStore'
+import { useResourceStore } from '@/store/useResourceStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
+import { logger } from './logger'
+import type { ResourceKey } from '@/store/useResourceStore'
 
 export function processDiscoveries() {
-  logger.log("=== Discovery Processing Start ===");
-  const resourceStore = useResourceStore.getState();
-  const cardStore = useCardsStore.getState();
-
-  // Get the current thoughts amount before it resets
-  const thoughtsAmount = resourceStore.resources.thoughts.amount;
-  logger.log("Thoughts available this turn:", thoughtsAmount[0]);
+  const cardStore = useCardsStore.getState()
+  const resourceStore = useResourceStore.getState()
   
-  if (thoughtsAmount[0] <= 0) {
-    logger.log("No thoughts produced, skipping discovery processing");
-    return;
+  // Get all thought resources for this turn
+  const thoughtLevels = [
+    resourceStore.resources.thoughts1.amountProducedThisSecond[0],
+    resourceStore.resources.thoughts2.amountProducedThisSecond[0],
+    resourceStore.resources.thoughts3.amountProducedThisSecond[0],
+    resourceStore.resources.thoughts4.amountProducedThisSecond[0],
+  ]
+  
+  logger.log('Thought levels produced:', thoughtLevels)
+
+  // If no thoughts were produced at any level, return early
+  if (thoughtLevels.every(amount => amount <= 0)) {
+    return
   }
 
-  // Get eligible cards
-  const eligibleCards = Object.entries(cardStore.cardStates).filter(([id, card]) => {
-    const cardDef = allCards.find(c => c.id === id);
-    return (card.discovery_state.current_status === 'unthoughtof' || 
-            card.discovery_state.current_status === 'imagined') &&
-           cardDef?.discovery_stats;
-  });
-  logger.log("Eligible cards:", eligibleCards.map(([id]) => id));
+  // Find all cards with priority 'on' that are either unthoughtof or imagined
+  const priorityCards = Object.values(cardStore.cardStates)
+    .filter(card => 
+      (card.discovery_state.current_status === 'unthoughtof' || 
+       card.discovery_state.current_status === 'imagined') &&
+      card.discovery_state.priority === 'on'
+    )
+    .sort((a, b) => a.discovery_state.thought_level - b.discovery_state.thought_level)
 
-  // Process each eligible card using focus props from store
-  eligibleCards.forEach(([cardId, card]) => {
-    logger.log(`\nProcessing card: ${cardId}`);
-    const cardFocus = card.discovery_state.focus.priority;
+  if (priorityCards.length === 0) {
+    return // No cards with priority on found
+  }
+
+  // Process each thought level separately
+  thoughtLevels.forEach((thoughtsProduced, index) => {
+    const thoughtLevel = index + 1
     
-    // Get the focus proportion directly from the store
-    const thoughtsFocusProps = useFocusStore.getState().resourceProps.thoughts;
-    const focusProportion = thoughtsFocusProps[cardFocus];
-    
-    logger.log(`Focus priority: ${cardFocus}, proportion: ${focusProportion}`);
+    if (thoughtsProduced <= 0) return // Skip if no thoughts at this level
 
-    // Calculate thoughts to invest using the focus prop
-    const thoughtsToInvest = thoughtsAmount[0] * focusProportion;
-    logger.log(`Thoughts to invest: ${thoughtsToInvest}`);
+    // Find the first card that can use this thought level
+    const card = priorityCards.find(c => c.discovery_state.thought_level <= thoughtLevel)
+    if (!card) return // No card can use this thought level
 
-    if (thoughtsToInvest > 0) {
-      // Spend the thoughts we're about to invest
-      resourceStore.spendResource('thoughts', thoughtsToInvest);
-      // Update the card's thought_invested
-      const newThoughtInvested = card.discovery_state.thought_invested + thoughtsToInvest;
-      logger.log(`New total thoughts invested: ${newThoughtInvested}`);
-      logger.log(`Current thresholds - To imagine: ${card.discovery_state.thought_to_imagine}, To discover: ${card.discovery_state.further_thought_to_discover}`);
+    // Update the thought_invested for the card
+    const newThoughtInvested = card.discovery_state.thought_invested + thoughtsProduced
+
+    logger.log(`Adding ${thoughtsProduced} thoughts to ${card.id}. Total: ${newThoughtInvested}`)
+
+    // Check if we need to transition from unthoughtof to imagined
+    if (card.discovery_state.current_status === 'unthoughtof' && 
+        newThoughtInvested >= card.discovery_state.thought_to_imagine) {
       
-      // Determine new status based on thoughts invested
-      let newStatus: DiscoveryStatus = card.discovery_state.current_status;
+      logger.log(`Card ${card.id} has been imagined!`)
       
-      if (newStatus === 'unthoughtof' && 
-          newThoughtInvested >= card.discovery_state.thought_to_imagine) {
-        newStatus = 'imagined';
-      } else if (newStatus === 'imagined' && 
-                 newThoughtInvested >= (card.discovery_state.thought_to_imagine + 
-                                      card.discovery_state.further_thought_to_discover)) {
-        newStatus = 'discovered';
-      }
-
-      // Store previous status to check for transitions
-      const previousStatus = card.discovery_state.current_status;
-
-
-      // Update the card state
-      cardStore.updateCardState(cardId, {
+      // Update to imagined status and reset thought investment
+      cardStore.updateCardState(card.id, {
         discovery_state: {
           ...card.discovery_state,
-          current_status: newStatus,
+          current_status: 'imagined',
+          thought_invested: 0,
+          priority: 'off' // Turn off priority when transitioning
+        }
+      })
+    } else if (card.discovery_state.current_status === 'imagined' && 
+               newThoughtInvested >= card.discovery_state.further_thought_to_discover) {
+      
+      logger.log(`Card ${card.id} has been discovered!`)
+      
+      // Apply OnDiscoveryEffects if they exist
+      if (card.OnDiscoveryEffects?.resourceBonuses) {
+        Object.entries(card.OnDiscoveryEffects.resourceBonuses).forEach(([resource, amount]) => {
+          resourceStore.produceResource(resource as ResourceKey, Number(amount))
+          logger.log(`Applied discovery bonus: ${amount} ${resource}`)
+        })
+      }
+
+      if (card.OnDiscoveryEffects?.upgradeWorkers) {
+        const count = card.OnDiscoveryEffects.upgradeWorkers;
+        useWorkersStore.getState().upgradeWorkers(count);
+        logger.log(`Upgraded ${count} workers due to discovery effect on card ${card.id}.`);
+      }
+
+      // Special message for tally marks discovery
+      if (card.id === 'tally_marks') {
+        alert("Congratulations! Your people have progressed from the hominids of prehistory to the storytellers who created the earliest historical records by humans, cave paintings and wall markings. Next, onto the agricultural revolution!");
+      }
+
+      if (card.discovery_state?.discovery_unlocks?.length) {
+        card.discovery_state.discovery_unlocks.forEach((cardId: string) => {
+          // Create each unlocked card
+          cardStore.createCard(cardId)
+          logger.log(`Unlocked new card: ${cardId} due to discovering ${card.id}`)
+        })
+      }
+
+      // Update to discovered status and turn off priority
+      cardStore.updateCardState(card.id, {
+        discovery_state: {
+          ...card.discovery_state,
+          current_status: 'discovered',
+          thought_invested: newThoughtInvested,
+          priority: 'off', // Turn off priority when discovered
+          discovery_timestamp: Date.now()
+        }
+      })
+    } else {
+      // Just update thought investment
+      cardStore.updateCardState(card.id, {
+        discovery_state: {
+          ...card.discovery_state,
           thought_invested: newThoughtInvested
         }
-      });
-
-      // Check if we just discovered it and apply one-time effects
-      if (previousStatus === 'imagined' && newStatus === 'discovered') {
-        const cardDef = allCards.find(c => c.id === cardId);
-        if (cardDef?.OnDiscoveryEffects?.resourceBonuses) {
-          Object.entries(cardDef.OnDiscoveryEffects.resourceBonuses).forEach(
-            ([resource, amount]) => {
-              resourceStore.produceResource(resource as ResourceKey, amount);
-            }
-          );
-        }
-
-        // If the card has ongoing effects, activate them
-        if (cardDef?.ongoingEffects) {
-          cardStore.updateEffectState(cardId, {
-            active: true
-          });
-        }
-        
-        // Recalculate all resource bonuses
-        recalculateResourceBonuses();
-
-        // Handle unlocking new cards
-        if (cardDef?.discovery_stats?.discovery_unlocks) {
-          cardDef.discovery_stats.discovery_unlocks.forEach(unlockId => {
-            // Only create if it doesn't already exist
-            if (!cardStore.cardStates[unlockId]) {
-              cardStore.createCard(unlockId);
-            }
-          });
-        }
-      }
+      })
     }
-  });
-  logger.log("=== Discovery Processing End ===");
+  })
 }

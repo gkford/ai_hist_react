@@ -1,12 +1,7 @@
 import { create } from 'zustand'
-import type { ResourceKey } from './useResourceStore'
 import { allCards } from '@/data/cards'
-import { calculateFocusPropFromPriorities } from '@/lib/focusCalculator'
-import { useFocusStore } from '@/store/useFocusStore'
 import type {
   CardDefinition,
-  rtConfig,
-  FocusConfig,
   DiscoveryStats,
   OngoingEffects,
 } from '@/data/cards'
@@ -14,35 +9,24 @@ import type {
 export type DiscoveryStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete'
 
 // State extensions of the base configs
-export interface FocusState extends FocusConfig {
-  priority: 'low' | 'high' | 'none'
-}
-
-export interface RTState extends Omit<rtConfig, 'focus'> {
-  inbound_paid: Partial<Record<ResourceKey, number>>
-  outbound_owed: Partial<Record<ResourceKey, number>>
-  focus: FocusState
-  last_process_time?: number
-}
-
-interface OngoingEffectsState extends Omit<OngoingEffects, 'focus'> {
+interface OngoingEffectsState extends OngoingEffects {
   active: boolean
-  focus: FocusState
 }
 
-export interface DiscoveryState extends Omit<DiscoveryStats, 'focus'> {
+export interface DiscoveryState extends DiscoveryStats {
   current_status: DiscoveryStatus
   thought_invested: number
-  focus: FocusState
+  priority: 'on' | 'off'
+  discovery_timestamp?: number
 }
 
+
 // The full card state extends CardDefinition
-interface CardState
+export interface CardState
   extends Omit<
     CardDefinition,
-    'rts' | 'ongoingEffects' | 'OnDiscoveryEffects' | 'discovery_stats'
+    'ongoingEffects' | 'discovery_stats'
   > {
-  rts: Record<string, RTState>
   ongoingEffects?: OngoingEffectsState
   discovery_state: DiscoveryState
 }
@@ -56,11 +40,6 @@ interface CardsStore {
     }
   ) => void
   updateCardState: (id: string, partial: Partial<CardState>) => void
-  updateRTState: (
-    cardId: string,
-    rtId: string,
-    partial: Partial<RTState>
-  ) => void
   updateEffectState: (
     cardId: string,
     partial: Partial<OngoingEffectsState>
@@ -78,55 +57,27 @@ export const useCardsStore = create<CardsStore>((set) => ({
     set((state) => {
       const newCardState: CardState = {
         ...cardDef,
-        rts: Object.fromEntries(
-          (cardDef.rts || []).map((rt: rtConfig) => [
-            rt.id,
-            {
-              ...rt,
-              inbound_paid: Object.fromEntries(
-                Object.keys(rt.inbound_cost).map((resource) => [resource, 0])
-              ),
-              outbound_owed: Object.fromEntries(
-                Object.keys(rt.outbound_gain).map((resource) => [resource, 0])
-              ),
-              focus: {
-                resource: rt.focus.resource,
-                priority: 'none',
-              },
-            },
-          ])
-        ),
         ongoingEffects: cardDef.ongoingEffects
           ? {
               resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
-              active: false,
-              focus: {
-                resource: cardDef.ongoingEffects.focus.resource,
-                priority: 'none',
-              },
+              active: false
             }
           : undefined,
         discovery_state: cardDef.discovery_stats 
           ? {
-              thought_to_imagine: cardDef.discovery_stats.thought_to_imagine,
-              further_thought_to_discover: cardDef.discovery_stats.further_thought_to_discover,
+              ...cardDef.discovery_stats,
               current_status: 'unthoughtof',
               thought_invested: 0,
-              focus: {
-                resource: cardDef.discovery_stats.focus.resource,
-                priority: 'none',
-              },
+              priority: 'off',
               ...(initialState?.discovery_state || {}),
             }
           : {
               thought_to_imagine: 0,
               further_thought_to_discover: 0,
+              thought_level: 1,
               current_status: 'unthoughtof',
               thought_invested: 0,
-              focus: {
-                resource: 'thoughts',
-                priority: 'none',
-              },
+              priority: 'off',
               ...(initialState?.discovery_state || {}),
             }
       };
@@ -136,45 +87,11 @@ export const useCardsStore = create<CardsStore>((set) => ({
         [id]: newCardState,
       };
 
-      // Calculate focus props just for thoughts resource
-      const thoughtFocusStates: Array<'none' | 'low' | 'high'> = [];
-      Object.values(newCardStates).forEach(card => {
-        if (card.discovery_state.current_status === 'unthoughtof' || 
-            card.discovery_state.current_status === 'imagined') {
-          thoughtFocusStates.push(card.discovery_state.focus.priority);
-        }
-      });
-
-      const propValues = calculateFocusPropFromPriorities(thoughtFocusStates);
-      useFocusStore.getState().updateResourceProps('thoughts', propValues);
-
-      // Calculate focus props for RT resources
-      const rtResourceTypes = new Set<ResourceKey>();
-      Object.values(newCardStates).forEach(card => {
-        Object.values(card.rts || {}).forEach(rt => {
-          rtResourceTypes.add(rt.focus.resource);
-        });
-      });
-
-      rtResourceTypes.forEach(resource => {
-        const rtFocusStates: Array<'none' | 'low' | 'high'> = [];
-        Object.values(newCardStates).forEach(card => {
-          Object.values(card.rts || {}).forEach(rt => {
-            if (rt.focus.resource === resource) {
-              rtFocusStates.push(rt.focus.priority);
-            }
-          });
-        });
-
-        const rtPropValues = calculateFocusPropFromPriorities(rtFocusStates);
-        useFocusStore.getState().updateResourceProps(resource, rtPropValues);
-      });
 
       return { 
         cardStates: newCardStates,
         createCard: state.createCard,
         updateCardState: state.updateCardState,
-        updateRTState: state.updateRTState,
         updateEffectState: state.updateEffectState,
         removeCard: state.removeCard
       };
@@ -182,32 +99,58 @@ export const useCardsStore = create<CardsStore>((set) => ({
   },
 
   updateCardState: (id, partial) =>
-    set((state) => ({
-      cardStates: {
-        ...state.cardStates,
-        [id]: {
-          ...state.cardStates[id],
-          ...partial,
-        },
-      },
-    })),
+    set((state) => {
+      // If we're turning on priority for this card
+      if (partial.discovery_state?.priority === 'on') {
+        // First, create new card states with all other priorities turned off
+        const resetCardStates = Object.entries(state.cardStates).reduce(
+          (acc, [cardId, cardState]) => ({
+            ...acc,
+            [cardId]: cardId !== id && cardState.discovery_state.priority === 'on'
+              ? {
+                  ...cardState,
+                  discovery_state: {
+                    ...cardState.discovery_state,
+                    priority: 'off'
+                  }
+                }
+              : cardState
+          }),
+          {}
+        );
 
-  updateRTState: (cardId, rtId, partial) =>
-    set((state) => ({
-      cardStates: {
-        ...state.cardStates,
-        [cardId]: {
-          ...state.cardStates[cardId],
-          rts: {
-            ...state.cardStates[cardId].rts,
-            [rtId]: {
-              ...state.cardStates[cardId].rts[rtId],
+        // Then update the target card
+        return {
+          cardStates: {
+            ...resetCardStates,
+            [id]: {
+              ...state.cardStates[id],
               ...partial,
+              discovery_state: {
+                ...state.cardStates[id].discovery_state,
+                ...(partial.discovery_state || {}),
+              }
             },
           },
+        };
+      }
+
+      // If we're not turning on priority, just update normally
+      return {
+        cardStates: {
+          ...state.cardStates,
+          [id]: {
+            ...state.cardStates[id],
+            ...partial,
+            discovery_state: {
+              ...state.cardStates[id].discovery_state,
+              ...(partial.discovery_state || {}),
+            }
+          },
         },
-      },
-    })),
+      };
+    }),
+
 
   updateEffectState: (cardId, partial: Partial<OngoingEffectsState>) =>
     set((state) => ({
@@ -229,4 +172,5 @@ export const useCardsStore = create<CardsStore>((set) => ({
       const { [id]: removed, ...remaining } = state.cardStates;
       return { cardStates: remaining };
     }),
+    
 }))

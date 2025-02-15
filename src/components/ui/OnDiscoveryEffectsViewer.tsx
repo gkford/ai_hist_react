@@ -1,4 +1,6 @@
 import { OnDiscoveryEffects } from '@/data/cards'
+import { useResourceStore } from '@/store/useResourceStore'
+import { WORKER_ICONS } from '@/store/useWorkersStore'
 
 interface OnDiscoveryEffectsViewerProps {
   effects: OnDiscoveryEffects
@@ -10,21 +12,48 @@ export function OnDiscoveryEffectsViewer({
   isDiscovered,
 }: OnDiscoveryEffectsViewerProps) {
   if (
-    !effects.resourceBonuses ||
-    Object.keys(effects.resourceBonuses).length === 0
+    (!effects.resourceBonuses || Object.keys(effects.resourceBonuses).length === 0) &&
+    !effects.upgradeWorkers
   ) {
     return null
   }
 
-  const bonusText = Object.entries(effects.resourceBonuses)
-    .map(([resource, amount]) => `${amount} ${resource}`)
-    .join(' and ')
+  const resources = useResourceStore(state => state.resources)
+  
+  const bonusElements = effects.resourceBonuses ? 
+    Object.entries(effects.resourceBonuses).map(([resource, amount]) => {
+      const resourceInfo = resources[resource as keyof typeof resources]
+      // Handle percentage values
+      const displayAmount = amount.toString().includes('%') 
+        ? amount 
+        : `+${amount}`
+      
+      return (
+        <span key={resource} className="flex items-center gap-1">
+          {displayAmount} {resourceInfo.icon}
+        </span>
+      )
+    }) : []
+
+  const workerUpgradeElement = effects.upgradeWorkers ? (
+    <span className="flex items-center gap-1">
+      <div className="flex flex-col items-center">
+        <div>CULTURAL EVOLUTION! 📚</div>
+        <div>
+          {isDiscovered ? 'The thinking of' : 'The thinking of'} {effects.upgradeWorkers} {effects.upgradeWorkers === 1 ? 'worker' : 'workers'} {isDiscovered ? 'improved!' : 'will improve!'}
+        </div>
+      </div>
+    </span>
+  ) : null
 
   return (
-    <div className="p-2 text-sm border-t border-gray-200 text-gray-600">
-      {isDiscovered
-        ? `Gave ${bonusText} when it was discovered`
-        : `Gives ${bonusText} on discovery`}
+    <div className="p-2 text-sm border-t border-gray-200 text-gray-600 flex gap-2 items-center justify-center">
+      <div className="flex gap-2 items-center justify-center">
+        {bonusElements}
+        {bonusElements.length > 0 && workerUpgradeElement && <span className="mx-1">•</span>}
+        {workerUpgradeElement}
+      </div>
+
     </div>
   )
 }

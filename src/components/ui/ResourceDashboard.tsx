@@ -1,42 +1,42 @@
-import { useResource, ResourceKey } from "@/store/useResourceStore"
+import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
 
-interface ResourceDisplayProps {
+interface ResourceRowProps {
+  label: string
+  amount: number
+  perSecond?: number
   icon: string
-  amount: number[]
-  resourceKey: ResourceKey
+  rawProduction?: number  // NEW: base (raw) production amount
 }
 
-function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
-  const [displayAmount, setDisplayAmount] = useState(Math.floor(amount[0]))
-  const resource = useResource(resourceKey)
-
-  const formattedMultiplier = resource.bonus.toFixed(2)
-  const producedThisSecond = resource.amountProducedThisSecond[0].toFixed(2)
-  const spentThisSecond = resource.amountSpentThisSecond[0].toFixed(2)
+function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
+  const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
 
   useEffect(() => {
-    setDisplayAmount(Math.floor(amount[0]))
-  }, [amount[0]])
+    setDisplayAmount(Math.floor(amount))
+  }, [amount])
 
   return (
-    <div className="w-48 px-4 py-2 bg-white rounded-md shadow-sm">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xl">{icon}</span>
-        <span className="font-medium tabular-nums">{displayAmount}</span>
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-4">
+        <span className="font-medium w-30">{label}:</span>
+        <div className="flex gap-1">
+          {[...Array(displayAmount)].map((_, i) => (
+            <span key={i}>{icon}</span>
+          ))}
+        </div>
       </div>
-      {resourceKey !== 'population' && (
-        <div className="text-xs text-gray-600 border-t pt-1 space-y-1">
-          <div>bonus: {formattedMultiplier}x</div>
-          <div className="flex justify-between">
-            <span className="text-green-600">+{producedThisSecond}</span>
-            <span className="text-red-600">-{spentThisSecond}</span>
-          </div>
-          <div className="text-gray-500">
-            net: {(resource.amountProducedThisSecond[0] - resource.amountSpentThisSecond[0]).toFixed(2)}
-          </div>
+      {perSecond !== undefined && (
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <span className="w-20"></span>
+          <span>+{perSecond.toFixed(1)}/s</span>
+        </div>
+      )}
+      {rawProduction !== undefined && (
+        <div className="text-xs text-gray-600">
+          Base: {rawProduction.toFixed(1)} | Bonus: {(amount - rawProduction).toFixed(1)}
         </div>
       )}
     </div>
@@ -45,34 +45,101 @@ function ResourceDisplay({ icon, amount, resourceKey }: ResourceDisplayProps) {
 
 export function ResourceDashboard({ className }: { className?: string }) {
   const food = useResource('food')
-  const knowledge = useResource('knowledge')
-  const thoughts = useResource('thoughts')
-  const humanEnergy = useResource('humanEnergy')
-  const population = useResource('population')
+  // const thoughts1 = useResource('thoughts1')
+  // const thoughts2 = useResource('thoughts2')
+  // const thoughts3 = useResource('thoughts3')
+  // const thoughts4 = useResource('thoughts4')
   const { level: knowledgeLevel } = useKnowledgeLevelStore()
+  // // Use the actual produced amounts from this second
+  // const produced1 = thoughts1.amountProducedThisSecond[1]
+  // const rawProduced1 = thoughts1.rawAmountProducedThisSecond[1] || 0
+  // const produced2 = thoughts2.amountProducedThisSecond[1]
+  // const rawProduced2 = thoughts2.rawAmountProducedThisSecond[1] || 0
+  // const produced3 = thoughts3.amountProducedThisSecond[1]
+  // const rawProduced3 = thoughts3.rawAmountProducedThisSecond[1] || 0
+  // const produced4 = thoughts4.amountProducedThisSecond[1]
+  // const rawProduced4 = thoughts4.rawAmountProducedThisSecond[1] || 0
+  
+  // // Only check if ALL thoughts are zero
+  // const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
+  //   produced3 === 0 && produced4 === 0;
 
-  const resources = [
-    { icon: food.icon, amount: food.amount, key: food.key },
-    { icon: knowledge.icon, amount: knowledge.amount, key: knowledge.key },
-    { icon: thoughts.icon, amount: thoughts.amount, key: thoughts.key },
-    { icon: humanEnergy.icon, amount: humanEnergy.amount, key: humanEnergy.key },
-    { icon: population.icon, amount: population.amount, key: population.key },
-  ]
-
+  const knowledge = useResource('knowledge')
+  
   return (
-    <div className={cn("flex gap-4 p-4 bg-gray-50 rounded-lg items-center", className)}>
-      <div className="flex items-center gap-2 border-r pr-4 mr-4">
-        <span className="font-semibold">Knowledge Level:</span>
-        <span className="text-lg">{knowledgeLevel}</span>
+    <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-4">
+          <span className="font-medium w-30">{`${Math.floor(food.amount[0])} / ${food.max_storage ?? 20} Food:`}</span>
+          <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${food.max_storage ?? 20}, 1fr)` }}>
+            {[...Array(food.max_storage ?? 20)].map((_, i) => (
+              <span key={i} className="text-xl text-center">
+                {i < food.amount[0] ? "🍖" : "·"}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="text-xs text-gray-600">
+          Per Second Production: Base: {(food.rawAmountProducedThisSecond[1] || 0).toFixed(1)} | {(((food.amountProducedThisSecond[1] || 0) / (food.rawAmountProducedThisSecond[1] || 1) - 1) * 100).toFixed(0)}% Bonus of {((food.amountProducedThisSecond[1] || 0) - (food.rawAmountProducedThisSecond[1] || 0)).toFixed(1)} | Total: {(food.amountProducedThisSecond[1] || 0).toFixed(1)}
+        </div>
+        {food.amount[0] <= 0 ? (
+          <div className="text-sm text-red-600">No Food!! Workers cannot produce resources while hungry!</div>
+        ) : food.amount[0] < 5 ? (
+          <div className="text-sm text-red-600">Low Food!!</div>
+        ) : null}
+        {food.amount[0] === (food.max_storage ?? 20) && (
+          <div className="text-sm text-green-600">Food Storage at Capacity!</div>
+        )}
       </div>
-      {resources.map((resource, index) => (
-        <ResourceDisplay 
-          key={index} 
-          icon={resource.icon} 
-          amount={resource.amount}
-          resourceKey={resource.key}
-        />
-      ))}
+      {/* <div className="flex flex-col gap-2">
+        {!allThoughtsZero ? (
+          <>
+            {thoughts1.amount[0] > 0 && (
+              <ResourceRow 
+                label={`Level 1 Thoughts`}
+                amount={produced1}
+                perSecond={produced1}
+                icon={thoughts1.icon}
+                rawProduction={rawProduced1}
+              />
+            )}
+            {thoughts2.amount[0] > 0 && (
+              <ResourceRow 
+                label={`Level 2 Thoughts`}
+                amount={produced2}
+                perSecond={produced2}
+                icon={thoughts2.icon}
+                rawProduction={rawProduced2}
+              />
+            )}
+            {thoughts3.amount[0] > 0 && (
+              <ResourceRow 
+                label={`Level 3 Thoughts`}
+                amount={produced3}
+                perSecond={produced3}
+                icon={thoughts3.icon}
+                rawProduction={rawProduced3}
+              />
+            )}
+            {thoughts4.amount[0] > 0 && (
+              <ResourceRow 
+                label={`Level 4 Thoughts`}
+                amount={produced4}
+                perSecond={produced4}
+                icon={thoughts4.icon}
+                rawProduction={rawProduced4}
+              />
+            )}
+          </>
+        ) : (
+          <ResourceRow 
+            label="Thoughts"
+            amount={0}
+            perSecond={0}
+            icon={thoughts1.icon}
+          />
+        )}
+      </div> */}
     </div>
   )
 }
