@@ -153,6 +153,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
     },
+    imagePosition: { x: "15%", y: "15%" }  // Add this line - values like "center", "25%", etc
+
   },
   {
     id: 'early_stone_tools',
