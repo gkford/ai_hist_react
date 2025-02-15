@@ -84,7 +84,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
           </div>
         </div>
         <div className="text-xs text-gray-600">
-          Production: Base: {(food.rawAmountProducedThisSecond[1] || 0).toFixed(1)} | Total: {(food.amountProducedThisSecond[1] || 0).toFixed(1)} | Bonus: {((food.amountProducedThisSecond[1] || 0) - (food.rawAmountProducedThisSecond[1] || 0)).toFixed(1)}
+          Per Second Production: Base: {(food.rawAmountProducedThisSecond[1] || 0).toFixed(1)} | {(((food.amountProducedThisSecond[1] || 0) / (food.rawAmountProducedThisSecond[1] || 1) - 1) * 100).toFixed(0)}% Bonus of {((food.amountProducedThisSecond[1] || 0) - (food.rawAmountProducedThisSecond[1] || 0)).toFixed(1)} | Total: {(food.amountProducedThisSecond[1] || 0).toFixed(1)}
         </div>
         {food.amount[0] <= 0 ? (
           <div className="text-sm text-red-600">No Food!! Workers cannot produce resources while hungry!</div>
@@ -150,7 +150,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
           <span>{Math.floor(knowledge.amount[0])} 📚</span>
         </div>
         <div className="text-xs text-gray-600">
-          Production: Base: {(knowledge.rawAmountProducedThisSecond[1] || 0).toFixed(1)} | Total: {(knowledge.amountProducedThisSecond[1] || 0).toFixed(1)} | Bonus: {((knowledge.amountProducedThisSecond[1] || 0) - (knowledge.rawAmountProducedThisSecond[1] || 0)).toFixed(1)}
+          Per Second Production: Base: {(knowledge.rawAmountProducedThisSecond[1] || 0).toFixed(1)} | {(((knowledge.amountProducedThisSecond[1] || 0) / (knowledge.rawAmountProducedThisSecond[1] || 1) - 1) * 100).toFixed(0)}% Bonus of {((knowledge.amountProducedThisSecond[1] || 0) - (knowledge.rawAmountProducedThisSecond[1] || 0)).toFixed(1)} | Total: {(knowledge.amountProducedThisSecond[1] || 0).toFixed(1)}
         </div>
       </div>
     </div>
