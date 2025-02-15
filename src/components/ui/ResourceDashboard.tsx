@@ -45,24 +45,24 @@ function ResourceRow({ label, amount, perSecond, icon, rawProduction }: Resource
 
 export function ResourceDashboard({ className }: { className?: string }) {
   const food = useResource('food')
-  const thoughts1 = useResource('thoughts1')
-  const thoughts2 = useResource('thoughts2')
-  const thoughts3 = useResource('thoughts3')
-  const thoughts4 = useResource('thoughts4')
+  // const thoughts1 = useResource('thoughts1')
+  // const thoughts2 = useResource('thoughts2')
+  // const thoughts3 = useResource('thoughts3')
+  // const thoughts4 = useResource('thoughts4')
   const { level: knowledgeLevel } = useKnowledgeLevelStore()
-  // Use the actual produced amounts from this second
-  const produced1 = thoughts1.amountProducedThisSecond[1]
-  const rawProduced1 = thoughts1.rawAmountProducedThisSecond[1] || 0
-  const produced2 = thoughts2.amountProducedThisSecond[1]
-  const rawProduced2 = thoughts2.rawAmountProducedThisSecond[1] || 0
-  const produced3 = thoughts3.amountProducedThisSecond[1]
-  const rawProduced3 = thoughts3.rawAmountProducedThisSecond[1] || 0
-  const produced4 = thoughts4.amountProducedThisSecond[1]
-  const rawProduced4 = thoughts4.rawAmountProducedThisSecond[1] || 0
+  // // Use the actual produced amounts from this second
+  // const produced1 = thoughts1.amountProducedThisSecond[1]
+  // const rawProduced1 = thoughts1.rawAmountProducedThisSecond[1] || 0
+  // const produced2 = thoughts2.amountProducedThisSecond[1]
+  // const rawProduced2 = thoughts2.rawAmountProducedThisSecond[1] || 0
+  // const produced3 = thoughts3.amountProducedThisSecond[1]
+  // const rawProduced3 = thoughts3.rawAmountProducedThisSecond[1] || 0
+  // const produced4 = thoughts4.amountProducedThisSecond[1]
+  // const rawProduced4 = thoughts4.rawAmountProducedThisSecond[1] || 0
   
-  // Only check if ALL thoughts are zero
-  const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
-    produced3 === 0 && produced4 === 0;
+  // // Only check if ALL thoughts are zero
+  // const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
+  //   produced3 === 0 && produced4 === 0;
 
   const knowledge = useResource('knowledge')
   
@@ -91,7 +91,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
           <div className="text-sm text-green-600">Food Storage at Capacity!</div>
         )}
       </div>
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         {!allThoughtsZero ? (
           <>
             {thoughts1.amount[0] > 0 && (
@@ -139,7 +139,7 @@ export function ResourceDashboard({ className }: { className?: string }) {
             icon={thoughts1.icon}
           />
         )}
-      </div>
+      </div> */}
     </div>
   )
 }
