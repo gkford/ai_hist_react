@@ -23,7 +23,7 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
   const getButtonText = () => {
     const isUnthoughtof = discoveryState.current_status === 'unthoughtof';
     if (discoveryState.priority === 'off') {
-      return isUnthoughtof ? 'Imagine' : 'Research';
+      return isUnthoughtof ? 'Imagine ...' : 'Discover ...';
     } else {
       return isUnthoughtof ? 'Stop Imagining' : 'Stop Research';
     }
