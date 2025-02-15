@@ -3,6 +3,21 @@ import { useDevStore } from "@/store/useDevStore"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
+import type { CardState } from "@/store/useCardsStore";
+
+function sortCardsInColumn(a: CardState, b: CardState): number {
+  // Find the card definitions
+  const cardA = allCards.find(c => c.id === a.id);
+  const cardB = allCards.find(c => c.id === b.id);
+  
+  if (!cardA || !cardB) return 0;
+  
+  // People cards should always be above think cards
+  if (cardA.type === 'people' && cardB.type === 'computation') return -1;
+  if (cardB.type === 'people' && cardA.type === 'computation') return 1;
+  
+  return 0;
+}
 import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { useWorkersStore } from '@/store/useWorkersStore'
 
@@ -137,6 +152,7 @@ function App() {
                   const cardDef = allCards.find(c => c.id === cardState.id);
                   return cardDef && getCardColumn(cardDef.type, cardState.discovery_state.current_status) === columnNumber;
                 })
+                .sort(sortCardsInColumn)
                 .map((cardState) => (
                   <AltCardDesign key={cardState.id} id={cardState.id} />
                 ))
