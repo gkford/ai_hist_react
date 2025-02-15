@@ -233,6 +233,22 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {}
   },
+  {
+    id: 'cooking',
+    title: 'Cooking',
+    type: 'science',
+    icon: '🍖',
+    imageSrc: '/card_images/cooking.png',
+    discovery_stats: {
+      thought_to_imagine: 20,
+      further_thought_to_discover: 20,
+      thought_level: 2,
+      discovery_unlocks: ['early_language']
+    },
+    // TODO: Should increase max food storage by 10%
+    ongoingEffects: {},
+    OnDiscoveryEffects: {}
+  },
   // ------------------------------
   // Tier 3 (knowledge_level = 3)
   // ------------------------------
