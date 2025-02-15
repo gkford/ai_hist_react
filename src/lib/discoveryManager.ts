@@ -85,6 +85,11 @@ export function processDiscoveries() {
         logger.log(`Upgraded ${count} workers due to discovery effect on card ${card.id}.`);
       }
 
+      // Special message for tally marks discovery
+      if (card.id === 'tally_marks') {
+        alert("Congratulations! Your people have progressed from the hominids of prehistory to the storytellers who created the earliest historical records by humans, cave paintings and wall markings. Next, onto the agricultural revolution!");
+      }
+
       if (card.discovery_state?.discovery_unlocks?.length) {
         card.discovery_state.discovery_unlocks.forEach((cardId: string) => {
           // Create each unlocked card
