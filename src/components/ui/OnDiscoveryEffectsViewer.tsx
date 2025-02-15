@@ -38,7 +38,10 @@ export function OnDiscoveryEffectsViewer({
   const workerUpgradeElement = effects.upgradeWorkers ? (
     <span className="flex items-center gap-1">
       {effects.upgradeWorkers === 5 ? (
-        <>CULTURAL EVOLUTION! 📚 The thinking of your population improves!</>
+        <div className="flex flex-col items-center">
+          <div>CULTURAL EVOLUTION! 📚</div>
+          <div>{isDiscovered ? 'The thinking of your population improved!' : 'The thinking of your population will improve!'}</div>
+        </div>
       ) : (
         <>{isDiscovered ? ' Upgraded' : ' Will upgrade'} {effects.upgradeWorkers} workers</>
       )}
