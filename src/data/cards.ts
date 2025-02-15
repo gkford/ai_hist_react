@@ -200,5 +200,15 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   // Tier 2 (knowledge_level = 2)
   // ------------------------------
+  {
+    id: 'grunts',
+    title: 'Grunts (L2)',
+    type: 'people',
+    icon: '👥',
+    imageSrc: '/card_images/grunts.png',
+    description: 'Your evolved human population with basic vocalizations',
+    knowledge_level: 2,
+    replaces: 'hominids'
+  },
  
 ]
