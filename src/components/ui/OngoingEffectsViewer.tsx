@@ -1,4 +1,5 @@
 import { OngoingEffects } from '@/data/cards'
+import { useResourceStore } from '@/store/useResourceStore'
 
 interface OngoingEffectsViewerProps {
   effects: OngoingEffects
