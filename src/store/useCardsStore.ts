@@ -98,20 +98,57 @@ export const useCardsStore = create<CardsStore>((set) => ({
   },
 
   updateCardState: (id, partial) =>
-    set((state) => ({
-      cardStates: {
-        ...state.cardStates,
-        [id]: {
-          ...state.cardStates[id],
-          ...partial,
-          discovery_state: {
-            ...state.cardStates[id].discovery_state,
-            ...(partial.discovery_state || {}),
-            priority: partial.discovery_state?.priority ?? state.cardStates[id].discovery_state.priority
-          }
+    set((state) => {
+      // If we're turning on priority for this card
+      if (partial.discovery_state?.priority === 'on') {
+        // First, create new card states with all other priorities turned off
+        const resetCardStates = Object.entries(state.cardStates).reduce(
+          (acc, [cardId, cardState]) => ({
+            ...acc,
+            [cardId]: cardId !== id && cardState.discovery_state.priority === 'on'
+              ? {
+                  ...cardState,
+                  discovery_state: {
+                    ...cardState.discovery_state,
+                    priority: 'off'
+                  }
+                }
+              : cardState
+          }),
+          {}
+        );
+
+        // Then update the target card
+        return {
+          cardStates: {
+            ...resetCardStates,
+            [id]: {
+              ...state.cardStates[id],
+              ...partial,
+              discovery_state: {
+                ...state.cardStates[id].discovery_state,
+                ...(partial.discovery_state || {}),
+              }
+            },
+          },
+        };
+      }
+
+      // If we're not turning on priority, just update normally
+      return {
+        cardStates: {
+          ...state.cardStates,
+          [id]: {
+            ...state.cardStates[id],
+            ...partial,
+            discovery_state: {
+              ...state.cardStates[id].discovery_state,
+              ...(partial.discovery_state || {}),
+            }
+          },
         },
-      },
-    })),
+      };
+    }),
 
 
   updateEffectState: (cardId, partial: Partial<OngoingEffectsState>) =>
