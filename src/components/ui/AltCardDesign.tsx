@@ -68,7 +68,7 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                 />
               </div>
             )}
-            <CardInfo />
+            {/* <CardInfo /> */}
             {cardDef.OnDiscoveryEffects &&
               (cardState.discovery_state.current_status === 'imagined' ||
                 cardState.discovery_state.current_status === 'discovered') && (
