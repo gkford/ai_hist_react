@@ -22,7 +22,7 @@ export interface Generates {
 }
 
 export interface OngoingEffects {
-  resourceModifiers: Partial<Record<ResourceKey, number>> // Resource keys mapped to their multipliers
+  resourceModifiers: Partial<Record<ResourceKey, string>> // Resource keys mapped to their multipliers
 }
 
 export interface OnDiscoveryEffects {

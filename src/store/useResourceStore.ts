@@ -42,6 +42,7 @@ export const useResourceStore = create<ResourceStore>((set) => ({
       isRate: false, 
       bonus: 1, 
       amountProducedThisSecond: [0], 
+      rawAmountProducedThisSecond: [0],
       amountSpentThisSecond: [0],
       available: 0,
       total: 10

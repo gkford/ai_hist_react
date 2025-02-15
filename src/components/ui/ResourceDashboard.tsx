@@ -64,6 +64,8 @@ export function ResourceDashboard({ className }: { className?: string }) {
   const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
     produced3 === 0 && produced4 === 0;
 
+  const knowledge = useResource('knowledge')
+  
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
       <div className="flex items-center gap-2 border-b pb-2 mb-2">
@@ -80,6 +82,9 @@ export function ResourceDashboard({ className }: { className?: string }) {
               </span>
             ))}
           </div>
+        </div>
+        <div className="text-xs text-gray-600">
+          Production: Base: {food.rawAmountProducedThisSecond[1].toFixed(1)} | Total: {food.amountProducedThisSecond[1].toFixed(1)} | Bonus: {(food.amountProducedThisSecond[1] - food.rawAmountProducedThisSecond[1]).toFixed(1)}
         </div>
         {food.amount[0] <= 0 ? (
           <div className="text-sm text-red-600">No Food!! Workers cannot produce resources while hungry!</div>
@@ -139,9 +144,14 @@ export function ResourceDashboard({ className }: { className?: string }) {
           />
         )}
       </div>
-      <div className="flex items-center gap-4">
-        <span className="font-medium w-30">Knowledge:</span>
-        <span>{Math.floor(useResource('knowledge').amount[0])} 📚</span>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-4">
+          <span className="font-medium w-30">Knowledge:</span>
+          <span>{Math.floor(knowledge.amount[0])} 📚</span>
+        </div>
+        <div className="text-xs text-gray-600">
+          Production: Base: {knowledge.rawAmountProducedThisSecond[1].toFixed(1)} | Total: {knowledge.amountProducedThisSecond[1].toFixed(1)} | Bonus: {(knowledge.amountProducedThisSecond[1] - knowledge.rawAmountProducedThisSecond[1]).toFixed(1)}
+        </div>
       </div>
     </div>
   )
