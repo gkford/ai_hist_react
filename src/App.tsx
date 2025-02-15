@@ -16,6 +16,13 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   if (cardA.type === 'people' && cardB.type === 'computation') return -1;
   if (cardB.type === 'people' && cardA.type === 'computation') return 1;
   
+  // For non-people cards, sort by discovery timestamp (newer cards on top)
+  if (cardA.type !== 'people' && cardB.type !== 'people') {
+    const timeA = cardA.discovery_state?.discovery_timestamp || 0;
+    const timeB = cardB.discovery_state?.discovery_timestamp || 0;
+    return timeB - timeA;  // More recent timestamps (larger numbers) come first
+  }
+  
   return 0;
 }
 import { DndContext, DragOverlay } from '@dnd-kit/core'
