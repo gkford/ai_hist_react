@@ -20,7 +20,7 @@ export interface DiscoveryState extends DiscoveryStats {
 }
 
 // The full card state extends CardDefinition
-interface CardState
+export interface CardState
   extends Omit<
     CardDefinition,
     'ongoingEffects' | 'discovery_stats'

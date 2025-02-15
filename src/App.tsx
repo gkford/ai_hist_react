@@ -3,7 +3,7 @@ import { useDevStore } from "@/store/useDevStore"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
-import type { CardState } from "@/store/useCardsStore";
+import { type CardState } from "@/store/useCardsStore";
 
 function sortCardsInColumn(a: CardState, b: CardState): number {
   // Find the card definitions
