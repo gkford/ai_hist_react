@@ -68,25 +68,7 @@ function initializeCards() {
 
   cardStore.createCard('hunt', {
     discovery_state: {
-      current_status: 'imagined'
-    }
-  });
-
-  cardStore.createCard('hand_axe', {
-    discovery_state: {
-      current_status: 'imagined'
-    }
-  });
-
-  cardStore.createCard('fire_domestication', {
-    discovery_state: {
-      current_status: 'imagined'
-    }
-  });
-
-  cardStore.createCard('early_stone_tools', {
-    discovery_state: {
-      current_status: 'imagined'
+      current_status: 'unthoughtof'
     }
   });
 }
