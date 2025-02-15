@@ -205,7 +205,7 @@ export const allCards: CardDefinition[] = [
       thought_to_imagine: 15,
       further_thought_to_discover: 15,
       thought_level: 2,
-      discovery_unlocks: []
+      discovery_unlocks: ["cooking"]
     },
     ongoingEffects: {
       resourceModifiers: {
