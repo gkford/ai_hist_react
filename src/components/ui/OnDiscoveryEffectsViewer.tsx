@@ -1,6 +1,5 @@
 import { OnDiscoveryEffects } from '@/data/cards'
 import { useResourceStore } from '@/store/useResourceStore'
-import { WORKER_ICONS } from '@/store/useWorkersStore'
 
 interface OnDiscoveryEffectsViewerProps {
   effects: OnDiscoveryEffects
