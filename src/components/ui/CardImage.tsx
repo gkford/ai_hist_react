@@ -22,13 +22,13 @@ export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
           className="w-full h-full object-cover"
           style={{
             objectFit: "cover",
-            objectPosition: cardDef?.imagePosition ? 
-              `${cardDef.imagePosition.x} ${cardDef.imagePosition.y}` : 
+            objectPosition: cardDef?.discovery_stats?.zoomFocalPoint ? 
+              `${cardDef.discovery_stats.zoomFocalPoint.x} ${cardDef.discovery_stats.zoomFocalPoint.y}` : 
               "center center",
-            transformOrigin: cardDef?.imagePosition ? 
-              `${cardDef.imagePosition.x} ${cardDef.imagePosition.y}` : 
+            transformOrigin: cardDef?.discovery_stats?.zoomFocalPoint ? 
+              `${cardDef.discovery_stats.zoomFocalPoint.x} ${cardDef.discovery_stats.zoomFocalPoint.y}` : 
               "center center",
-            transform: isUnthoughtof ? 'scale(4)' : 'none',
+            transform: isUnthoughtof ? `scale(${cardDef?.discovery_stats?.zoomLevel || 4})` : 'none',
             transition: 'all 0.3s ease-in-out'
           }}
           {...props}

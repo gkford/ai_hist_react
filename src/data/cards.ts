@@ -153,7 +153,14 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
     },
-    imagePosition: { x: "15%", y: "15%" }  // Add this line - values like "center", "25%", etc
+    discovery_stats: {
+      thought_to_imagine: 2,
+      further_thought_to_discover: 5,
+      thought_level: 1,
+      discovery_unlocks: ['early_stone_tools'],
+      zoomFocalPoint: { x: "15%", y: "15%" },
+      zoomLevel: 6  // More zoomed in than default
+    },
 
   },
   {
