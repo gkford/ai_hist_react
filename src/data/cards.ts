@@ -257,11 +257,11 @@ export const allCards: CardDefinition[] = [
   // Tier 3 (knowledge_level = 3)
   // ------------------------------
   {
-    id: 'storytellers',
-    title: 'Storytellers (L3)',
+    id: 'reasoners',
+    title: 'Reasoners (L3)',
     type: 'people',
-    icon: '📖',
-    imageSrc: '/card_images/storytellers.png',
+    icon: '🗣️',
+    imageSrc: '/card_images/talkers.png',
     replaces: 'grunts'
   },
   {
@@ -383,5 +383,16 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 4,
     }
+  },
+  // ------------------------------
+  // Tier 4 (knowledge_level = 4)
+  // ------------------------------
+  {
+    id: 'storytellers',
+    title: 'Storytellers (L4)',
+    type: 'people',
+    icon: '📖',
+    imageSrc: '/card_images/storytellers.png',
+    replaces: 'reasoners'
   }
 ]
