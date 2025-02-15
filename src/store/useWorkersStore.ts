@@ -1,10 +1,17 @@
 import { create } from 'zustand'
 
+export const WORKER_TYPES = {
+  1: { name: 'Hominids', icon: '😊' },
+  2: { name: 'Grunts', icon: '🤔' },
+  3: { name: 'Storytellers', icon: '🧙‍♂️' },
+  4: { name: 'Reasoners', icon: '🧑‍🔬' }
+} as const;
+
 export const WORKER_ICONS = {
-  1: '😊',  // Basic worker
-  2: '🤔',  // Thinker
-  3: '🧙‍♂️', // Storyteller
-  4: '🧑‍🔬'  // Scientist
+  1: WORKER_TYPES[1].icon,
+  2: WORKER_TYPES[2].icon,
+  3: WORKER_TYPES[3].icon,
+  4: WORKER_TYPES[4].icon,
 } as const;
 
 export interface Worker {

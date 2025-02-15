@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
+import { useWorkersStore, WORKER_TYPES } from '@/store/useWorkersStore'
 import { allCards } from '@/data/cards'
 import { CardImage } from '@/components/ui/CardImage'
 import { CardInfo } from '@/components/ui/CardInfo'
@@ -108,6 +109,25 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
             )}
             {cardDef.type === 'people' ? (
               <>
+                <div className="w-full px-4 py-2 text-sm">
+                  {(() => {
+                    const workers = useWorkersStore.getState().workers;
+                    const levels = [...new Set(workers.map(w => w.level))].sort();
+                    if (levels.length > 2) levels.length = 2; // Only show max 2 levels
+                    
+                    return levels.map(level => {
+                      const count = workers.filter(w => w.level === level).length;
+                      const workerType = WORKER_TYPES[level as keyof typeof WORKER_TYPES];
+                      return (
+                        <div key={level} className="flex items-center gap-2">
+                          <span>{workerType.icon}</span>
+                          <span>{workerType.name}:</span>
+                          <span>{count}</span>
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
                 <WorkerLevelTracker 
                   className="w-full px-4"
                 />
