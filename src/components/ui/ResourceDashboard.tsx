@@ -1,17 +1,6 @@
 import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
-import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
-
-interface ResourceRowProps {
-  label: string
-  amount: number
-  perSecond?: number
-  icon: string
-  rawProduction?: number  // NEW: base (raw) production amount
-}
-
-function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
 
   useEffect(() => {
@@ -49,7 +38,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
   // const thoughts2 = useResource('thoughts2')
   // const thoughts3 = useResource('thoughts3')
   // const thoughts4 = useResource('thoughts4')
-  const { level: knowledgeLevel } = useKnowledgeLevelStore()
   // // Use the actual produced amounts from this second
   // const produced1 = thoughts1.amountProducedThisSecond[1]
   // const rawProduced1 = thoughts1.rawAmountProducedThisSecond[1] || 0
@@ -64,8 +52,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
   // const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
   //   produced3 === 0 && produced4 === 0;
 
-  const knowledge = useResource('knowledge')
-  
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
       <div className="flex flex-col gap-1">
