@@ -48,7 +48,6 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
       return 4;
   }
 }
-import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
 import { AltCardDesign } from "@/components/ui/AltCardDesign"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
@@ -150,9 +149,6 @@ function App() {
       <div className="min-h-screen p-4 flex flex-col">
       <DevControls />
       
-      {/* Resources Dashboard at the top */}
-      <ResourceDashboard className="mb-4" />
-
       <div className="flex gap-8">
         {[1, 2, 3, 4].map((columnNumber) => (
           <div key={columnNumber} className="flex flex-col gap-4">
