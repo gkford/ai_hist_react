@@ -157,7 +157,7 @@ function App() {
               onClick={useLayoutStore(state => state.toggleLayout)}
               variant="outline"
             >
-              Switch to {useLayoutStore(state => state.layout === 'vertical' ? 'Horizontal' : 'Vertical'} Layout
+              Switch to {useLayoutStore(state => state.layout === 'vertical' ? 'Horizontal' : 'Vertical')} Layout
             </Button>
           </div>
         </div>
