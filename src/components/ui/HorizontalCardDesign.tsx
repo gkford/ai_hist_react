@@ -79,6 +79,11 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
                 <div className="text-2xl font-bold">
                   {Math.floor(resource.amount[0])}
                 </div>
+                {resourceType === 'food' && (
+                  <div className="text-sm text-gray-500">
+                    Max storage: {resource.max_storage}
+                  </div>
+                )}
                 <div className="text-sm text-gray-500">{cardDef.title}</div>
               </div>
             )}
