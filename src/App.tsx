@@ -152,12 +152,14 @@ function App() {
       <div className="min-h-screen p-4 flex flex-col">
         <div className="flex justify-between items-center mb-4">
           <DevControls />
-          <Button 
-            onClick={useLayoutStore(state => state.toggleLayout)}
-            variant="outline"
-          >
-            {useLayoutStore(state => state.layout) === 'vertical' ? 'Switch to Horizontal' : 'Switch to Vertical'}
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              onClick={useLayoutStore(state => state.toggleLayout)}
+              variant="outline"
+            >
+              Switch to {useLayoutStore(state => state.layout === 'vertical' ? 'Horizontal' : 'Vertical'} Layout
+            </Button>
+          </div>
         </div>
       
       <div className="flex gap-8">

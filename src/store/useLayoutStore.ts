@@ -6,7 +6,7 @@ interface LayoutStore {
 }
 
 export const useLayoutStore = create<LayoutStore>((set) => ({
-  layout: 'vertical',
+  layout: 'horizontal',
   toggleLayout: () => set((state) => ({ 
     layout: state.layout === 'vertical' ? 'horizontal' : 'vertical' 
   })),
