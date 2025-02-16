@@ -7,10 +7,12 @@ import { allCards } from '@/data/cards'
 
 interface GenerationTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
+  variant?: 'normal' | 'compact'
 }
 
 export function GenerationTracker({ 
   cardId,
+  variant = 'normal',
   className,
   ...props 
 }: GenerationTrackerProps) {
@@ -74,17 +76,54 @@ export function GenerationTracker({
     )
   }
 
-  // Standard handling for non-computation cards
-  const workersCount = workers.length
-  const amountPerSecond = cardState.generates.amount * workersCount
+  // Group workers by level
+  const workersByLevel = workers.reduce((acc, worker) => {
+    acc[worker.level] = (acc[worker.level] || 0) + 1
+    return acc
+  }, {} as Record<number, number>)
 
+  // Calculate total production
+  const totalProduction = workers.reduce((total, worker) => {
+    return total + (cardState.generates?.amount || 0)
+  }, 0)
+
+  if (variant === 'compact') {
+    return (
+      <div 
+        className={cn("flex items-center gap-2 text-sm", className)}
+        {...props}
+      >
+        {/* Worker counts by level */}
+        <div className="flex gap-1">
+          {Object.entries(workersByLevel)
+            .sort(([levelA], [levelB]) => parseInt(levelA) - parseInt(levelB))
+            .map(([level, count]) => (
+              <span key={level}>
+                {count}{WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}
+              </span>
+            ))
+          }
+        </div>
+        
+        {/* Arrow */}
+        <span>→</span>
+        
+        {/* Resource generation */}
+        <span>
+          {resource.icon} +{totalProduction.toFixed(1)}/s
+        </span>
+      </div>
+    )
+  }
+
+  // Original normal variant render code
   return (
     <div 
       className={cn("flex items-center gap-2 p-2 justify-center", className)}
       {...props}
     >
       <span className="text-sm">{resource.icon}</span>
-      <span className="text-sm">+{amountPerSecond.toFixed(1)}/s</span>
+      <span className="text-sm">+{totalProduction.toFixed(1)}/s</span>
     </div>
   )
 }

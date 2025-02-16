@@ -51,10 +51,13 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
 
         {/* Right side - Content */}
         <div className="flex-1 flex flex-col">
-          <div className="flex items-center p-4">
+          <div className="flex items-center justify-between p-4">
             <h3 className="text-xl font-semibold">
               {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
             </h3>
+            {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
+              <GenerationTracker cardId={id} variant="compact" />
+            )}
           </div>
 
           {/* Main content area */}
@@ -100,9 +103,6 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
                 discoveryState={cardState.discovery_state}
                 cardId={id}
               />
-            )}
-            {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
-              <GenerationTracker cardId={id} className="w-full px-4" />
             )}
             {cardDef.type === 'people' ? (
               <PopulationTracker className="w-full" />
