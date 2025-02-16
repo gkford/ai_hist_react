@@ -30,12 +30,13 @@ export interface OnDiscoveryEffects {
   upgradeWorkers?: number;            // number of workers to upgrade on discovery
 }
 
-export type CardType = 'people' | 'computation' | 'science' | 'production';
+export type CardType = 'people' | 'computation' | 'science' | 'production' | 'resource';
 
 export interface CardDefinition {
   id: string
   title: string
   type: CardType
+  resource_type?: ResourceKey
   icon?: string
   imageSrc?: string
   generates?: Generates
@@ -49,6 +50,14 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   // Tier 1 (knowledge_level = 1)
   // ------------------------------
+  {
+    id: 'food_resource',
+    title: 'Food',
+    type: 'resource',
+    resource_type: 'food',
+    icon: '🍎',
+    imageSrc: '/card_images/foodResource.png',
+  },
   {
     id: 'hominids',
     title: 'Hominids (L1)',
