@@ -55,9 +55,20 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
             <h3 className="text-xl font-semibold">
               {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
             </h3>
-            {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
-              <GenerationTracker cardId={id} variant="compact" />
-            )}
+            <div className="flex items-center gap-2">
+              {cardDef.OnDiscoveryEffects &&
+                (cardState.discovery_state.current_status === 'imagined' ||
+                 cardState.discovery_state.current_status === 'discovered') && (
+                <OnDiscoveryEffectsViewer
+                  effects={cardDef.OnDiscoveryEffects}
+                  isDiscovered={cardState.discovery_state.current_status === 'discovered'}
+                  compact={true}
+                />
+              )}
+              {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
+                <GenerationTracker cardId={id} variant="compact" />
+              )}
+            </div>
           </div>
 
           {/* Main content area */}
@@ -72,16 +83,6 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
               </div>
             )}
             
-            {cardDef.OnDiscoveryEffects &&
-              (cardState.discovery_state.current_status === 'imagined' ||
-                cardState.discovery_state.current_status === 'discovered') && (
-              <OnDiscoveryEffectsViewer
-                effects={cardDef.OnDiscoveryEffects}
-                isDiscovered={
-                  cardState.discovery_state.current_status === 'discovered'
-                }
-              />
-            )}
             
             {cardDef.ongoingEffects &&
               (cardState.discovery_state.current_status === 'imagined' ||

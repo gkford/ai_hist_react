@@ -5,11 +5,13 @@ import { WORKER_TYPES } from '@/store/useWorkersStore'
 interface OnDiscoveryEffectsViewerProps {
   effects: OnDiscoveryEffects
   isDiscovered: boolean
+  compact?: boolean
 }
 
 export function OnDiscoveryEffectsViewer({
   effects,
   isDiscovered,
+  compact = false
 }: OnDiscoveryEffectsViewerProps) {
   if (
     (!effects.resourceBonuses || Object.keys(effects.resourceBonuses).length === 0) &&
@@ -46,6 +48,21 @@ export function OnDiscoveryEffectsViewer({
     </span>
   ) : null
 
+  if (compact) {
+    const workerUpgradeElement = effects.upgradeWorkers ? (
+      <span className="flex items-center gap-1 text-sm">
+        +{effects.upgradeWorkers} {WORKER_TYPES[effects.targetLevel || 2].icon}
+      </span>
+    ) : null;
+
+    return (
+      <div className="flex gap-2 items-center">
+        {bonusElements}
+        {workerUpgradeElement}
+      </div>
+    );
+  }
+
   return (
     <div className="p-2 text-sm border-t border-gray-200 text-gray-600 flex gap-2 items-center justify-center">
       <div className="flex gap-2 items-center justify-center">
@@ -53,7 +70,6 @@ export function OnDiscoveryEffectsViewer({
         {bonusElements.length > 0 && workerUpgradeElement && <span className="mx-1">•</span>}
         {workerUpgradeElement}
       </div>
-
     </div>
   )
 }
