@@ -60,7 +60,7 @@ export const allCards: CardDefinition[] = [
   },
   {
     id: 'hominids',
-    title: 'Hominids (L1)',
+    title: 'Your Population',
     type: 'people',
     icon: '😊',
     imageSrc: '/card_images/hominids.png',
@@ -181,7 +181,7 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   {
     id: 'grunts',
-    title: 'Grunts (L2)',
+    title: 'Your Population',
     type: 'people',
     icon: '🤔',
     imageSrc: '/card_images/grunts.png',
@@ -248,7 +248,7 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   {
     id: 'reasoners',
-    title: 'Reasoners (L3)',
+    title: 'Your Population',
     type: 'people',
     icon: '🗣️',
     imageSrc: '/card_images/talkers.png',
@@ -359,7 +359,7 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   {
     id: 'storytellers',
-    title: 'Storytellers (L4)',
+    title: 'Your Population',
     type: 'people',
     icon: '📖',
     imageSrc: '/card_images/storytellers.png',
