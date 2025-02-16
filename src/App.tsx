@@ -1,5 +1,8 @@
 import { DevControls } from "@/components/ui/DevControls"
 import { useDevStore } from "@/store/useDevStore"
+import { HorizontalCardDesign } from "@/components/ui/HorizontalCardDesign"
+import { useLayoutStore } from "@/store/useLayoutStore"
+import { Button } from "@/components/ui/button"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
@@ -147,7 +150,15 @@ function App() {
         useWorkersStore.getState().assignWorker(workerId, newAssignment);
     }}>
       <div className="min-h-screen p-4 flex flex-col">
-      <DevControls />
+        <div className="flex justify-between items-center mb-4">
+          <DevControls />
+          <Button 
+            onClick={useLayoutStore(state => state.toggleLayout)}
+            variant="outline"
+          >
+            {useLayoutStore(state => state.layout) === 'vertical' ? 'Switch to Horizontal' : 'Switch to Vertical'}
+          </Button>
+        </div>
       
       <div className="flex gap-8">
         {[1, 2, 3, 4].map((columnNumber) => (
@@ -166,7 +177,11 @@ function App() {
                 })
                 .sort(sortCardsInColumn)
                 .map((cardState) => (
-                  <AltCardDesign key={cardState.id} id={cardState.id} />
+                  useLayoutStore.getState().layout === 'vertical' ? (
+                    <AltCardDesign key={cardState.id} id={cardState.id} />
+                  ) : (
+                    <HorizontalCardDesign key={cardState.id} id={cardState.id} />
+                  )
                 ))
             }
           </div>
