@@ -28,6 +28,7 @@ export interface OngoingEffects {
 export interface OnDiscoveryEffects {
   resourceBonuses?: Partial<Record<ResourceKey, number>>; // optional: resource bonus amounts
   upgradeWorkers?: number;            // number of workers to upgrade on discovery
+  targetLevel?: number;               // target level to upgrade workers to
 }
 
 export type CardType = 'people' | 'computation' | 'science' | 'production' | 'resource';
@@ -114,6 +115,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
+      targetLevel: 2
     }
   },
   {
@@ -135,6 +137,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
+      targetLevel: 2
     }
   },
   
@@ -156,6 +159,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
+      targetLevel: 2
     }
   },
   
@@ -236,6 +240,7 @@ export const allCards: CardDefinition[] = [
     // TODO: Should increase max food storage by 10
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
+      targetLevel: 3
     }
   },
   // ------------------------------
@@ -296,6 +301,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
+      targetLevel: 3
     }
   },
   {
@@ -317,6 +323,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
+      targetLevel: 3
     }
   },
   {
@@ -332,6 +339,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
+      targetLevel: 3
     }
   },
   {
@@ -347,6 +355,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 4,
+      targetLevel: 4
     }
   },
   // ------------------------------

@@ -1,5 +1,6 @@
 import { OnDiscoveryEffects } from '@/data/cards'
 import { useResourceStore } from '@/store/useResourceStore'
+import { WORKER_TYPES } from '@/store/useWorkersStore'
 
 interface OnDiscoveryEffectsViewerProps {
   effects: OnDiscoveryEffects
@@ -39,7 +40,7 @@ export function OnDiscoveryEffectsViewer({
       <div className="flex flex-col items-center">
         <div>CULTURAL EVOLUTION! 📚</div>
         <div>
-          {isDiscovered ? 'The thinking of' : 'The thinking of'} {effects.upgradeWorkers} {effects.upgradeWorkers === 1 ? 'worker' : 'workers'} {isDiscovered ? 'improved!' : 'will improve!'}
+          {isDiscovered ? 'The thinking of' : 'The thinking of'} {effects.upgradeWorkers} {effects.upgradeWorkers === 1 ? 'worker' : 'workers'} {isDiscovered ? 'improved' : 'will improve'} to {WORKER_TYPES[effects.targetLevel || 1].name}!
         </div>
       </div>
     </span>
