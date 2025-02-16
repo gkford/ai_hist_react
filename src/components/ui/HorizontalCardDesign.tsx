@@ -51,17 +51,10 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
 
         {/* Right side - Content */}
         <div className="flex-1 flex flex-col">
-          <div className="flex items-center justify-between p-4">
+          <div className="flex items-center p-4">
             <h3 className="text-xl font-semibold">
               {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
             </h3>
-            <div className="flex gap-2">
-              {cardDef.icon && (
-                <span className="flex items-center justify-center">
-                  {isUnthoughtof ? '?' : cardDef.icon}
-                </span>
-              )}
-            </div>
           </div>
 
           {/* Main content area */}
@@ -112,10 +105,7 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
               <GenerationTracker cardId={id} className="w-full px-4" />
             )}
             {cardDef.type === 'people' ? (
-              <div className="flex gap-2">
-                <WorkerLevelTracker className="flex-1" />
-                <PopulationTracker className="flex-1" />
-              </div>
+              <PopulationTracker className="w-full" />
             ) : (
               cardState.discovery_state.current_status === 'discovered' && 
               cardDef.generates && (
