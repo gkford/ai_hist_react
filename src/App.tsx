@@ -35,20 +35,20 @@ import { useWorkersStore } from '@/store/useWorkersStore'
 
 function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
   if (discoveryStatus === 'unthoughtof' || discoveryStatus === 'imagined') {
-    return 4;
+    return 3;
   }
   
   switch (type) {
     case 'people':
     case 'computation':
-    case 'resource':  // Add resource to column 1
+    case 'resource':
       return 1;
     case 'production':
       return 2;
     case 'science':
       return 3;
     default:
-      return 4;
+      return 3;
   }
 }
 import { AltCardDesign } from "@/components/ui/AltCardDesign"
@@ -163,7 +163,7 @@ function App() {
         </div>
       
       <div className="flex gap-8">
-        {[1, 2, 3, 4].map((columnNumber) => (
+        {[1, 2, 3].map((columnNumber) => (
           <div key={columnNumber} className="flex flex-col gap-4">
             {initialized && 
               Object.values(useCardsStore.getState().cardStates)
