@@ -114,12 +114,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        thoughts1: "+5%",
-      }
-    },
+    }
   },
   {
     id: 'gift_giving',
