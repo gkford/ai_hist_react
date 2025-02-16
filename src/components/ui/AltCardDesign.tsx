@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
 import { useWorkersStore, WORKER_TYPES } from '@/store/useWorkersStore'
 import { allCards } from '@/data/cards'
+import { useResource } from "@/store/useResourceStore"
 import { CardImage } from '@/components/ui/CardImage'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
@@ -22,6 +23,8 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
     // Get card definition and state
     const cardDef = allCards.find((c) => c.id === id)
     const cardState = useCardsStore((state) => state.cardStates[id])
+    const resourceType = cardDef?.resource_type
+    const resource = useResource(resourceType || 'food')
 
     if (!cardDef || !cardState) return null
 
@@ -65,6 +68,15 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                   imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc}
                   cardId={id}
                 />
+              </div>
+            )}
+            {cardDef.type === 'resource' && (
+              <div className="p-4 text-center">
+                <div className="text-4xl mb-2">{cardDef.icon}</div>
+                <div className="text-2xl font-bold">
+                  {Math.floor(resource.amount[0])}
+                </div>
+                <div className="text-sm text-gray-500">{cardDef.title}</div>
               </div>
             )}
             {/* <CardInfo /> */}

@@ -38,6 +38,7 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
   switch (type) {
     case 'people':
     case 'computation':
+    case 'resource':  // Add resource to column 1
       return 1;
     case 'production':
       return 2;
@@ -63,6 +64,13 @@ function initializeCards() {
     }
   });
   
+  // Add food resource card
+  cardStore.createCard('food_resource', {
+    discovery_state: {
+      current_status: 'discovered'
+    }
+  });
+
   cardStore.createCard('gather_food', {
     discovery_state: {
       current_status: 'discovered'
