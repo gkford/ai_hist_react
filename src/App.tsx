@@ -165,12 +165,6 @@ function App() {
       <div className="flex gap-8">
         {[1, 2, 3, 4].map((columnNumber) => (
           <div key={columnNumber} className="flex flex-col gap-4">
-            <h2 className="font-semibold text-lg">
-              {columnNumber === 1 ? "Your People" :
-               columnNumber === 2 ? "Production" :
-               columnNumber === 3 ? "Your Technology" :
-               "Future Discoveries"}
-            </h2>
             {initialized && 
               Object.values(useCardsStore.getState().cardStates)
                 .filter(cardState => {
