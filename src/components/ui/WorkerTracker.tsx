@@ -53,8 +53,8 @@ export function WorkerTracker({
     [workers, cardId]
   )
   const availableWorkers = React.useMemo(
-    () => workers.filter(worker => worker.assignedTo === 'population'),
-    [workers]
+    () => workers.filter(worker => worker.assignedTo !== cardId),
+    [workers, cardId]
   )
   
   const handleChange = (delta: number) => {
@@ -108,7 +108,7 @@ export function WorkerTracker({
         variant="outline" 
         size="sm"
         onClick={() => handleChange(1)}
-        disabled={availableWorkers.length <= 0}
+        disabled={availableWorkers.length === 0}
       >
         +
       </Button>
