@@ -105,13 +105,18 @@ export function GenerationTracker({
           }
         </div>
         
-        {/* Arrow */}
-        <span>→</span>
-        
-        {/* Resource generation */}
-        <span>
-          {resource.icon} +{totalProduction.toFixed(1)}/s
-        </span>
+        {/* Only show arrow and production if there are workers */}
+        {Object.keys(workersByLevel).length > 0 && (
+          <>
+            {/* Arrow */}
+            <span>→</span>
+            
+            {/* Resource generation */}
+            <span>
+              {resource.icon} +{totalProduction.toFixed(1)}/s
+            </span>
+          </>
+        )}
       </div>
     )
   }
