@@ -98,16 +98,6 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
             )}
             
             
-            {cardDef.ongoingEffects &&
-              (cardState.discovery_state.current_status === 'imagined' ||
-                cardState.discovery_state.current_status === 'discovered') && (
-              <OngoingEffectsViewer
-                effects={cardDef.ongoingEffects}
-                isDiscovered={
-                  cardState.discovery_state.current_status === 'discovered'
-                }
-              />
-            )}
           </div>
 
           {/* Bottom section */}
