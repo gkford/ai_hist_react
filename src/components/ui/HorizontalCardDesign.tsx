@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
-import { useWorkersStore, WORKER_TYPES } from '@/store/useWorkersStore'
 import { allCards } from '@/data/cards'
 import { useResource } from "@/store/useResourceStore"
 import { CardImage } from '@/components/ui/CardImage'
@@ -12,7 +11,6 @@ import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
 import { GenerationTracker } from './GenerationTracker'
-import { WorkerLevelTracker } from './WorkerLevelTracker'
 
 export interface AltCardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string

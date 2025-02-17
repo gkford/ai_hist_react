@@ -42,7 +42,7 @@ export function OnDiscoveryEffectsViewer({
       <div className="flex flex-col items-center">
         <div>CULTURAL EVOLUTION! 📚</div>
         <div>
-          {isDiscovered ? 'The thinking of' : 'The thinking of'} {effects.upgradeWorkers} {effects.upgradeWorkers === 1 ? 'worker' : 'workers'} {isDiscovered ? 'improved' : 'will improve'} to {WORKER_TYPES[effects.targetLevel || 1].name}!
+          {isDiscovered ? 'The thinking of' : 'The thinking of'} {effects.upgradeWorkers} {effects.upgradeWorkers === 1 ? 'worker' : 'workers'} {isDiscovered ? 'improved' : 'will improve'} to {WORKER_TYPES[(effects.targetLevel || 1) as keyof typeof WORKER_TYPES].name}!
         </div>
       </div>
     </span>
@@ -51,7 +51,7 @@ export function OnDiscoveryEffectsViewer({
   if (compact) {
     const workerUpgradeElement = effects.upgradeWorkers ? (
       <span className="flex items-center gap-1 text-sm">
-        +{effects.upgradeWorkers} {WORKER_TYPES[effects.targetLevel || 2].icon}
+        +{effects.upgradeWorkers} {WORKER_TYPES[(effects.targetLevel || 2) as keyof typeof WORKER_TYPES].icon}
       </span>
     ) : null;
 
