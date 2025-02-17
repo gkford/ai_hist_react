@@ -31,9 +31,9 @@ export const useResourceStore = create<ResourceStore>((set) => ({
     food: { amount: [5], max_storage: 20, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     thoughts1: { amount: [0], icon: "💭", key: "thoughts1", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts2: { amount: [0], icon: "🧠", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts3: { amount: [0], icon: "⚡", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts4: { amount: [0], icon: "💻", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts2: { amount: [0], icon: "💭", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts3: { amount: [0], icon: "💭", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts4: { amount: [0], icon: "💭", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     population: { 
       amount: [10], 
