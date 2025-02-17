@@ -1,5 +1,4 @@
 import { processDiscoveries } from './discoveryManager'
-import { processKnowledgeLevel } from './knowledgeManager'
 import { processPeopleLevel } from './peopleManager'
 import { useResourceStore, ResourceKey } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
@@ -93,7 +92,6 @@ export function setVerboseLogging(verbose: boolean) {
 
 const handleFoodShortage = async () => {
   const gameLoopStore = useGameLoopStore.getState()
-  const resourceStore = useResourceStore.getState()
   
   // Pause the game
   gameLoopStore.setRunning(false)
@@ -162,7 +160,7 @@ export async function processTick() {
       processDiscoveries()
 
       // Process knowledge level after discoveries
-      processKnowledgeLevel()
+      // processKnowledgeLevel()
 
       // Process people level upgrades
       logger.log('Processing People Level...')

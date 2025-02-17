@@ -157,10 +157,7 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.3
     },
-    OnDiscoveryEffects: {
-      upgradeWorkers: 5,
-      targetLevel: 2
-    }
+
   },
   
   {
@@ -218,12 +215,10 @@ export const allCards: CardDefinition[] = [
       thought_level: 2,
       discovery_unlocks: ["cooking"]
     },
-    ongoingEffects: {
-      resourceModifiers: {
-        thoughts2: "+20%"
-      }
+    OnDiscoveryEffects: {
+      upgradeWorkers: 5,
+      targetLevel: 3
     },
-    OnDiscoveryEffects: {}
   },
   {
     id: 'cooking',
@@ -301,7 +296,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
-      targetLevel: 3
+      targetLevel: 4
     }
   },
   {
@@ -323,7 +318,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
-      targetLevel: 3
+      targetLevel: 4
     }
   },
   {
