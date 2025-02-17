@@ -34,11 +34,12 @@ export function assignWorkerToCard(cardId: string): void {
     return;
   }
 
-  // First try unassigned workers
-  const unassignedWorker = workers.find(worker => worker.assignedTo === null);
-  if (unassignedWorker) {
-    assignWorker(unassignedWorker.id, cardId);
-    console.log(`Worker ${unassignedWorker.id} assigned to ${cardId} from unassigned pool`);
+  // ALWAYS try unassigned workers first
+  const unassignedWorkers = workers.filter(worker => worker.assignedTo === null);
+  if (unassignedWorkers.length > 0) {
+    // Take the first unassigned worker
+    assignWorker(unassignedWorkers[0].id, cardId);
+    console.log(`Worker ${unassignedWorkers[0].id} assigned to ${cardId} from unassigned pool`);
     return;
   }
 
