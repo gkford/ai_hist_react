@@ -84,7 +84,7 @@ export function GenerationTracker({
 
   // Calculate total production
   const totalProduction = workers.reduce((total, worker) => {
-    return total + (cardState.generates?.amount || 0)
+    return total + ((cardState.generates?.amount || 0) * worker.level)
   }, 0)
 
   if (variant === 'compact') {

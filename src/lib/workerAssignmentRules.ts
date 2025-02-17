@@ -14,7 +14,8 @@ const CARD_TYPE_PRIORITIES: Record<CardType, string[]> = {
   'production': ['gather_food', 'hunt', 'cooperative_hunting'],
   'computation': ['think'],
   'science': [],
-  'people': []
+  'people': [],
+  'resource': []
 };
 
 // Define fallback order for when type-specific rules don't yield a worker
