@@ -39,7 +39,6 @@ export function assignWorkerToCard(cardId: string): void {
   if (unassignedWorkers.length > 0) {
     // Take the first unassigned worker
     assignWorker(unassignedWorkers[0].id, cardId);
-    console.log(`Worker ${unassignedWorkers[0].id} assigned to ${cardId} from unassigned pool`);
     return;
   }
 
@@ -67,11 +66,9 @@ export function assignWorkerToCard(cardId: string): void {
   const anyWorker = workers.find(w => w.assignedTo !== cardId);
   if (anyWorker) {
     assignWorker(anyWorker.id, cardId);
-    console.log(`Worker ${anyWorker.id} reassigned to ${cardId} from ${anyWorker.assignedTo} (last resort)`);
     return;
   }
 
-  console.log(`No workers available to assign to ${cardId}`);
 }
 
 function tryReassignWorker(fromCardId: string, toCardId: string): boolean {
@@ -79,7 +76,6 @@ function tryReassignWorker(fromCardId: string, toCardId: string): boolean {
   const worker = workers.find(w => w.assignedTo === fromCardId);
   if (worker) {
     assignWorker(worker.id, toCardId);
-    console.log(`Worker ${worker.id} reassigned from ${fromCardId} to ${toCardId}`);
     return true;
   }
   return false;
