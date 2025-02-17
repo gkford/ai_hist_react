@@ -56,6 +56,15 @@ export const HorizontalCardDesign = React.forwardRef<HTMLDivElement, AltCardDesi
               {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
             </h3>
             <div className="flex items-center gap-2">
+              {cardDef.ongoingEffects &&
+                (cardState.discovery_state.current_status === 'imagined' ||
+                 cardState.discovery_state.current_status === 'discovered') && (
+                <OngoingEffectsViewer
+                  effects={cardDef.ongoingEffects}
+                  isDiscovered={cardState.discovery_state.current_status === 'discovered'}
+                  compact={true}
+                />
+              )}
               {cardDef.OnDiscoveryEffects &&
                 (cardState.discovery_state.current_status === 'imagined' ||
                  cardState.discovery_state.current_status === 'discovered') && (
