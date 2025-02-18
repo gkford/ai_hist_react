@@ -1,6 +1,5 @@
-import { DevControls } from "@/components/ui/DevControls"
 import { useDevStore } from "@/store/useDevStore"
-import { HorizontalCardDesign } from "@/components/ui/HorizontalCardDesign"
+import { CardDesign } from "@/components/ui/CardDesign"
 import { useLayoutStore } from "@/store/useLayoutStore"
 import { Button } from "@/components/ui/button"
 import type { CardType } from "@/data/cards";
@@ -173,11 +172,7 @@ function App() {
                 })
                 .sort(sortCardsInColumn)
                 .map((cardState) => (
-                  useLayoutStore.getState().layout === 'vertical' ? (
-                    <AltCardDesign key={cardState.id} id={cardState.id} />
-                  ) : (
-                    <HorizontalCardDesign key={cardState.id} id={cardState.id} />
-                  )
+                  <CardDesign key={cardState.id} id={cardState.id} />
                 ))
             }
           </div>
