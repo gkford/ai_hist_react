@@ -149,16 +149,15 @@ function App() {
         useWorkersStore.getState().assignWorker(workerId, newAssignment);
     }}>
       <div className="min-h-screen p-4 flex flex-col">
-        <div className="flex justify-between items-center mb-4">
-          <DevControls />
-          <div className="flex gap-2">
-            <Button 
-              onClick={useLayoutStore(state => state.toggleLayout)}
-              variant="outline"
-            >
-              Switch to {useLayoutStore(state => state.layout === 'vertical' ? 'Horizontal' : 'Vertical')} Layout
-            </Button>
-          </div>
+        {/* Floating Button Bar */}
+        <div className="fixed right-4 top-4 flex flex-col gap-2 z-50">
+          <Button 
+            onClick={useLayoutStore(state => state.toggleLayout)}
+            variant="outline"
+            className="w-40"
+          >
+            Switch to {useLayoutStore(state => state.layout === 'vertical' ? 'Horizontal' : 'Vertical')}
+          </Button>
         </div>
       
       <div className="flex gap-8">
