@@ -51,7 +51,7 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
       return 3;
   }
 }
-import { AltCardDesign } from "@/components/ui/AltCardDesign"
+import { AltCardDesign } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect, useState } from "react"
