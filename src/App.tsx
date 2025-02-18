@@ -1,4 +1,5 @@
 import { useDevStore } from "@/store/useDevStore"
+import { useGameLoopStore } from "@/store/useGameLoopStore"
 import { CardDesign } from "@/components/ui/CardDesign"
 import { useLayoutStore } from "@/store/useLayoutStore"
 import { Button } from "@/components/ui/button"
@@ -157,6 +158,20 @@ function App() {
             className="w-40"
           >
             Switch to {useLayoutStore(state => state.layout === 'vertical' ? 'Horizontal' : 'Vertical')}
+          </Button>
+          <Button
+            onClick={() => useGameLoopStore.getState().toggleRunning()}
+            variant="outline"
+            className="w-40"
+          >
+            {useGameLoopStore.getState().isRunning ? 'Pause' : 'Resume'}
+          </Button>
+          <Button
+            onClick={() => useDevStore.getState().toggleVerbose()}
+            variant="outline"
+            className="w-40"
+          >
+            {useDevStore.getState().verbose ? 'Hide Verbose' : 'Show Verbose'}
           </Button>
         </div>
       
