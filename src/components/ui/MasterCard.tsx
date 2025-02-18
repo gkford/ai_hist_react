@@ -76,6 +76,9 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                 <div className="text-4xl mb-2">{cardDef.icon}</div>
                 <div className="text-2xl font-bold">
                   {Math.floor(resource.amount[0])}
+                  {cardDef.resource_type === 'food' && resource.max_storage !== undefined && (
+                    <span className="text-lg text-gray-500">/{resource.max_storage}</span>
+                  )}
                 </div>
                 <div className="text-sm text-gray-500">{cardDef.title}</div>
                 {cardDef.resource_type === 'food' && (
