@@ -77,6 +77,20 @@ export const AltCardDesign = React.forwardRef<HTMLDivElement, AltCardDesignProps
                   {Math.floor(resource.amount[0])}
                 </div>
                 <div className="text-sm text-gray-500">{cardDef.title}</div>
+                {cardDef.resource_type === 'food' && (
+                  <>
+                    {resource.amount[0] >= resource.max_storage && (
+                      <div className="mt-2 text-sm font-semibold text-amber-600 bg-amber-100 p-2 rounded-md animate-pulse">
+                        ⚠️ Storage Full! Food is being wasted
+                      </div>
+                    )}
+                    {resource.amount[0] < 5 && (
+                      <div className="mt-2 text-sm font-semibold text-red-600 bg-red-100 p-2 rounded-md animate-pulse">
+                        ⚠️ Critical Food Shortage!
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             )}
             {/* <CardInfo /> */}
