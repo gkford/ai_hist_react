@@ -94,6 +94,20 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                       {Math.floor(resource.amount[0])}
                     </div>
                     <div className="text-sm text-gray-500">{cardDef.title}</div>
+                    {resourceType === 'food' && (
+                      <div className="mt-2">
+                        {resource.amount[0] < 5 && (
+                          <div className="text-red-500 text-sm font-semibold">
+                            Warning: Low Food Supply!
+                          </div>
+                        )}
+                        {resource.amount[0] >= (resource.max_storage || 0) && (
+                          <div className="text-amber-500 text-sm font-semibold">
+                            Storage Full!
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
