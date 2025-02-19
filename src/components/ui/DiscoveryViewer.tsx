@@ -52,7 +52,7 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
           onClick={togglePriority}
           variant={discoveryState.priority === 'on' ? 'destructive' : 'default'}
         >
-          {getButtonText()}
+          {discoveryState.priority === 'on' ? '⏸️' : '▶️'}
         </Button>
       </div>
     </div>
