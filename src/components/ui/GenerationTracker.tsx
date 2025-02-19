@@ -7,12 +7,10 @@ import { allCards } from '@/data/cards'
 
 interface GenerationTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
-  variant?: 'normal' | 'compact'
 }
 
 export function GenerationTracker({ 
   cardId,
-  variant = 'normal',
   className,
   ...props 
 }: GenerationTrackerProps) {
@@ -85,41 +83,6 @@ export function GenerationTracker({
   // Calculate base production without bonuses
   const baseProduction = workers.length * (cardState.generates?.amount || 0);
 
-  if (variant === 'compact') {
-    return (
-      <div 
-        className={cn("flex items-center gap-2 text-sm", className)}
-        {...props}
-      >
-        {/* Worker counts by level */}
-        <div className="flex gap-1">
-          {Object.entries(workersByLevel)
-            .sort(([levelA], [levelB]) => parseInt(levelA) - parseInt(levelB))
-            .map(([level, count]) => (
-              <span key={level}>
-                {count}{WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}
-              </span>
-            ))
-          }
-        </div>
-        
-        {/* Only show arrow and production if there are workers */}
-        {Object.keys(workersByLevel).length > 0 && (
-          <>
-            {/* Arrow */}
-            <span>→</span>
-            
-            {/* Resource generation */}
-            <span>
-              {resource.icon} +{baseProduction.toFixed(1)}/s
-            </span>
-          </>
-        )}
-      </div>
-    )
-  }
-
-  // Original normal variant render code
   return (
     <div 
       className={cn("flex items-center gap-2 p-2 justify-center", className)}

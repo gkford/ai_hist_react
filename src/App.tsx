@@ -152,13 +152,6 @@ function App() {
       <div className="min-h-screen p-4 flex flex-col">
         {/* Floating Button Bar */}
         <div className="fixed right-4 top-4 flex flex-col gap-2 z-50">
-          <Button 
-            onClick={useLayoutStore(state => state.toggleLayout)}
-            variant="outline"
-            className="w-40"
-          >
-            Switch to {useLayoutStore(state => state.layout === 'vertical' ? 'Horizontal' : 'Vertical')}
-          </Button>
           <Button
             onClick={() => useGameLoopStore.getState().toggleRunning()}
             variant="outline"
