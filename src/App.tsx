@@ -15,12 +15,12 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   
   if (!cardA || !cardB) return 0;
   
-  // People cards should always be above think cards
-  if (cardA.type === 'people' && cardB.type === 'computation') return -1;
-  if (cardB.type === 'people' && cardA.type === 'computation') return 1;
+  // People cards should always be above all other cards
+  if (cardA.type === 'people' && cardB.type !== 'people') return -1;
+  if (cardB.type === 'people' && cardA.type !== 'people') return 1;
   
   // For non-people cards, sort by discovery timestamp (newer cards on top)
-  if (cardA.type !== 'people' && cardB.type !== 'people') {
+  if (true) {
     const stateA = useCardsStore.getState().cardStates[a.id];
     const stateB = useCardsStore.getState().cardStates[b.id];
     const timeA = stateA?.discovery_state?.discovery_timestamp || 0;
