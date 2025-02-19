@@ -82,29 +82,8 @@ export function GenerationTracker({
     return acc
   }, {} as Record<number, number>)
 
-  // Calculate total production including bonuses
-  const baseAmount = workers.length * (cardState.generates?.amount || 0);
-  let totalProduction = baseAmount;
-  
-  // Apply bonuses if this is a food or thought resource
-  const resourceType = cardState.generates?.resource;
-  if (resourceType && ["food", "thoughts1", "thoughts2", "thoughts3", "thoughts4"].includes(resourceType)) {
-    let extraBonus = 0;
-    const cards = useCardsStore.getState().cardStates;
-    Object.values(cards).forEach(card => {
-      if (card.discovery_state.current_status === 'discovered' && card.ongoingEffects?.resourceModifiers) {
-        const mod = card.ongoingEffects.resourceModifiers[resourceType];
-        if (mod && typeof mod === 'string') {
-          const parsed = parseFloat(mod.replace(/[+\s%]/g, ''));
-          if (!isNaN(parsed)) {
-            extraBonus += parsed;
-          }
-        }
-      }
-    });
-    const extraProduction = baseAmount * (extraBonus / 100);
-    totalProduction = baseAmount + extraProduction;
-  }
+  // Calculate base production without bonuses
+  const baseProduction = workers.length * (cardState.generates?.amount || 0);
 
   if (variant === 'compact') {
     return (
@@ -132,7 +111,7 @@ export function GenerationTracker({
             
             {/* Resource generation */}
             <span>
-              {resource.icon} +{totalProduction.toFixed(1)}/s
+              {resource.icon} +{baseProduction.toFixed(1)}/s
             </span>
           </>
         )}
@@ -147,7 +126,7 @@ export function GenerationTracker({
       {...props}
     >
       <span className="text-sm">{resource.icon}</span>
-      <span className="text-sm">+{totalProduction.toFixed(1)}/s</span>
+      <span className="text-sm">+{baseProduction.toFixed(1)}/s</span>
     </div>
   )
 }
