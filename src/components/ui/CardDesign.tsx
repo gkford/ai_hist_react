@@ -12,6 +12,7 @@ import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
 import { GenerationTracker } from './GenerationTracker'
+import { GenerationTracker } from './GenerationTracker'
 import { WorkerLevelTracker } from './WorkerLevelTracker'
 import { useLayoutStore } from "@/store/useLayoutStore"
 
@@ -61,6 +62,9 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
               </h3>
               <div className="flex items-center gap-2">
+                {cardDef.generates && cardState.discovery_state.current_status === 'discovered' && (
+                  <GenerationTracker cardId={id} />
+                )}
                 {cardDef.ongoingEffects &&
                   (cardState.discovery_state.current_status === 'imagined' ||
                    cardState.discovery_state.current_status === 'discovered') && (
