@@ -1,7 +1,7 @@
-import { useResource } from "@/store/useResourceStore"
+import { useResource, ResourceKey } from "@/store/useResourceStore"
 
 interface FoodResourceCardProps {
-  resourceType: string
+  resourceType: ResourceKey
 }
 
 export function FoodResourceCard({ resourceType }: FoodResourceCardProps) {
