@@ -4,6 +4,7 @@ import { WORKER_ICONS } from "@/store/useWorkersStore";
 import { Progress } from "@/components/ui/progress";
 import { useCardsStore } from "@/store/useCardsStore";
 import { Play, Pause } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface DiscoveryViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   discoveryState: DiscoveryState;
