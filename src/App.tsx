@@ -1,7 +1,6 @@
 import { useDevStore } from "@/store/useDevStore"
 import { useGameLoopStore } from "@/store/useGameLoopStore"
 import { CardDesign } from "@/components/ui/CardDesign"
-import { useLayoutStore } from "@/store/useLayoutStore"
 import { Button } from "@/components/ui/button"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
@@ -51,7 +50,6 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
       return 3;
   }
 }
-import { AltCardDesign } from "@/components/ui/MasterCard"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect, useState } from "react"
