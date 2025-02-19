@@ -35,9 +35,9 @@ export function OngoingEffectsViewer({
       return (
         <span key={resource} className="flex items-center gap-1 text-sm">
           {modifier} {resourceInfo.icon} 
-          {bonusAmount > 0 && (
-            <span className="text-green-600">(+{bonusAmount.toFixed(1)})</span>
-          )}
+          <span className={bonusAmount > 0 ? "text-green-600" : "text-gray-600"}>
+            ({bonusAmount > 0 ? "+" : ""}{bonusAmount.toFixed(1)})
+          </span>
         </span>
       )
     }
