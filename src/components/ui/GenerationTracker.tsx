@@ -83,13 +83,20 @@ export function GenerationTracker({
   // Calculate base production without bonuses
   const baseProduction = workers.length * (cardState.generates?.amount || 0);
 
+  // Create worker level summary string
+  const workerSummary = Object.entries(workersByLevel)
+    .sort(([levelA], [levelB]) => parseInt(levelA) - parseInt(levelB))
+    .map(([level, count]) => `${count}${WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}`)
+    .join(',');
+
   return (
     <div 
       className={cn("flex items-center gap-2 p-2 justify-center", className)}
       {...props}
     >
-      <span className="text-sm">{resource.icon}</span>
-      <span className="text-sm">+{baseProduction.toFixed(1)}/s</span>
+      <span className="text-sm">{workerSummary}</span>
+      <span className="text-sm">→</span>
+      <span className="text-sm">+{baseProduction.toFixed(1)}{resource.icon}/s</span>
     </div>
   )
 }
