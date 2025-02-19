@@ -107,19 +107,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     </div>
                   </div>
                 ) : (
-                  <>
-                    {(cardState.discovery_state.current_status ===
-                      'unthoughtof' ||
-                      cardState.discovery_state.current_status === 'imagined') && (
-                      <DiscoveryViewer
-                        discoveryState={cardState.discovery_state}
-                        cardId={id}
-                      />
-                    )}
-                    {cardDef.type === 'people' && (
-                      <PopulationTracker className="w-full" />
-                    )}
-                  </>
+                  <div></div>
                 )}
               </div>
             </div>
@@ -144,6 +132,15 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 </div>
               )}
             </div>
+          ) : cardDef.type === 'people' ? (
+            <PopulationTracker className="w-full px-4" />
+          ) : (cardState.discovery_state.current_status === 'unthoughtof' ||
+             cardState.discovery_state.current_status === 'imagined') ? (
+            <DiscoveryViewer
+              discoveryState={cardState.discovery_state}
+              cardId={id}
+              className="w-full px-4"
+            />
           ) : null}
         </div>
       </Card>

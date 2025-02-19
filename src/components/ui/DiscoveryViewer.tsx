@@ -5,12 +5,12 @@ import { Progress } from "@/components/ui/progress";
 import { useCardsStore } from "@/store/useCardsStore";
 import { Play, Pause } from "lucide-react";
 
-interface DiscoveryViewerProps {
+interface DiscoveryViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   discoveryState: DiscoveryState;
   cardId: string;
 }
 
-export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps) {
+export function DiscoveryViewer({ discoveryState, cardId, className, ...props }: DiscoveryViewerProps) {
   const updateCardState = useCardsStore(state => state.updateCardState);
 
   const togglePriority = () => {
@@ -24,7 +24,7 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
 
 
   return (
-    <div className="p-2">
+    <div className={cn("p-2", className)} {...props}>
       <div className="flex items-center gap-2">
         <Button 
           onClick={togglePriority}
