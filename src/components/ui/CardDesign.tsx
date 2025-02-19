@@ -14,6 +14,7 @@ import { PopulationTracker } from './PopulationTracker'
 // import { GenerationTracker } from './GenerationTracker'
 import { GenerationTracker } from './GenerationTracker'
 import { WorkerLevelTracker } from './WorkerLevelTracker'
+import { FoodResourceCard } from './FoodResourceCard'
 import { useLayoutStore } from "@/store/useLayoutStore"
 
 export interface CardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -89,18 +90,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             {/* Additional Main Content */}
             <div className="mt-4">
               {cardDef.type === 'resource' && resourceType === 'food' ? (
-                <div className="text-center">
-                  {/* Grid of food icons that updates live */}
-                  <div className="grid grid-cols-10 gap-1">
-                    {[...Array(resource.max_storage)].map((_, i) =>
-                      i < Math.floor(resource.amount[0]) ? (
-                        <span key={i} className="text-2xl">{resource.icon}</span>
-                      ) : (
-                        <span key={i} className="text-2xl text-gray-300">{resource.icon}</span>
-                      )
-                    )}
-                  </div>
-                </div>
+                <FoodResourceCard resourceType={resourceType} />
               ) : cardDef.type === 'resource' ? (
                 <div className="text-center">
                   <div className="text-4xl mb-2">{cardDef.icon}</div>
