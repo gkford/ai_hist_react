@@ -1,5 +1,6 @@
 import type { DiscoveryState } from "@/store/useCardsStore";
 import { Button } from "@/components/ui/button";
+import { WORKER_ICONS } from "@/store/useWorkersStore";
 import { Progress } from "@/components/ui/progress";
 import { useCardsStore } from "@/store/useCardsStore";
 
@@ -42,7 +43,7 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
               className="h-2 flex-grow"
             />
             <div className="text-sm text-gray-500 whitespace-nowrap">
-              Needs level {discoveryState.thought_level} thought
+              Needs {WORKER_ICONS[discoveryState.thought_level as keyof typeof WORKER_ICONS]}
             </div>
           </>
         )}
