@@ -11,7 +11,7 @@ import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
-import { GenerationTracker } from './GenerationTracker'
+// import { GenerationTracker } from './GenerationTracker'
 import { GenerationTracker } from './GenerationTracker'
 import { WorkerLevelTracker } from './WorkerLevelTracker'
 import { useLayoutStore } from "@/store/useLayoutStore"
