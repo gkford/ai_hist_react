@@ -86,7 +86,7 @@ export function GenerationTracker({
   // Create worker level summary string
   const workerSummary = Object.entries(workersByLevel)
     .sort(([levelA], [levelB]) => parseInt(levelA) - parseInt(levelB))
-    .map(([level, count]) => `${count}${WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}`)
+    .map(([level, count]) => `${count} ${WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}`)
     .join(',');
 
   return (
@@ -96,7 +96,7 @@ export function GenerationTracker({
     >
       <span className="text-sm">{workerSummary}</span>
       <span className="text-sm">→</span>
-      <span className="text-sm">+{baseProduction.toFixed(1)}{resource.icon}/s</span>
+      <span className="text-sm">{baseProduction.toFixed(1)}{resource.icon}/s</span>
     </div>
   )
 }

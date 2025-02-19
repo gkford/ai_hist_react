@@ -108,8 +108,8 @@ export const allCards: CardDefinition[] = [
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
     discovery_stats: {
-      thought_to_imagine: 7,
-      further_thought_to_discover: 7,
+      thought_to_imagine: 2, //7
+      further_thought_to_discover: 2, //7r
       thought_level: 1,
       discovery_unlocks: ["cooperative_hunting"],
     },
@@ -148,8 +148,8 @@ export const allCards: CardDefinition[] = [
     icon: '🏹',
     imageSrc: '/card_images/cooperativeHunting.png',
     discovery_stats: {
-      thought_to_imagine: 15,
-      further_thought_to_discover: 15,
+      thought_to_imagine: 5, //15
+      further_thought_to_discover: 5, //15,
       thought_level: 1,
       discovery_unlocks: ['early_stone_tools', 'fire_domestication'],
     },

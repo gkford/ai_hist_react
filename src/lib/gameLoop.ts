@@ -151,6 +151,10 @@ export async function processTick() {
 
     // Only continue processing if the game is still running
     if (useGameLoopStore.getState().isRunning) {
+
+      // Progress to next second (handles resetting rate resources)
+      logger.log('Progressing to next second...')
+      useResourceStore.getState().progressToNextSecond()
       // Always process worker production first
       logger.log('Processing Worker Production...')
       processWorkerProduction()
@@ -170,9 +174,7 @@ export async function processTick() {
       logger.log('Processing Food Consumption...')
       processFoodConsumption()
 
-      // Progress to next second (handles resetting rate resources)
-      logger.log('Progressing to next second...')
-      useResourceStore.getState().progressToNextSecond()
+
     }
 
     logger.log('=== Game Loop End ===')

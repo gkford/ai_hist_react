@@ -12,7 +12,6 @@ import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
 import { GenerationTracker } from './GenerationTracker'
 import { FoodResourceCard } from './FoodResourceCard'
-import { useLayoutStore } from "@/store/useLayoutStore"
 
 export interface CardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string

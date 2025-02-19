@@ -21,7 +21,7 @@ export function FoodResourceCard({ resourceType }: FoodResourceCardProps) {
         )}
       </div>
       <div className="mt-2 text-sm font-medium text-gray-800">
-        Food Amount: {currentAmount} / {maxStorage}
+
       </div>
     </div>
   )
