@@ -35,7 +35,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
       return text.replace(/[^\s]/g, '?')
     }
 
-    const cardClassName = 'w-[640px] h-[240px] flex flex-row'
+    const cardClassName = 'w-[512px] h-[240px] flex flex-row'
 
     return (
       <Card
