@@ -23,7 +23,7 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
 
 
   return (
-    <div className="p-2 border-t border-gray-200">
+    <div className="p-2">
       <div className="flex items-center gap-2">
         <Button 
           onClick={togglePriority}
