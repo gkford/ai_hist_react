@@ -25,6 +25,12 @@ export function OngoingEffectsViewer({
     const resourceInfo = resources[resource as keyof typeof resources]
     // Extract level number for thought resources
     const thoughtLevel = resource.match(/thoughts(\d+)/)?.[1]
+    
+    // Calculate actual bonus amount
+    const baseAmount = resourceInfo.rawAmountProducedThisSecond[0]
+    const totalAmount = resourceInfo.amountProducedThisSecond[0]
+    const bonusAmount = totalAmount - baseAmount
+    
     if (compact) {
       return (
         <span key={resource} className="flex items-center gap-1 text-sm">
@@ -34,9 +40,16 @@ export function OngoingEffectsViewer({
     }
 
     return (
-      <span key={resource} className="flex items-center gap-1">
-        {modifier} {thoughtLevel ? `L${thoughtLevel} thoughts ` : ''}{resourceInfo.icon}
-      </span>
+      <div key={resource} className="flex flex-col items-center">
+        <span className="flex items-center gap-1">
+          {modifier} {thoughtLevel ? `L${thoughtLevel} thoughts ` : ''}{resourceInfo.icon}
+        </span>
+        {isDiscovered && bonusAmount > 0 && (
+          <span className="text-sm text-green-600">
+            +{bonusAmount.toFixed(1)}/s
+          </span>
+        )}
+      </div>
     )
   })
 
@@ -49,9 +62,12 @@ export function OngoingEffectsViewer({
   }
 
   return (
-    <div className="p-2 text-sm border-t border-gray-200 text-gray-600 flex gap-2 items-center justify-center">
-      <div className="flex gap-2 items-center justify-center">
-        {isDiscovered ? ' Active' : 'Will give'}:{modifierElements}
+    <div className="p-2 text-sm border-t border-gray-200 text-gray-600">
+      <div className="text-center mb-1">
+        {isDiscovered ? 'Active' : 'Will give'}:
+      </div>
+      <div className="flex gap-4 items-center justify-center">
+        {modifierElements}
       </div>
     </div>
   )
