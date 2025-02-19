@@ -30,15 +30,12 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     if (!cardDef || !cardState) return null
 
     const isUnthoughtof = cardState.discovery_state.current_status === 'unthoughtof'
-    const isHorizontal = layout === 'horizontal'
 
     const obscureText = (text: string) => {
       return text.replace(/[^\s]/g, '?')
     }
 
-    const cardClassName = isHorizontal
-      ? 'w-[640px] h-[240px] flex flex-row'
-      : 'w-[320px] h-[480px] flex flex-col'
+    const cardClassName = 'w-[640px] h-[240px] flex flex-row'
 
     return (
       <Card
