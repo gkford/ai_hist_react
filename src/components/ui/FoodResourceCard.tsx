@@ -16,7 +16,7 @@ export function FoodResourceCard({ resourceType }: FoodResourceCardProps) {
           i < currentAmount ? (
             <span key={i} className="text-2xl">{resource.icon}</span>
           ) : (
-            <span key={i} className="text-2xl text-gray-300">{resource.icon}</span>
+            <span key={i} className="text-2xl text-gray-300">·</span>
           )
         )}
       </div>
