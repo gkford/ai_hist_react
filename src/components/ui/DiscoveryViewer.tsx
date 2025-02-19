@@ -20,14 +20,6 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
     });
   };
 
-  const getButtonText = () => {
-    const isUnthoughtof = discoveryState.current_status === 'unthoughtof';
-    if (discoveryState.priority === 'off') {
-      return isUnthoughtof ? 'Imagine ...' : 'Discover ...';
-    } else {
-      return isUnthoughtof ? 'Stop Imagining' : 'Stop Research';
-    }
-  };
 
   return (
     <div className="p-2 border-t border-gray-200">
