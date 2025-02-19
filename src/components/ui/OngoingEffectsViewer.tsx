@@ -34,7 +34,10 @@ export function OngoingEffectsViewer({
     if (compact) {
       return (
         <span key={resource} className="flex items-center gap-1 text-sm">
-          {modifier} {resourceInfo.icon}
+          {modifier} {resourceInfo.icon} 
+          {bonusAmount > 0 && (
+            <span className="text-green-600">(+{bonusAmount.toFixed(1)})</span>
+          )}
         </span>
       )
     }
