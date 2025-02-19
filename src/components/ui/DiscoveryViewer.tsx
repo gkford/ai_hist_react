@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { WORKER_ICONS } from "@/store/useWorkersStore";
 import { Progress } from "@/components/ui/progress";
 import { useCardsStore } from "@/store/useCardsStore";
+import { Play, Pause } from "lucide-react";
 
 interface DiscoveryViewerProps {
   discoveryState: DiscoveryState;
@@ -27,10 +28,10 @@ export function DiscoveryViewer({ discoveryState, cardId }: DiscoveryViewerProps
       <div className="flex items-center gap-2">
         <Button 
           onClick={togglePriority}
-          variant={discoveryState.priority === 'on' ? 'destructive' : 'default'}
+          variant="outline"
           size="sm"
         >
-          {discoveryState.priority === 'on' ? '⏸️' : '▶️'}
+          {discoveryState.priority === 'on' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
         </Button>
         {(discoveryState.current_status === 'unthoughtof' || discoveryState.current_status === 'imagined') && (
           <>
