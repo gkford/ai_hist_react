@@ -1,5 +1,7 @@
-import { DevControls } from "@/components/ui/DevControls"
 import { useDevStore } from "@/store/useDevStore"
+import { useGameLoopStore } from "@/store/useGameLoopStore"
+import { CardDesign } from "@/components/ui/CardDesign"
+import { Button } from "@/components/ui/button"
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
@@ -12,12 +14,12 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   
   if (!cardA || !cardB) return 0;
   
-  // People cards should always be above think cards
-  if (cardA.type === 'people' && cardB.type === 'computation') return -1;
-  if (cardB.type === 'people' && cardA.type === 'computation') return 1;
+  // People cards should always be above all other cards
+  if (cardA.type === 'people' && cardB.type !== 'people') return -1;
+  if (cardB.type === 'people' && cardA.type !== 'people') return 1;
   
   // For non-people cards, sort by discovery timestamp (newer cards on top)
-  if (cardA.type !== 'people' && cardB.type !== 'people') {
+  if (true) {
     const stateA = useCardsStore.getState().cardStates[a.id];
     const stateB = useCardsStore.getState().cardStates[b.id];
     const timeA = stateA?.discovery_state?.discovery_timestamp || 0;
@@ -38,17 +40,16 @@ function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number
   switch (type) {
     case 'people':
     case 'computation':
+    case 'resource':
       return 1;
     case 'production':
       return 2;
     case 'science':
       return 3;
     default:
-      return 4;
+      return 3;
   }
 }
-import { ResourceDashboard } from "@/components/ui/ResourceDashboard"
-import { AltCardDesign } from "@/components/ui/AltCardDesign"
 import { useResource } from "@/store/useResourceStore"
 import { useCardsStore } from "@/store/useCardsStore"
 import { useEffect, useState } from "react"
@@ -63,6 +64,13 @@ function initializeCards() {
     }
   });
   
+  // Add food resource card
+  cardStore.createCard('food_resource', {
+    discovery_state: {
+      current_status: 'discovered'
+    }
+  });
+
   cardStore.createCard('gather_food', {
     discovery_state: {
       current_status: 'discovered'
@@ -77,7 +85,7 @@ function initializeCards() {
 
   cardStore.createCard('hunt', {
     discovery_state: {
-      current_status: 'unthoughtof'
+      current_status: 'imagined'
     }
   });
 }
@@ -140,20 +148,27 @@ function App() {
         useWorkersStore.getState().assignWorker(workerId, newAssignment);
     }}>
       <div className="min-h-screen p-4 flex flex-col">
-      <DevControls />
+        {/* Floating Button Bar */}
+        <div className="fixed right-4 top-4 flex flex-col gap-2 z-50">
+          <Button
+            onClick={() => useGameLoopStore.getState().toggleRunning()}
+            variant="outline"
+            className="w-40"
+          >
+            {useGameLoopStore.getState().isRunning ? 'Pause' : 'Resume'}
+          </Button>
+          <Button
+            onClick={() => useDevStore.getState().toggleVerbose()}
+            variant="outline"
+            className="w-40"
+          >
+            {useDevStore.getState().verbose ? 'Hide Verbose' : 'Show Verbose'}
+          </Button>
+        </div>
       
-      {/* Resources Dashboard at the top */}
-      <ResourceDashboard className="mb-4" />
-
       <div className="flex gap-8">
         {[1, 2, 3, 4].map((columnNumber) => (
           <div key={columnNumber} className="flex flex-col gap-4">
-            <h2 className="font-semibold text-lg">
-              {columnNumber === 1 ? "Your People" :
-               columnNumber === 2 ? "Production" :
-               columnNumber === 3 ? "Your Technology" :
-               "Future Discoveries"}
-            </h2>
             {initialized && 
               Object.values(useCardsStore.getState().cardStates)
                 .filter(cardState => {
@@ -162,7 +177,7 @@ function App() {
                 })
                 .sort(sortCardsInColumn)
                 .map((cardState) => (
-                  <AltCardDesign key={cardState.id} id={cardState.id} />
+                  <CardDesign key={cardState.id} id={cardState.id} />
                 ))
             }
           </div>

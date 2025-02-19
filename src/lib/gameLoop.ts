@@ -1,5 +1,4 @@
 import { processDiscoveries } from './discoveryManager'
-import { processKnowledgeLevel } from './knowledgeManager'
 import { processPeopleLevel } from './peopleManager'
 import { useResourceStore, ResourceKey } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
@@ -93,7 +92,6 @@ export function setVerboseLogging(verbose: boolean) {
 
 const handleFoodShortage = async () => {
   const gameLoopStore = useGameLoopStore.getState()
-  const resourceStore = useResourceStore.getState()
   
   // Pause the game
   gameLoopStore.setRunning(false)
@@ -147,13 +145,16 @@ export async function processTick() {
   
   try {
     logger.log('=== Game Loop Start ===')
-    const store = useResourceStore.getState()
 
     // Check resources before processing
     await checkAndHandleResources()
 
     // Only continue processing if the game is still running
     if (useGameLoopStore.getState().isRunning) {
+
+      // Progress to next second (handles resetting rate resources)
+      logger.log('Progressing to next second...')
+      useResourceStore.getState().progressToNextSecond()
       // Always process worker production first
       logger.log('Processing Worker Production...')
       processWorkerProduction()
@@ -163,7 +164,7 @@ export async function processTick() {
       processDiscoveries()
 
       // Process knowledge level after discoveries
-      processKnowledgeLevel()
+      // processKnowledgeLevel()
 
       // Process people level upgrades
       logger.log('Processing People Level...')
@@ -173,9 +174,7 @@ export async function processTick() {
       logger.log('Processing Food Consumption...')
       processFoodConsumption()
 
-      // Progress to next second (handles resetting rate resources)
-      logger.log('Progressing to next second...')
-      store.progressToNextSecond()
+
     }
 
     logger.log('=== Game Loop End ===')

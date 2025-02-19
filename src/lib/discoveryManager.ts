@@ -62,8 +62,7 @@ export function processDiscoveries() {
         discovery_state: {
           ...card.discovery_state,
           current_status: 'imagined',
-          thought_invested: 0,
-          priority: 'off' // Turn off priority when transitioning
+          thought_invested: 0
         }
       })
     } else if (card.discovery_state.current_status === 'imagined' && 

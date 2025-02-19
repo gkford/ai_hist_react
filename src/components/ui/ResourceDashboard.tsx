@@ -1,47 +1,46 @@
 import { useResource } from "@/store/useResourceStore"
 import { cn } from "@/lib/utils"
-import { useEffect, useState } from "react"
-import { useKnowledgeLevelStore } from "@/store/useKnowledgeLevelStore"
 
+// @ts-ignore -- Will be used when thought tracking is re-enabled
 interface ResourceRowProps {
   label: string
   amount: number
   perSecond?: number
   icon: string
-  rawProduction?: number  // NEW: base (raw) production amount
+  rawProduction?: number
 }
 
-function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
-  const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
+// function ResourceRow({ label, amount, perSecond, icon, rawProduction }: ResourceRowProps) {
+//   const [displayAmount, setDisplayAmount] = useState(Math.floor(amount))
 
-  useEffect(() => {
-    setDisplayAmount(Math.floor(amount))
-  }, [amount])
+//   useEffect(() => {
+//     setDisplayAmount(Math.floor(amount))
+//   }, [amount])
 
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-4">
-        <span className="font-medium w-30">{label}:</span>
-        <div className="flex gap-1">
-          {[...Array(displayAmount)].map((_, i) => (
-            <span key={i}>{icon}</span>
-          ))}
-        </div>
-      </div>
-      {perSecond !== undefined && (
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span className="w-20"></span>
-          <span>+{perSecond.toFixed(1)}/s</span>
-        </div>
-      )}
-      {rawProduction !== undefined && (
-        <div className="text-xs text-gray-600">
-          Base: {rawProduction.toFixed(1)} | Bonus: {(amount - rawProduction).toFixed(1)}
-        </div>
-      )}
-    </div>
-  )
-}
+//   return (
+//     <div className="flex flex-col gap-1">
+//       <div className="flex items-center gap-4">
+//         <span className="font-medium w-30">{label}:</span>
+//         <div className="flex gap-1">
+//           {[...Array(displayAmount)].map((_, i) => (
+//             <span key={i}>{icon}</span>
+//           ))}
+//         </div>
+//       </div>
+//       {perSecond !== undefined && (
+//         <div className="flex items-center gap-2 text-sm text-gray-600">
+//           <span className="w-20"></span>
+//           <span>+{perSecond.toFixed(1)}/s</span>
+//         </div>
+//       )}
+//       {rawProduction !== undefined && (
+//         <div className="text-xs text-gray-600">
+//           Base: {rawProduction.toFixed(1)} | Bonus: {(amount - rawProduction).toFixed(1)}
+//         </div>
+//       )}
+//     </div>
+//   )
+// }
 
 export function ResourceDashboard({ className }: { className?: string }) {
   const food = useResource('food')
@@ -49,7 +48,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
   // const thoughts2 = useResource('thoughts2')
   // const thoughts3 = useResource('thoughts3')
   // const thoughts4 = useResource('thoughts4')
-  const { level: knowledgeLevel } = useKnowledgeLevelStore()
   // // Use the actual produced amounts from this second
   // const produced1 = thoughts1.amountProducedThisSecond[1]
   // const rawProduced1 = thoughts1.rawAmountProducedThisSecond[1] || 0
@@ -64,8 +62,6 @@ export function ResourceDashboard({ className }: { className?: string }) {
   // const allThoughtsZero = produced1 === 0 && produced2 === 0 && 
   //   produced3 === 0 && produced4 === 0;
 
-  const knowledge = useResource('knowledge')
-  
   return (
     <div className={cn("flex flex-col gap-4 p-4 bg-gray-50 rounded-lg", className)}>
       <div className="flex flex-col gap-1">

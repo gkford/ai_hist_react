@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useResource, useResourceStore } from '@/store/useResourceStore'
-import { useCardsStore } from '@/store/useCardsStore'
-import { DndContext, DragEndEvent, useDraggable, useDroppable } from '@dnd-kit/core'
+import { useResource } from '@/store/useResourceStore'
+import { assignWorkerToCard } from '@/lib/workerAssignmentRules'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { useWorkersStore, Worker } from '@/store/useWorkersStore'
 
 interface DraggableWorkerProps {
@@ -47,29 +47,26 @@ export function WorkerTracker({
   ...props 
 }: WorkerTrackerProps) {
   const population = useResource('population')
-  const cardState = useCardsStore(state => state.cardStates[cardId])
   const workers = useWorkersStore(state => state.workers)
   const assignedWorkers = React.useMemo(
     () => workers.filter(worker => worker.assignedTo === cardId),
     [workers, cardId]
   )
   const availableWorkers = React.useMemo(
-    () => workers.filter(worker => worker.assignedTo === 'population'),
-    [workers]
+    () => workers.filter(worker => worker.assignedTo !== cardId),
+    [workers, cardId]
   )
   
   const handleChange = (delta: number) => {
-    if (delta > 0 && availableWorkers.length <= 0) return
     if (delta < 0 && assignedWorkers.length <= 0) return
     
     const workersStore = useWorkersStore.getState()
     
     if (delta > 0) {
-      const workerToAssign = availableWorkers[0]
-      if (workerToAssign) {
-        workersStore.assignWorker(workerToAssign.id, cardId)
-      }
+      // For adding workers, use the assignment rules
+      assignWorkerToCard(cardId)
     } else {
+      // For removing workers, send them back to population
       const workerToUnassign = assignedWorkers[assignedWorkers.length - 1]
       if (workerToUnassign) {
         workersStore.assignWorker(workerToUnassign.id, 'population')
@@ -111,7 +108,7 @@ export function WorkerTracker({
         variant="outline" 
         size="sm"
         onClick={() => handleChange(1)}
-        disabled={availableWorkers.length <= 0}
+        disabled={availableWorkers.length === 0}
       >
         +
       </Button>

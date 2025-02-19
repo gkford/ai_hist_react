@@ -28,14 +28,16 @@ export interface OngoingEffects {
 export interface OnDiscoveryEffects {
   resourceBonuses?: Partial<Record<ResourceKey, number>>; // optional: resource bonus amounts
   upgradeWorkers?: number;            // number of workers to upgrade on discovery
+  targetLevel?: number;               // target level to upgrade workers to
 }
 
-export type CardType = 'people' | 'computation' | 'science' | 'production';
+export type CardType = 'people' | 'computation' | 'science' | 'production' | 'resource';
 
 export interface CardDefinition {
   id: string
   title: string
   type: CardType
+  resource_type?: ResourceKey
   icon?: string
   imageSrc?: string
   generates?: Generates
@@ -50,8 +52,16 @@ export const allCards: CardDefinition[] = [
   // Tier 1 (knowledge_level = 1)
   // ------------------------------
   {
+    id: 'food_resource',
+    title: 'Food',
+    type: 'resource',
+    resource_type: 'food',
+    icon: '🍎',
+    imageSrc: '/card_images/foodResource.png',
+  },
+  {
     id: 'hominids',
-    title: 'Hominids (L1)',
+    title: 'Your Population',
     type: 'people',
     icon: '😊',
     imageSrc: '/card_images/hominids.png',
@@ -98,19 +108,15 @@ export const allCards: CardDefinition[] = [
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
     discovery_stats: {
-      thought_to_imagine: 7,
-      further_thought_to_discover: 7,
+      thought_to_imagine: 2, //7
+      further_thought_to_discover: 2, //7r
       thought_level: 1,
       discovery_unlocks: ["cooperative_hunting"],
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        thoughts1: "+5%",
-      }
-    },
+      targetLevel: 2
+    }
   },
   {
     id: 'gift_giving',
@@ -131,6 +137,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
+      targetLevel: 2
     }
   },
   
@@ -141,8 +148,8 @@ export const allCards: CardDefinition[] = [
     icon: '🏹',
     imageSrc: '/card_images/cooperativeHunting.png',
     discovery_stats: {
-      thought_to_imagine: 15,
-      further_thought_to_discover: 15,
+      thought_to_imagine: 5, //15
+      further_thought_to_discover: 5, //15,
       thought_level: 1,
       discovery_unlocks: ['early_stone_tools', 'fire_domestication'],
     },
@@ -150,9 +157,7 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.3
     },
-    OnDiscoveryEffects: {
-      upgradeWorkers: 5,
-    }
+
   },
   
   {
@@ -172,7 +177,7 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   {
     id: 'grunts',
-    title: 'Grunts (L2)',
+    title: 'Your Population',
     type: 'people',
     icon: '🤔',
     imageSrc: '/card_images/grunts.png',
@@ -210,31 +215,10 @@ export const allCards: CardDefinition[] = [
       thought_level: 2,
       discovery_unlocks: ["cooking"]
     },
-    ongoingEffects: {
-      resourceModifiers: {
-        thoughts2: "+20%"
-      }
+    OnDiscoveryEffects: {
+      upgradeWorkers: 5,
+      targetLevel: 3
     },
-    OnDiscoveryEffects: {}
-  },
-  {
-    id: 'hand_axe',
-    title: 'Hand Axe',
-    type: 'science',
-    icon: '🪓',
-    imageSrc: '/card_images/handAxe.png',
-    discovery_stats: {
-      thought_to_imagine: 20,
-      further_thought_to_discover: 20,
-      thought_level: 2,
-      discovery_unlocks: []
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        food: "+50%"
-      }
-    },
-    OnDiscoveryEffects: {}
   },
   {
     id: 'cooking',
@@ -251,6 +235,7 @@ export const allCards: CardDefinition[] = [
     // TODO: Should increase max food storage by 10
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
+      targetLevel: 3
     }
   },
   // ------------------------------
@@ -258,7 +243,7 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   {
     id: 'reasoners',
-    title: 'Reasoners (L3)',
+    title: 'Your Population',
     type: 'people',
     icon: '🗣️',
     imageSrc: '/card_images/talkers.png',
@@ -282,26 +267,6 @@ export const allCards: CardDefinition[] = [
       }
     },
     OnDiscoveryEffects: {}
-  },
-  {
-    id: 'complex_hunting',
-    title: 'Complex Hunting Techniques',
-    type: 'production',
-    icon: '🏹',
-    imageSrc: '/card_images/complexHunting.png',
-    discovery_stats: {
-      thought_to_imagine: 30,
-      further_thought_to_discover: 30,
-      thought_level: 3,
-      discovery_unlocks: ['cave_painting']
-    },
-    generates: {
-      resource: 'food',
-      amount: 1.4
-    },
-    OnDiscoveryEffects: {
-      upgradeWorkers: 2,
-    }
   },
   {
     id: 'trading',
@@ -331,6 +296,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
+      targetLevel: 4
     }
   },
   {
@@ -352,6 +318,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
+      targetLevel: 4
     }
   },
   {
@@ -367,6 +334,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
+      targetLevel: 3
     }
   },
   {
@@ -382,6 +350,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 4,
+      targetLevel: 4
     }
   },
   // ------------------------------
@@ -389,7 +358,7 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   {
     id: 'storytellers',
-    title: 'Storytellers (L4)',
+    title: 'Your Population',
     type: 'people',
     icon: '📖',
     imageSrc: '/card_images/storytellers.png',

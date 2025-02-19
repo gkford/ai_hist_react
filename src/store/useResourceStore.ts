@@ -28,12 +28,12 @@ interface ResourceStore {
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: [5], max_storage: 20, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    food: { amount: [20], max_storage: 20, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts1: { amount: [0], icon: "💭", key: "thoughts1", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts2: { amount: [0], icon: "🧠", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts3: { amount: [0], icon: "⚡", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    thoughts4: { amount: [0], icon: "💻", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts1: { amount: [0], icon: "😊💭", key: "thoughts1", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts2: { amount: [0], icon: "🤔💭", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts3: { amount: [0], icon: "🧑‍🔬💭", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    thoughts4: { amount: [0], icon: "🧙‍♂️💭", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     population: { 
       amount: [10], 
@@ -114,6 +114,8 @@ export const useResourceStore = create<ResourceStore>((set) => ({
       }
       const extraProduction = baseProduction * (extraBonus / 100);
       const totalProduction = baseProduction + extraProduction;
+      
+      logger.log(`produceResource: ${key} base=${baseProduction.toFixed(2)} bonus=${extraBonus}% total=${totalProduction.toFixed(2)}`);
       
       return {
         resources: {
