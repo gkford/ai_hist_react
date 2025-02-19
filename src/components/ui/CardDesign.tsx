@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
-import { useWorkersStore, WORKER_TYPES } from '@/store/useWorkersStore'
 import { allCards } from '@/data/cards'
 import { useResource } from "@/store/useResourceStore"
 import { CardImage } from '@/components/ui/CardImage'
@@ -21,7 +20,6 @@ export interface CardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
   ({ className, id, ...props }, ref) => {
-    const layout = useLayoutStore((state) => state.layout)
     const cardDef = allCards.find((c) => c.id === id)
     const cardState = useCardsStore((state) => state.cardStates[id])
     const resourceType = cardDef?.resource_type
