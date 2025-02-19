@@ -87,7 +87,7 @@ function initializeCards() {
 
   cardStore.createCard('hunt', {
     discovery_state: {
-      current_status: 'unthoughtof'
+      current_status: 'imagined'
     }
   });
 }
