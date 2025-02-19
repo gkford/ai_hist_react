@@ -115,6 +115,8 @@ export const useResourceStore = create<ResourceStore>((set) => ({
       const extraProduction = baseProduction * (extraBonus / 100);
       const totalProduction = baseProduction + extraProduction;
       
+      logger.log(`produceResource: ${key} base=${baseProduction.toFixed(2)} bonus=${extraBonus}% total=${totalProduction.toFixed(2)}`);
+      
       return {
         resources: {
           ...state.resources,

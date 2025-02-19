@@ -82,8 +82,29 @@ export function GenerationTracker({
     return acc
   }, {} as Record<number, number>)
 
-  // Calculate total production (base amount * number of workers)
-  const totalProduction = workers.length * (cardState.generates?.amount || 0)
+  // Calculate total production including bonuses
+  const baseAmount = workers.length * (cardState.generates?.amount || 0);
+  let totalProduction = baseAmount;
+  
+  // Apply bonuses if this is a food or thought resource
+  const resourceType = cardState.generates?.resource;
+  if (resourceType && ["food", "thoughts1", "thoughts2", "thoughts3", "thoughts4"].includes(resourceType)) {
+    let extraBonus = 0;
+    const cards = useCardsStore.getState().cardStates;
+    Object.values(cards).forEach(card => {
+      if (card.discovery_state.current_status === 'discovered' && card.ongoingEffects?.resourceModifiers) {
+        const mod = card.ongoingEffects.resourceModifiers[resourceType];
+        if (mod && typeof mod === 'string') {
+          const parsed = parseFloat(mod.replace(/[+\s%]/g, ''));
+          if (!isNaN(parsed)) {
+            extraBonus += parsed;
+          }
+        }
+      }
+    });
+    const extraProduction = baseAmount * (extraBonus / 100);
+    totalProduction = baseAmount + extraProduction;
+  }
 
   if (variant === 'compact') {
     return (
