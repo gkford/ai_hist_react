@@ -64,6 +64,9 @@ export const useResourceStore = create<ResourceStore>((set) => ({
         };
       });
 
+      // Set food's max_storage dynamically as population x 2
+      newResources.food.max_storage = newResources.population.amount[0] * 2;
+
       return { resources: newResources };
     }),
 
