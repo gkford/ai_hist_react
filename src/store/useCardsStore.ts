@@ -6,7 +6,7 @@ import type {
   OngoingEffects,
 } from '@/data/cards'
 
-export type DiscoveryStatus = 'unthoughtof' | 'imagined' | 'discovered' | 'obsolete'
+export type DiscoveryStatus = 'unthoughtof' | 'discovered' | 'obsolete'
 
 // State extensions of the base configs
 interface OngoingEffectsState extends OngoingEffects {

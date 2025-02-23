@@ -23,11 +23,10 @@ export function processDiscoveries() {
     return
   }
 
-  // Find all cards with priority 'on' that are either unthoughtof or imagined
+  // Find all unthoughtof cards with priority 'on'
   const priorityCards = Object.values(cardStore.cardStates)
     .filter(card => 
-      (card.discovery_state.current_status === 'unthoughtof' || 
-       card.discovery_state.current_status === 'imagined') &&
+      card.discovery_state.current_status === 'unthoughtof' &&
       card.discovery_state.priority === 'on'
     )
     .sort((a, b) => a.discovery_state.thought_level - b.discovery_state.thought_level)
@@ -51,22 +50,8 @@ export function processDiscoveries() {
 
     logger.log(`Adding ${thoughtsProduced} thoughts to ${card.id}. Total: ${newThoughtInvested}`)
 
-    // Check if we need to transition from unthoughtof to imagined
-    if (card.discovery_state.current_status === 'unthoughtof' && 
-        newThoughtInvested >= card.discovery_state.thought_to_imagine) {
-      
-      logger.log(`Card ${card.id} has been imagined!`)
-      
-      // Update to imagined status and reset thought investment
-      cardStore.updateCardState(card.id, {
-        discovery_state: {
-          ...card.discovery_state,
-          current_status: 'imagined',
-          thought_invested: 0
-        }
-      })
-    } else if (card.discovery_state.current_status === 'imagined' && 
-               newThoughtInvested >= card.discovery_state.further_thought_to_discover) {
+    // Check if we have enough thoughts to discover
+    if (newThoughtInvested >= card.discovery_state.thought_to_imagine) {
       
       logger.log(`Card ${card.id} has been discovered!`)
       
