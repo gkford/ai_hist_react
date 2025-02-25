@@ -56,7 +56,7 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
               className="h-2 flex-grow"
             />
             <div className="text-sm text-gray-500 whitespace-nowrap">
-              Needs {WORKER_ICONS[discoveryState.thought_level as 1|2|3|4]}💭
+              Needs {WORKER_ICONS[discoveryState.thought_level as keyof typeof WORKER_ICONS]}💭
             </div>
           </>
         )}
