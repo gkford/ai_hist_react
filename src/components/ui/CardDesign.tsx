@@ -117,7 +117,11 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             {/* Additional Main Content vertically centered */}
             <div className="flex-grow flex items-center">
               <div className="w-full">
-                {cardDef.type === 'resource' && resourceType === 'food' ? (
+                {isUnthoughtof ? (
+                  <div className="text-center text-gray-500 italic">
+                    <p className="text-lg">Think about {cardDef.title}...</p>
+                  </div>
+                ) : cardDef.type === 'resource' && resourceType === 'food' ? (
                   <FoodResourceCard resourceType={resourceType} />
                 ) : cardDef.type === 'resource' ? (
                   <div className="text-center">
