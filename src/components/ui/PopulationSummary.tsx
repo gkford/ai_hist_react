@@ -10,31 +10,24 @@ export function PopulationSummary() {
     return acc
   }, {} as Record<number, number>)
   
-  // Count workers by assignment status
-  const assignedWorkers = workers.filter(w => w.assignedTo !== null && w.assignedTo !== 'population').length
-  const unassignedWorkers = workers.filter(w => w.assignedTo === 'population').length
-  
   return (
-    <div className="flex flex-col gap-2">
-      <h4 className="text-sm font-semibold text-center">Population Summary</h4>
-      
+    <div className="flex flex-col">
       {/* Worker types summary */}
-      <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+      <div className="flex flex-col gap-2">
         {Object.entries(workersByLevel)
           .sort(([levelA], [levelB]) => Number(levelA) - Number(levelB))
           .map(([level, count]) => (
-            <div key={level} className="flex items-center gap-1">
-              <span className="text-sm">{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].icon}</span>
-              <span className="text-xs">{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].name}:</span>
-              <span className="text-xs font-medium">{count}</span>
+            <div key={level} className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].icon}</span>
+                <span className="text-sm">
+                  {WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].name}
+                  <span className="text-xs text-gray-500"> (Level {level})</span>
+                </span>
+              </div>
+              <span className="text-lg font-medium">{count}</span>
             </div>
           ))}
-      </div>
-      
-      {/* Assignment summary */}
-      <div className="flex justify-between text-xs text-gray-600 border-t border-gray-200 pt-1">
-        <span>Working: {assignedWorkers}</span>
-        <span>Available: {unassignedWorkers}</span>
       </div>
     </div>
   )
