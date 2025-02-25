@@ -15,8 +15,10 @@ export function ThoughtApplicationDialog() {
   
   const handleCardSelect = (cardId: string) => {
     // Set the selected card's priority to 'on'
+    const card = cardStates[cardId];
     updateCardState(cardId, {
       discovery_state: {
+        ...card.discovery_state,
         priority: 'on'
       }
     })
