@@ -34,6 +34,32 @@ function processFoodConsumption() {
   logger.log(`Final food amount: ${useResourceStore.getState().resources.food.amount[0]}`)
 }
 
+function checkForUnappliedThoughts() {
+  const resourceStore = useResourceStore.getState()
+  const cardStore = useCardsStore.getState()
+  const gameLoopStore = useGameLoopStore.getState()
+  
+  // Get total thoughts being produced
+  const thought1 = resourceStore.resources.thoughts1.amountProducedThisSecond[0] || 0
+  const thought2 = resourceStore.resources.thoughts2.amountProducedThisSecond[0] || 0
+  const thought3 = resourceStore.resources.thoughts3.amountProducedThisSecond[0] || 0
+  const thought4 = resourceStore.resources.thoughts4.amountProducedThisSecond[0] || 0
+  const totalThoughtsProduced = thought1 + thought2 + thought3 + thought4
+  
+  // Check if any card has priority set to 'on'
+  const anyCardHasPriority = Object.values(cardStore.cardStates)
+    .some(card => card.discovery_state.priority === 'on')
+  
+  // If thoughts are being produced but not applied, start the timer
+  if (totalThoughtsProduced > 0 && !anyCardHasPriority) {
+    logger.log('Thoughts being produced but not applied, starting timer')
+    gameLoopStore.startThoughtsUnusedTimer()
+  } else {
+    // Otherwise, clear the timer
+    gameLoopStore.clearThoughtsUnusedTimer()
+  }
+}
+
 function processWorkerProduction() {
   const cardStore = useCardsStore.getState()
   const resourceStore = useResourceStore.getState()
@@ -146,6 +172,9 @@ export async function processTick() {
   try {
     logger.log('=== Game Loop Start ===')
 
+    // Check for thoughts being generated but not applied
+    checkForUnappliedThoughts()
+    
     // Check resources before processing
     await checkAndHandleResources()
 

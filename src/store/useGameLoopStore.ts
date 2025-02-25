@@ -5,11 +5,17 @@ interface GameLoopStore {
   processingTick: boolean
   foodShortageCount: number
   hasShownEnergyMessage: boolean
+  thoughtsUnusedTimer: number | null
+  isThoughtDialogOpen: boolean
   toggleRunning: () => void
   setRunning: (running: boolean) => void
   setProcessingTick: (processing: boolean) => void
   incrementFoodShortage: () => void
   resetFoodShortage: () => void
+  startThoughtsUnusedTimer: () => void
+  clearThoughtsUnusedTimer: () => void
+  openThoughtDialog: () => void
+  closeThoughtDialog: () => void
   setHasShownEnergyMessage: (shown: boolean) => void
 }
 
