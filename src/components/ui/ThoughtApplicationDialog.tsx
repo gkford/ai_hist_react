@@ -44,7 +44,7 @@ export function ThoughtApplicationDialog() {
                 className="w-full text-left p-3 border rounded bg-white hover:bg-blue-50 transition-colors flex items-center justify-between"
               >
                 <div>
-                  <div className="font-medium">{card.title}</div>
+                  <div className="font-medium">{card.think_about_text || card.title}</div>
                   <div className="text-sm text-gray-500">
                     Requires {WORKER_ICONS[card.discovery_state.thought_level as keyof typeof WORKER_ICONS]} level thoughts
                   </div>
