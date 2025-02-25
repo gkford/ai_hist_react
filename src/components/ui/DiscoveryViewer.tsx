@@ -37,10 +37,9 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
     <div className={cn("p-2", className)} {...props}>
       <div className="flex items-center gap-2">
         <Button 
-          onClick={togglePriority}
+          onClick={() => { if (hasProduction) togglePriority(); }}
           variant="outline"
           size="sm"
-          disabled={!hasProduction}
           title={tooltipText}
           onMouseEnter={() => { if (!hasProduction && onWarningChange) { onWarningChange(tooltipText); } }}
           onMouseLeave={() => { if (onWarningChange) { onWarningChange(''); } }}
