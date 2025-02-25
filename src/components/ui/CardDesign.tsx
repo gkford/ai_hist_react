@@ -23,6 +23,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     const cardState = useCardsStore((state) => state.cardStates[id])
     const resourceType = cardDef?.resource_type
     const resource = useResource(resourceType || 'food')
+    const [warningMessage, setWarningMessage] = React.useState("");
 
     if (!cardDef || !cardState) return null
 
@@ -111,6 +112,11 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           </div>
         </div>
 
+        {warningMessage && (
+          <div className="bg-yellow-100 text-yellow-800 p-2 text-sm text-center">
+            {warningMessage}
+          </div>
+        )}
         {/* Footer: Same background as the card with a thin light grey top border */}
         <div className="w-full h-12 flex items-center justify-center border-t border-gray-200">
           {cardDef.generates &&
@@ -137,6 +143,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               discoveryState={cardState.discovery_state}
               cardId={id}
               className="w-full px-4"
+              onWarningChange={setWarningMessage}
             />
           ) : null}
         </div>

@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 interface DiscoveryViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   discoveryState: DiscoveryState;
   cardId: string;
+  onWarningChange?: (warning: string) => void;
 }
 
 export function DiscoveryViewer({ discoveryState, cardId, className, ...props }: DiscoveryViewerProps) {
