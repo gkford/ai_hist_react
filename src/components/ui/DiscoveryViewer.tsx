@@ -46,13 +46,11 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
         >
           {discoveryState.priority === 'on' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
         </Button>
-        {(discoveryState.current_status === 'unthoughtof' || discoveryState.current_status === 'imagined') && (
+        {(discoveryState.current_status === 'unthoughtof') && (
           <>
             <Progress 
               value={(discoveryState.thought_invested / (
-                discoveryState.current_status === 'unthoughtof' 
-                  ? discoveryState.thought_to_imagine 
-                  : discoveryState.further_thought_to_discover
+                discoveryState.thought_to_imagine
               )) * 100} 
               className="h-2 flex-grow"
             />
