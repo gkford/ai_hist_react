@@ -106,5 +106,5 @@ export function processDiscoveries() {
         }
       })
     }
-  })
+  }
 }
