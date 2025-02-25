@@ -55,11 +55,6 @@ export function ThoughtApplicationDialog() {
           </div>
         )}
         
-        <div className="flex justify-end">
-          <Button onClick={closeThoughtDialog} variant="outline">
-            Cancel
-          </Button>
-        </div>
       </div>
     </div>
   )
