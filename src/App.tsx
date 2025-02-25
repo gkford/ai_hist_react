@@ -148,6 +148,7 @@ function App() {
         useWorkersStore.getState().assignWorker(workerId, newAssignment);
     }}>
       <div className="min-h-screen p-4 flex flex-col">
+        <ThoughtApplicationDialog />
         {/* Floating Button Bar */}
         <div className="fixed right-4 top-4 flex flex-col gap-2 z-50">
           <Button
