@@ -137,8 +137,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             </div>
           ) : cardDef.type === 'people' ? (
             <PopulationTracker className="w-full px-4" />
-          ) : (cardState.discovery_state.current_status === 'unthoughtof' ||
-             cardState.discovery_state.current_status === 'imagined') ? (
+          ) : (cardState.discovery_state.current_status === 'unthoughtof') ? (
             <DiscoveryViewer
               discoveryState={cardState.discovery_state}
               cardId={id}
