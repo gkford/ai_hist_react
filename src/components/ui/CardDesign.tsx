@@ -10,6 +10,7 @@ import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
 import { OngoingEffectsViewer } from './OngoingEffectsViewer'
 import { WorkerTracker } from './WorkerTracker'
 import { PopulationTracker } from './PopulationTracker'
+import { PopulationSummary } from './PopulationSummary'
 import { GenerationTracker } from './GenerationTracker'
 import { FoodResourceCard } from './FoodResourceCard'
 
@@ -127,6 +128,10 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     <div className="text-sm text-gray-500">
                       {cardDef.title}
                     </div>
+                  </div>
+                ) : cardDef.type === 'people' ? (
+                  <div className="w-full">
+                    <PopulationSummary />
                   </div>
                 ) : (
                   <div></div>
