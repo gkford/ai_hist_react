@@ -42,6 +42,8 @@ export function DiscoveryViewer({ discoveryState, cardId, className, ...props }:
           size="sm"
           disabled={!hasProduction}
           title={tooltipText}
+          onMouseEnter={() => { if (!hasProduction && onWarningChange) { onWarningChange(tooltipText); } }}
+          onMouseLeave={() => { if (onWarningChange) { onWarningChange(''); } }}
         >
           {discoveryState.priority === 'on' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
         </Button>
