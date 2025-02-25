@@ -13,7 +13,7 @@ interface DiscoveryViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   onWarningChange?: (warning: string) => void;
 }
 
-export function DiscoveryViewer({ discoveryState, cardId, className, ...props }: DiscoveryViewerProps) {
+export function DiscoveryViewer({ discoveryState, cardId, className, onWarningChange, ...props }: DiscoveryViewerProps) {
   const updateCardState = useCardsStore(state => state.updateCardState);
 
   const togglePriority = () => {
