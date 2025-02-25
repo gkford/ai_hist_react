@@ -2,6 +2,7 @@ import { useDevStore } from "@/store/useDevStore"
 import { useGameLoopStore } from "@/store/useGameLoopStore"
 import { CardDesign } from "@/components/ui/CardDesign"
 import { Button } from "@/components/ui/button"
+import { ThoughtApplicationDialog } from './components/ui/ThoughtApplicationDialog'
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
