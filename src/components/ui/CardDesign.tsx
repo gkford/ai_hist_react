@@ -73,24 +73,18 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     <GenerationTracker cardId={id} />
                   )}
                 {cardDef.ongoingEffects &&
-                  (cardState.discovery_state.current_status === 'imagined' ||
-                    cardState.discovery_state.current_status === 'discovered') && (
+                  cardState.discovery_state.current_status === 'discovered' && (
                     <OngoingEffectsViewer
                       effects={cardDef.ongoingEffects}
-                      isDiscovered={
-                        cardState.discovery_state.current_status === 'discovered'
-                      }
+                      isDiscovered={true}
                       compact={true}
                     />
                   )}
                 {cardDef.OnDiscoveryEffects &&
-                  (cardState.discovery_state.current_status === 'imagined' ||
-                    cardState.discovery_state.current_status === 'discovered') && (
+                  cardState.discovery_state.current_status === 'discovered' && (
                     <OnDiscoveryEffectsViewer
                       effects={cardDef.OnDiscoveryEffects}
-                      isDiscovered={
-                        cardState.discovery_state.current_status === 'discovered'
-                      }
+                      isDiscovered={true}
                       compact={true}
                     />
                   )}

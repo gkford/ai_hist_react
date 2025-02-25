@@ -26,7 +26,8 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
   };
 
 
-  const thoughtResourceKey = `thoughts${discoveryState.thought_level}` as const;
+  // Create a valid ResourceKey based on thought level
+  const thoughtResourceKey = `thoughts${discoveryState.thought_level}` as `thoughts${1|2|3|4}`;
   const thoughtResource = useResource(thoughtResourceKey);
   const hasProduction = thoughtResource.amountProducedThisSecond[0] > 0;
   const tooltipText = hasProduction
@@ -55,7 +56,7 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
               className="h-2 flex-grow"
             />
             <div className="text-sm text-gray-500 whitespace-nowrap">
-              Needs {WORKER_ICONS[discoveryState.thought_level as keyof typeof WORKER_ICONS]}💭
+              Needs {WORKER_ICONS[discoveryState.thought_level as 1|2|3|4]}💭
             </div>
           </>
         )}
