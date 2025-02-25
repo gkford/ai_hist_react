@@ -29,21 +29,26 @@ export function processDiscoveries() {
       card.discovery_state.current_status === 'unthoughtof' &&
       card.discovery_state.priority === 'on'
     )
-    .sort((a, b) => a.discovery_state.thought_level - b.discovery_state.thought_level)
 
   if (priorityCards.length === 0) {
     return // No cards with priority on found
   }
 
-  // Process each thought level separately
-  thoughtLevels.forEach((thoughtsProduced, index) => {
+  // Process each thought level separately, starting from highest level
+  // This ensures higher-level thoughts are used for higher-level cards when possible
+  for (let index = thoughtLevels.length - 1; index >= 0; index--) {
+    const thoughtsProduced = thoughtLevels[index]
     const thoughtLevel = index + 1
     
-    if (thoughtsProduced <= 0) return // Skip if no thoughts at this level
+    if (thoughtsProduced <= 0) continue // Skip if no thoughts at this level
 
-    // Find the first card that can use this thought level
-    const card = priorityCards.find(c => c.discovery_state.thought_level <= thoughtLevel)
-    if (!card) return // No card can use this thought level
+    // Find cards that can use this thought level, prioritizing exact matches first
+    const exactLevelCards = priorityCards.filter(c => c.discovery_state.thought_level === thoughtLevel)
+    const lowerLevelCards = priorityCards.filter(c => c.discovery_state.thought_level < thoughtLevel)
+    
+    // Prioritize exact level matches, then lower levels
+    const card = exactLevelCards.length > 0 ? exactLevelCards[0] : (lowerLevelCards.length > 0 ? lowerLevelCards[0] : null)
+    if (!card) continue // No card can use this thought level
 
     // Update the thought_invested for the card
     const newThoughtInvested = card.discovery_state.thought_invested + thoughtsProduced
