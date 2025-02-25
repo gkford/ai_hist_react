@@ -45,6 +45,7 @@ export interface CardDefinition {
   OnDiscoveryEffects?: OnDiscoveryEffects
   discovery_stats?: DiscoveryStats
   replaces?: string  // ID of the card this replaces
+  think_about_text?: string  // Flavor text for unthoughtof cards
 }
 
 export const allCards: CardDefinition[] = [
@@ -99,6 +100,7 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.2
     },
+    think_about_text: "Think about animals and how to catch them...",
 
   },
   {
@@ -116,7 +118,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
       targetLevel: 2
-    }
+    },
+    think_about_text: "How do we express ourselves without words?",
   },
   {
     id: 'gift_giving',
@@ -138,7 +141,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
       targetLevel: 2
-    }
+    },
+    think_about_text: "What if we shared things with others?",
   },
   
   {
@@ -157,6 +161,7 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.3
     },
+    think_about_text: "How can we work together to hunt better?",
 
   },
   
@@ -202,6 +207,7 @@ export const allCards: CardDefinition[] = [
         food: "+5%",
       }
     },
+    think_about_text: "Could these rocks be useful somehow?",
   },
   {
     id: 'fire_domestication',
@@ -219,6 +225,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: 5,
       targetLevel: 3
     },
+    think_about_text: "That warm, bright thing from lightning...",
   },
   {
     id: 'cooking',
@@ -236,7 +243,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
       targetLevel: 3
-    }
+    },
+    think_about_text: "What if we put food near the fire?",
   },
   // ------------------------------
   // Tier 3 (knowledge_level = 3)
@@ -266,7 +274,8 @@ export const allCards: CardDefinition[] = [
         food: "+5%"
       }
     },
-    OnDiscoveryEffects: {}
+    OnDiscoveryEffects: {},
+    think_about_text: "A stick with a sharp end could be useful..."
   },
   {
     id: 'trading',
@@ -280,7 +289,8 @@ export const allCards: CardDefinition[] = [
     generates: {
       resource: 'food',
       amount: 1.5
-    }
+    },
+    think_about_text: "What if we exchanged things we have for things we need?"
   },
   {
     id: 'cave_painting',
@@ -297,7 +307,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
       targetLevel: 4
-    }
+    },
+    think_about_text: "Could we make marks on the cave walls?"
   },
   {
     id: 'early_language',
@@ -319,7 +330,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
       targetLevel: 4
-    }
+    },
+    think_about_text: "How can we communicate more complex ideas?"
   },
   {
     id: 'tally_marks',
@@ -335,7 +347,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 3,
       targetLevel: 3
-    }
+    },
+    think_about_text: "How can we keep track of quantities?"
   },
   {
     id: 'storytelling',
@@ -351,7 +364,8 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: 4,
       targetLevel: 4
-    }
+    },
+    think_about_text: "How can we share experiences with others?"
   },
   // ------------------------------
   // Tier 4 (knowledge_level = 4)

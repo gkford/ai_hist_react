@@ -119,7 +119,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               <div className="w-full">
                 {isUnthoughtof ? (
                   <div className="text-center text-gray-500 italic">
-                    <p className="text-lg">Think about {cardDef.title}...</p>
+                    <p className="text-lg">{cardDef.think_about_text || `Think about ${cardDef.title}...`}</p>
                   </div>
                 ) : cardDef.type === 'resource' && resourceType === 'food' ? (
                   <FoodResourceCard resourceType={resourceType} />
