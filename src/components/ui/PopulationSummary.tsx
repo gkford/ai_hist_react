@@ -13,11 +13,11 @@ export function PopulationSummary() {
   return (
     <div className="flex flex-col gap-3">
       {/* Worker types summary */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="flex flex-col gap-3 w-full">
         {Object.entries(workersByLevel)
           .sort(([levelA], [levelB]) => Number(levelA) - Number(levelB))
           .map(([level, count]) => (
-            <div key={level} className="flex items-center justify-between p-2 bg-gray-100 rounded">
+            <div key={level} className="flex items-center justify-between p-2 w-full">
               <div className="flex items-center">
                 <span className="text-4xl mr-3">{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].icon}</span>
                 <div className="flex flex-col">
