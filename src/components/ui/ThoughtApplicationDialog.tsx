@@ -1,5 +1,4 @@
 import { useCardsStore } from '@/store/useCardsStore'
-import { Button } from '@/components/ui/button'
 import { WORKER_ICONS } from '@/store/useWorkersStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 
