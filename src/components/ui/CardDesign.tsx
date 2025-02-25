@@ -91,6 +91,28 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               </div>
             </div>
 
+            {/* Warning messages */}
+            {warningMessage && (
+              <div className="bg-yellow-100 text-yellow-800 p-2 text-sm mt-2 rounded">
+                {warningMessage}
+              </div>
+            )}
+            {cardDef.type === 'computation' && totalThoughtsProduced > 0 && (
+              <React.Fragment>
+                {(() => {
+                  // Check if any card has priority set to 'on'
+                  const anyCardHasPriority = Object.values(useCardsStore.getState().cardStates)
+                    .some(card => card.discovery_state.priority === 'on');
+                  
+                  return !anyCardHasPriority ? (
+                    <div className="bg-yellow-100 text-yellow-800 p-2 text-sm mt-2 rounded">
+                      Warning: Thoughts are being generated but not applied to any discovery.
+                    </div>
+                  ) : null;
+                })()}
+              </React.Fragment>
+            )}
+
             {/* Additional Main Content vertically centered */}
             <div className="flex-grow flex items-center">
               <div className="w-full">
@@ -114,26 +136,6 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           </div>
         </div>
 
-        {warningMessage && (
-          <div className="bg-yellow-100 text-yellow-800 p-2 text-sm text-center">
-            {warningMessage}
-          </div>
-        )}
-        {cardDef.type === 'computation' && totalThoughtsProduced > 0 && (
-          <React.Fragment>
-            {(() => {
-              // Check if any card has priority set to 'on'
-              const anyCardHasPriority = Object.values(useCardsStore.getState().cardStates)
-                .some(card => card.discovery_state.priority === 'on');
-              
-              return !anyCardHasPriority ? (
-                <div className="bg-yellow-100 text-yellow-800 p-2 text-sm text-center">
-                  Warning: Thoughts are being generated but not applied to any discovery.
-                </div>
-              ) : null;
-            })()}
-          </React.Fragment>
-        )}
         {/* Footer: Same background as the card with a thin light grey top border */}
         <div className="w-full h-12 flex items-center justify-center border-t border-gray-200">
           {cardDef.generates &&
