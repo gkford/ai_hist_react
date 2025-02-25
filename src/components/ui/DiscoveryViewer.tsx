@@ -32,7 +32,7 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
   const hasProduction = thoughtResource.amountProducedThisSecond[0] > 0;
   const tooltipText = hasProduction
     ? ""
-    : `No production for ${WORKER_ICONS[discoveryState.thought_level]} worker thoughts is being generated`;
+    : `No production for ${WORKER_ICONS[discoveryState.thought_level as keyof typeof WORKER_ICONS]} worker thoughts is being generated`;
 
   return (
     <div className={cn("p-2", className)} {...props}>
