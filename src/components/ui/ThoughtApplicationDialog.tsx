@@ -40,7 +40,7 @@ export function ThoughtApplicationDialog() {
               <button
                 key={card.id}
                 onClick={() => handleCardSelect(card.id)}
-                className="w-full text-left p-3 border rounded hover:bg-gray-50 flex items-center justify-between"
+                className="w-full text-left p-3 border rounded bg-white hover:bg-blue-50 transition-colors flex items-center justify-between"
               >
                 <div>
                   <div className="font-medium">{card.title}</div>
