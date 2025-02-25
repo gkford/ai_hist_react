@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useCardsStore } from '@/store/useCardsStore'
 import { Button } from '@/components/ui/button'
 import { WORKER_ICONS } from '@/store/useWorkersStore'
