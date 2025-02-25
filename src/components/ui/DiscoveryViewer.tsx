@@ -26,10 +26,15 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
   };
 
 
-  // Create a valid ResourceKey based on thought level
-  const thoughtResourceKey = `thoughts${discoveryState.thought_level}` as `thoughts${1|2|3|4}`;
-  const thoughtResource = useResource(thoughtResourceKey);
-  const hasProduction = thoughtResource.amountProducedThisSecond[0] > 0;
+  // Check if there are thoughts of the required level OR HIGHER being generated
+  const requiredLevel = discoveryState.thought_level;
+  const hasProduction = [1, 2, 3, 4].some(level => {
+    if (level < requiredLevel) return false; // Skip lower levels
+    const thoughtResourceKey = `thoughts${level}` as `thoughts${1|2|3|4}`;
+    const thoughtResource = useResource(thoughtResourceKey);
+    return thoughtResource.amountProducedThisSecond[0] > 0;
+  });
+  
   const tooltipText = hasProduction
     ? ""
     : `No thoughts of level ${discoveryState.thought_level} or higher being generated`;
