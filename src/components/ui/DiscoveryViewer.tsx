@@ -26,14 +26,24 @@ export function DiscoveryViewer({ discoveryState, cardId, className, onWarningCh
   };
 
 
-  // Check if there are thoughts of the required level OR HIGHER being generated
+  // Get all thought resources first (React hooks must be called unconditionally)
+  const thoughts1 = useResource('thoughts1');
+  const thoughts2 = useResource('thoughts2');
+  const thoughts3 = useResource('thoughts3');
+  const thoughts4 = useResource('thoughts4');
+  
+  // Then check if there are thoughts of the required level OR HIGHER being generated
   const requiredLevel = discoveryState.thought_level;
-  const hasProduction = [1, 2, 3, 4].some(level => {
-    if (level < requiredLevel) return false; // Skip lower levels
-    const thoughtResourceKey = `thoughts${level}` as `thoughts${1|2|3|4}`;
-    const thoughtResource = useResource(thoughtResourceKey);
-    return thoughtResource.amountProducedThisSecond[0] > 0;
-  });
+  const hasProduction = (() => {
+    for (let level = requiredLevel; level <= 4; level++) {
+      const production = level === 1 ? thoughts1.amountProducedThisSecond[0] :
+                         level === 2 ? thoughts2.amountProducedThisSecond[0] :
+                         level === 3 ? thoughts3.amountProducedThisSecond[0] :
+                                      thoughts4.amountProducedThisSecond[0];
+      if (production > 0) return true;
+    }
+    return false;
+  })();
   
   const tooltipText = hasProduction
     ? ""
