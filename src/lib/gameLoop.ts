@@ -39,19 +39,29 @@ function checkForUnappliedThoughts() {
   const cardStore = useCardsStore.getState()
   const gameLoopStore = useGameLoopStore.getState()
   
-  // Get total thoughts being produced
-  const thought1 = resourceStore.resources.thoughts1.amountProducedThisSecond[0] || 0
-  const thought2 = resourceStore.resources.thoughts2.amountProducedThisSecond[0] || 0
-  const thought3 = resourceStore.resources.thoughts3.amountProducedThisSecond[0] || 0
-  const thought4 = resourceStore.resources.thoughts4.amountProducedThisSecond[0] || 0
-  const totalThoughtsProduced = thought1 + thought2 + thought3 + thought4
+  // Get total accumulated thoughts
+  const thought1 = resourceStore.resources.thoughts1.amount[0] || 0
+  const thought2 = resourceStore.resources.thoughts2.amount[0] || 0
+  const thought3 = resourceStore.resources.thoughts3.amount[0] || 0
+  const thought4 = resourceStore.resources.thoughts4.amount[0] || 0
+  const totalThoughts = thought1 + thought2 + thought3 + thought4
+  
+  // Get production rates
+  const thought1Rate = resourceStore.resources.thoughts1.amountProducedThisSecond[0] || 0
+  const thought2Rate = resourceStore.resources.thoughts2.amountProducedThisSecond[0] || 0
+  const thought3Rate = resourceStore.resources.thoughts3.amountProducedThisSecond[0] || 0
+  const thought4Rate = resourceStore.resources.thoughts4.amountProducedThisSecond[0] || 0
+  const totalThoughtsProduced = thought1Rate + thought2Rate + thought3Rate + thought4Rate
   
   // Check if any card has priority set to 'on'
   const anyCardHasPriority = Object.values(cardStore.cardStates)
     .some(card => card.discovery_state.priority === 'on')
   
-  // If thoughts are being produced but not applied, start the timer
-  if (totalThoughtsProduced > 0 && !anyCardHasPriority) {
+  // Only start timer if:
+  // 1. We have accumulated thoughts
+  // 2. We're producing thoughts
+  // 3. No card has priority set to 'on'
+  if (totalThoughts > 0 && totalThoughtsProduced > 0 && !anyCardHasPriority) {
     logger.log('Thoughts being produced but not applied, starting timer')
     gameLoopStore.startThoughtsUnusedTimer()
   } else {

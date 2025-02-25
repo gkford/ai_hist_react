@@ -33,12 +33,17 @@ export const useGameLoopStore = create<GameLoopStore>((set, get) => ({
   resetFoodShortage: () => set({ foodShortageCount: 0 }),
   setHasShownEnergyMessage: (shown: boolean) => set({ hasShownEnergyMessage: shown }),
   startThoughtsUnusedTimer: () => {
-    // Clear any existing timer first
-    get().clearThoughtsUnusedTimer();
+    // If timer is already running, don't start a new one
+    if (get().thoughtsUnusedTimer !== null) {
+      return;
+    }
+    
+    console.log("Starting thoughts unused timer");
     
     // Set a new timer for 5 seconds
     const timerId = window.setTimeout(() => {
-      // Pause the game
+      console.log("Timer expired - showing thought dialog");
+      // Pause the game and show dialog
       set({ isRunning: false, isThoughtDialogOpen: true });
     }, 5000);
     
