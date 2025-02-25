@@ -120,9 +120,19 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           </div>
         )}
         {cardDef.type === 'computation' && totalThoughtsProduced > 0 && (
-          <div className="bg-yellow-100 text-yellow-800 p-2 text-sm text-center">
-            Warning: Thoughts are being generated but not applied to any discovery.
-          </div>
+          <React.Fragment>
+            {(() => {
+              // Check if any card has priority set to 'on'
+              const anyCardHasPriority = Object.values(useCardsStore.getState().cardStates)
+                .some(card => card.discovery_state.priority === 'on');
+              
+              return !anyCardHasPriority ? (
+                <div className="bg-yellow-100 text-yellow-800 p-2 text-sm text-center">
+                  Warning: Thoughts are being generated but not applied to any discovery.
+                </div>
+              ) : null;
+            })()}
+          </React.Fragment>
         )}
         {/* Footer: Same background as the card with a thin light grey top border */}
         <div className="w-full h-12 flex items-center justify-center border-t border-gray-200">
