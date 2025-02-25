@@ -24,6 +24,14 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     const resourceType = cardDef?.resource_type
     const resource = useResource(resourceType || 'food')
     const [warningMessage, setWarningMessage] = React.useState("");
+    const thought1 = useResource('thoughts1');
+    const thought2 = useResource('thoughts2');
+    const thought3 = useResource('thoughts3');
+    const thought4 = useResource('thoughts4');
+    const totalThoughtsProduced = (thought1.amountProducedThisSecond[0] || 0)
+      + (thought2.amountProducedThisSecond[0] || 0)
+      + (thought3.amountProducedThisSecond[0] || 0)
+      + (thought4.amountProducedThisSecond[0] || 0);
 
     if (!cardDef || !cardState) return null
 
@@ -115,6 +123,11 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
         {warningMessage && (
           <div className="bg-yellow-100 text-yellow-800 p-2 text-sm text-center">
             {warningMessage}
+          </div>
+        )}
+        {cardDef.type === 'computation' && totalThoughtsProduced > 0 && (
+          <div className="bg-yellow-100 text-yellow-800 p-2 text-sm text-center">
+            Warning: Thoughts are being generated but not applied to any discovery.
           </div>
         )}
         {/* Footer: Same background as the card with a thin light grey top border */}
