@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useWorkersStore, WORKER_TYPES } from '@/store/useWorkersStore'
 
 export function PopulationSummary() {

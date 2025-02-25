@@ -100,7 +100,7 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.2
     },
-    think_about_text: "Think about animals and how to catch them...",
+    think_about_text: "Think about food... ",
 
   },
   {
@@ -110,8 +110,8 @@ export const allCards: CardDefinition[] = [
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
     discovery_stats: {
-      thought_to_imagine: 2, //7
-      further_thought_to_discover: 2, //7r
+      thought_to_imagine: 7, //7
+      further_thought_to_discover: 7, //7r
       thought_level: 1,
       discovery_unlocks: ["cooperative_hunting"],
     },
@@ -161,7 +161,7 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.3
     },
-    think_about_text: "How can we work together to hunt better?",
+    think_about_text: "How can we get catch bigger animals... ?",
 
   },
   
@@ -223,9 +223,9 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: 5,
-      targetLevel: 3
+      targetLevel: 2
     },
-    think_about_text: "That warm, bright thing from lightning...",
+    think_about_text: "Can we make the hot thing from lightning...",
   },
   {
     id: 'cooking',
