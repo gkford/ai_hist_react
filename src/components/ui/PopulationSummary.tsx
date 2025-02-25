@@ -11,21 +11,23 @@ export function PopulationSummary() {
   }, {} as Record<number, number>)
   
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-3">
       {/* Worker types summary */}
-      <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-2 gap-3">
         {Object.entries(workersByLevel)
           .sort(([levelA], [levelB]) => Number(levelA) - Number(levelB))
           .map(([level, count]) => (
-            <div key={level} className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].icon}</span>
-                <span className="text-sm">
-                  {WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].name}
-                  <span className="text-xs text-gray-500"> (Level {level})</span>
-                </span>
+            <div key={level} className="flex items-center justify-between p-2 bg-gray-100 rounded">
+              <div className="flex items-center">
+                <span className="text-4xl mr-3">{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].icon}</span>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">
+                    {WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].name}
+                  </span>
+                  <span className="text-xs text-gray-500">Level {level}</span>
+                </div>
               </div>
-              <span className="text-lg font-medium">{count}</span>
+              <span className="text-3xl font-bold">{count}</span>
             </div>
           ))}
       </div>
