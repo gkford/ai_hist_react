@@ -1,5 +1,6 @@
 import type { DiscoveryState } from "@/store/useCardsStore";
 import { Button } from "@/components/ui/button";
+import { useResource } from "@/store/useResourceStore";
 import { WORKER_ICONS } from "@/store/useWorkersStore";
 import { Progress } from "@/components/ui/progress";
 import { useCardsStore } from "@/store/useCardsStore";
@@ -24,6 +25,13 @@ export function DiscoveryViewer({ discoveryState, cardId, className, ...props }:
   };
 
 
+  const thoughtResourceKey = `thoughts${discoveryState.thought_level}` as const;
+  const thoughtResource = useResource(thoughtResourceKey);
+  const hasProduction = thoughtResource.amountProducedThisSecond[0] > 0;
+  const tooltipText = hasProduction
+    ? ""
+    : `No production for ${WORKER_ICONS[discoveryState.thought_level]} worker thoughts is being generated`;
+
   return (
     <div className={cn("p-2", className)} {...props}>
       <div className="flex items-center gap-2">
@@ -31,6 +39,8 @@ export function DiscoveryViewer({ discoveryState, cardId, className, ...props }:
           onClick={togglePriority}
           variant="outline"
           size="sm"
+          disabled={!hasProduction}
+          title={tooltipText}
         >
           {discoveryState.priority === 'on' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
         </Button>
