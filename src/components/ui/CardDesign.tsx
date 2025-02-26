@@ -68,26 +68,23 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 {cardDef.title}
               </h3>
               <div className="flex items-center gap-2">
-                {cardDef.generates &&
-                  cardState.discovery_state.current_status === 'discovered' && (
-                    <GenerationTracker cardId={id} />
-                  )}
-                {cardDef.ongoingEffects &&
-                  cardState.discovery_state.current_status === 'discovered' && (
-                    <OngoingEffectsViewer
-                      effects={cardDef.ongoingEffects}
-                      isDiscovered={true}
-                      compact={true}
-                    />
-                  )}
-                {cardDef.OnDiscoveryEffects &&
-                  cardState.discovery_state.current_status === 'discovered' && (
-                    <OnDiscoveryEffectsViewer
-                      effects={cardDef.OnDiscoveryEffects}
-                      isDiscovered={true}
-                      compact={true}
-                    />
-                  )}
+                {cardDef.generates && !isUnthoughtof && (
+                  <GenerationTracker cardId={id} />
+                )}
+                {cardDef.ongoingEffects && !isUnthoughtof && (
+                  <OngoingEffectsViewer
+                    effects={cardDef.ongoingEffects}
+                    isDiscovered={cardState.discovery_state.current_status === 'discovered'}
+                    compact={true}
+                  />
+                )}
+                {cardDef.OnDiscoveryEffects && !isUnthoughtof && (
+                  <OnDiscoveryEffectsViewer
+                    effects={cardDef.OnDiscoveryEffects}
+                    isDiscovered={cardState.discovery_state.current_status === 'discovered'}
+                    compact={true}
+                  />
+                )}
               </div>
             </div>
 
@@ -119,6 +116,29 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 {isUnthoughtof ? (
                   <div className="text-center text-gray-500 italic">
                     <p className="text-lg">Undiscovered</p>
+                    {cardDef.generates && (
+                      <div className="mt-2">
+                        <GenerationTracker cardId={id} />
+                      </div>
+                    )}
+                    {cardDef.ongoingEffects && (
+                      <div className="mt-2">
+                        <OngoingEffectsViewer
+                          effects={cardDef.ongoingEffects}
+                          isDiscovered={false}
+                          compact={true}
+                        />
+                      </div>
+                    )}
+                    {cardDef.OnDiscoveryEffects && (
+                      <div className="mt-2">
+                        <OnDiscoveryEffectsViewer
+                          effects={cardDef.OnDiscoveryEffects}
+                          isDiscovered={false}
+                          compact={true}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : cardDef.type === 'resource' && resourceType === 'food' ? (
                   <FoodResourceCard resourceType={resourceType} />
