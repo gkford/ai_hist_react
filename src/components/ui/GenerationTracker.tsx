@@ -65,8 +65,7 @@ export function GenerationTracker({
           className={cn("flex items-center gap-2 p-2 justify-center", className)}
           {...props}
         >
-          <span className="text-sm">{resourceByLevel[thoughtLevel]?.icon}</span>
-          <span className="text-sm">+{(cardState.generates?.amount ?? 0).toFixed(1)}/worker</span>
+          <span className="text-sm">+{(cardState.generates?.amount ?? 0).toFixed(1)}{resourceByLevel[thoughtLevel]?.icon}/s per worker</span>
         </div>
       )
     }
@@ -107,9 +106,7 @@ export function GenerationTracker({
         className={cn("flex items-center gap-2 p-2 justify-center", className)}
         {...props}
       >
-        <span className="text-sm">1 worker</span>
-        <span className="text-sm">→</span>
-        <span className="text-sm">{(cardState.generates?.amount || 0).toFixed(1)}{resource.icon}/s</span>
+        <span className="text-sm">+{(cardState.generates?.amount || 0).toFixed(1)}{resource.icon}/s per worker</span>
       </div>
     )
   }
