@@ -57,12 +57,15 @@ export function GenerationTracker({
         "4": resourceThought4,
       }
       
+      // Use the thought_level from discovery_state instead of generates
+      const thoughtLevel = cardState.discovery_state.thought_level.toString();
+      
       return (
         <div 
           className={cn("flex items-center gap-2 p-2 justify-center", className)}
           {...props}
         >
-          <span className="text-sm">{resourceByLevel[cardState.generates.thought_level || "1"]?.icon}</span>
+          <span className="text-sm">{resourceByLevel[thoughtLevel]?.icon}</span>
           <span className="text-sm">+{(cardState.generates?.amount ?? 0).toFixed(1)}/worker</span>
         </div>
       )
