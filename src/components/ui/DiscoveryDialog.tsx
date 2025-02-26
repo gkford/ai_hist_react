@@ -2,7 +2,6 @@ import { useCardsStore } from '@/store/useCardsStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { CardDesign } from './CardDesign'
 import { Button } from './button'
-import { useState } from 'react'
 
 export function DiscoveryDialog() {
   const { isDiscoveryDialogOpen, closeDiscoveryDialog, newlyDiscoveredCards } = useGameLoopStore()

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useResource } from '@/store/useResourceStore'
 import { assignWorkerToCard } from '@/lib/workerAssignmentRules'
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { useWorkersStore, Worker } from '@/store/useWorkersStore'
