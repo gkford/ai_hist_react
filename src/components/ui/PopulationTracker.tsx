@@ -49,7 +49,7 @@ export function PopulationTracker({
       <div className="flex flex-col text-sm">
         <div>Calories consumed each day: {workers.length * 100}</div>
         <div className={showError ? "text-red-500" : ""}>
-          Excess Calories: {useResourceStore.getState().resources.food.amount[0] * 100}
+          Excess Calories: {Math.floor(useResourceStore.getState().resources.food.amount[0] * 100)}
           {showError && " Not enough spare calories available!"}
         </div>
       </div>
