@@ -41,7 +41,11 @@ export const useWorkersStore = create<WorkersStore>((set, get) => ({
 
   addWorker: (worker) =>
     set((state) => ({ 
-      workers: [...state.workers, worker] 
+      workers: [...state.workers, {
+        ...worker,
+        // Automatically assign new workers to gather_food
+        assignedTo: worker.assignedTo || 'gather_food'
+      }] 
     })),
 
   assignWorker: (workerId, newAssignment) =>
