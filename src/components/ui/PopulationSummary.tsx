@@ -1,4 +1,4 @@
-import { useWorkersStore, WORKER_TYPES } from '@/store/useWorkersStore'
+import { useWorkersStore, WORKER_TYPES, Worker } from '@/store/useWorkersStore'
 import { useEffect, useState } from 'react'
 import { logger } from '@/lib/logger'
 
@@ -8,32 +8,48 @@ export function PopulationSummary() {
   const [unassignedCounts, setUnassignedCounts] = useState<Record<number, number>>({})
   const [hasUnassigned, setHasUnassigned] = useState(false)
   
+  // Force component to update when workers change assignments
+  useEffect(() => {
+    // Subscribe to the store
+    const unsubscribe = useWorkersStore.subscribe(
+      (state) => state.workers,
+      (newWorkers) => {
+        logger.log('Worker store updated, recalculating unassigned workers')
+        updateUnassignedCounts(newWorkers)
+      }
+    )
+    
+    // Initial calculation
+    updateUnassignedCounts(workers)
+    
+    // Cleanup subscription
+    return () => unsubscribe()
+  }, [])
+  
+  // Helper function to update unassigned counts
+  const updateUnassignedCounts = (workersList: Worker[]) => {
+    const counts = workersList.reduce((acc, worker) => {
+      if (!worker.assignedTo) {
+        acc[worker.level] = (acc[worker.level] || 0) + 1
+      }
+      return acc
+    }, {} as Record<number, number>)
+    
+    const hasAny = Object.values(counts).some(count => count > 0)
+    
+    setUnassignedCounts(counts)
+    setHasUnassigned(hasAny)
+    
+    logger.log('Unassigned counts updated:', counts)
+    logger.log('Has unassigned updated:', hasAny)
+  }
+  
   // Count workers by level
   const workersByLevel = workers.reduce((acc, worker) => {
     acc[worker.level] = (acc[worker.level] || 0) + 1
     return acc
   }, {} as Record<number, number>)
   
-  // Update unassigned workers whenever workers change
-  useEffect(() => {
-    // Count unassigned workers by level
-    const counts = workers.reduce((acc, worker) => {
-      if (worker.assignedTo === null) {
-        acc[worker.level] = (acc[worker.level] || 0) + 1
-      }
-      return acc
-    }, {} as Record<number, number>)
-    
-    // Check if there are any unassigned workers
-    const hasAny = Object.values(counts).some(count => count > 0)
-    
-    setUnassignedCounts(counts)
-    setHasUnassigned(hasAny)
-    
-    logger.log('Workers updated:', workers)
-    logger.log('Unassigned counts:', counts)
-    logger.log('Has unassigned:', hasAny)
-  }, [workers])
   
   return (
     <div className="flex flex-col gap-3">
