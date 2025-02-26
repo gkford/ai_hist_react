@@ -14,13 +14,13 @@ export function PopulationTracker({
   const population = useResource('population')
   const workers = useWorkersStore(state => state.workers)
   const addWorker = useWorkersStore(state => state.addWorker)
-  const increasePopulation = useResourceStore(state => state.increaseResource)
+  const resourceStore = useResourceStore()
   
   const { setNodeRef: setPopulationRef } = useDroppable({ id: 'population' });
 
   const handleAddPopulation = () => {
     // Increase population resource
-    increasePopulation('population', 1);
+    resourceStore.addResource('population', 1);
     
     // Add a new worker
     const newWorkerId = `worker-${workers.length}`;
