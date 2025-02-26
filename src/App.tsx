@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { ThoughtApplicationDialog } from './components/ui/ThoughtApplicationDialog'
 import { DiscoveryDialog } from './components/ui/DiscoveryDialog'
 import type { CardType } from "@/data/cards";
-import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
 import { type CardState } from "@/store/useCardsStore";
 
@@ -34,7 +33,7 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
 import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { useWorkersStore } from '@/store/useWorkersStore'
 
-function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
+function getCardColumn(type: CardType): number {
   switch (type) {
     case 'people':
     case 'computation':
@@ -174,7 +173,7 @@ function App() {
               Object.values(useCardsStore.getState().cardStates)
                 .filter(cardState => {
                   const cardDef = allCards.find(c => c.id === cardState.id);
-                  return cardDef && getCardColumn(cardDef.type, cardState.discovery_state.current_status) === columnNumber;
+                  return cardDef && getCardColumn(cardDef.type) === columnNumber;
                 })
                 .sort(sortCardsInColumn)
                 .map((cardState) => (
