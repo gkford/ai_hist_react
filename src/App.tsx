@@ -111,7 +111,7 @@ function App() {
   const knowledge = useResource('knowledge')
   const thoughts1 = useResource('thoughts1')
   const humanEnergy = useResource('humanEnergy')
-  const population = useResource('population')
+  const workers = useWorkersStore(state => state.workers)
 
   const [initialized, setInitialized] = useState(false);
 
@@ -195,7 +195,7 @@ function App() {
             <p>Knowledge: {formatNumber(knowledge.amount[0])}</p>
             <p>Thoughts L1: {formatNumber(thoughts1.amount[0])}</p>
             <p>Human Energy: {formatNumber(humanEnergy.amount[0])}</p>
-            <p>Population: {formatNumber(population.amount[0])}</p>
+            <p>Population: {workers.length}</p>
           </div>
           
           <div className="p-4 border border-gray-200 rounded">
