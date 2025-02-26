@@ -23,6 +23,9 @@ export function GenerationTracker({
   const allWorkers = useWorkersStore(state => state.workers)
   const workers = React.useMemo(() => allWorkers.filter(w => w.assignedTo === cardId), [allWorkers, cardId])
 
+  // Check if card is undiscovered
+  const isUndiscovered = cardState.discovery_state.current_status === 'unthoughtof';
+
   // Special handling for computation type cards
   if (cardDefinition?.type === 'computation' && cardState.generates) {
     const food = useResource('food')
@@ -41,6 +44,26 @@ export function GenerationTracker({
           {...props}
         >
           <div className="text-sm text-red-600 text-center">Cannot think while hungry!</div>
+        </div>
+      )
+    }
+
+    // For undiscovered computation cards, show potential per worker
+    if (isUndiscovered) {
+      const resourceByLevel: Record<string, { icon: string }> = {
+        "1": resourceThought1,
+        "2": resourceThought2,
+        "3": resourceThought3,
+        "4": resourceThought4,
+      }
+      
+      return (
+        <div 
+          className={cn("flex items-center gap-2 p-2 justify-center", className)}
+          {...props}
+        >
+          <span className="text-sm">{resourceByLevel[cardState.generates.thought_level || "1"]?.icon}</span>
+          <span className="text-sm">+{(cardState.generates?.amount ?? 0).toFixed(1)}/worker</span>
         </div>
       )
     }
@@ -70,6 +93,20 @@ export function GenerationTracker({
             <span className="text-xs text-gray-500">({count} {WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]} L{level} workers)</span>
           </div>
         ))}
+      </div>
+    )
+  }
+
+  // For undiscovered non-computation cards, show potential per worker
+  if (isUndiscovered) {
+    return (
+      <div 
+        className={cn("flex items-center gap-2 p-2 justify-center", className)}
+        {...props}
+      >
+        <span className="text-sm">1 worker</span>
+        <span className="text-sm">→</span>
+        <span className="text-sm">{(cardState.generates?.amount || 0).toFixed(1)}{resource.icon}/s</span>
       </div>
     )
   }
