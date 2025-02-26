@@ -46,7 +46,6 @@ export function WorkerTracker({
   className,
   ...props 
 }: WorkerTrackerProps) {
-  const population = useResource('population')
   const workers = useWorkersStore(state => state.workers)
   const assignedWorkers = React.useMemo(
     () => workers.filter(worker => worker.assignedTo === cardId),
@@ -56,6 +55,7 @@ export function WorkerTracker({
     () => workers.filter(worker => worker.assignedTo !== cardId),
     [workers, cardId]
   )
+  const totalWorkers = workers.length
   
   const handleChange = (delta: number) => {
     if (delta < 0 && assignedWorkers.length <= 0) return
@@ -94,7 +94,7 @@ export function WorkerTracker({
       </Button>
 
       <div className="flex-1 grid grid-cols-10 gap-1">
-        {[...Array(population.total)].map((_, i) => {
+        {[...Array(totalWorkers)].map((_, i) => {
           const worker = assignedWorkers[i]
           return worker ? (
             <DraggableWorker key={worker.id} worker={worker} cardId={cardId} />
