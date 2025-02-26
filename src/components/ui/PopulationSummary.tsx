@@ -12,10 +12,9 @@ export function PopulationSummary() {
   useEffect(() => {
     // Subscribe to the store
     const unsubscribe = useWorkersStore.subscribe(
-      (state) => state.workers,
-      (newWorkers) => {
+      (state) => {
         logger.log('Worker store updated, recalculating unassigned workers')
-        updateUnassignedCounts(newWorkers)
+        updateUnassignedCounts(state.workers)
       }
     )
     
