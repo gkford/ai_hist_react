@@ -28,20 +28,29 @@ export function PopulationSummary() {
   
   // Helper function to update unassigned counts
   const updateUnassignedCounts = (workersList: Worker[]) => {
+    // Debug the workers list
+    logger.log('Checking workers for unassigned status:', workersList.map(w => ({
+      id: w.id,
+      level: w.level,
+      assignedTo: w.assignedTo
+    })));
+    
     const counts = workersList.reduce((acc, worker) => {
-      if (!worker.assignedTo) {
-        acc[worker.level] = (acc[worker.level] || 0) + 1
+      // Check explicitly for null, undefined, or empty string
+      if (worker.assignedTo === null || worker.assignedTo === undefined || worker.assignedTo === '') {
+        acc[worker.level] = (acc[worker.level] || 0) + 1;
+        logger.log(`Found unassigned worker: ${worker.id}, level: ${worker.level}`);
       }
-      return acc
-    }, {} as Record<number, number>)
+      return acc;
+    }, {} as Record<number, number>);
     
-    const hasAny = Object.values(counts).some(count => count > 0)
+    const hasAny = Object.values(counts).some(count => count > 0);
     
-    setUnassignedCounts(counts)
-    setHasUnassigned(hasAny)
+    logger.log('Unassigned counts calculated:', counts);
+    logger.log('Has unassigned calculated:', hasAny);
     
-    logger.log('Unassigned counts updated:', counts)
-    logger.log('Has unassigned updated:', hasAny)
+    setUnassignedCounts(counts);
+    setHasUnassigned(hasAny);
   }
   
   // Count workers by level

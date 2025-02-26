@@ -29,7 +29,7 @@ export function PopulationTracker({
         id: newWorkerId,
         level: 1,
         icon: WORKER_ICONS[1],
-        assignedTo: 'population'
+        assignedTo: 'gather_food' // Directly assign to gather_food instead of population
       });
       setShowError(false);
     } else {

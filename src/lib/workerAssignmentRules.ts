@@ -35,7 +35,12 @@ export function assignWorkerToCard(cardId: string): void {
   }
 
   // ALWAYS try unassigned workers first
-  const unassignedWorkers = workers.filter(worker => worker.assignedTo === 'population');
+  const unassignedWorkers = workers.filter(worker => 
+    worker.assignedTo === null || 
+    worker.assignedTo === undefined || 
+    worker.assignedTo === '' || 
+    worker.assignedTo === 'population'
+  );
   if (unassignedWorkers.length > 0) {
     // Take the first unassigned worker
     assignWorker(unassignedWorkers[0].id, cardId);
