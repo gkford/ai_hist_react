@@ -38,7 +38,6 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
 
     const isUnthoughtof =
       cardState.discovery_state.current_status === 'unthoughtof'
-    const obscureText = (text: string) => text.replace(/[^\s]/g, '?')
 
     return (
       <Card
@@ -66,7 +65,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             {/* Title Row */}
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-semibold">
-                {isUnthoughtof ? obscureText(cardDef.title) : cardDef.title}
+                {cardDef.title}
               </h3>
               <div className="flex items-center gap-2">
                 {cardDef.generates &&
@@ -119,7 +118,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               <div className="w-full">
                 {isUnthoughtof ? (
                   <div className="text-center text-gray-500 italic">
-                    <p className="text-lg">{cardDef.think_about_text || `Think about ${cardDef.title}...`}</p>
+                    <p className="text-lg">Undiscovered</p>
                   </div>
                 ) : cardDef.type === 'resource' && resourceType === 'food' ? (
                   <FoodResourceCard resourceType={resourceType} />
