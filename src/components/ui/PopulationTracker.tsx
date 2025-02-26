@@ -34,7 +34,7 @@ export function PopulationTracker({
       {...props}
     >
       <div className="flex flex-col text-sm">
-        <div>Calories Consumed: {workers.length * 100}</div>
+        <div>Calories consumed each day: {workers.length * 100}</div>
         <div>Excess Calories: {useResourceStore.getState().resources.food.amount[0] * 100}</div>
       </div>
       <Button 
