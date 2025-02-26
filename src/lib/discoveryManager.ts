@@ -1,6 +1,7 @@
 import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useWorkersStore } from '@/store/useWorkersStore'
+import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { logger } from './logger'
 import type { ResourceKey } from '@/store/useResourceStore'
 
@@ -80,11 +81,19 @@ export function processDiscoveries() {
       }
 
       if (card.discovery_state?.discovery_unlocks?.length) {
+        const newCardIds: string[] = [];
+        
         card.discovery_state.discovery_unlocks.forEach((cardId: string) => {
           // Create each unlocked card
           cardStore.createCard(cardId)
+          newCardIds.push(cardId);
           logger.log(`Unlocked new card: ${cardId} due to discovering ${card.id}`)
         })
+        
+        // If we have new cards, open the discovery dialog
+        if (newCardIds.length > 0) {
+          useGameLoopStore.getState().openDiscoveryDialog(newCardIds);
+        }
       }
 
       // Update to discovered status and turn off priority

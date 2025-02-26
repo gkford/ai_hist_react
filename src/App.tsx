@@ -3,6 +3,7 @@ import { useGameLoopStore } from "@/store/useGameLoopStore"
 import { CardDesign } from "@/components/ui/CardDesign"
 import { Button } from "@/components/ui/button"
 import { ThoughtApplicationDialog } from './components/ui/ThoughtApplicationDialog'
+import { DiscoveryDialog } from './components/ui/DiscoveryDialog'
 import type { CardType } from "@/data/cards";
 import type { DiscoveryStatus } from "@/data/cards";
 import { allCards } from "@/data/cards";
@@ -151,6 +152,7 @@ function App() {
     }}>
       <div className="min-h-screen p-4 flex flex-col">
         <ThoughtApplicationDialog />
+        <DiscoveryDialog />
         {/* Floating Button Bar */}
         <div className="fixed right-4 top-4 flex flex-col gap-2 z-50">
           <Button
