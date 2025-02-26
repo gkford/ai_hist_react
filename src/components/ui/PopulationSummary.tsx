@@ -9,6 +9,17 @@ export function PopulationSummary() {
     return acc
   }, {} as Record<number, number>)
   
+  // Count idle workers by level
+  const idleWorkersByLevel = workers.reduce((acc, worker) => {
+    if (worker.assignedTo === null) {
+      acc[worker.level] = (acc[worker.level] || 0) + 1
+    }
+    return acc
+  }, {} as Record<number, number>)
+  
+  // Only show idle workers section if there are any idle workers
+  const hasIdleWorkers = Object.values(idleWorkersByLevel).some(count => count > 0)
+  
   return (
     <div className="flex flex-col gap-3">
       {/* Worker types summary */}
