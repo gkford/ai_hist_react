@@ -36,16 +36,9 @@ export function GenerationTracker({
     const resourceThought3 = useResource('thoughts3')
     const resourceThought4 = useResource('thoughts4')
 
-    // If there's no food, show warning instead of production
+    // If there's no food, return null (warning will be shown in CardDesign)
     if (noFood) {
-      return (
-        <div 
-          className={cn("flex flex-col gap-2 p-2", className)}
-          {...props}
-        >
-          <div className="text-sm text-red-600 text-center">Cannot think while hungry!</div>
-        </div>
-      )
+      return null;
     }
 
     // For undiscovered computation cards, show potential per worker

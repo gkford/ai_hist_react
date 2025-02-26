@@ -117,6 +117,13 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 {isUnthoughtof ? (
                   <div className="text-center text-gray-500 italic">
                     <p className="text-lg">Undiscovered</p>
+                    {cardState.discovery_state.priority === 'on' && 
+                     (thought1.amountProducedThisSecond[0] > 0 || 
+                      thought2.amountProducedThisSecond[0] > 0 || 
+                      thought3.amountProducedThisSecond[0] > 0 || 
+                      thought4.amountProducedThisSecond[0] > 0) && (
+                      <p className="text-sm text-blue-500 font-medium mt-1">researching...</p>
+                    )}
                   </div>
                 ) : cardDef.type === 'resource' && resourceType === 'food' ? (
                   <FoodResourceCard resourceType={resourceType} />
@@ -133,6 +140,14 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 ) : cardDef.type === 'people' ? (
                   <div className="w-full">
                     <PopulationSummary />
+                  </div>
+                ) : cardDef.type === 'computation' ? (
+                  <div className="w-full text-center">
+                    {useResource('food').amount[0] <= 0 && (
+                      <div className="text-red-600 font-medium">
+                        Cannot think while hungry!
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div></div>
