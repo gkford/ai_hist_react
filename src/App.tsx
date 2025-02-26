@@ -35,10 +35,6 @@ import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { useWorkersStore } from '@/store/useWorkersStore'
 
 function getCardColumn(type: CardType, discoveryStatus: DiscoveryStatus): number {
-  if (discoveryStatus === 'unthoughtof' || discoveryStatus === 'imagined') {
-    return 4;
-  }
-  
   switch (type) {
     case 'people':
     case 'computation':
