@@ -41,6 +41,22 @@ export function PopulationSummary() {
             </div>
           ))}
       </div>
+      
+      {/* Idle workers summary */}
+      {hasIdleWorkers && (
+        <div className="flex items-center gap-2 px-2 text-gray-500">
+          <span className="text-xs">Idle:</span>
+          {Object.entries(idleWorkersByLevel)
+            .filter(([_, count]) => count > 0)
+            .sort(([levelA], [levelB]) => Number(levelA) - Number(levelB))
+            .map(([level, count]) => (
+              <div key={`idle-${level}`} className="flex items-center gap-1">
+                <span>{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].icon}</span>
+                <span className="text-xs">{count}</span>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   )
 }
