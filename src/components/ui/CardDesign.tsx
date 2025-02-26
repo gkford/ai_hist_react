@@ -132,7 +132,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                           thought3.amountProducedThisSecond[0] > 0 || 
                           thought4.amountProducedThisSecond[0] > 0)
                             ? "researching" 
-                            : "research paused"}
+                            : "waiting for thoughts to continue research..."}
                       </p>
                     )}
                   </div>
