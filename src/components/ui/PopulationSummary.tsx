@@ -9,16 +9,16 @@ export function PopulationSummary() {
     return acc
   }, {} as Record<number, number>)
   
-  // Count idle workers by level
-  const idleWorkersByLevel = workers.reduce((acc, worker) => {
+  // Count unassigned workers by level
+  const unassignedWorkersByLevel = workers.reduce((acc, worker) => {
     if (worker.assignedTo === null) {
       acc[worker.level] = (acc[worker.level] || 0) + 1
     }
     return acc
   }, {} as Record<number, number>)
   
-  // Only show idle workers section if there are any idle workers
-  const hasIdleWorkers = Object.values(idleWorkersByLevel).some(count => count > 0)
+  // Only show unassigned workers section if there are any unassigned workers
+  const hasUnassignedWorkers = Object.values(unassignedWorkersByLevel).some(count => count > 0)
   
   return (
     <div className="flex flex-col gap-3">
@@ -42,15 +42,15 @@ export function PopulationSummary() {
           ))}
       </div>
       
-      {/* Idle workers summary */}
-      {hasIdleWorkers && (
+      {/* Unassigned workers summary */}
+      {hasUnassignedWorkers && (
         <div className="flex items-center gap-2 px-2 text-gray-500">
-          <span className="text-xs">Idle:</span>
-          {Object.entries(idleWorkersByLevel)
+          <span className="text-xs">Unassigned:</span>
+          {Object.entries(unassignedWorkersByLevel)
             .filter(([_, count]) => count > 0)
             .sort(([levelA], [levelB]) => Number(levelA) - Number(levelB))
             .map(([level, count]) => (
-              <div key={`idle-${level}`} className="flex items-center gap-1">
+              <div key={`unassigned-${level}`} className="flex items-center gap-1">
                 <span>{WORKER_TYPES[Number(level) as keyof typeof WORKER_TYPES].icon}</span>
                 <span className="text-xs">{count}</span>
               </div>
