@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
 import { allCards } from '@/data/cards'
 import { useResource } from "@/store/useResourceStore"
+import { useWorkersStore } from "@/store/useWorkersStore"
 import { CardImage } from '@/components/ui/CardImage'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
@@ -148,7 +149,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             <WorkerTracker cardId={id} className="w-full px-4" />
           ) : resourceType === 'food' ? (
             <div className="flex items-center gap-2">
-              {resource.amount[0] < 5 && (
+              {resource.amount[0] < (useWorkersStore.getState().workers.length / 2) && (
                 <div className="text-red-500 text-sm font-semibold">
                   Warning: Low Food Supply!
                 </div>
