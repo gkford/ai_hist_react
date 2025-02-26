@@ -117,12 +117,23 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 {isUnthoughtof ? (
                   <div className="text-center text-gray-500 italic">
                     <p className="text-lg">Undiscovered</p>
-                    {cardState.discovery_state.priority === 'on' && 
-                     (thought1.amountProducedThisSecond[0] > 0 || 
-                      thought2.amountProducedThisSecond[0] > 0 || 
-                      thought3.amountProducedThisSecond[0] > 0 || 
-                      thought4.amountProducedThisSecond[0] > 0) && (
-                      <p className="text-sm text-blue-500 font-medium mt-1">researching...</p>
+                    {cardState.discovery_state.priority === 'on' && (
+                      <p className={cn(
+                        "text-sm font-medium mt-1",
+                        (thought1.amountProducedThisSecond[0] > 0 || 
+                         thought2.amountProducedThisSecond[0] > 0 || 
+                         thought3.amountProducedThisSecond[0] > 0 || 
+                         thought4.amountProducedThisSecond[0] > 0) 
+                          ? "text-blue-500" 
+                          : "text-red-500"
+                      )}>
+                        {(thought1.amountProducedThisSecond[0] > 0 || 
+                          thought2.amountProducedThisSecond[0] > 0 || 
+                          thought3.amountProducedThisSecond[0] > 0 || 
+                          thought4.amountProducedThisSecond[0] > 0)
+                            ? "researching" 
+                            : "research paused"}
+                      </p>
                     )}
                   </div>
                 ) : cardDef.type === 'resource' && resourceType === 'food' ? (
