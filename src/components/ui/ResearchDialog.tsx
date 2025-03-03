@@ -60,6 +60,8 @@ export function ResearchDialog() {
   }
 
   const handleQuizClose = () => {
+    // Make sure the game is running when closing the quiz
+    useGameLoopStore.getState().setRunning(true)
     setShowQuiz(false)
     setSelectedCardId(null)
   }
@@ -130,11 +132,7 @@ export function ResearchDialog() {
             </div>
           )}
 
-          <div className="flex justify-end mt-4">
-            <Button onClick={closeResearchDialog} variant="outline">
-              Close
-            </Button>
-          </div>
+          {/* No close button - force player to make a choice */}
         </div>
       </div>
   )

@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
+import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { allCards } from '@/data/cards'
 
 interface UnlockQuizModalProps {
@@ -64,8 +65,9 @@ export function UnlockQuizModal({ cardId, onClose }: UnlockQuizModalProps) {
       
       console.log(`Unlocked card ${cardId} and set priority to 'on'`);
       
-      // Close the modal after a short delay
+      // Resume the game and close the modal after a short delay
       setTimeout(() => {
+        useGameLoopStore.getState().setRunning(true)
         onClose()
       }, 1000)
     } else {
@@ -124,13 +126,7 @@ export function UnlockQuizModal({ cardId, onClose }: UnlockQuizModalProps) {
           </div>
         )}
         
-        <div className="flex justify-end gap-2">
-          <Button 
-            variant="outline"
-            onClick={onClose}
-          >
-            Cancel
-          </Button>
+        <div className="flex justify-end">
           <Button 
             onClick={handleSubmit}
             disabled={selectedAnswer === null || isWaiting}
