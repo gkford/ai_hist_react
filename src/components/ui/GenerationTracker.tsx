@@ -119,14 +119,11 @@ export function GenerationTracker({
     )
   }
 
-  // Group workers by level
-  const workersByLevel = workers.reduce((acc, worker) => {
+  // Group workers by level (commented out for simpler display)
+  /* const workersByLevel = workers.reduce((acc, worker) => {
     acc[worker.level] = (acc[worker.level] || 0) + 1
     return acc
   }, {} as Record<number, number>)
-
-  // Calculate base production without bonuses
-  const baseProduction = workers.length * (cardState.generates?.amount || 0)
 
   // Create worker level summary string
   const workerSummary = Object.entries(workersByLevel)
@@ -135,7 +132,14 @@ export function GenerationTracker({
       ([level, count]) =>
         `${count} ${WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}`
     )
-    .join(',')
+    .join(',') */
+
+  // Calculate base production without bonuses
+  const baseProduction = workers.length * (cardState.generates?.amount || 0)
+  
+  // Simpler worker summary - just count total workers with generic icon
+  const totalWorkers = workers.length;
+  const workerSummary = totalWorkers > 0 ? `${totalWorkers} 👤` : "";
 
   return (
     <div
@@ -143,7 +147,7 @@ export function GenerationTracker({
       {...props}
     >
       <span className="text-sm">{workerSummary}</span>
-      <span className="text-sm">→</span>
+      {totalWorkers > 0 && <span className="text-sm">→</span>}
       <span className="text-sm">
         {baseProduction.toFixed(1)}
         {resource.icon}/s
