@@ -6,7 +6,7 @@ import type {
   OngoingEffects,
 } from '@/data/cards'
 
-export type DiscoveryStatus = 'unlocked' | 'discovered' | 'obsolete'
+export type DiscoveryStatus = 'locked' | 'unlocked' | 'discovered' | 'obsolete'
 
 // State extensions of the base configs
 interface OngoingEffectsState extends OngoingEffects {
@@ -62,7 +62,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
         discovery_state: cardDef.discovery_stats
           ? {
               ...cardDef.discovery_stats,
-              current_status: 'unlocked',
+              current_status: 'locked',
               thought_invested: 0,
               priority: 'off',
               ...(initialState?.discovery_state || {}),
@@ -71,7 +71,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
               thought_to_imagine: 0,
               further_thought_to_discover: 0,
               thought_level: 1,
-              current_status: 'unlocked',
+              current_status: 'locked',
               thought_invested: 0,
               priority: 'off',
               ...(initialState?.discovery_state || {}),

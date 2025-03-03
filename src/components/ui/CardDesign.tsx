@@ -41,6 +41,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     if (!cardDef || !cardState) return null
 
     const isunlocked = cardState.discovery_state.current_status === 'unlocked'
+    const isLocked = cardState.discovery_state.current_status === 'locked'
 
     return (
       <Card
@@ -123,7 +124,22 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                   useDiscoveryStore.getState().pendingAcknowledgments[id] && (
                     <CardDiscoveryNotification cardId={id} />
                   )}
-                {isunlocked ? (
+                {const isLocked = cardState.discovery_state.current_status === 'locked'}
+                {isLocked ? (
+                  <div className="text-center text-gray-500 italic cursor-pointer" 
+                       onClick={() => {
+                         useCardsStore.getState().updateCardState(id, {
+                           discovery_state: {
+                             ...cardState.discovery_state,
+                             current_status: 'unlocked',
+                             priority: 'on',
+                           }
+                         });
+                       }}>
+                    <p className="text-lg">Locked</p>
+                    <p className="text-sm mt-1">Click to unlock and research</p>
+                  </div>
+                ) : isunlocked ? (
                   <div className="text-center text-gray-500 italic">
                     <p className="text-lg">Undiscovered</p>
                     {cardState.discovery_state.priority === 'on' && (
@@ -198,7 +214,8 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             </div>
           ) : cardDef.type === 'people' ? (
             <PopulationTracker className="w-full px-4 flex-1" />
-          ) : cardState.discovery_state.current_status === 'unlocked' ? (
+          ) : cardState.discovery_state.current_status === 'unlocked' || 
+               cardState.discovery_state.current_status === 'locked' ? (
             <DiscoveryViewer
               discoveryState={cardState.discovery_state}
               cardId={id}

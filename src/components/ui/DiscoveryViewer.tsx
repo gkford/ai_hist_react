@@ -4,7 +4,7 @@ import { useResource } from '@/store/useResourceStore'
 import { WORKER_ICONS } from '@/store/useWorkersStore'
 import { Progress } from '@/components/ui/progress'
 import { useCardsStore } from '@/store/useCardsStore'
-import { Play, Pause } from 'lucide-react'
+import { Play, Pause, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface DiscoveryViewerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -23,12 +23,24 @@ export function DiscoveryViewer({
   const updateCardState = useCardsStore((state) => state.updateCardState)
 
   const togglePriority = () => {
-    updateCardState(cardId, {
-      discovery_state: {
-        ...discoveryState,
-        priority: discoveryState.priority === 'on' ? 'off' : 'on',
-      },
-    })
+    if (discoveryState.current_status === 'locked') {
+      // Unlock the card and set it to being researched
+      updateCardState(cardId, {
+        discovery_state: {
+          ...discoveryState,
+          current_status: 'unlocked',
+          priority: 'on',
+        },
+      })
+    } else {
+      // Normal toggle for unlocked cards
+      updateCardState(cardId, {
+        discovery_state: {
+          ...discoveryState,
+          priority: discoveryState.priority === 'on' ? 'off' : 'on',
+        },
+      })
+    }
   }
 
   // Get all thought resources first (React hooks must be called unconditionally)
@@ -54,22 +66,26 @@ export function DiscoveryViewer({
     return false
   })()
 
-  const tooltipText = hasProduction
-    ? ''
-    : `No thoughts of level ${discoveryState.thought_level} or higher being generated`
+  const tooltipText = discoveryState.current_status === 'locked'
+    ? 'Click to unlock and research'
+    : hasProduction
+      ? ''
+      : `No thoughts of level ${discoveryState.thought_level} or higher being generated`
 
   return (
     <div className={cn('p-2', className)} {...props}>
       <div className="flex items-center gap-2">
         <Button
           onClick={() => {
-            if (hasProduction) togglePriority()
+            if (discoveryState.current_status === 'locked' || hasProduction) togglePriority()
           }}
           variant="outline"
           size="sm"
           title={tooltipText}
           onMouseEnter={() => {
-            if (!hasProduction && onWarningChange) {
+            if (discoveryState.current_status === 'locked') {
+              if (onWarningChange) onWarningChange('Click to unlock and research')
+            } else if (!hasProduction && onWarningChange) {
               onWarningChange(tooltipText)
             }
           }}
@@ -79,13 +95,15 @@ export function DiscoveryViewer({
             }
           }}
         >
-          {discoveryState.priority === 'on' ? (
+          {discoveryState.current_status === 'locked' ? (
+            <Lock className="h-4 w-4" />
+          ) : discoveryState.priority === 'on' ? (
             <Pause className="h-4 w-4" />
           ) : (
             <Play className="h-4 w-4" />
           )}
         </Button>
-        {discoveryState.current_status === 'unlocked' && (
+        {discoveryState.current_status !== 'discovered' && (
           <>
             <Progress
               value={
