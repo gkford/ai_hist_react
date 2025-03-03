@@ -9,7 +9,7 @@ import type { ResourceKey } from '@/store/useResourceStore'
 export function processDiscoveries() {
   const cardStore = useCardsStore.getState()
   const resourceStore = useResourceStore.getState()
-  
+
   // Get all thought resources for this turn
   const thoughtLevels = [
     resourceStore.resources.thoughts1.amountProducedThisSecond[0],
@@ -17,20 +17,20 @@ export function processDiscoveries() {
     resourceStore.resources.thoughts3.amountProducedThisSecond[0],
     resourceStore.resources.thoughts4.amountProducedThisSecond[0],
   ]
-  
+
   logger.log('Thought levels produced:', thoughtLevels)
 
   // If no thoughts were produced at any level, return early
-  if (thoughtLevels.every(amount => amount <= 0)) {
+  if (thoughtLevels.every((amount) => amount <= 0)) {
     return
   }
 
-  // Find all unthoughtof cards with priority 'on'
-  const priorityCards = Object.values(cardStore.cardStates)
-    .filter(card => 
-      card.discovery_state.current_status === 'unthoughtof' &&
+  // Find all unlocked cards with priority 'on'
+  const priorityCards = Object.values(cardStore.cardStates).filter(
+    (card) =>
+      card.discovery_state.current_status === 'unlocked' &&
       card.discovery_state.priority === 'on'
-    )
+  )
 
   if (priorityCards.length === 0) {
     return // No cards with priority on found
@@ -41,55 +41,76 @@ export function processDiscoveries() {
   for (let index = thoughtLevels.length - 1; index >= 0; index--) {
     const thoughtsProduced = thoughtLevels[index]
     const thoughtLevel = index + 1
-    
+
     if (thoughtsProduced <= 0) continue // Skip if no thoughts at this level
 
     // Find cards that can use this thought level, prioritizing exact matches first
-    const exactLevelCards = priorityCards.filter(c => c.discovery_state.thought_level === thoughtLevel)
-    const lowerLevelCards = priorityCards.filter(c => c.discovery_state.thought_level < thoughtLevel)
-    
+    const exactLevelCards = priorityCards.filter(
+      (c) => c.discovery_state.thought_level === thoughtLevel
+    )
+    const lowerLevelCards = priorityCards.filter(
+      (c) => c.discovery_state.thought_level < thoughtLevel
+    )
+
     // Prioritize exact level matches, then lower levels
-    const card = exactLevelCards.length > 0 ? exactLevelCards[0] : (lowerLevelCards.length > 0 ? lowerLevelCards[0] : null)
+    const card =
+      exactLevelCards.length > 0
+        ? exactLevelCards[0]
+        : lowerLevelCards.length > 0
+        ? lowerLevelCards[0]
+        : null
     if (!card) continue // No card can use this thought level
 
     // Update the thought_invested for the card
-    const newThoughtInvested = card.discovery_state.thought_invested + thoughtsProduced
+    const newThoughtInvested =
+      card.discovery_state.thought_invested + thoughtsProduced
 
-    logger.log(`Adding ${thoughtsProduced} thoughts to ${card.id}. Total: ${newThoughtInvested}`)
+    logger.log(
+      `Adding ${thoughtsProduced} thoughts to ${card.id}. Total: ${newThoughtInvested}`
+    )
 
     // Check if we have enough thoughts to discover
     if (newThoughtInvested >= card.discovery_state.thought_to_imagine) {
-      
       logger.log(`Card ${card.id} has been discovered!`)
-      
+
       // Apply OnDiscoveryEffects if they exist
       if (card.OnDiscoveryEffects?.resourceBonuses) {
-        Object.entries(card.OnDiscoveryEffects.resourceBonuses).forEach(([resource, amount]) => {
-          resourceStore.produceResource(resource as ResourceKey, Number(amount))
-          logger.log(`Applied discovery bonus: ${amount} ${resource}`)
-        })
+        Object.entries(card.OnDiscoveryEffects.resourceBonuses).forEach(
+          ([resource, amount]) => {
+            resourceStore.produceResource(
+              resource as ResourceKey,
+              Number(amount)
+            )
+            logger.log(`Applied discovery bonus: ${amount} ${resource}`)
+          }
+        )
       }
 
       if (card.OnDiscoveryEffects?.upgradeWorkers) {
-        const count = card.OnDiscoveryEffects.upgradeWorkers;
-        useWorkersStore.getState().upgradeWorkers(count);
-        logger.log(`Upgraded ${count} workers due to discovery effect on card ${card.id}.`);
+        const count = card.OnDiscoveryEffects.upgradeWorkers
+        useWorkersStore.getState().upgradeWorkers(count)
+        logger.log(
+          `Upgraded ${count} workers due to discovery effect on card ${card.id}.`
+        )
       }
 
       // Special message for tally marks discovery
-      let discoveryMessage = undefined;
+      let discoveryMessage = undefined
       if (card.id === 'tally_marks') {
-        discoveryMessage = "Congratulations! Your people have progressed from the hominids of prehistory to the storytellers who created the earliest historical records by humans, cave paintings and wall markings. Next, onto the agricultural revolution!";
+        discoveryMessage =
+          'Congratulations! Your people have progressed from the hominids of prehistory to the storytellers who created the earliest historical records by humans, cave paintings and wall markings. Next, onto the agricultural revolution!'
       }
 
       // Create any unlocked cards
-      let unlockedCardIds: string[] = [];
+      let unlockedCardIds: string[] = []
       if (card.discovery_state?.discovery_unlocks?.length) {
         card.discovery_state.discovery_unlocks.forEach((cardId: string) => {
           // Create each unlocked card
           cardStore.createCard(cardId)
-          unlockedCardIds.push(cardId);
-          logger.log(`Unlocked new card: ${cardId} due to discovering ${card.id}`)
+          unlockedCardIds.push(cardId)
+          logger.log(
+            `Unlocked new card: ${cardId} due to discovering ${card.id}`
+          )
         })
       }
 
@@ -100,23 +121,21 @@ export function processDiscoveries() {
           current_status: 'discovered',
           thought_invested: newThoughtInvested,
           priority: 'off', // Turn off priority when discovered
-          discovery_timestamp: Date.now()
-        }
+          discovery_timestamp: Date.now(),
+        },
       })
-  
+
       // Add the discovery to the discovery store
-      useDiscoveryStore.getState().addDiscovery(
-        card.id, 
-        discoveryMessage, 
-        unlockedCardIds
-      );
+      useDiscoveryStore
+        .getState()
+        .addDiscovery(card.id, discoveryMessage, unlockedCardIds)
     } else {
       // Just update thought investment
       cardStore.updateCardState(card.id, {
         discovery_state: {
           ...card.discovery_state,
-          thought_invested: newThoughtInvested
-        }
+          thought_invested: newThoughtInvested,
+        },
       })
     }
   }

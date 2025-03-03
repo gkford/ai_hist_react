@@ -65,9 +65,9 @@ export function ResearchDialog() {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
-          <h2 className="text-xl font-bold mb-4">Research Options</h2>
+          <h2 className="text-xl font-bold mb-4">What would you like to do next?</h2>
           <p className="text-gray-600 mb-4">
-            Select a discovery to focus your thoughts on:
+            Here are some cards you can either research or unlock:
           </p>
 
           {researchableCards.length === 0 ? (

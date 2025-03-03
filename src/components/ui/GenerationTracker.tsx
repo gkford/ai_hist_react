@@ -9,22 +9,25 @@ interface GenerationTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
 }
 
-export function GenerationTracker({ 
+export function GenerationTracker({
   cardId,
   className,
-  ...props 
+  ...props
 }: GenerationTrackerProps) {
-  const cardState = useCardsStore(state => state.cardStates[cardId])
-  const cardDefinition = allCards.find(c => c.id === cardId)
+  const cardState = useCardsStore((state) => state.cardStates[cardId])
+  const cardDefinition = allCards.find((c) => c.id === cardId)
   const resource = useResource(cardState.generates?.resource || 'food')
-  
+
   if (!cardState.generates) return null
 
-  const allWorkers = useWorkersStore(state => state.workers)
-  const workers = React.useMemo(() => allWorkers.filter(w => w.assignedTo === cardId), [allWorkers, cardId])
+  const allWorkers = useWorkersStore((state) => state.workers)
+  const workers = React.useMemo(
+    () => allWorkers.filter((w) => w.assignedTo === cardId),
+    [allWorkers, cardId]
+  )
 
   // Check if card is undiscovered
-  const isUndiscovered = cardState.discovery_state.current_status === 'unthoughtof';
+  const isUndiscovered = cardState.discovery_state.current_status === 'unlocked'
 
   // Special handling for computation type cards
   if (cardDefinition?.type === 'computation' && cardState.generates) {
@@ -38,27 +41,33 @@ export function GenerationTracker({
 
     // If there's no food, return null (warning will be shown in CardDesign)
     if (noFood) {
-      return null;
+      return null
     }
 
     // For undiscovered computation cards, show potential per worker
     if (isUndiscovered) {
       const resourceByLevel: Record<string, { icon: string }> = {
-        "1": resourceThought1,
-        "2": resourceThought2,
-        "3": resourceThought3,
-        "4": resourceThought4,
+        '1': resourceThought1,
+        '2': resourceThought2,
+        '3': resourceThought3,
+        '4': resourceThought4,
       }
-      
+
       // Use the thought_level from discovery_state instead of generates
-      const thoughtLevel = cardState.discovery_state.thought_level.toString();
-      
+      const thoughtLevel = cardState.discovery_state.thought_level.toString()
+
       return (
-        <div 
-          className={cn("flex items-center gap-2 p-2 justify-center", className)}
+        <div
+          className={cn(
+            'flex items-center gap-2 p-2 justify-center',
+            className
+          )}
           {...props}
         >
-          <span className="text-sm">+{(cardState.generates?.amount ?? 0).toFixed(1)}{resourceByLevel[thoughtLevel]?.icon}/s per worker</span>
+          <span className="text-sm">
+            +{(cardState.generates?.amount ?? 0).toFixed(1)}
+            {resourceByLevel[thoughtLevel]?.icon}/s per worker
+          </span>
         </div>
       )
     }
@@ -70,22 +79,25 @@ export function GenerationTracker({
     }, {} as Record<number, number>)
 
     const resourceByLevel: Record<string, { icon: string }> = {
-      "1": resourceThought1,
-      "2": resourceThought2,
-      "3": resourceThought3,
-      "4": resourceThought4,
+      '1': resourceThought1,
+      '2': resourceThought2,
+      '3': resourceThought3,
+      '4': resourceThought4,
     }
 
     return (
-      <div 
-        className={cn("flex flex-col gap-2 p-2", className)}
-        {...props}
-      >
+      <div className={cn('flex flex-col gap-2 p-2', className)} {...props}>
         {Object.entries(workersByLevel).map(([level, count]) => (
           <div key={level} className="flex items-center gap-2 justify-center">
             <span className="text-sm">{resourceByLevel[level]?.icon}</span>
-            <span className="text-sm">+{((cardState.generates?.amount ?? 0) * count).toFixed(1)}/s</span>
-            <span className="text-xs text-gray-500">({count} {WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]} L{level} workers)</span>
+            <span className="text-sm">
+              +{((cardState.generates?.amount ?? 0) * count).toFixed(1)}/s
+            </span>
+            <span className="text-xs text-gray-500">
+              ({count}{' '}
+              {WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]} L
+              {level} workers)
+            </span>
           </div>
         ))}
       </div>
@@ -95,11 +107,14 @@ export function GenerationTracker({
   // For undiscovered non-computation cards, show potential per worker
   if (isUndiscovered) {
     return (
-      <div 
-        className={cn("flex items-center gap-2 p-2 justify-center", className)}
+      <div
+        className={cn('flex items-center gap-2 p-2 justify-center', className)}
         {...props}
       >
-        <span className="text-sm">+{(cardState.generates?.amount || 0).toFixed(1)}{resource.icon}/s per worker</span>
+        <span className="text-sm">
+          +{(cardState.generates?.amount || 0).toFixed(1)}
+          {resource.icon}/s per worker
+        </span>
       </div>
     )
   }
@@ -111,22 +126,28 @@ export function GenerationTracker({
   }, {} as Record<number, number>)
 
   // Calculate base production without bonuses
-  const baseProduction = workers.length * (cardState.generates?.amount || 0);
+  const baseProduction = workers.length * (cardState.generates?.amount || 0)
 
   // Create worker level summary string
   const workerSummary = Object.entries(workersByLevel)
     .sort(([levelA], [levelB]) => parseInt(levelA) - parseInt(levelB))
-    .map(([level, count]) => `${count} ${WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}`)
-    .join(',');
+    .map(
+      ([level, count]) =>
+        `${count} ${WORKER_ICONS[parseInt(level) as keyof typeof WORKER_ICONS]}`
+    )
+    .join(',')
 
   return (
-    <div 
-      className={cn("flex items-center gap-2 p-2 justify-center", className)}
+    <div
+      className={cn('flex items-center gap-2 p-2 justify-center', className)}
       {...props}
     >
       <span className="text-sm">{workerSummary}</span>
       <span className="text-sm">→</span>
-      <span className="text-sm">{baseProduction.toFixed(1)}{resource.icon}/s</span>
+      <span className="text-sm">
+        {baseProduction.toFixed(1)}
+        {resource.icon}/s
+      </span>
     </div>
   )
 }
