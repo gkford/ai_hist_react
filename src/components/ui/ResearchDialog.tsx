@@ -5,7 +5,7 @@ import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { CardDesign } from './CardDesign'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
-import { allCards } from '@/data/cards'
+// import { allCards } from '@/data/cards'
 import { UnlockQuizModal } from './UnlockQuizModal'
 
 export function ResearchDialog() {
@@ -78,7 +78,7 @@ export function ResearchDialog() {
             <div className="space-y-6 max-h-[70vh] overflow-y-auto mb-4">
               {researchableCards.map((cardId) => {
                 const card = cardStates[cardId]
-                const cardDef = allCards.find(c => c.id === cardId)
+                // const cardDef = allCards.find(c => c.id === cardId)
                 const isNew = newlyAvailableCards.includes(cardId)
                 const isLocked = card.discovery_state.current_status === 'locked'
 
