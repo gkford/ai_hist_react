@@ -60,10 +60,10 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           )}
           {...props}
         >
-        {/* Main Content Area (above footer) */}
-        <div className="flex flex-1">
-          {/* Left: Card Image Area */}
-          <div className="w-[192px] p-4">
+        {/* Main Content Area (above footer) - fixed height */}
+        <div className="flex h-[180px]">
+          {/* Left: Card Image Area - fixed width and height */}
+          <div className="w-[192px] h-[180px] p-4 flex-shrink-0">
             {cardDef.imageSrc && (
               <CardImage
                 imageSrc={import.meta.env.BASE_URL + cardDef.imageSrc}
@@ -73,11 +73,11 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           </div>
 
           {/* Right: Main Body Area with horizontal padding */}
-          <div className="flex-1 flex flex-col p-4">
-            {/* Title Row */}
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-semibold">{cardDef.title}</h3>
-              <div className="flex items-center gap-2">
+          <div className="flex-1 flex flex-col p-4 overflow-hidden">
+            {/* Title Row - with overflow hidden */}
+            <div className="flex items-center justify-between overflow-hidden">
+              <h3 className="text-xl font-semibold truncate mr-2">{cardDef.title}</h3>
+              <div className="flex items-center gap-2 flex-shrink-0">
                 {cardDef.generates && <GenerationTracker cardId={id} />}
                 {cardDef.ongoingEffects && (
                   <OngoingEffectsViewer
@@ -124,8 +124,8 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               </React.Fragment>
             )}
 
-            {/* Additional Main Content vertically centered */}
-            <div className="flex-grow flex items-center">
+            {/* Additional Main Content vertically centered - with overflow auto */}
+            <div className="flex-grow flex items-center overflow-auto">
               <div className="w-full">
                 {/* Add the discovery notification in the main content area */}
                 {cardState.discovery_state.current_status === 'discovered' &&
@@ -192,8 +192,8 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           </div>
         </div>
 
-        {/* Footer: Same background as the card with a thin light grey top border */}
-        <div className="w-full h-12 flex items-center justify-center border-t border-gray-200">
+        {/* Footer: Fixed height with same background as the card with a thin light grey top border */}
+        <div className="w-full h-12 flex-shrink-0 flex items-center justify-center border-t border-gray-200">
           {cardDef.generates &&
           cardState.discovery_state.current_status === 'discovered' ? (
             <WorkerTracker cardId={id} className="w-full px-4" />
