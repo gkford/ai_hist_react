@@ -38,6 +38,12 @@ export type CardType =
   | 'production'
   | 'resource'
 
+export interface Quiz {
+  question: string
+  answers: string[]
+  correctAnswer: number
+}
+
 export interface CardDefinition {
   id: string
   title: string
@@ -51,6 +57,7 @@ export interface CardDefinition {
   discovery_stats?: DiscoveryStats
   replaces?: string // ID of the card this replaces
   think_about_text?: string // Flavor text for unlocked cards
+  quiz?: Quiz
 }
 
 export const allCards: CardDefinition[] = [
@@ -106,6 +113,16 @@ export const allCards: CardDefinition[] = [
       amount: 1.2,
     },
     think_about_text: 'Think about food... ',
+    quiz: {
+      question: "What is the primary benefit of hunting compared to gathering?",
+      answers: [
+        "It provides more food per worker",
+        "It's easier than gathering",
+        "It requires fewer workers",
+        "It doesn't require any tools"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'non_verbal_communication',
