@@ -20,10 +20,11 @@ import { UnlockQuizModal } from './UnlockQuizModal'
 
 export interface CardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
+  disableInteractions?: boolean
 }
 
 export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
-  ({ className, id, ...props }, ref) => {
+  ({ className, id, disableInteractions = false, ...props }, ref) => {
     const cardDef = allCards.find((c) => c.id === id)
     const cardState = useCardsStore((state) => state.cardStates[id])
     const resourceType = cardDef?.resource_type
@@ -138,8 +139,11 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     <CardDiscoveryNotification cardId={id} />
                   )}
                 {cardState.discovery_state.current_status === 'locked' ? (
-                  <div className="text-center text-gray-500 italic cursor-pointer" 
-                       onClick={() => setShowQuiz(true)}>
+                  <div className={cn(
+                    "text-center text-gray-500 italic",
+                    !disableInteractions && "cursor-pointer"
+                  )} 
+                  onClick={() => !disableInteractions && setShowQuiz(true)}>
                     <p className="text-lg">Locked</p>
                     <p className="text-sm mt-1">Click to unlock and research</p>
                   </div>
