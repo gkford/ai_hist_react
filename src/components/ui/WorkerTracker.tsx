@@ -2,39 +2,7 @@ import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { assignWorkerToCard } from '@/lib/workerAssignmentRules'
-import { useDraggable, useDroppable } from '@dnd-kit/core'
-import { useWorkersStore, Worker } from '@/store/useWorkersStore'
-
-interface DraggableWorkerProps {
-  worker: Worker
-  cardId: string
-}
-
-function DraggableWorker({ worker, cardId }: DraggableWorkerProps) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: worker.id,
-    data: { 
-      workerId: worker.id,
-      from: cardId
-    }
-  })
-
-  const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
-  } : undefined
-
-  return (
-    <span 
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      style={style}
-      className="text-sm flex justify-center"
-    >
-      {!isDragging && worker.icon}
-    </span>
-  )
-}
+import { useWorkersStore } from '@/store/useWorkersStore'
 
 interface WorkerTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
@@ -73,13 +41,8 @@ export function WorkerTracker({
     }
   }
 
-  const { setNodeRef: setDroppableRef } = useDroppable({
-    id: cardId
-  })
-
   return (
     <div 
-      ref={setDroppableRef}
       className={cn("flex items-center gap-2 p-2", className)} 
       {...props}
     >
@@ -96,7 +59,7 @@ export function WorkerTracker({
         {[...Array(totalWorkers)].map((_, i) => {
           const worker = assignedWorkers[i]
           return worker ? (
-            <DraggableWorker key={worker.id} worker={worker} cardId={cardId} />
+            <span key={i} className="text-sm flex justify-center">{worker.icon}</span>
           ) : (
             <span key={i} className="text-sm flex justify-center">·</span>
           )

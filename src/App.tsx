@@ -30,7 +30,6 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
 
   return 0
 }
-import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { useWorkersStore } from '@/store/useWorkersStore'
 
 function getCardColumn(type: CardType): number {
@@ -88,12 +87,7 @@ function initializeCards() {
   })
 }
 
-function WorkerIcon() {
-  return <span className="text-sm flex justify-center cursor-grabbing">👤</span>
-}
-
 function App() {
-  const [isDragging, setIsDragging] = useState(false)
   const { devMode } = useDevStore()
   const formatNumber = (n: number): string => {
     const trimmed = parseFloat(n.toFixed(3))
@@ -121,27 +115,6 @@ function App() {
   }, [])
 
   return (
-    <DndContext
-      onDragStart={() => setIsDragging(true)}
-      onDragEnd={(event) => {
-        setIsDragging(false)
-        const { active, over } = event
-        if (!over) return
-
-        // Retrieve data we attached in useDraggable
-        const activeData = active.data.current
-        if (!activeData) return
-        const workerId = activeData.workerId
-        const currentAssignment = activeData.from
-        const newAssignment = over.id.toString()
-
-        // If worker is dropped onto the same tracker, do nothing
-        if (currentAssignment === newAssignment) return
-
-        // Update the worker's assignment in the worker store
-        useWorkersStore.getState().assignWorker(workerId, newAssignment)
-      }}
-    >
       <div className="min-h-screen p-4 flex flex-col">
         <ThoughtApplicationDialog />
         <ResearchDialog />
@@ -218,8 +191,6 @@ function App() {
           </div>
         )}
       </div>
-      <DragOverlay>{isDragging && <WorkerIcon />}</DragOverlay>
-    </DndContext>
   )
 }
 
