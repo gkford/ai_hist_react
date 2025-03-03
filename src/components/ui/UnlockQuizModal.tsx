@@ -39,13 +39,30 @@ export function UnlockQuizModal({ cardId, onClose }: UnlockQuizModalProps) {
       const cardState = useCardsStore.getState().cardStates[cardId]
       
       // Unlock the card and set it to being researched
-      useCardsStore.getState().updateCardState(cardId, {
+      const cardStore = useCardsStore.getState();
+      
+      // First, turn off priority for all other cards
+      Object.entries(cardStore.cardStates).forEach(([id, card]) => {
+        if (id !== cardId && card.discovery_state.priority === 'on') {
+          cardStore.updateCardState(id, {
+            discovery_state: {
+              ...card.discovery_state,
+              priority: 'off',
+            }
+          });
+        }
+      });
+      
+      // Then set this card's priority to 'on'
+      cardStore.updateCardState(cardId, {
         discovery_state: {
           ...cardState.discovery_state,
           current_status: 'unlocked',
           priority: 'on',
         }
-      })
+      });
+      
+      console.log(`Unlocked card ${cardId} and set priority to 'on'`);
       
       // Close the modal after a short delay
       setTimeout(() => {

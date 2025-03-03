@@ -31,10 +31,12 @@ export function DiscoveryViewer({
       setShowQuiz(true)
     } else {
       // Normal toggle for unlocked cards
+      const newPriority = discoveryState.priority === 'on' ? 'off' : 'on'
+      console.log(`Setting priority for ${cardId} to ${newPriority}`)
       updateCardState(cardId, {
         discovery_state: {
           ...discoveryState,
-          priority: discoveryState.priority === 'on' ? 'off' : 'on',
+          priority: newPriority,
         },
       })
     }

@@ -32,13 +32,27 @@ export function ResearchDialog() {
       setShowQuiz(true)
       closeResearchDialog() // Close the research dialog when showing quiz
     } else {
+      // First, turn off priority for all other cards
+      Object.entries(cardStates).forEach(([id, cardState]) => {
+        if (id !== cardId && cardState.discovery_state.priority === 'on') {
+          updateCardState(id, {
+            discovery_state: {
+              ...cardState.discovery_state,
+              priority: 'off',
+            }
+          });
+        }
+      });
+      
       // For unlocked cards, set priority to 'on'
       updateCardState(cardId, {
         discovery_state: {
           ...card.discovery_state,
           priority: 'on',
         },
-      })
+      });
+      
+      console.log(`Set priority for card ${cardId} to 'on' from ResearchDialog`);
 
       // Close the dialog and resume the game
       closeResearchDialog()

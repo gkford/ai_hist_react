@@ -26,9 +26,16 @@ export function processDiscoveries() {
 
   // Find all unlocked cards with priority 'on'
   const priorityCards = Object.values(cardStore.cardStates).filter(
-    (card) =>
-      card.discovery_state.current_status === 'unlocked' &&
-      card.discovery_state.priority === 'on'
+    (card) => {
+      const isUnlocked = card.discovery_state.current_status === 'unlocked';
+      const hasPriority = card.discovery_state.priority === 'on';
+      
+      if (isUnlocked && hasPriority) {
+        logger.log(`Found priority card: ${card.id} with priority ${card.discovery_state.priority}`);
+      }
+      
+      return isUnlocked && hasPriority;
+    }
   )
 
   if (priorityCards.length === 0) {
