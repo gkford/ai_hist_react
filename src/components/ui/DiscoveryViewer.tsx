@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { DiscoveryState } from '@/store/useCardsStore'
 import { Button } from '@/components/ui/button'
 import { useResource } from '@/store/useResourceStore'
@@ -6,6 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { useCardsStore } from '@/store/useCardsStore'
 import { Play, Pause, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { UnlockQuizModal } from './UnlockQuizModal'
 
 interface DiscoveryViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   discoveryState: DiscoveryState
@@ -20,18 +22,13 @@ export function DiscoveryViewer({
   onWarningChange,
   ...props
 }: DiscoveryViewerProps) {
+  const [showQuiz, setShowQuiz] = React.useState(false)
   const updateCardState = useCardsStore((state) => state.updateCardState)
 
   const togglePriority = () => {
     if (discoveryState.current_status === 'locked') {
-      // Unlock the card and set it to being researched
-      updateCardState(cardId, {
-        discovery_state: {
-          ...discoveryState,
-          current_status: 'unlocked',
-          priority: 'on',
-        },
-      })
+      // Show the quiz modal instead of directly unlocking
+      setShowQuiz(true)
     } else {
       // Normal toggle for unlocked cards
       updateCardState(cardId, {
@@ -73,7 +70,14 @@ export function DiscoveryViewer({
       : `No thoughts of level ${discoveryState.thought_level} or higher being generated`
 
   return (
-    <div className={cn('p-2', className)} {...props}>
+    <>
+      {showQuiz && (
+        <UnlockQuizModal 
+          cardId={cardId} 
+          onClose={() => setShowQuiz(false)} 
+        />
+      )}
+      <div className={cn('p-2', className)} {...props}>
       <div className="flex items-center gap-2">
         <Button
           onClick={() => {
@@ -125,6 +129,7 @@ export function DiscoveryViewer({
           </>
         )}
       </div>
-    </div>
+      </div>
+    </>
   )
 }

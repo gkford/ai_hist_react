@@ -16,6 +16,7 @@ import { PopulationSummary } from './PopulationSummary'
 import { GenerationTracker } from './GenerationTracker'
 import { FoodResourceCard } from './FoodResourceCard'
 import { CardDiscoveryNotification } from './CardDiscoveryNotification'
+import { UnlockQuizModal } from './UnlockQuizModal'
 
 export interface CardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
@@ -28,6 +29,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     const resourceType = cardDef?.resource_type
     const resource = useResource(resourceType || 'food')
     const [warningMessage, setWarningMessage] = React.useState('')
+    const [showQuiz, setShowQuiz] = React.useState(false)
     const thought1 = useResource('thoughts1')
     const thought2 = useResource('thoughts2')
     const thought3 = useResource('thoughts3')
@@ -44,14 +46,21 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     const isLocked = cardState.discovery_state.current_status === 'locked'
 
     return (
-      <Card
-        ref={ref}
-        className={cn(
-          'w-[560px] h-[240px] flex flex-col overflow-hidden relative',
-          className
+      <>
+        {showQuiz && (
+          <UnlockQuizModal 
+            cardId={id} 
+            onClose={() => setShowQuiz(false)} 
+          />
         )}
-        {...props}
-      >
+        <Card
+          ref={ref}
+          className={cn(
+            'w-[560px] h-[240px] flex flex-col overflow-hidden relative',
+            className
+          )}
+          {...props}
+        >
         {/* Main Content Area (above footer) */}
         <div className="flex flex-1">
           {/* Left: Card Image Area */}
@@ -126,15 +135,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                   )}
                 {cardState.discovery_state.current_status === 'locked' ? (
                   <div className="text-center text-gray-500 italic cursor-pointer" 
-                       onClick={() => {
-                         useCardsStore.getState().updateCardState(id, {
-                           discovery_state: {
-                             ...cardState.discovery_state,
-                             current_status: 'unlocked',
-                             priority: 'on',
-                           }
-                         });
-                       }}>
+                       onClick={() => setShowQuiz(true)}>
                     <p className="text-lg">Locked</p>
                     <p className="text-sm mt-1">Click to unlock and research</p>
                   </div>
@@ -223,7 +224,8 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             />
           ) : null}
         </div>
-      </Card>
+        </Card>
+      </>
     )
   }
 )
