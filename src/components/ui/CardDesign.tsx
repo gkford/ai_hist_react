@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
+import { useDiscoveryStore } from '@/store/useDiscoveryStore'
 import { allCards } from '@/data/cards'
 import { useResource } from "@/store/useResourceStore"
 import { useWorkersStore } from "@/store/useWorkersStore"
@@ -116,7 +117,8 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             <div className="flex-grow flex items-center">
               <div className="w-full">
                 {/* Add the discovery notification in the main content area */}
-                {cardState.discovery_state.current_status === 'discovered' && (
+                {cardState.discovery_state.current_status === 'discovered' && 
+                 useDiscoveryStore.getState().pendingAcknowledgments[id] && (
                   <CardDiscoveryNotification cardId={id} />
                 )}
                 {isUnthoughtof ? (

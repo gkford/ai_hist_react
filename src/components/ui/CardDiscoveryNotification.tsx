@@ -32,25 +32,23 @@ export function CardDiscoveryNotification({
   return (
     <div 
       className={cn(
-        "flex-grow flex items-center justify-center z-10",
+        "flex-grow flex flex-col justify-center items-center bg-amber-100 p-3 z-10",
         className
       )}
       {...props}
     >
-      <div className="bg-amber-100 border-amber-300 border shadow-md p-4 rounded-md max-w-[90%] transform rotate-1">
-        <div className="text-center">
-          <h3 className="text-lg font-bold mb-2">Discovery Complete!</h3>
-          <p className="text-gray-700 mb-4">
-            {discoveryInfo.message || tipText}
-          </p>
-          <Button 
-            onClick={() => acknowledgeDiscovery(cardId)}
-            className="mt-2 bg-amber-200 hover:bg-amber-300 text-amber-800"
-            variant="ghost"
-          >
-            Okay
-          </Button>
-        </div>
+      <div className="text-center">
+        <h3 className="text-base font-bold mb-1">Hunting discovered!</h3>
+        <p className="text-sm text-gray-700 mb-2">
+          {discoveryInfo.message || tipText}
+        </p>
+        <Button 
+          onClick={() => acknowledgeDiscovery(cardId)}
+          className="mt-1 text-sm py-1 h-auto"
+          size="sm"
+        >
+          Okay
+        </Button>
       </div>
     </div>
   )
