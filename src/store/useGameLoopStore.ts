@@ -10,6 +10,7 @@ interface GameLoopStore {
   thoughtsUnusedTimer: number | null
   isThoughtDialogOpen: boolean
   thoughtDialogEnabled: boolean
+  isResearchDialogOpen: boolean
   toggleRunning: () => void
   setRunning: (running: boolean) => void
   setProcessingTick: (processing: boolean) => void
@@ -19,6 +20,8 @@ interface GameLoopStore {
   clearThoughtsUnusedTimer: () => void
   openThoughtDialog: () => void
   closeThoughtDialog: () => void
+  openResearchDialog: () => void
+  closeResearchDialog: () => void
   setHasShownEnergyMessage: (shown: boolean) => void
   toggleThoughtDialog: () => void
 }
@@ -31,6 +34,7 @@ export const useGameLoopStore = create<GameLoopStore>((set, get) => ({
   thoughtsUnusedTimer: null,
   isThoughtDialogOpen: false,
   thoughtDialogEnabled: false,
+  isResearchDialogOpen: false,
   toggleRunning: () => set((state) => ({ isRunning: !state.isRunning })),
   setRunning: (running: boolean) => set({ isRunning: running }),
   setProcessingTick: (processing: boolean) => set({ processingTick: processing }),
@@ -90,5 +94,7 @@ export const useGameLoopStore = create<GameLoopStore>((set, get) => ({
         get().startThoughtsUnusedTimer();
       }
     }
-  }
+  },
+  openResearchDialog: () => set({ isResearchDialogOpen: true }),
+  closeResearchDialog: () => set({ isResearchDialogOpen: false })
 }))

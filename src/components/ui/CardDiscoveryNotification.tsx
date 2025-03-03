@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useDiscoveryStore } from '@/store/useDiscoveryStore'
+import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
 import { allCards } from '@/data/cards'
@@ -29,6 +30,8 @@ export function CardDiscoveryNotification({
     tipText = `Click + to assign your workers to this ${cardDef.title} card.`
   }
   
+  const openResearchDialog = useGameLoopStore(state => state.openResearchDialog)
+  
   return (
     <div 
       className={cn(
@@ -38,12 +41,15 @@ export function CardDiscoveryNotification({
       {...props}
     >
       <div className="text-center">
-        <h3 className="text-base font-bold mb-1">Hunting discovered!</h3>
+        <h3 className="text-base font-bold mb-1">{cardDef?.title || 'Card'} discovered!</h3>
         <p className="text-sm text-gray-700 mb-2">
           {discoveryInfo.message || tipText}
         </p>
         <Button 
-          onClick={() => acknowledgeDiscovery(cardId)}
+          onClick={() => {
+            acknowledgeDiscovery(cardId);
+            openResearchDialog();
+          }}
           className="mt-1 text-sm py-1 h-auto"
           size="sm"
         >
