@@ -20,8 +20,6 @@ export function CardDiscoveryNotification({
   const discoveryInfo = pendingAcknowledgments[cardId]
   const cardDef = allCards.find(c => c.id === cardId)
   
-  if (!discoveryInfo || !cardDef) return null
-  
   // Get card-specific tip text
   let tipText = "You've made an important discovery!"
   if (cardId === 'hunt') {
@@ -32,6 +30,9 @@ export function CardDiscoveryNotification({
   
   const openResearchDialog = useGameLoopStore(state => state.openResearchDialog)
   
+  // If no discovery info or card definition, don't render anything
+  if (!discoveryInfo || !cardDef) return null
+  
   return (
     <div 
       className={cn(
@@ -41,7 +42,7 @@ export function CardDiscoveryNotification({
       {...props}
     >
       <div className="text-center">
-        <h3 className="text-base font-bold mb-1">{cardDef?.title || 'Card'} discovered!</h3>
+        <h3 className="text-base font-bold mb-1">{cardDef.title} discovered!</h3>
         <p className="text-sm text-gray-700 mb-2">
           {discoveryInfo.message || tipText}
         </p>

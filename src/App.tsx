@@ -6,7 +6,7 @@ import { ThoughtApplicationDialog } from './components/ui/ThoughtApplicationDial
 import { ResearchDialog } from './components/ui/ResearchDialog'
 import type { CardType } from '@/data/cards'
 import { allCards } from '@/data/cards'
-import { type CardState } from '@/store/useCardsStore'
+import { type CardState, useCardsStore } from '@/store/useCardsStore'
 
 function sortCardsInColumn(a: CardState, b: CardState): number {
   // Find the card definitions
@@ -115,7 +115,7 @@ function App() {
   }, [])
 
   return (
-      <div className="min-h-screen p-4 flex flex-col">
+    <div className="min-h-screen p-4 flex flex-col">
         <ThoughtApplicationDialog />
         <ResearchDialog />
         {/* Floating Button Bar */}
@@ -190,7 +190,7 @@ function App() {
             </div>
           </div>
         )}
-      </div>
+    </div>
   )
 }
 
