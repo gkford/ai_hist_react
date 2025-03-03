@@ -10,7 +10,8 @@ interface CardImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
   const cardState = useCardsStore((state) => state.cardStates[cardId])
   const cardDef = allCards.find((card) => card.id === cardId)
-  const isunlocked = cardState?.discovery_state.current_status === 'unlocked'
+  const shouldZoom = cardState?.discovery_state.current_status === 'unlocked' || 
+                    cardState?.discovery_state.current_status === 'locked'
 
   return (
     <div className="relative w-full h-full mx-auto overflow-hidden">
@@ -27,7 +28,7 @@ export function CardImage({ imageSrc, alt, cardId, ...props }: CardImageProps) {
             transformOrigin: cardDef?.discovery_stats?.zoomFocalPoint
               ? `${cardDef.discovery_stats.zoomFocalPoint.x} ${cardDef.discovery_stats.zoomFocalPoint.y}`
               : 'center center',
-            transform: isunlocked
+            transform: shouldZoom
               ? `scale(${cardDef?.discovery_stats?.zoomLevel || 4})`
               : 'none',
             transition: 'all 0.3s ease-in-out',
