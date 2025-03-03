@@ -7,6 +7,10 @@ import { ResearchDialog } from './components/ui/ResearchDialog'
 import type { CardType } from '@/data/cards'
 import { allCards } from '@/data/cards'
 import { type CardState, useCardsStore } from '@/store/useCardsStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
+import { useResource } from '@/store/useResourceStore'
+import { useEffect, useState } from 'react'
+import { startGameLoop, stopGameLoop } from '@/lib/gameLoop'
 
 function sortCardsInColumn(a: CardState, b: CardState): number {
   // Find the card definitions
@@ -30,7 +34,6 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
 
   return 0
 }
-import { useWorkersStore } from '@/store/useWorkersStore'
 
 function getCardColumn(type: CardType): number {
   switch (type) {
@@ -46,10 +49,6 @@ function getCardColumn(type: CardType): number {
       return 3
   }
 }
-import { useResource } from '@/store/useResourceStore'
-import { useCardsStore } from '@/store/useCardsStore'
-import { useEffect, useState } from 'react'
-import { startGameLoop, stopGameLoop } from '@/lib/gameLoop'
 
 function initializeCards() {
   const cardStore = useCardsStore.getState()
