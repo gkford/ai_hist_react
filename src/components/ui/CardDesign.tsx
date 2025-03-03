@@ -78,9 +78,9 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             <div className="flex items-center justify-between overflow-hidden">
               <h3 className={cn(
                 "font-semibold truncate mr-2",
-                cardDef.title.length > 20 ? "text-lg" : "text-xl",
-                cardDef.title.length > 30 ? "text-base" : "",
-                cardDef.title.length > 40 ? "text-sm" : "",
+                // cardDef.title.length > 30 ? "text-base" : "",
+                cardDef.title.length > 15 ? "text-lg" : "text-xl",
+                // cardDef.title.length > 25 ? "text-sm" : "",
               )}>{cardDef.title}</h3>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {cardDef.generates && <GenerationTracker cardId={id} />}
