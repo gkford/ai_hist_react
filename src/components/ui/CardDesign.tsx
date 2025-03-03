@@ -74,9 +74,14 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
 
           {/* Right: Main Body Area with horizontal padding */}
           <div className="flex-1 flex flex-col p-4 overflow-hidden">
-            {/* Title Row - with overflow hidden */}
+            {/* Title Row - with overflow hidden and responsive font size */}
             <div className="flex items-center justify-between overflow-hidden">
-              <h3 className="text-xl font-semibold truncate mr-2">{cardDef.title}</h3>
+              <h3 className={cn(
+                "font-semibold truncate mr-2",
+                cardDef.title.length > 20 ? "text-lg" : "text-xl",
+                cardDef.title.length > 30 ? "text-base" : "",
+                cardDef.title.length > 40 ? "text-sm" : "",
+              )}>{cardDef.title}</h3>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {cardDef.generates && <GenerationTracker cardId={id} />}
                 {cardDef.ongoingEffects && (
