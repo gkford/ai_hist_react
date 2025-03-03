@@ -24,7 +24,7 @@ interface DiscoveryStore {
   closeResearchDialog: () => void;
 }
 
-export const useDiscoveryStore = create<DiscoveryStore>((set, get) => ({
+export const useDiscoveryStore = create<DiscoveryStore>((set) => ({
   pendingAcknowledgments: {},
   newlyAvailableCards: [],
   isResearchDialogOpen: false,

@@ -24,8 +24,8 @@ export function CardDiscoveryNotification({
   let tipText = "You've made an important discovery!"
   if (cardId === 'hunt') {
     tipText = "Click + to assign your workers to hunt. Hunting provides more food than gathering."
-  } else if (cardDef.generates) {
-    tipText = `Click + to assign your workers to this ${cardDef.title} card.`
+  } else if (cardDef?.generates) {
+    tipText = `Click + to assign your workers to this ${cardDef?.title || ''} card.`
   }
   
   const openResearchDialog = useGameLoopStore(state => state.openResearchDialog)

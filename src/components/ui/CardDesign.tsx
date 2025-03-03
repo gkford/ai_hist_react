@@ -43,7 +43,6 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     if (!cardDef || !cardState) return null
 
     const isunlocked = cardState.discovery_state.current_status === 'unlocked'
-    const isLocked = cardState.discovery_state.current_status === 'locked'
 
     return (
       <>

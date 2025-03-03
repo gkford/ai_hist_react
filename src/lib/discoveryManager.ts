@@ -1,7 +1,6 @@
 import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useWorkersStore } from '@/store/useWorkersStore'
-import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { useDiscoveryStore } from '@/store/useDiscoveryStore'
 import { logger } from './logger'
 import type { ResourceKey } from '@/store/useResourceStore'
