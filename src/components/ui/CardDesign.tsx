@@ -124,8 +124,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                   useDiscoveryStore.getState().pendingAcknowledgments[id] && (
                     <CardDiscoveryNotification cardId={id} />
                   )}
-                {const isLocked = cardState.discovery_state.current_status === 'locked'}
-                {isLocked ? (
+                {cardState.discovery_state.current_status === 'locked' ? (
                   <div className="text-center text-gray-500 italic cursor-pointer" 
                        onClick={() => {
                          useCardsStore.getState().updateCardState(id, {
