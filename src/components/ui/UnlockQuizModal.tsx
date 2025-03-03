@@ -35,10 +35,13 @@ export function UnlockQuizModal({ cardId, onClose }: UnlockQuizModalProps) {
     setIsCorrect(correct)
     
     if (correct) {
+      // Get the current card state
+      const cardState = useCardsStore.getState().cardStates[cardId]
+      
       // Unlock the card and set it to being researched
       useCardsStore.getState().updateCardState(cardId, {
         discovery_state: {
-          ...useCardsStore.getState().cardStates[cardId].discovery_state,
+          ...cardState.discovery_state,
           current_status: 'unlocked',
           priority: 'on',
         }
