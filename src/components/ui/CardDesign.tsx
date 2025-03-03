@@ -4,8 +4,8 @@ import { cn } from '@/lib/utils'
 import { useCardsStore } from '@/store/useCardsStore'
 import { useDiscoveryStore } from '@/store/useDiscoveryStore'
 import { allCards } from '@/data/cards'
-import { useResource } from "@/store/useResourceStore"
-import { useWorkersStore } from "@/store/useWorkersStore"
+import { useResource } from '@/store/useResourceStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
 import { CardImage } from '@/components/ui/CardImage'
 import { DiscoveryViewer } from '@/components/ui/DiscoveryViewer'
 import { OnDiscoveryEffectsViewer } from './OnDiscoveryEffectsViewer'
@@ -27,20 +27,20 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
     const cardState = useCardsStore((state) => state.cardStates[id])
     const resourceType = cardDef?.resource_type
     const resource = useResource(resourceType || 'food')
-    const [warningMessage, setWarningMessage] = React.useState("");
-    const thought1 = useResource('thoughts1');
-    const thought2 = useResource('thoughts2');
-    const thought3 = useResource('thoughts3');
-    const thought4 = useResource('thoughts4');
-    const totalThoughtsProduced = (thought1.amountProducedThisSecond[0] || 0)
-      + (thought2.amountProducedThisSecond[0] || 0)
-      + (thought3.amountProducedThisSecond[0] || 0)
-      + (thought4.amountProducedThisSecond[0] || 0);
+    const [warningMessage, setWarningMessage] = React.useState('')
+    const thought1 = useResource('thoughts1')
+    const thought2 = useResource('thoughts2')
+    const thought3 = useResource('thoughts3')
+    const thought4 = useResource('thoughts4')
+    const totalThoughtsProduced =
+      (thought1.amountProducedThisSecond[0] || 0) +
+      (thought2.amountProducedThisSecond[0] || 0) +
+      (thought3.amountProducedThisSecond[0] || 0) +
+      (thought4.amountProducedThisSecond[0] || 0)
 
     if (!cardDef || !cardState) return null
 
-    const isUnthoughtof =
-      cardState.discovery_state.current_status === 'unthoughtof'
+    const isunlocked = cardState.discovery_state.current_status === 'unlocked'
 
     return (
       <Card
@@ -67,24 +67,24 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           <div className="flex-1 flex flex-col p-4">
             {/* Title Row */}
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-semibold">
-                {cardDef.title}
-              </h3>
+              <h3 className="text-xl font-semibold">{cardDef.title}</h3>
               <div className="flex items-center gap-2">
-                {cardDef.generates && (
-                  <GenerationTracker cardId={id} />
-                )}
+                {cardDef.generates && <GenerationTracker cardId={id} />}
                 {cardDef.ongoingEffects && (
                   <OngoingEffectsViewer
                     effects={cardDef.ongoingEffects}
-                    isDiscovered={cardState.discovery_state.current_status === 'discovered'}
+                    isDiscovered={
+                      cardState.discovery_state.current_status === 'discovered'
+                    }
                     compact={true}
                   />
                 )}
                 {cardDef.OnDiscoveryEffects && (
                   <OnDiscoveryEffectsViewer
                     effects={cardDef.OnDiscoveryEffects}
-                    isDiscovered={cardState.discovery_state.current_status === 'discovered'}
+                    isDiscovered={
+                      cardState.discovery_state.current_status === 'discovered'
+                    }
                     compact={true}
                   />
                 )}
@@ -101,14 +101,16 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               <React.Fragment>
                 {(() => {
                   // Check if any card has priority set to 'on'
-                  const anyCardHasPriority = Object.values(useCardsStore.getState().cardStates)
-                    .some(card => card.discovery_state.priority === 'on');
-                  
+                  const anyCardHasPriority = Object.values(
+                    useCardsStore.getState().cardStates
+                  ).some((card) => card.discovery_state.priority === 'on')
+
                   return !anyCardHasPriority ? (
                     <div className="bg-yellow-100 text-yellow-800 p-2 text-sm mt-2 rounded">
-                      Warning: Thoughts are being generated but not applied to any discovery.
+                      Warning: Thoughts are being generated but not applied to
+                      any discovery.
                     </div>
-                  ) : null;
+                  ) : null
                 })()}
               </React.Fragment>
             )}
@@ -117,29 +119,31 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             <div className="flex-grow flex items-center">
               <div className="w-full">
                 {/* Add the discovery notification in the main content area */}
-                {cardState.discovery_state.current_status === 'discovered' && 
-                 useDiscoveryStore.getState().pendingAcknowledgments[id] && (
-                  <CardDiscoveryNotification cardId={id} />
-                )}
-                {isUnthoughtof ? (
+                {cardState.discovery_state.current_status === 'discovered' &&
+                  useDiscoveryStore.getState().pendingAcknowledgments[id] && (
+                    <CardDiscoveryNotification cardId={id} />
+                  )}
+                {isunlocked ? (
                   <div className="text-center text-gray-500 italic">
                     <p className="text-lg">Undiscovered</p>
                     {cardState.discovery_state.priority === 'on' && (
-                      <p className={cn(
-                        "text-sm font-medium mt-1",
-                        (thought1.amountProducedThisSecond[0] > 0 || 
-                         thought2.amountProducedThisSecond[0] > 0 || 
-                         thought3.amountProducedThisSecond[0] > 0 || 
-                         thought4.amountProducedThisSecond[0] > 0) 
-                          ? "text-blue-500" 
-                          : "text-red-500"
-                      )}>
-                        {(thought1.amountProducedThisSecond[0] > 0 || 
-                          thought2.amountProducedThisSecond[0] > 0 || 
-                          thought3.amountProducedThisSecond[0] > 0 || 
-                          thought4.amountProducedThisSecond[0] > 0)
-                            ? "researching" 
-                            : "waiting for thoughts to continue research..."}
+                      <p
+                        className={cn(
+                          'text-sm font-medium mt-1',
+                          thought1.amountProducedThisSecond[0] > 0 ||
+                            thought2.amountProducedThisSecond[0] > 0 ||
+                            thought3.amountProducedThisSecond[0] > 0 ||
+                            thought4.amountProducedThisSecond[0] > 0
+                            ? 'text-blue-500'
+                            : 'text-red-500'
+                        )}
+                      >
+                        {thought1.amountProducedThisSecond[0] > 0 ||
+                        thought2.amountProducedThisSecond[0] > 0 ||
+                        thought3.amountProducedThisSecond[0] > 0 ||
+                        thought4.amountProducedThisSecond[0] > 0
+                          ? 'researching'
+                          : 'waiting for thoughts to continue research...'}
                       </p>
                     )}
                   </div>
@@ -151,9 +155,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     <div className="text-2xl font-bold">
                       {Math.floor(resource.amount[0])}
                     </div>
-                    <div className="text-sm text-gray-500">
-                      {cardDef.title}
-                    </div>
+                    <div className="text-sm text-gray-500">{cardDef.title}</div>
                   </div>
                 ) : cardDef.type === 'people' ? (
                   <div className="w-full">
@@ -182,7 +184,8 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             <WorkerTracker cardId={id} className="w-full px-4" />
           ) : resourceType === 'food' ? (
             <div className="flex items-center gap-2">
-              {resource.amount[0] < (useWorkersStore.getState().workers.length / 2) && (
+              {resource.amount[0] <
+                useWorkersStore.getState().workers.length / 2 && (
                 <div className="text-red-500 text-sm font-semibold">
                   Warning: Low Food Supply!
                 </div>
@@ -195,7 +198,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             </div>
           ) : cardDef.type === 'people' ? (
             <PopulationTracker className="w-full px-4 flex-1" />
-          ) : (cardState.discovery_state.current_status === 'unthoughtof') ? (
+          ) : cardState.discovery_state.current_status === 'unlocked' ? (
             <DiscoveryViewer
               discoveryState={cardState.discovery_state}
               cardId={id}
