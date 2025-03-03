@@ -50,8 +50,6 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
         )}
         {...props}
       >
-        {/* Add the discovery notification */}
-        <CardDiscoveryNotification cardId={id} />
         {/* Main Content Area (above footer) */}
         <div className="flex flex-1">
           {/* Left: Card Image Area */}
@@ -117,6 +115,10 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             {/* Additional Main Content vertically centered */}
             <div className="flex-grow flex items-center">
               <div className="w-full">
+                {/* Add the discovery notification in the main content area */}
+                {cardState.discovery_state.current_status === 'discovered' && (
+                  <CardDiscoveryNotification cardId={id} />
+                )}
                 {isUnthoughtof ? (
                   <div className="text-center text-gray-500 italic">
                     <p className="text-lg">Undiscovered</p>

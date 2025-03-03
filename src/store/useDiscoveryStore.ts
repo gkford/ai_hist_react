@@ -8,6 +8,7 @@ interface DiscoveryStore {
     message?: string;
     timestamp: number;
     unlockedCards: string[];
+    tipText?: string;
   }>;
   
   // Track newly available cards for research
