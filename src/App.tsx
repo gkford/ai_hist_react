@@ -164,6 +164,13 @@ function App() {
           >
             {useDevStore.getState().verbose ? 'Hide Verbose' : 'Show Verbose'}
           </Button>
+          <Button
+            onClick={() => useGameLoopStore.getState().toggleThoughtDialog()}
+            variant="outline"
+            className="w-40"
+          >
+            Thought Popup: {useGameLoopStore.getState().thoughtDialogEnabled ? 'On' : 'Off'}
+          </Button>
         </div>
       
       <div className="flex gap-8">
