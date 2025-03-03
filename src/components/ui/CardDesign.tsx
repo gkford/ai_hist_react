@@ -14,6 +14,7 @@ import { PopulationTracker } from './PopulationTracker'
 import { PopulationSummary } from './PopulationSummary'
 import { GenerationTracker } from './GenerationTracker'
 import { FoodResourceCard } from './FoodResourceCard'
+import { CardDiscoveryNotification } from './CardDiscoveryNotification'
 
 export interface CardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
@@ -44,11 +45,13 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
       <Card
         ref={ref}
         className={cn(
-          'w-[560px] h-[240px] flex flex-col overflow-hidden',
+          'w-[560px] h-[240px] flex flex-col overflow-hidden relative',
           className
         )}
         {...props}
       >
+        {/* Add the discovery notification */}
+        <CardDiscoveryNotification cardId={id} />
         {/* Main Content Area (above footer) */}
         <div className="flex flex-1">
           {/* Left: Card Image Area */}

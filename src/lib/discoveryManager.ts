@@ -2,6 +2,7 @@ import { useCardsStore } from '@/store/useCardsStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useWorkersStore } from '@/store/useWorkersStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
+import { useDiscoveryStore } from '@/store/useDiscoveryStore'
 import { logger } from './logger'
 import type { ResourceKey } from '@/store/useResourceStore'
 
@@ -76,24 +77,20 @@ export function processDiscoveries() {
       }
 
       // Special message for tally marks discovery
+      let discoveryMessage = undefined;
       if (card.id === 'tally_marks') {
-        alert("Congratulations! Your people have progressed from the hominids of prehistory to the storytellers who created the earliest historical records by humans, cave paintings and wall markings. Next, onto the agricultural revolution!");
+        discoveryMessage = "Congratulations! Your people have progressed from the hominids of prehistory to the storytellers who created the earliest historical records by humans, cave paintings and wall markings. Next, onto the agricultural revolution!";
       }
 
+      // Create any unlocked cards
+      let unlockedCardIds: string[] = [];
       if (card.discovery_state?.discovery_unlocks?.length) {
-        const newCardIds: string[] = [];
-        
         card.discovery_state.discovery_unlocks.forEach((cardId: string) => {
           // Create each unlocked card
           cardStore.createCard(cardId)
-          newCardIds.push(cardId);
+          unlockedCardIds.push(cardId);
           logger.log(`Unlocked new card: ${cardId} due to discovering ${card.id}`)
         })
-        
-        // If we have new cards, open the discovery dialog
-        if (newCardIds.length > 0) {
-          useGameLoopStore.getState().openDiscoveryDialog(newCardIds);
-        }
       }
 
       // Update to discovered status and turn off priority
@@ -106,6 +103,13 @@ export function processDiscoveries() {
           discovery_timestamp: Date.now()
         }
       })
+  
+      // Add the discovery to the discovery store
+      useDiscoveryStore.getState().addDiscovery(
+        card.id, 
+        discoveryMessage, 
+        unlockedCardIds
+      );
     } else {
       // Just update thought investment
       cardStore.updateCardState(card.id, {

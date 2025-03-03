@@ -7,8 +7,6 @@ interface GameLoopStore {
   hasShownEnergyMessage: boolean
   thoughtsUnusedTimer: number | null
   isThoughtDialogOpen: boolean
-  isDiscoveryDialogOpen: boolean
-  newlyDiscoveredCards: string[]
   toggleRunning: () => void
   setRunning: (running: boolean) => void
   setProcessingTick: (processing: boolean) => void
@@ -18,8 +16,6 @@ interface GameLoopStore {
   clearThoughtsUnusedTimer: () => void
   openThoughtDialog: () => void
   closeThoughtDialog: () => void
-  openDiscoveryDialog: (cardIds: string[]) => void
-  closeDiscoveryDialog: () => void
   setHasShownEnergyMessage: (shown: boolean) => void
 }
 
@@ -30,8 +26,6 @@ export const useGameLoopStore = create<GameLoopStore>((set, get) => ({
   hasShownEnergyMessage: false,
   thoughtsUnusedTimer: null,
   isThoughtDialogOpen: false,
-  isDiscoveryDialogOpen: false,
-  newlyDiscoveredCards: [],
   toggleRunning: () => set((state) => ({ isRunning: !state.isRunning })),
   setRunning: (running: boolean) => set({ isRunning: running }),
   setProcessingTick: (processing: boolean) => set({ processingTick: processing }),
@@ -68,14 +62,4 @@ export const useGameLoopStore = create<GameLoopStore>((set, get) => ({
     // Resume the game when dialog is closed
     set({ isRunning: true });
   },
-  openDiscoveryDialog: (cardIds: string[]) => set({ 
-    isDiscoveryDialogOpen: true, 
-    isRunning: false,
-    newlyDiscoveredCards: cardIds
-  }),
-  closeDiscoveryDialog: () => set({ 
-    isDiscoveryDialogOpen: false, 
-    isRunning: true,
-    newlyDiscoveredCards: []
-  })
 }))
