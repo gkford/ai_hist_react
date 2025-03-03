@@ -27,9 +27,10 @@ export function ResearchDialog() {
     const card = cardStates[cardId]
     
     if (card.discovery_state.current_status === 'locked') {
-      // For locked cards, show the quiz
+      // For locked cards, show the quiz and close the research dialog
       setSelectedCardId(cardId)
       setShowQuiz(true)
+      closeResearchDialog() // Close the research dialog when showing quiz
     } else {
       // For unlocked cards, set priority to 'on'
       updateCardState(cardId, {
@@ -49,17 +50,20 @@ export function ResearchDialog() {
     setSelectedCardId(null)
   }
 
+  // If quiz is showing, render only the quiz modal
+  if (showQuiz && selectedCardId) {
+    return (
+      <UnlockQuizModal 
+        cardId={selectedCardId} 
+        onClose={handleQuizClose} 
+      />
+    )
+  }
+
   if (!isResearchDialogOpen) return null
 
   return (
-    <>
-      {showQuiz && selectedCardId && (
-        <UnlockQuizModal 
-          cardId={selectedCardId} 
-          onClose={handleQuizClose} 
-        />
-      )}
-      <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
           <h2 className="text-xl font-bold mb-4">Research Options</h2>
           <p className="text-gray-600 mb-4">
@@ -119,6 +123,5 @@ export function ResearchDialog() {
           </div>
         </div>
       </div>
-    </>
   )
 }
