@@ -81,7 +81,7 @@ export function ResearchDialog() {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
-          {researchableCards.length === 0 ? (
+        {researchableCards.length === 0 ? (
             <>
               <h2 className="text-center text-2xl font-bold text-gray-800 my-8">
                 Congratulations!
@@ -89,21 +89,6 @@ export function ResearchDialog() {
               <p className="text-center text-gray-600 mb-4">
                 Your people have survived and thrived over the prehistoric era.
               </p>
-            </>
-          ) : (
-            <>
-              <h2 className="text-xl font-bold mb-4">What would you like to do next?</h2>
-              <p className="text-gray-600 mb-4">
-                Here are some cards you can either research or unlock:
-              </p>
-            </>
-          )}
-
-          {researchableCards.length === 0 ? (
-            <>
-              <h2 className="text-center text-2xl font-bold text-gray-800 my-8">
-                Congratulations! Your people have survived and thrived over the prehistoric era
-              </h2>
               <div className="flex justify-center">
                 <Button onClick={() => window.location.reload()}>
                   Restart
@@ -111,47 +96,52 @@ export function ResearchDialog() {
               </div>
             </>
           ) : (
-            <div className="space-y-6 max-h-[70vh] overflow-y-auto mb-4">
-              {researchableCards.map((cardId) => {
-                const card = cardStates[cardId]
-                // const cardDef = allCards.find(c => c.id === cardId)
-                const isNew = newlyAvailableCards.includes(cardId)
-                const isLocked = card.discovery_state.current_status === 'locked'
-
-                return (
-                  <div
-                    key={cardId}
-                    className={cn(
-                      'border rounded-lg p-4 hover:bg-blue-50 transition-colors cursor-pointer relative group',
-                      isNew && 'border-blue-500 bg-blue-50'
-                    )}
-                    onClick={() => handleCardSelect(cardId)}
-                  >
-                    {isNew && !isLocked && (
-                      <div className="mb-2 text-blue-600 font-medium flex items-center gap-1">
-                        <span>✨</span> Ready to research
+            <>
+              <h2 className="text-xl font-bold mb-4">What would you like to do next?</h2>
+              <p className="text-gray-600 mb-4">
+                Here are some cards you can either research or unlock:
+              </p>
+              <div className="space-y-6 max-h-[70vh] overflow-y-auto mb-4">
+                {researchableCards.map((cardId) => {
+                  const card = cardStates[cardId]
+                  // const cardDef = allCards.find(c => c.id === cardId)
+                  const isNew = newlyAvailableCards.includes(cardId)
+                  const isLocked = card.discovery_state.current_status === 'locked'
+                  
+                  return (
+                    <div
+                      key={cardId}
+                      className={cn(
+                        'border rounded-lg p-4 hover:bg-blue-50 transition-colors cursor-pointer relative group',
+                        isNew && 'border-blue-500 bg-blue-50'
+                      )}
+                      onClick={() => handleCardSelect(cardId)}
+                    >
+                      {isNew && !isLocked && (
+                        <div className="mb-2 text-blue-600 font-medium flex items-center gap-1">
+                          <span>✨</span> Ready to research
+                        </div>
+                      )}
+                      {isLocked && (
+                        <div className="mb-2 text-amber-600 font-medium flex items-center gap-1">
+                          <span>🔒</span> Unlock to research
+                        </div>
+                      )}
+                      <div className="pointer-events-none relative">
+                        <CardDesign id={cardId} disableInteractions={true} />
+                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg">
+                          <span className="bg-white/70 text-black font-medium text-lg px-4 py-2 rounded">
+                            {isLocked ? "Unlock this card" : "Research this"}
+                          </span>
+                        </div>
                       </div>
-                    )}
-                    {isLocked && (
-                      <div className="mb-2 text-amber-600 font-medium flex items-center gap-1">
-                        <span>🔒</span> Unlock to research
-                      </div>
-                    )}
-                    <div className="pointer-events-none relative">
-                      <CardDesign id={cardId} disableInteractions={true} />
-                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg">
-                        <span className="bg-white/70 text-black font-medium text-lg px-4 py-2 rounded">
-                          {isLocked ? "Unlock this card" : "Research this"}
-                        </span>
-                      </div>
+                      {/* No explicit button, just hover text on the card itself */}
                     </div>
-                    {/* No explicit button, just hover text on the card itself */}
-                  </div>
-                )
-              })}
-            </div>
+                  )
+                })}
+              </div>
+            </>
           )}
-
           {/* No close button - force player to make a choice */}
         </div>
       </div>

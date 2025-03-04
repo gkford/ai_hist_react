@@ -21,10 +21,11 @@ export interface DiscoveryState extends DiscoveryStats {
 }
 
 // The full card state extends CardDefinition
-export interface CardState
-  extends Omit<CardDefinition, 'ongoingEffects' | 'discovery_stats'> {
-  ongoingEffects?: OngoingEffectsState
-  discovery_state: DiscoveryState
+export interface CardState 
+   extends Omit<CardDefinition, 'ongoingEffects' | 'discovery_stats'> {
+   ongoingEffects?: OngoingEffectsState
+   discovery_state: DiscoveryState
+   createdAt: number
 }
 
 interface CardsStore {

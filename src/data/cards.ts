@@ -286,27 +286,27 @@ export const allCards: CardDefinition[] = [
     replaces: 'grunts',
     tipText: "You've made an important discovery!",
   },
-  {
-    id: 'spear',
-    title: 'Spear',
-    type: 'science',
-    icon: '🗡️',
-    imageSrc: '/card_images/spear.png',
-    discovery_stats: {
-      thought_to_imagine: 25,
-      further_thought_to_discover: 25,
-      thought_level: 3,
-      discovery_unlocks: ['complex_hunting'],
-    },
-    ongoingEffects: {
-      resourceModifiers: {
-        food: '+5%',
-      },
-    },
-    OnDiscoveryEffects: {},
-    think_about_text: 'A stick with a sharp end could be useful...',
-    tipText: "Spear improves your tribes food production",
-  },
+  // {
+  //   id: 'spear',
+  //   title: 'Spear',
+  //   type: 'science',
+  //   icon: '🗡️',
+  //   imageSrc: '/card_images/spear.png',
+  //   discovery_stats: {
+  //     thought_to_imagine: 25,
+  //     further_thought_to_discover: 25,
+  //     thought_level: 3,
+  //     discovery_unlocks: ['complex_hunting'],
+  //   },
+  //   ongoingEffects: {
+  //     resourceModifiers: {
+  //       food: '+5%',
+  //     },
+  //   },
+  //   OnDiscoveryEffects: {},
+  //   think_about_text: 'A stick with a sharp end could be useful...',
+  //   tipText: "Spear improves your tribes food production",
+  // },
   {
     id: 'trading',
     title: 'Trading',
@@ -390,7 +390,7 @@ export const allCards: CardDefinition[] = [
     discovery_stats: {
       thought_to_imagine: 40,
       further_thought_to_discover: 40,
-      thought_level: 4,
+      thought_level: 3,
     },
     OnDiscoveryEffects: {
       upgradeWorkers: true,
