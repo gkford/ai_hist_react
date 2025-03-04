@@ -204,6 +204,14 @@ export async function processTick() {
   
   try {
     logger.log('=== Game Loop Start ===')
+    
+    // Check if we need to perform the second step of worker upgrades
+    // Do this every 60 seconds (game time)
+    const currentTime = Date.now();
+    if (currentTime - lastSecondStepUpgrade > 60000) {
+      completeWorkerUpgrades();
+      lastSecondStepUpgrade = currentTime;
+    }
 
     // Check for thoughts being generated but not applied
     checkForUnappliedThoughts()
