@@ -7,6 +7,28 @@ import { useWorkersStore } from '@/store/useWorkersStore'
 import { allCards } from '@/data/cards'
 import { logger } from './logger'
 
+// Track when the last second step upgrade was performed
+let lastSecondStepUpgrade = 0;
+
+// Function to complete the second step of worker upgrades
+function completeWorkerUpgrades() {
+  const workersStore = useWorkersStore.getState();
+  const workers = workersStore.workers;
+  
+  // Check if we have workers of different levels
+  const levels = new Set(workers.map(w => w.level));
+  
+  // If we have exactly 2 levels, perform the second step upgrade
+  if (levels.size === 2) {
+    const maxLevel = Math.max(...Array.from(levels));
+    
+    // Upgrade all workers to the highest current level
+    workersStore.upgradeWorkersSecondStep(maxLevel);
+    
+    logger.log(`Second step upgrade: All remaining workers upgraded to level ${maxLevel}`);
+  }
+}
+
 function processFoodConsumption() {
   const resourceStore = useResourceStore.getState()
   const workersStore = useWorkersStore.getState()

@@ -94,5 +94,74 @@ export const useWorkersStore = create<WorkersStore>((set, get) => ({
 
       return { workers: updatedWorkers };
     });
+  },
+
+  // Two-step upgrade process:
+  // 1. First half of workers go up one level
+  // 2. Later, all remaining lower-level workers go up to match
+  upgradeWorkersFirstStep: (targetLevel: number) => {
+    set((state) => {
+      // Get current worker levels
+      const currentLevels = new Set(state.workers.map(w => w.level));
+      
+      // If we already have two different levels, don't add a third
+      if (currentLevels.size >= 2) {
+        return { workers: state.workers };
+      }
+      
+      // Get the current level (should be the same for all workers at this point)
+      const currentLevel = Math.min(...Array.from(currentLevels));
+      
+      // Calculate the new level (either target level or current+1, whichever is smaller)
+      const newLevel = Math.min(targetLevel, currentLevel + 1);
+      
+      // If already at or above target level, no change needed
+      if (currentLevel >= newLevel) {
+        return { workers: state.workers };
+      }
+      
+      // Upgrade half of the workers (rounded up)
+      const workersToUpgrade = Math.ceil(state.workers.length / 2);
+      
+      // Sort workers by ID for consistent selection
+      const sortedWorkers = [...state.workers].sort((a, b) => a.id.localeCompare(b.id));
+      
+      // Select the first half to upgrade
+      const upgradeIds = new Set(
+        sortedWorkers.slice(0, workersToUpgrade).map(w => w.id)
+      );
+      
+      // Update the workers
+      const updatedWorkers = state.workers.map(worker => {
+        if (upgradeIds.has(worker.id)) {
+          return {
+            ...worker,
+            level: newLevel,
+            icon: WORKER_ICONS[newLevel as keyof typeof WORKER_ICONS]
+          };
+        }
+        return worker;
+      });
+      
+      return { workers: updatedWorkers };
+    });
+  },
+  
+  upgradeWorkersSecondStep: (targetLevel: number) => {
+    set((state) => {
+      // Upgrade all remaining workers to the target level
+      const updatedWorkers = state.workers.map(worker => {
+        if (worker.level < targetLevel) {
+          return {
+            ...worker,
+            level: targetLevel,
+            icon: WORKER_ICONS[targetLevel as keyof typeof WORKER_ICONS]
+          };
+        }
+        return worker;
+      });
+      
+      return { workers: updatedWorkers };
+    });
   }
 }));
