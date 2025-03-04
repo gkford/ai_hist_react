@@ -560,7 +560,7 @@ export const allCards: CardDefinition[] = [
     quiz: {
       question: "Why is storytelling important?",
       answers: [
-        "It passes down traditions",
+        "It passes knowledge to future generations",
         "It wastes time",
         "It makes no sense",
         "It is only for fun"
