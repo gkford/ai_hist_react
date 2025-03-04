@@ -72,6 +72,16 @@ export const allCards: CardDefinition[] = [
     icon: '🍎',
     imageSrc: '/card_images/foodResource.png',
     tipText: "You've made an important discovery!",
+    quiz: {
+      question: "Why is food important?",
+      answers: [
+        "It builds strong muscles",
+        "It is just for decoration",
+        "It provides energy",
+        "It has no real benefit"
+      ],
+      correctAnswer: 2
+    },
   },
   {
     id: 'hominids',
@@ -80,6 +90,16 @@ export const allCards: CardDefinition[] = [
     icon: '😊',
     imageSrc: '/card_images/hominids.png',
     tipText: "You've made an important discovery!",
+    quiz: {
+      question: "What is key for a thriving population?",
+      answers: [
+        "Better tools",
+        "More teamwork",
+        "Larger numbers",
+        "Improved shelter"
+      ],
+      correctAnswer: 1
+    },
   },
   {
     id: 'gather_food',
@@ -97,6 +117,16 @@ export const allCards: CardDefinition[] = [
       amount: 1.1,
     },
     tipText: "Click + to assign workers to Gather Food",
+    quiz: {
+      question: "What is a benefit of gathering food?",
+      answers: [
+        "It is safer than hunting",
+        "It always yields more food",
+        "It requires no effort",
+        "It is quicker than hunting"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'hunt',
@@ -145,6 +175,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'How do we express ourselves without words?',
     tipText: "Non-verbal Communication upgraded your population's thinking!",
+    quiz: {
+      question: "How does non-verbal communication help your people?",
+      answers: [
+        "It makes conversations clearer",
+        "It improves teamwork",
+        "It confuses others",
+        "It wastes time"
+      ],
+      correctAnswer: 1
+    },
   },
   {
     id: 'gift_giving',
@@ -168,6 +208,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'What if we shared things with others?',
     tipText: "Gift Giving upgraded your population's thinking!",
+    quiz: {
+      question: "Why might gift giving be useful?",
+      answers: [
+        "It builds friendships",
+        "It costs too much",
+        "It causes arguments",
+        "It wastes resources"
+      ],
+      correctAnswer: 0
+    },
   },
 
   {
@@ -188,6 +238,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'How can we get catch bigger animals... ?',
     tipText: "Click + to assign workers to Cooperative Hunting",
+    quiz: {
+      question: "What is a benefit of cooperative hunting?",
+      answers: [
+        "It reduces risk",
+        "It requires less planning",
+        "It is a solitary task",
+        "It always fails"
+      ],
+      correctAnswer: 0
+    },
   },
 
   {
@@ -201,6 +261,16 @@ export const allCards: CardDefinition[] = [
       amount: 1,
     },
     tipText: "Click + to assign workers to Think",
+    quiz: {
+      question: "How does thinking help our tribe?",
+      answers: [
+        "It boosts creativity",
+        "It tires everyone out",
+        "It wastes time",
+        "It makes no difference"
+      ],
+      correctAnswer: 0
+    },
   },
 
   // ------------------------------
@@ -214,6 +284,16 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/grunts.png',
     replaces: 'hominids',
     tipText: "You've made an important discovery!",
+    quiz: {
+      question: "What does a growing population indicate?",
+      answers: [
+        "More labor power",
+        "More noise",
+        "Less work",
+        "Greater chaos"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'early_stone_tools',
@@ -236,6 +316,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'Could these rocks be useful somehow?',
     tipText: "Early Stone Tools improves your tribes food production",
+    quiz: {
+      question: "What is one benefit of using stone tools?",
+      answers: [
+        "They are beautiful",
+        "They make tasks easier",
+        "They break easily",
+        "They are expensive"
+      ],
+      correctAnswer: 1
+    },
   },
   {
     id: 'fire_domestication',
@@ -254,6 +344,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'Can we make the hot thing from lightning...',
     tipText: "Fire Domestication upgraded your population's thinking!",
+    quiz: {
+      question: "How does fire domestication benefit your tribe?",
+      answers: [
+        "It provides warmth",
+        "It scares everyone",
+        "It is too dangerous",
+        "It ruins food"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'cooking',
@@ -273,6 +373,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'What if we put food near the fire?',
     tipText: "Cooking upgraded your population's thinking!",
+    quiz: {
+      question: "What is a major benefit of cooking food?",
+      answers: [
+        "It destroys nutrients",
+        "It makes food safer",
+        "It wastes energy",
+        "It makes food tasteless"
+      ],
+      correctAnswer: 1
+    },
   },
   // ------------------------------
   // Tier 3 (knowledge_level = 3)
@@ -285,6 +395,16 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/talkers.png',
     replaces: 'grunts',
     tipText: "You've made an important discovery!",
+    quiz: {
+      question: "What improves life for a population?",
+      answers: [
+        "Better communication",
+        "More weapons",
+        "Fewer rules",
+        "Less work"
+      ],
+      correctAnswer: 0
+    },
   },
   // {
   //   id: 'spear',
@@ -322,6 +442,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'What if we exchanged things we have for things we need?',
     tipText: "Click + to assign workers to Trading",
+    quiz: {
+      question: "How can trading help your tribe?",
+      answers: [
+        "It provides access to needed resources",
+        "It costs nothing",
+        "It's just a hobby",
+        "It decreases wealth"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'cave_painting',
@@ -340,6 +470,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'Could we make marks on the cave walls?',
     tipText: "Cave Painting upgraded your population's thinking!",
+    quiz: {
+      question: "Why might cave painting be important?",
+      answers: [
+        "It records history",
+        "It wastes time",
+        "It makes caves dirty",
+        "It is confusing"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'early_language',
@@ -363,6 +503,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'How can we communicate more complex ideas?',
     tipText: "Early Language upgraded your population's thinking!",
+    quiz: {
+      question: "What is a benefit of developing early language?",
+      answers: [
+        "It improves collaboration",
+        "It is unnecessary",
+        "It only confuses",
+        "It adds no value"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'tally_marks',
@@ -380,6 +530,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'How can we keep track of quantities?',
     tipText: "Tally Marks upgraded your population's thinking!",
+    quiz: {
+      question: "How do tally marks help?",
+      answers: [
+        "They help track quantities",
+        "They are decorative",
+        "They confuse people",
+        "They make math harder"
+      ],
+      correctAnswer: 0
+    },
   },
   {
     id: 'storytelling',
@@ -397,6 +557,16 @@ export const allCards: CardDefinition[] = [
     },
     think_about_text: 'How can we share experiences with others?',
     tipText: "Storytelling upgraded your population's thinking!",
+    quiz: {
+      question: "Why is storytelling important?",
+      answers: [
+        "It passes down traditions",
+        "It wastes time",
+        "It makes no sense",
+        "It is only for fun"
+      ],
+      correctAnswer: 0
+    },
   },
   // ------------------------------
   // Tier 4 (knowledge_level = 4)
@@ -409,5 +579,15 @@ export const allCards: CardDefinition[] = [
     imageSrc: '/card_images/storytellers.png',
     replaces: 'reasoners',
     tipText: "You've made an important discovery!",
+    quiz: {
+      question: "What does having storytellers in your tribe mean?",
+      answers: [
+        "Preserving history",
+        "Creating noise",
+        "Selling goods",
+        "Causing trouble"
+      ],
+      correctAnswer: 0
+    },
   },
 ]
