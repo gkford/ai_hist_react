@@ -67,14 +67,14 @@ export const useWorkersStore = create<WorkersStore>((set, get) => ({
   },
 
   // Legacy method kept for backward compatibility
-  upgradeWorkers: (count: number) => {
+  upgradeWorkers: () => {
     console.warn('upgradeWorkers is deprecated, use upgradeWorkersOnDiscovery instead');
     // Call the new method
     get().upgradeWorkersOnDiscovery();
   },
   
   // New unified worker upgrade method
-  upgradeWorkersOnDiscovery: (cardId?: string) => {
+  upgradeWorkersOnDiscovery: () => {
     set((state) => {
       // Get current worker levels
       const currentLevels = new Set(state.workers.map(w => w.level));
