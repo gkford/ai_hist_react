@@ -88,7 +88,7 @@ export function ResearchDialog() {
 
           {researchableCards.length === 0 ? (
             <p className="text-center text-gray-500 my-8">
-              No cards available for research at this time.
+              Congratulations! Your people have survived and thrived over the prehistoric era
             </p>
           ) : (
             <div className="space-y-6 max-h-[70vh] overflow-y-auto mb-4">
