@@ -53,6 +53,7 @@ export const useCardsStore = create<CardsStore>((set) => ({
     set((state) => {
       const newCardState: CardState = {
         ...cardDef,
+        createdAt: Date.now(),
         ongoingEffects: cardDef.ongoingEffects
           ? {
               resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
