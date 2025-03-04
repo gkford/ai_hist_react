@@ -120,7 +120,7 @@ export function ResearchDialog() {
                     <div className="pointer-events-none relative">
                       <CardDesign id={cardId} disableInteractions={true} />
                       <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg">
-                        <span className="text-white font-medium text-lg">
+                        <span className="bg-white/70 text-black font-medium text-lg px-4 py-2 rounded">
                           {isLocked ? "Unlock this card" : "Focus Thoughts on This"}
                         </span>
                       </div>
