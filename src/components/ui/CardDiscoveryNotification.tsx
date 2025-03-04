@@ -48,7 +48,7 @@ export function CardDiscoveryNotification({
               useDiscoveryStore.getState().pendingAcknowledgments
             ).filter(id => id !== cardId);
             
-            if (remainingAcknowledgments.length === 0) {
+            if (remainingAcknowledgments.length === 0 && !useGameLoopStore.getState().isResearchDialogOpen) {
               openResearchDialog();
             }
           }}
