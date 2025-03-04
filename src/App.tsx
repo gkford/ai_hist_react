@@ -23,16 +23,8 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   if (cardA.type === 'people' && cardB.type !== 'people') return -1
   if (cardB.type === 'people' && cardA.type !== 'people') return 1
 
-  // For non-people cards, sort by discovery timestamp (newer cards on top)
-  if (true) {
-    const stateA = useCardsStore.getState().cardStates[a.id]
-    const stateB = useCardsStore.getState().cardStates[b.id]
-    const timeA = stateA?.discovery_state?.discovery_timestamp || 0
-    const timeB = stateB?.discovery_state?.discovery_timestamp || 0
-    return timeB - timeA // More recent timestamps (larger numbers) come first
-  }
-
-  return 0
+  // Instead of discovery_timestamp, sort by createdAt.
+  return (b.createdAt || 0) - (a.createdAt || 0)
 }
 
 function getCardColumn(type: CardType): number {
