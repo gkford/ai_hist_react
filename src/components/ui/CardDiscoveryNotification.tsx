@@ -23,8 +23,8 @@ export function CardDiscoveryNotification({
   
   const openResearchDialog = useGameLoopStore(state => state.openResearchDialog)
   
-  // If no discovery info or card definition, don't render anything
-  if (!discoveryInfo || !cardDef) return null
+  // If no discovery info or card state, don't render anything
+  if (!discoveryInfo || !cardState) return null
   
   return (
     <div 
@@ -35,7 +35,7 @@ export function CardDiscoveryNotification({
       {...props}
     >
       <div className="text-center">
-        <h3 className="text-base font-bold mb-1">{cardDef.title} discovered!</h3>
+        <h3 className="text-base font-bold mb-1">{cardState.title} discovered!</h3>
         <p className="text-sm text-gray-700 mb-2">
           {discoveryInfo.message || tipText}
         </p>
