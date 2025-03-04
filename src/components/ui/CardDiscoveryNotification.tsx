@@ -43,12 +43,16 @@ export function CardDiscoveryNotification({
           onClick={() => {
             acknowledgeDiscovery(cardId);
             
-            // Only open research dialog if this is the last pending acknowledgment
+            // Only open research dialog if this is the last pending acknowledgment and no card is actively being researched
             const remainingAcknowledgments = Object.keys(
               useDiscoveryStore.getState().pendingAcknowledgments
             ).filter(id => id !== cardId);
             
-            if (remainingAcknowledgments.length === 0 && !useGameLoopStore.getState().isResearchDialogOpen) {
+            const hasActiveResearch = Object.values(useCardsStore.getState().cardStates).some(
+              state => state.discovery_state.priority === 'on'
+            );
+            
+            if (remainingAcknowledgments.length === 0 && !useGameLoopStore.getState().isResearchDialogOpen && !hasActiveResearch) {
               openResearchDialog();
             }
           }}
