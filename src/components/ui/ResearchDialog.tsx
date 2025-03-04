@@ -87,9 +87,16 @@ export function ResearchDialog() {
           </p>
 
           {researchableCards.length === 0 ? (
-            <p className="text-center text-gray-500 my-8">
-              Congratulations! Your people have survived and thrived over the prehistoric era
-            </p>
+            <>
+              <h2 className="text-center text-2xl font-bold text-gray-800 my-8">
+                Congratulations! Your people have survived and thrived over the prehistoric era
+              </h2>
+              <div className="flex justify-center">
+                <Button onClick={() => window.location.reload()}>
+                  Restart
+                </Button>
+              </div>
+            </>
           ) : (
             <div className="space-y-6 max-h-[70vh] overflow-y-auto mb-4">
               {researchableCards.map((cardId) => {
