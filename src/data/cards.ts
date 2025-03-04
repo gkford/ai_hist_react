@@ -27,8 +27,7 @@ export interface OngoingEffects {
 
 export interface OnDiscoveryEffects {
   resourceBonuses?: Partial<Record<ResourceKey, number>> // optional: resource bonus amounts
-  upgradeWorkers?: number // indicates that worker upgrade should happen (value is kept for backward compatibility)
-  targetLevel?: number // target level for the two-step worker upgrade process
+  upgradeWorkers?: boolean // indicates that worker upgrade should happen
 }
 
 export type CardType =

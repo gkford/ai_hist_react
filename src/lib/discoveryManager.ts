@@ -92,14 +92,12 @@ export function processDiscoveries() {
         )
       }
 
-      if (card.OnDiscoveryEffects?.upgradeWorkers && card.OnDiscoveryEffects?.targetLevel) {
-        const targetLevel = card.OnDiscoveryEffects.targetLevel;
-        
-        // First step: upgrade half the workers to the next level
-        useWorkersStore.getState().upgradeWorkersFirstStep(targetLevel);
+      if (card.OnDiscoveryEffects?.upgradeWorkers) {
+        // Trigger worker upgrade based on the card's discovery
+        useWorkersStore.getState().upgradeWorkersOnDiscovery(card.id);
         
         logger.log(
-          `First step upgrade: Half of workers upgraded toward level ${targetLevel} for card ${card.id}.`
+          `Worker upgrade triggered by discovery of card ${card.id}.`
         )
       }
 
