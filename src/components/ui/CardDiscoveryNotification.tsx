@@ -49,7 +49,15 @@ export function CardDiscoveryNotification({
         <Button 
           onClick={() => {
             acknowledgeDiscovery(cardId);
-            openResearchDialog();
+            
+            // Only open research dialog if this is the last pending acknowledgment
+            const remainingAcknowledgments = Object.keys(
+              useDiscoveryStore.getState().pendingAcknowledgments
+            ).filter(id => id !== cardId);
+            
+            if (remainingAcknowledgments.length === 0) {
+              openResearchDialog();
+            }
           }}
           className="mt-1 text-sm py-1 h-auto"
           size="sm"
