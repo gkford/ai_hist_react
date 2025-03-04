@@ -81,10 +81,23 @@ export function ResearchDialog() {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
-          <h2 className="text-xl font-bold mb-4">What would you like to do next?</h2>
-          <p className="text-gray-600 mb-4">
-            Here are some cards you can either research or unlock:
-          </p>
+          {researchableCards.length === 0 ? (
+            <>
+              <h2 className="text-center text-2xl font-bold text-gray-800 my-8">
+                Congratulations!
+              </h2>
+              <p className="text-center text-gray-600 mb-4">
+                Your people have survived and thrived over the prehistoric era.
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold mb-4">What would you like to do next?</h2>
+              <p className="text-gray-600 mb-4">
+                Here are some cards you can either research or unlock:
+              </p>
+            </>
+          )}
 
           {researchableCards.length === 0 ? (
             <>
