@@ -55,7 +55,7 @@ export function OnDiscoveryEffectsViewer({
       <div className="flex flex-col items-center">
         <div>CULTURAL EVOLUTION! 📚</div>
         <div>
-          {count}x {WORKER_TYPES[fromLevel].icon} → {WORKER_TYPES[targetLevel].icon}
+          {count} {WORKER_TYPES[fromLevel].icon} → {WORKER_TYPES[targetLevel].icon}
         </div>
       </div>
     </span>
@@ -64,7 +64,7 @@ export function OnDiscoveryEffectsViewer({
   if (compact) {
     const workerUpgradeElement = effects.upgradeWorkers ? (
       <span className="flex items-center gap-1 text-sm">
-        {count}x {WORKER_TYPES[fromLevel].icon}→{WORKER_TYPES[targetLevel].icon}
+        {count} {WORKER_TYPES[fromLevel].icon} → {WORKER_TYPES[targetLevel].icon}
       </span>
     ) : null;
 
