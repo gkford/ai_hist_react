@@ -342,8 +342,7 @@ export const allCards: CardDefinition[] = [
       },
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 3,
-      targetLevel: 4,
+      upgradeWorkers: true,
     },
     think_about_text: 'How can we communicate more complex ideas?',
   },
