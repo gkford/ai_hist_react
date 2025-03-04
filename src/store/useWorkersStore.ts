@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { logger } from '@/lib/logger'
 
 export const WORKER_TYPES = {
   1: { name: 'Hominids', icon: '😊' },

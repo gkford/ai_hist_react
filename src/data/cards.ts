@@ -136,8 +136,7 @@ export const allCards: CardDefinition[] = [
       discovery_unlocks: ['cooperative_hunting'],
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 5,
-      targetLevel: 2,
+      upgradeWorkers: true,
     },
     think_about_text: 'How do we express ourselves without words?',
   },
@@ -159,8 +158,7 @@ export const allCards: CardDefinition[] = [
       },
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 5,
-      targetLevel: 2,
+      upgradeWorkers: true,
     },
     think_about_text: 'What if we shared things with others?',
   },
@@ -241,8 +239,7 @@ export const allCards: CardDefinition[] = [
       discovery_unlocks: ['cooking'],
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 5,
-      targetLevel: 2,
+      upgradeWorkers: true,
     },
     think_about_text: 'Can we make the hot thing from lightning...',
   },
@@ -260,8 +257,7 @@ export const allCards: CardDefinition[] = [
     },
     // TODO: Should increase max food storage by 10
     OnDiscoveryEffects: {
-      upgradeWorkers: 5,
-      targetLevel: 3,
+      upgradeWorkers: true,
     },
     think_about_text: 'What if we put food near the fire?',
   },
@@ -324,8 +320,7 @@ export const allCards: CardDefinition[] = [
       discovery_unlocks: ['early_language', 'tally_marks'],
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 3,
-      targetLevel: 4,
+      upgradeWorkers: true,
     },
     think_about_text: 'Could we make marks on the cave walls?',
   },
@@ -364,8 +359,7 @@ export const allCards: CardDefinition[] = [
       thought_level: 3,
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 3,
-      targetLevel: 3,
+      upgradeWorkers: true,
     },
     think_about_text: 'How can we keep track of quantities?',
   },
@@ -381,8 +375,7 @@ export const allCards: CardDefinition[] = [
       thought_level: 4,
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: 4,
-      targetLevel: 4,
+      upgradeWorkers: true,
     },
     think_about_text: 'How can we share experiences with others?',
   },
