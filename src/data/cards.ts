@@ -55,6 +55,7 @@ export interface CardDefinition {
   OnDiscoveryEffects?: OnDiscoveryEffects
   discovery_stats?: DiscoveryStats
   replaces?: string // ID of the card this replaces
+  tipText?: string
   think_about_text?: string // Flavor text for unlocked cards
   quiz?: Quiz
 }
@@ -70,6 +71,7 @@ export const allCards: CardDefinition[] = [
     resource_type: 'food',
     icon: '🍎',
     imageSrc: '/card_images/foodResource.png',
+    tipText: "You've made an important discovery!",
   },
   {
     id: 'hominids',
@@ -77,6 +79,7 @@ export const allCards: CardDefinition[] = [
     type: 'people',
     icon: '😊',
     imageSrc: '/card_images/hominids.png',
+    tipText: "You've made an important discovery!",
   },
   {
     id: 'gather_food',
@@ -93,6 +96,7 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.1,
     },
+    tipText: "Click + to assign workers to Gather Food",
   },
   {
     id: 'hunt',
@@ -122,6 +126,7 @@ export const allCards: CardDefinition[] = [
       ],
       correctAnswer: 0
     },
+    tipText: "Click + to assign workers to Hunting",
   },
   {
     id: 'non_verbal_communication',
@@ -139,6 +144,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'How do we express ourselves without words?',
+    tipText: "Non-verbal Communication upgraded your population's thinking!",
   },
   {
     id: 'gift_giving',
@@ -161,6 +167,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'What if we shared things with others?',
+    tipText: "Gift Giving upgraded your population's thinking!",
   },
 
   {
@@ -180,6 +187,7 @@ export const allCards: CardDefinition[] = [
       amount: 1.3,
     },
     think_about_text: 'How can we get catch bigger animals... ?',
+    tipText: "Click + to assign workers to Cooperative Hunting",
   },
 
   {
@@ -192,6 +200,7 @@ export const allCards: CardDefinition[] = [
       resource: 'thoughts1',
       amount: 1,
     },
+    tipText: "Click + to assign workers to Think",
   },
 
   // ------------------------------
@@ -204,6 +213,7 @@ export const allCards: CardDefinition[] = [
     icon: '🤔',
     imageSrc: '/card_images/grunts.png',
     replaces: 'hominids',
+    tipText: "You've made an important discovery!",
   },
   {
     id: 'early_stone_tools',
@@ -225,6 +235,7 @@ export const allCards: CardDefinition[] = [
       },
     },
     think_about_text: 'Could these rocks be useful somehow?',
+    tipText: "Early Stone Tools improves your tribes food production",
   },
   {
     id: 'fire_domestication',
@@ -242,6 +253,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'Can we make the hot thing from lightning...',
+    tipText: "Fire Domestication upgraded your population's thinking!",
   },
   {
     id: 'cooking',
@@ -260,6 +272,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'What if we put food near the fire?',
+    tipText: "Cooking upgraded your population's thinking!",
   },
   // ------------------------------
   // Tier 3 (knowledge_level = 3)
@@ -271,6 +284,7 @@ export const allCards: CardDefinition[] = [
     icon: '🗣️',
     imageSrc: '/card_images/talkers.png',
     replaces: 'grunts',
+    tipText: "You've made an important discovery!",
   },
   {
     id: 'spear',
@@ -291,6 +305,7 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {},
     think_about_text: 'A stick with a sharp end could be useful...',
+    tipText: "Spear improves your tribes food production",
   },
   {
     id: 'trading',
@@ -306,6 +321,7 @@ export const allCards: CardDefinition[] = [
       amount: 1.5,
     },
     think_about_text: 'What if we exchanged things we have for things we need?',
+    tipText: "Click + to assign workers to Trading",
   },
   {
     id: 'cave_painting',
@@ -323,6 +339,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'Could we make marks on the cave walls?',
+    tipText: "Cave Painting upgraded your population's thinking!",
   },
   {
     id: 'early_language',
@@ -345,6 +362,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'How can we communicate more complex ideas?',
+    tipText: "Early Language upgraded your population's thinking!",
   },
   {
     id: 'tally_marks',
@@ -361,6 +379,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'How can we keep track of quantities?',
+    tipText: "Tally Marks upgraded your population's thinking!",
   },
   {
     id: 'storytelling',
@@ -377,6 +396,7 @@ export const allCards: CardDefinition[] = [
       upgradeWorkers: true,
     },
     think_about_text: 'How can we share experiences with others?',
+    tipText: "Storytelling upgraded your population's thinking!",
   },
   // ------------------------------
   // Tier 4 (knowledge_level = 4)
@@ -388,5 +408,6 @@ export const allCards: CardDefinition[] = [
     icon: '📖',
     imageSrc: '/card_images/storytellers.png',
     replaces: 'reasoners',
+    tipText: "You've made an important discovery!",
   },
 ]
