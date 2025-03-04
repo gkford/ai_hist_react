@@ -3,7 +3,7 @@ import { useDiscoveryStore } from '@/store/useDiscoveryStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
-import { allCards } from '@/data/cards'
+import { useCardsStore } from '@/store/useCardsStore'
 
 interface CardDiscoveryNotificationProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
@@ -18,15 +18,8 @@ export function CardDiscoveryNotification({
   const acknowledgeDiscovery = useDiscoveryStore(state => state.acknowledgeDiscovery)
   
   const discoveryInfo = pendingAcknowledgments[cardId]
-  const cardDef = allCards.find(c => c.id === cardId)
-  
-  // Get card-specific tip text
-  let tipText = "You've made an important discovery!"
-  if (cardId === 'hunt') {
-    tipText = "Click + to assign your workers to hunt. Hunting provides more food than gathering."
-  } else if (cardDef?.generates) {
-    tipText = `Click + to assign your workers to this ${cardDef?.title || ''} card.`
-  }
+  const cardState = useCardsStore(state => state.cardStates[cardId])
+  const tipText = cardState?.tipText || "You've made an important discovery!"
   
   const openResearchDialog = useGameLoopStore(state => state.openResearchDialog)
   
