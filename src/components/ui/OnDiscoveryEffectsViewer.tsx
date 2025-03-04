@@ -1,6 +1,6 @@
 import { OnDiscoveryEffects } from '@/data/cards'
 import { useResourceStore } from '@/store/useResourceStore'
-import { WORKER_TYPES, useWorkersStore } from '@/store/useWorkersStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
 
 interface OnDiscoveryEffectsViewerProps {
   effects: OnDiscoveryEffects
@@ -10,7 +10,7 @@ interface OnDiscoveryEffectsViewerProps {
 
 export function OnDiscoveryEffectsViewer({
   effects,
-  isDiscovered,
+  isDiscovered: _isDiscovered,
   compact = false
 }: OnDiscoveryEffectsViewerProps) {
   if (
