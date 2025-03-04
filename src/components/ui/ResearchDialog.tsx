@@ -102,7 +102,7 @@ export function ResearchDialog() {
                   <div
                     key={cardId}
                     className={cn(
-                      'border rounded-lg p-4 hover:bg-blue-50 transition-colors cursor-pointer',
+                      'border rounded-lg p-4 hover:bg-blue-50 transition-colors cursor-pointer relative group',
                       isNew && 'border-blue-500 bg-blue-50'
                     )}
                     onClick={() => handleCardSelect(cardId)}
@@ -117,17 +117,15 @@ export function ResearchDialog() {
                         <span>🔒</span> Locked - Click to take quiz
                       </div>
                     )}
-                    <div className="pointer-events-none">
+                    <div className="pointer-events-none relative">
                       <CardDesign id={cardId} disableInteractions={true} />
-                    </div>
-                    <div className="mt-4 flex justify-end">
-                      <div className={cn(
-                        "px-4 py-2 rounded-md border border-gray-300 inline-flex items-center justify-center",
-                        isLocked ? "text-amber-500" : "text-blue-500"
-                      )}>
-                        {isLocked ? "Unlock with Quiz" : "Focus Thoughts on This"}
+                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg">
+                        <span className="text-white font-medium text-lg">
+                          {isLocked ? "Unlock this card" : "Focus Thoughts on This"}
+                        </span>
                       </div>
                     </div>
+                    {/* No explicit button, just hover text on the card itself */}
                   </div>
                 )
               })}
