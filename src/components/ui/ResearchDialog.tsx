@@ -109,12 +109,12 @@ export function ResearchDialog() {
                   >
                     {isNew && !isLocked && (
                       <div className="mb-2 text-blue-600 font-medium flex items-center gap-1">
-                        <span>✨</span> Newly Available
+                        <span>✨</span> Ready to research
                       </div>
                     )}
                     {isLocked && (
                       <div className="mb-2 text-amber-600 font-medium flex items-center gap-1">
-                        <span>🔒</span> Locked - Click to take quiz
+                        <span>🔒</span> Unlock to research
                       </div>
                     )}
                     <div className="pointer-events-none relative">
