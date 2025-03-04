@@ -130,8 +130,8 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               </React.Fragment>
             )}
 
-            {/* Additional Main Content vertically centered - with overflow auto */}
-            <div className="flex-grow flex items-center overflow-auto">
+            {/* Additional Main Content vertically centered - with overflow hidden */}
+            <div className="flex-grow flex items-center overflow-hidden">
               <div className="w-full">
                 {/* Add the discovery notification in the main content area */}
                 {cardState.discovery_state.current_status === 'discovered' &&
