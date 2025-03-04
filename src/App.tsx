@@ -27,8 +27,11 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   return (b.createdAt || 0) - (a.createdAt || 0)
 }
 
-function getCardColumn(type: CardType): number {
-  switch (type) {
+function getCardColumn(cardDef: { id: string; type: CardType }): number {
+  if (['non_verbal_communication', 'early_language', 'storytelling'].includes(cardDef.id)) {
+    return 4
+  }
+  switch (cardDef.type) {
     case 'people':
     case 'computation':
     case 'resource':
@@ -143,7 +146,7 @@ function App() {
                   .filter((cardState) => {
                     const cardDef = allCards.find((c) => c.id === cardState.id)
                     return (
-                      cardDef && getCardColumn(cardDef.type) === columnNumber
+                      cardDef && getCardColumn(cardDef) === columnNumber
                     )
                   })
                   .sort(sortCardsInColumn)
