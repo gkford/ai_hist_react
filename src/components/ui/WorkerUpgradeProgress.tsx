@@ -83,44 +83,49 @@ export function WorkerUpgradeProgress({
       
       // Check if we've reached 100%
       if (progressRef.current >= 100) {
-        // Get the workers store
-        const workersStore = useWorkersStore.getState()
-        
-        // Find upgradable workers (level below target)
-        const upgradableWorkers = workersStore.workers.filter(w => w.level < targetLevel)
-        
-        if (upgradableWorkers.length > 0) {
-          // Sort by level (ascending)
-          upgradableWorkers.sort((a, b) => a.level - b.level)
-          
-          // Get the lowest level worker
-          const workerToUpgrade = upgradableWorkers[0]
-          
-          // Get the icon for the new level
-          const newIcon = WORKER_ICONS[targetLevel as keyof typeof WORKER_ICONS] || WORKER_ICONS[1]
-          
-          logger.log(`Upgrading worker ${workerToUpgrade.id} from level ${workerToUpgrade.level} to ${targetLevel}`)
-          
-          // Create a new worker object with the upgraded level
-          const upgradedWorker = {
-            ...workerToUpgrade,
-            level: targetLevel,
-            icon: newIcon
-          }
-          
-          // Remove the old worker and add the upgraded one
-          workersStore.removeWorker(workerToUpgrade.id)
-          workersStore.addWorker(upgradedWorker)
-          
-          // Log a message to the console
-          console.log(`Worker ${workerToUpgrade.id} upgraded from level ${workerToUpgrade.level} to ${targetLevel}`)
-        } else {
-          // If there are no upgradable workers, log a message
-          logger.log('No workers available to upgrade')
-        }
-        
-        // Reset progress
+        // Reset progress first to prevent multiple upgrades
+        const oldProgress = progressRef.current
         progressRef.current = 0
+        setProgress(0)
+        
+        // Only proceed with upgrade if we actually crossed the 100% threshold
+        if (oldProgress >= 100) {
+          // Get the workers store
+          const workersStore = useWorkersStore.getState()
+          
+          // Find upgradable workers (level below target)
+          const upgradableWorkers = workersStore.workers.filter(w => w.level < targetLevel)
+          
+          if (upgradableWorkers.length > 0) {
+            // Sort by level (ascending)
+            upgradableWorkers.sort((a, b) => a.level - b.level)
+            
+            // Get the lowest level worker
+            const workerToUpgrade = upgradableWorkers[0]
+            
+            // Get the icon for the new level
+            const newIcon = WORKER_ICONS[targetLevel as keyof typeof WORKER_ICONS] || WORKER_ICONS[1]
+            
+            logger.log(`Upgrading worker ${workerToUpgrade.id} from level ${workerToUpgrade.level} to ${targetLevel}`)
+            
+            // Create a new worker object with the upgraded level
+            const upgradedWorker = {
+              ...workerToUpgrade,
+              level: targetLevel,
+              icon: newIcon
+            }
+            
+            // Remove the old worker and add the upgraded one
+            workersStore.removeWorker(workerToUpgrade.id)
+            workersStore.addWorker(upgradedWorker)
+            
+            // Log a message to the console
+            console.log(`Worker ${workerToUpgrade.id} upgraded from level ${workerToUpgrade.level} to ${targetLevel}`)
+          } else {
+            // If there are no upgradable workers, log a message
+            logger.log('No workers available to upgrade')
+          }
+        }
       }
       
       // Update the state (for display only)
