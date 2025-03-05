@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
-import { useDroppable } from '@dnd-kit/core'
 import { useWorkersStore, WORKER_ICONS } from '@/store/useWorkersStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { Button } from './button'
@@ -16,7 +15,6 @@ export function PopulationTracker({
   const addWorker = useWorkersStore(state => state.addWorker)
   const [showError, setShowError] = useState(false)
   
-  const { setNodeRef: setPopulationRef } = useDroppable({ id: 'population' });
 
   const handleAddPopulation = () => {
     // Check if there are enough excess calories (at least 100)
@@ -42,7 +40,6 @@ export function PopulationTracker({
 
   return (
     <div 
-      ref={setPopulationRef}
       className={cn("flex items-center justify-between p-2", className)}
       {...props}
     >
