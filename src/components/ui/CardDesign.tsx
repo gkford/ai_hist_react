@@ -17,6 +17,7 @@ import { GenerationTracker } from './GenerationTracker'
 import { FoodResourceCard } from './FoodResourceCard'
 import { CardDiscoveryNotification } from './CardDiscoveryNotification'
 import { UnlockQuizModal } from './UnlockQuizModal'
+import { WorkerUpgradeProgress } from './WorkerUpgradeProgress'
 
 export interface CardDesignProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
@@ -193,6 +194,14 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                       </div>
                     )}
                   </div>
+                ) : cardDef.type === 'worker_upgrade' ? (
+                  <div className="w-full">
+                    <WorkerUpgradeProgress 
+                      cardId={id} 
+                      targetLevel={2} // Level 2 for this specific card
+                      upgradeTime={10} // 10 seconds base time
+                    />
+                  </div>
                 ) : (
                   <div></div>
                 )}
@@ -203,7 +212,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
 
         {/* Footer: Fixed height with same background as the card with a thin light grey top border */}
         <div className="w-full h-12 flex-shrink-0 flex items-center justify-center border-t border-gray-200">
-          {cardDef.generates &&
+          {(cardDef.generates || cardDef.type === 'worker_upgrade') &&
           cardState.discovery_state.current_status === 'discovered' ? (
             <WorkerTracker cardId={id} className="w-full px-4" />
           ) : resourceType === 'food' ? (

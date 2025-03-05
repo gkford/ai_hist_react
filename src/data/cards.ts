@@ -36,6 +36,7 @@ export type CardType =
   | 'science'
   | 'production'
   | 'resource'
+  | 'worker_upgrade'
 
 export interface Quiz {
   question: string
@@ -64,6 +65,29 @@ export const allCards: CardDefinition[] = [
   // ------------------------------
   // Tier 1 (knowledge_level = 1)
   // ------------------------------
+  {
+    id: 'worker_upgrade_l2',
+    title: 'Worker Training',
+    type: 'worker_upgrade',
+    icon: '📚',
+    imageSrc: '/card_images/thinkL2.png',
+    discovery_stats: {
+      thought_to_imagine: 0,
+      further_thought_to_discover: 0,
+      thought_level: 1,
+    },
+    tipText: "Assign workers to train other workers to level 2",
+    quiz: {
+      question: "What is the benefit of training workers?",
+      answers: [
+        "They become more efficient",
+        "They need more food",
+        "They work slower",
+        "They become tired"
+      ],
+      correctAnswer: 0
+    },
+  },
   {
     id: 'food_resource',
     title: 'Food',

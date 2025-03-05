@@ -40,6 +40,8 @@ function getCardColumn(cardDef: { id: string; type: CardType }): number {
       return 2
     case 'science':
       return 3
+    case 'worker_upgrade':
+      return 4
     default:
       return 3
   }
@@ -68,6 +70,12 @@ function initializeCards() {
   })
 
   cardStore.createCard('think', {
+    discovery_state: {
+      current_status: 'discovered',
+    },
+  })
+  
+  cardStore.createCard('worker_upgrade_l2', {
     discovery_state: {
       current_status: 'discovered',
     },
