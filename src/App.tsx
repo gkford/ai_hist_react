@@ -75,11 +75,6 @@ function initializeCards() {
     },
   })
   
-  cardStore.createCard('worker_upgrade_l2', {
-    discovery_state: {
-      current_status: 'discovered',
-    },
-  })
 
   cardStore.createCard('hunt', {
     discovery_state: {

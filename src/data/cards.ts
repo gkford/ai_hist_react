@@ -66,29 +66,6 @@ export const allCards: CardDefinition[] = [
   // Tier 1 (knowledge_level = 1)
   // ------------------------------
   {
-    id: 'worker_upgrade_l2',
-    title: 'Worker Training',
-    type: 'worker_upgrade',
-    icon: '📚',
-    imageSrc: '/card_images/thinkL2.png',
-    discovery_stats: {
-      thought_to_imagine: 0,
-      further_thought_to_discover: 0,
-      thought_level: 1,
-    },
-    tipText: "Assign workers to train other workers to level 2",
-    quiz: {
-      question: "What is the benefit of training workers?",
-      answers: [
-        "They become more efficient",
-        "They need more food",
-        "They work slower",
-        "They become tired"
-      ],
-      correctAnswer: 0
-    },
-  },
-  {
     id: 'food_resource',
     title: 'Food',
     type: 'resource',
@@ -185,7 +162,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'non_verbal_communication',
     title: 'Non-verbal Communication',
-    type: 'science',
+    type: 'worker_upgrade',
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
     discovery_stats: {
@@ -194,11 +171,8 @@ export const allCards: CardDefinition[] = [
       thought_level: 1,
       discovery_unlocks: ['cooperative_hunting'],
     },
-    OnDiscoveryEffects: {
-      upgradeWorkers: true,
-    },
     think_about_text: 'How do we express ourselves without words?',
-    tipText: "Non-verbal Communication upgraded your population's thinking!",
+    tipText: "Assign workers to train other workers to level 2",
     quiz: {
       question: "How does non-verbal communication help your people?",
       answers: [
