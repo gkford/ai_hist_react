@@ -1,6 +1,6 @@
 import { OnDiscoveryEffects } from '@/data/cards'
 import { useResourceStore } from '@/store/useResourceStore'
-import { WORKER_TYPES } from '@/store/useWorkersStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
 
 interface OnDiscoveryEffectsViewerProps {
   effects: OnDiscoveryEffects
@@ -10,7 +10,7 @@ interface OnDiscoveryEffectsViewerProps {
 
 export function OnDiscoveryEffectsViewer({
   effects,
-  isDiscovered,
+  isDiscovered: _isDiscovered,
   compact = false
 }: OnDiscoveryEffectsViewerProps) {
   if (
@@ -37,12 +37,26 @@ export function OnDiscoveryEffectsViewer({
       )
     }) : []
 
+  const workers = useWorkersStore(state => state.workers)
+  let fromLevel = 0, targetLevel = 0, count = 0;
+  if (workers.length > 0) {
+    const levels = workers.map(w => w.level)
+    fromLevel = Math.min(...levels)
+    if (new Set(levels).size === 1) {
+      targetLevel = Math.min(fromLevel + 1, 4)
+      count = Math.ceil(workers.length / 2)
+    } else {
+      targetLevel = Math.max(...levels)
+      count = workers.filter(w => w.level < targetLevel).length
+    }
+  }
   const workerUpgradeElement = effects.upgradeWorkers ? (
     <span className="flex items-center gap-1">
       <div className="flex flex-col items-center">
         <div>CULTURAL EVOLUTION! 📚</div>
         <div>
-          {isDiscovered ? 'The thinking of' : 'The thinking of'} {effects.upgradeWorkers} {effects.upgradeWorkers === 1 ? 'worker' : 'workers'} {isDiscovered ? 'improved' : 'will improve'} to {WORKER_TYPES[(effects.targetLevel || 1) as keyof typeof WORKER_TYPES].name}!
+          +👷 ⬆️   
+          {/* {count} {WORKER_TYPES[fromLevel].icon} → {WORKER_TYPES[targetLevel].icon} */}
         </div>
       </div>
     </span>
@@ -51,7 +65,8 @@ export function OnDiscoveryEffectsViewer({
   if (compact) {
     const workerUpgradeElement = effects.upgradeWorkers ? (
       <span className="flex items-center gap-1 text-sm">
-        +{effects.upgradeWorkers} {WORKER_TYPES[(effects.targetLevel || 2) as keyof typeof WORKER_TYPES].icon}
+        👤 ⬆️ {count}   
+        {/* {count} {WORKER_TYPES[fromLevel].icon} → {WORKER_TYPES[targetLevel].icon} */}
       </span>
     ) : null;
 

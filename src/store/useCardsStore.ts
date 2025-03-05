@@ -6,7 +6,7 @@ import type {
   OngoingEffects,
 } from '@/data/cards'
 
-export type DiscoveryStatus = 'unthoughtof' | 'discovered' | 'obsolete'
+export type DiscoveryStatus = 'locked' | 'unlocked' | 'discovered' | 'obsolete'
 
 // State extensions of the base configs
 interface OngoingEffectsState extends OngoingEffects {
@@ -20,15 +20,12 @@ export interface DiscoveryState extends DiscoveryStats {
   discovery_timestamp?: number
 }
 
-
 // The full card state extends CardDefinition
-export interface CardState
-  extends Omit<
-    CardDefinition,
-    'ongoingEffects' | 'discovery_stats'
-  > {
-  ongoingEffects?: OngoingEffectsState
-  discovery_state: DiscoveryState
+export interface CardState 
+   extends Omit<CardDefinition, 'ongoingEffects' | 'discovery_stats'> {
+   ongoingEffects?: OngoingEffectsState
+   discovery_state: DiscoveryState
+   createdAt: number
 }
 
 interface CardsStore {
@@ -57,16 +54,17 @@ export const useCardsStore = create<CardsStore>((set) => ({
     set((state) => {
       const newCardState: CardState = {
         ...cardDef,
+        createdAt: Date.now(),
         ongoingEffects: cardDef.ongoingEffects
           ? {
               resourceModifiers: cardDef.ongoingEffects.resourceModifiers,
-              active: false
+              active: false,
             }
           : undefined,
-        discovery_state: cardDef.discovery_stats 
+        discovery_state: cardDef.discovery_stats
           ? {
               ...cardDef.discovery_stats,
-              current_status: 'unthoughtof',
+              current_status: 'locked',
               thought_invested: 0,
               priority: 'off',
               ...(initialState?.discovery_state || {}),
@@ -75,26 +73,25 @@ export const useCardsStore = create<CardsStore>((set) => ({
               thought_to_imagine: 0,
               further_thought_to_discover: 0,
               thought_level: 1,
-              current_status: 'unthoughtof',
+              current_status: 'locked',
               thought_invested: 0,
               priority: 'off',
               ...(initialState?.discovery_state || {}),
-            }
-      };
+            },
+      }
 
       const newCardStates = {
         ...state.cardStates,
         [id]: newCardState,
-      };
+      }
 
-
-      return { 
+      return {
         cardStates: newCardStates,
         createCard: state.createCard,
         updateCardState: state.updateCardState,
         updateEffectState: state.updateEffectState,
-        removeCard: state.removeCard
-      };
+        removeCard: state.removeCard,
+      }
     })
   },
 
@@ -106,18 +103,19 @@ export const useCardsStore = create<CardsStore>((set) => ({
         const resetCardStates = Object.entries(state.cardStates).reduce(
           (acc, [cardId, cardState]) => ({
             ...acc,
-            [cardId]: cardId !== id && cardState.discovery_state.priority === 'on'
-              ? {
-                  ...cardState,
-                  discovery_state: {
-                    ...cardState.discovery_state,
-                    priority: 'off'
+            [cardId]:
+              cardId !== id && cardState.discovery_state.priority === 'on'
+                ? {
+                    ...cardState,
+                    discovery_state: {
+                      ...cardState.discovery_state,
+                      priority: 'off',
+                    },
                   }
-                }
-              : cardState
+                : cardState,
           }),
           {}
-        );
+        )
 
         // Then update the target card
         return {
@@ -129,10 +127,10 @@ export const useCardsStore = create<CardsStore>((set) => ({
               discovery_state: {
                 ...state.cardStates[id].discovery_state,
                 ...(partial.discovery_state || {}),
-              }
+              },
             },
           },
-        };
+        }
       }
 
       // If we're not turning on priority, just update normally
@@ -145,12 +143,11 @@ export const useCardsStore = create<CardsStore>((set) => ({
             discovery_state: {
               ...state.cardStates[id].discovery_state,
               ...(partial.discovery_state || {}),
-            }
+            },
           },
         },
-      };
+      }
     }),
-
 
   updateEffectState: (cardId, partial: Partial<OngoingEffectsState>) =>
     set((state) => ({
@@ -167,10 +164,9 @@ export const useCardsStore = create<CardsStore>((set) => ({
         },
       },
     })),
-  removeCard: (id: string) => 
+  removeCard: (id: string) =>
     set((state) => {
-      const { [id]: removed, ...remaining } = state.cardStates;
-      return { cardStates: remaining };
+      const { [id]: removed, ...remaining } = state.cardStates
+      return { cardStates: remaining }
     }),
-    
 }))

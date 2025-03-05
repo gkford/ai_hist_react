@@ -1,8 +1,9 @@
 import { create } from "zustand"
 import { logger } from "@/lib/logger"
 import { useCardsStore } from '@/store/useCardsStore'
+import { useWorkersStore } from '@/store/useWorkersStore'
 
-export type ResourceKey = 'food' | 'knowledge' | 'thoughts1' | 'thoughts2' | 'thoughts3' | 'thoughts4' | 'humanEnergy' | 'population'
+export type ResourceKey = 'food' | 'knowledge' | 'thoughts1' | 'thoughts2' | 'thoughts3' | 'thoughts4' | 'humanEnergy'
 
 interface Resource {
   amount: number[];
@@ -28,25 +29,13 @@ interface ResourceStore {
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   resources: {
-    food: { amount: [0], max_storage: 20, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
+    food: { amount: [1], max_storage: 2, icon: "🍖", key: "food", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     knowledge: { amount: [0], icon: "📚", key: "knowledge", isRate: false, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     thoughts1: { amount: [0], icon: "😊💭", key: "thoughts1", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     thoughts2: { amount: [0], icon: "🤔💭", key: "thoughts2", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     thoughts3: { amount: [0], icon: "🧑‍🔬💭", key: "thoughts3", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     thoughts4: { amount: [0], icon: "🧙‍♂️💭", key: "thoughts4", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
     humanEnergy: { amount: [0], icon: "⚡", key: "humanEnergy", isRate: true, bonus: 1, amountProducedThisSecond: [0], rawAmountProducedThisSecond: [0], amountSpentThisSecond: [0] },
-    population: { 
-      amount: [10], 
-      icon: "👥", 
-      key: "population", 
-      isRate: false, 
-      bonus: 1, 
-      amountProducedThisSecond: [0], 
-      rawAmountProducedThisSecond: [0],
-      amountSpentThisSecond: [0],
-      available: 0,
-      total: 10
-    },
   },
   progressToNextSecond: () => 
     set((state) => {
@@ -64,8 +53,9 @@ export const useResourceStore = create<ResourceStore>((set) => ({
         };
       });
 
-      // Set food's max_storage dynamically as population x 2
-      newResources.food.max_storage = newResources.population.amount[0] * 2;
+      // Set food's max_storage dynamically as worker count x 2
+      const workerCount = useWorkersStore.getState().workers.length;
+      newResources.food.max_storage = workerCount * 2;
 
       return { resources: newResources };
     }),
