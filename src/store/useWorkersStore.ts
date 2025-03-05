@@ -30,6 +30,7 @@ interface WorkersStore {
   getWorkersByAssignment: (assignment: string | null) => Worker[];
   upgradeWorkers: (count: number) => void; // Legacy method
   upgradeWorkersOnDiscovery: (cardId?: string) => void; // New unified method
+  getWorkerIcon: (level: number) => string;
 }
 
 export const useWorkersStore = create<WorkersStore>((set, get) => ({

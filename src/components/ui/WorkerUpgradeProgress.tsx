@@ -4,6 +4,7 @@ import { useWorkersStore } from '@/store/useWorkersStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { Progress } from '@/components/ui/progress'
 import { logger } from '@/lib/logger'
+import { WORKER_ICONS } from '@/store/useWorkersStore'
 
 interface WorkerUpgradeProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
@@ -19,40 +20,63 @@ export function WorkerUpgradeProgress({
   ...props 
 }: WorkerUpgradeProgressProps) {
   const [progress, setProgress] = React.useState(0)
-  const [lastTick, setLastTick] = React.useState(Date.now())
-  const workers = useWorkersStore(state => state.workers.filter(w => w.assignedTo === cardId))
+  
+  // Get all the data we need from stores
+  const assignedWorkers = useWorkersStore(state => 
+    state.workers.filter(w => w.assignedTo === cardId)
+  )
+  const allWorkers = useWorkersStore(state => state.workers)
+  const removeWorker = useWorkersStore(state => state.removeWorker)
+  const addWorker = useWorkersStore(state => state.addWorker)
   const isRunning = useGameLoopStore(state => state.isRunning)
+  
+  // Use a ref for the last tick time to avoid re-renders
+  const lastTickRef = React.useRef(Date.now())
+  // Use a ref for the interval ID
+  const intervalRef = React.useRef<number | null>(null)
   
   // Reset progress when workers are removed
   React.useEffect(() => {
-    if (workers.length === 0) {
+    if (assignedWorkers.length === 0) {
       setProgress(0)
     }
-  }, [workers.length])
+  }, [assignedWorkers.length])
   
-  // Progress ticker
+  // Clean up interval on unmount
   React.useEffect(() => {
-    if (!isRunning || workers.length === 0) return
+    return () => {
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [])
+  
+  // Handle progress updates and worker upgrades
+  React.useEffect(() => {
+    // Clear any existing interval
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
     
-    const interval = setInterval(() => {
+    // Don't start a new interval if not running or no workers
+    if (!isRunning || assignedWorkers.length === 0) return
+    
+    // Start a new interval
+    intervalRef.current = window.setInterval(() => {
       const now = Date.now()
-      const delta = (now - lastTick) / 1000 // Convert to seconds
-      setLastTick(now)
+      const delta = (now - lastTickRef.current) / 1000 // Convert to seconds
+      lastTickRef.current = now
       
       // Calculate progress increment based on number of workers
-      // More workers = faster progress
-      const increment = (delta / upgradeTime) * workers.length * 100
+      const increment = (delta / upgradeTime) * assignedWorkers.length * 100
       
       setProgress(prev => {
         const newProgress = prev + increment
         
         // If we've reached 100%, upgrade a worker and reset
         if (newProgress >= 100) {
-          // Find the lowest level worker
-          const workersStore = useWorkersStore.getState()
-          const allWorkers = workersStore.workers
-          
-          // Get all workers with level below target level
+          // Find upgradable workers (level below target)
           const upgradableWorkers = allWorkers.filter(w => w.level < targetLevel)
           
           if (upgradableWorkers.length > 0) {
@@ -62,22 +86,21 @@ export function WorkerUpgradeProgress({
             // Get the lowest level worker
             const workerToUpgrade = upgradableWorkers[0]
             
-            // Upgrade the worker
-            const newLevel = targetLevel
-            const newIcon = useWorkersStore.getState().getWorkerIcon(newLevel)
+            // Get the icon for the new level
+            const newIcon = WORKER_ICONS[targetLevel as keyof typeof WORKER_ICONS] || WORKER_ICONS[1]
             
-            logger.log(`Upgrading worker ${workerToUpgrade.id} from level ${workerToUpgrade.level} to ${newLevel}`)
+            logger.log(`Upgrading worker ${workerToUpgrade.id} from level ${workerToUpgrade.level} to ${targetLevel}`)
             
             // Create a new worker object with the upgraded level
             const upgradedWorker = {
               ...workerToUpgrade,
-              level: newLevel,
+              level: targetLevel,
               icon: newIcon
             }
             
             // Remove the old worker and add the upgraded one
-            workersStore.removeWorker(workerToUpgrade.id)
-            workersStore.addWorker(upgradedWorker)
+            removeWorker(workerToUpgrade.id)
+            addWorker(upgradedWorker)
           }
           
           return 0 // Reset progress
@@ -87,8 +110,12 @@ export function WorkerUpgradeProgress({
       })
     }, 100) // Update every 100ms for smooth progress
     
-    return () => clearInterval(interval)
-  }, [isRunning, workers.length, upgradeTime, targetLevel, lastTick])
+    return () => {
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [isRunning, assignedWorkers.length, upgradeTime, targetLevel, allWorkers, removeWorker, addWorker])
   
   return (
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
@@ -98,8 +125,8 @@ export function WorkerUpgradeProgress({
       </div>
       <Progress value={progress} className="h-2" />
       <div className="text-xs text-gray-500 mt-1">
-        {workers.length > 0 
-          ? `${workers.length} worker${workers.length > 1 ? 's' : ''} assigned` 
+        {assignedWorkers.length > 0 
+          ? `${assignedWorkers.length} worker${assignedWorkers.length > 1 ? 's' : ''} assigned` 
           : 'No workers assigned'}
       </div>
     </div>
