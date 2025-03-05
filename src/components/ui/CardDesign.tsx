@@ -198,7 +198,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                   <div className="w-full">
                     <WorkerUpgradeProgress 
                       cardId={id} 
-                      targetLevel={cardId === 'non_verbal_communication' ? 2 : 3} // Level 2 for non-verbal, 3 for others
+                      targetLevel={id === 'non_verbal_communication' ? 2 : 3} // Level 2 for non-verbal, 3 for others
                       upgradeTime={10} // 10 seconds base time
                     />
                   </div>
