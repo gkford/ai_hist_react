@@ -32,6 +32,11 @@ export function WorkerUpgradeProgress({
     state => state.workers.filter(w => w.assignedTo === cardId).length
   )
   
+  // Get the count of upgradable workers (level below target)
+  const upgradableWorkerCount = useWorkersStore(
+    state => state.workers.filter(w => w.level < targetLevel).length
+  )
+  
   // Get game running state
   const isRunning = useGameLoopStore(state => state.isRunning)
   
@@ -61,8 +66,8 @@ export function WorkerUpgradeProgress({
       intervalRef.current = null
     }
     
-    // Don't start a new interval if not running or no workers
-    if (!isRunning || assignedWorkerCount === 0) return
+    // Don't start a new interval if not running, no workers, or no upgradable workers
+    if (!isRunning || assignedWorkerCount === 0 || upgradableWorkerCount === 0) return
     
     // Start a new interval
     intervalRef.current = window.setInterval(() => {
@@ -106,6 +111,12 @@ export function WorkerUpgradeProgress({
           // Remove the old worker and add the upgraded one
           workersStore.removeWorker(workerToUpgrade.id)
           workersStore.addWorker(upgradedWorker)
+          
+          // Log a message to the console
+          console.log(`Worker ${workerToUpgrade.id} upgraded from level ${workerToUpgrade.level} to ${targetLevel}`)
+        } else {
+          // If there are no upgradable workers, log a message
+          logger.log('No workers available to upgrade')
         }
         
         // Reset progress
@@ -122,7 +133,7 @@ export function WorkerUpgradeProgress({
         intervalRef.current = null
       }
     }
-  }, [isRunning, assignedWorkerCount, upgradeTime, targetLevel])
+  }, [isRunning, assignedWorkerCount, upgradableWorkerCount, upgradeTime, targetLevel])
   
   return (
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
@@ -131,10 +142,17 @@ export function WorkerUpgradeProgress({
         <span className="text-sm font-medium">{Math.floor(progress)}%</span>
       </div>
       <Progress value={progress} className="h-2" />
-      <div className="text-xs text-gray-500 mt-1">
-        {assignedWorkerCount > 0 
-          ? `${assignedWorkerCount} worker${assignedWorkerCount > 1 ? 's' : ''} assigned` 
-          : 'No workers assigned'}
+      <div className="flex justify-between text-xs text-gray-500 mt-1">
+        <div>
+          {assignedWorkerCount > 0 
+            ? `${assignedWorkerCount} worker${assignedWorkerCount > 1 ? 's' : ''} assigned` 
+            : 'No workers assigned'}
+        </div>
+        <div>
+          {upgradableWorkerCount > 0 
+            ? `${upgradableWorkerCount} worker${upgradableWorkerCount > 1 ? 's' : ''} can be upgraded` 
+            : 'No workers to upgrade'}
+        </div>
       </div>
     </div>
   )
