@@ -56,7 +56,7 @@ export function assignWorkerToCard(cardId: string): void {
   }
 
   // Try card type rules
-  const typeRules = CARD_TYPE_PRIORITIES[targetCard.type];
+  const typeRules = CARD_TYPE_PRIORITIES[targetCard.type] || [];
   for (const candidateId of typeRules) {
     if (candidateId === cardId) continue;
     if (tryReassignWorker(candidateId, cardId)) return;
