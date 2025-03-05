@@ -139,20 +139,14 @@ export function WorkerUpgradeProgress({
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-600">Worker upgrade progress:</span>
-        <span className="text-sm font-medium">{Math.floor(progress)}%</span>
       </div>
       <Progress value={progress} className="h-2" />
-      <div className="flex justify-between text-xs text-gray-500 mt-1">
-        <div>
-          {assignedWorkerCount > 0 
-            ? `${assignedWorkerCount} worker${assignedWorkerCount > 1 ? 's' : ''} assigned` 
-            : 'No workers assigned'}
-        </div>
-        <div>
-          {upgradableWorkerCount > 0 
-            ? `${upgradableWorkerCount} worker${upgradableWorkerCount > 1 ? 's' : ''} can be upgraded` 
-            : 'No workers to upgrade'}
-        </div>
+      <div className="flex justify-center text-xs mt-1">
+        {upgradableWorkerCount === 0 ? (
+          <div className="text-blue-500 font-medium">All workers have been upgraded!</div>
+        ) : assignedWorkerCount === 0 ? (
+          <div className="text-gray-500">No workers assigned</div>
+        ) : null}
       </div>
     </div>
   )
