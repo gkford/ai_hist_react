@@ -171,7 +171,9 @@ export function WorkerUpgradeProgress({
       <Progress value={progress} className="h-2" />
       <div className="flex justify-center text-xs mt-1">
         {upgradableWorkerCount === 0 ? (
-          <div className="text-blue-500 font-medium">All your people have learned non verbal communication!</div>
+          <div className="text-blue-500 font-medium">
+            All your people have reached level {targetLevel}!
+          </div>
         ) : assignedWorkerCount === 0 ? (
           <div className="text-gray-500">No workers assigned</div>
         ) : null}

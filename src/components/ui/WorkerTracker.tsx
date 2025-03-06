@@ -4,8 +4,6 @@ import { cn } from '@/lib/utils'
 import { assignWorkerToCard } from '@/lib/workerAssignmentRules'
 import { useWorkersStore } from '@/store/useWorkersStore'
 import { useDiscoveryStore } from '@/store/useDiscoveryStore'
-import { useCardsStore } from '@/store/useCardsStore'
-import { useGameLoopStore } from '@/store/useGameLoopStore'
 
 interface WorkerTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string

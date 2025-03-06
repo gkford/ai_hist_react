@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { useCardsStore } from './useCardsStore'
 import { useGameLoopStore } from './useGameLoopStore'
 
 interface DiscoveryStore {
