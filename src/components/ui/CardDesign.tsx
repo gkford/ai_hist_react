@@ -206,6 +206,11 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                       targetLevel={id === 'non_verbal_communication' ? 2 : 3} // Level 2 for non-verbal, 3 for others
                       upgradeTime={10} // 10 seconds base time
                     />
+                    {useResource('food').amount[0] <= 0 && (
+                      <div className="text-red-600 font-medium text-center mt-2">
+                        Cannot learn while hungry!
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div></div>
