@@ -9,6 +9,16 @@ import { useWorkersStore } from '@/store/useWorkersStore';
 import { useCardsStore } from '@/store/useCardsStore';
 import { CardType } from '@/data/cards';
 
+/**
+ * Helper function to get all card IDs of a specific type
+ */
+function getCardIdsByType(type: CardType | string): string[] {
+  const { cardStates } = useCardsStore.getState();
+  return Object.values(cardStates)
+    .filter(card => card.type === type && card.discovery_state.current_status === 'discovered')
+    .map(card => card.id);
+}
+
 // Define priority orders for different card types
 const CARD_TYPE_PRIORITIES: Record<CardType, string[]> = {
   'production': ['gather_food', 'hunt', 'cooperative_hunting'],
@@ -16,11 +26,23 @@ const CARD_TYPE_PRIORITIES: Record<CardType, string[]> = {
   'science': [],
   'people': [],
   'resource': [],
-  'worker_upgrade': []
+  'worker_upgrade': [],
+  'create_worker': []
 };
 
 // Define fallback order for when type-specific rules don't yield a worker
-const FALLBACK_PRIORITY = ['think', 'gather_food', 'hunt', 'cooperative_hunting'];
+// First take from worker_upgrade cards, then create_worker cards, then others
+const FALLBACK_PRIORITY = [
+  // Card types to prioritize taking workers from
+  ...getCardIdsByType('worker_upgrade'),
+  ...getCardIdsByType('create_worker'),
+  
+  // Traditional fallback priorities
+  'think', 
+  'gather_food', 
+  'hunt', 
+  'cooperative_hunting'
+];
 
 // Card-specific override rules (empty for now, but structure is ready)
 const CARD_SPECIFIC_PRIORITIES: Record<string, string[]> = {};
