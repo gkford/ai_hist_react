@@ -70,21 +70,9 @@ export const useDiscoveryStore = create<DiscoveryStore>((set) => ({
     set(state => {
       const { [cardId]: removed, ...remaining } = state.pendingAcknowledgments;
       
-      // Check if we should show the research dialog
-      const shouldShowResearchDialog = removed && 
-        removed.unlockedCards.length > 0 && 
-        !Object.values(useCardsStore.getState().cardStates)
-          .some(card => card.discovery_state.priority === 'on');
-      
-      if (shouldShowResearchDialog) {
-        // Pause the game when showing the dialog
-        useGameLoopStore.getState().setRunning(false);
-        return {
-          pendingAcknowledgments: remaining,
-          isResearchDialogOpen: true
-        };
-      }
-      
+      // Simply return the remaining acknowledgments without pausing the game
+      // or opening the research dialog - this will be handled by the component
+      // that called acknowledgeDiscovery if needed
       return { pendingAcknowledgments: remaining };
     });
   },
