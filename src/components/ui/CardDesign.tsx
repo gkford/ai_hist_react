@@ -42,6 +42,28 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
       (thought2.amountProducedThisSecond[0] || 0) +
       (thought3.amountProducedThisSecond[0] || 0) +
       (thought4.amountProducedThisSecond[0] || 0)
+      
+    // Function to determine if thoughts of sufficient level are being produced
+    const hasThoughtsOfSufficientLevel = (requiredLevel: number) => {
+      // Check if thoughts of required level or higher are being produced
+      for (let level = requiredLevel; level <= 4; level++) {
+        const production = 
+          level === 1 ? thought1.amountProducedThisSecond[0] :
+          level === 2 ? thought2.amountProducedThisSecond[0] :
+          level === 3 ? thought3.amountProducedThisSecond[0] :
+                        thought4.amountProducedThisSecond[0];
+        
+        if (production > 0) return true;
+      }
+      return false;
+    };
+
+    // Check if any thoughts are being produced at all
+    const hasAnyThoughts = 
+      thought1.amountProducedThisSecond[0] > 0 ||
+      thought2.amountProducedThisSecond[0] > 0 ||
+      thought3.amountProducedThisSecond[0] > 0 ||
+      thought4.amountProducedThisSecond[0] > 0;
 
     if (!cardDef || !cardState) return null
 
@@ -160,20 +182,16 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                       <p
                         className={cn(
                           'text-sm font-medium mt-1',
-                          thought1.amountProducedThisSecond[0] > 0 ||
-                            thought2.amountProducedThisSecond[0] > 0 ||
-                            thought3.amountProducedThisSecond[0] > 0 ||
-                            thought4.amountProducedThisSecond[0] > 0
+                          hasThoughtsOfSufficientLevel(cardState.discovery_state.thought_level)
                             ? 'text-blue-500'
                             : 'text-red-500'
                         )}
                       >
-                        {thought1.amountProducedThisSecond[0] > 0 ||
-                        thought2.amountProducedThisSecond[0] > 0 ||
-                        thought3.amountProducedThisSecond[0] > 0 ||
-                        thought4.amountProducedThisSecond[0] > 0
+                        {hasThoughtsOfSufficientLevel(cardState.discovery_state.thought_level)
                           ? 'researching'
-                          : 'waiting for thoughts to continue research...'}
+                          : hasAnyThoughts
+                            ? `waiting for level ${cardState.discovery_state.thought_level} or higher thoughts...`
+                            : 'waiting for thoughts to continue research...'}
                       </p>
                     )}
                   </div>
