@@ -473,9 +473,9 @@ export const allCards: CardDefinition[] = [
       discovery_unlocks: ['early_language', 'tally_marks'],
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: true,
+      increaseMaxPopulation: 5,
     },
-    tipText: "Cave Painting upgraded your population's thinking!",
+    tipText: "Cave Painting increased your maximum population!",
     quiz: {
       question: "Why might cave painting be important?",
       answers: [
@@ -523,9 +523,9 @@ export const allCards: CardDefinition[] = [
       thought_level: 3,
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: true,
+      increaseMaxPopulation: 5,
     },
-    tipText: "Tally Marks upgraded your population's thinking!",
+    tipText: "Tally Marks increased your maximum population!",
     quiz: {
       question: "How do tally marks help?",
       answers: [
