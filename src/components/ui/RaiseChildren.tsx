@@ -83,8 +83,11 @@ export function RaiseChildren({
         
         // Calculate progress increment based on number of workers
         // Base time: 20 seconds for one worker to raise a child
+        // Exception: First child (when only 1 worker exists) takes half the time
         const baseTime = 20
-        const increment = (delta / baseTime) * assignedWorkerCount * 100
+        const isFirstChild = workers.length === 1
+        const timeMultiplier = isFirstChild ? 2 : 1 // Double speed (half time) for first child
+        const increment = (delta / baseTime) * assignedWorkerCount * 100 * timeMultiplier
         
         // Update the ref first
         progressRef.current += increment
