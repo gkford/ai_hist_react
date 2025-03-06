@@ -127,6 +127,13 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     compact={true}
                   />
                 )}
+                {/* Display population increase directly if it exists */}
+                {cardDef.OnDiscoveryEffects?.increaseMaxPopulation && 
+                 cardState.discovery_state.current_status === 'discovered' && (
+                  <span className="flex items-center gap-1 text-sm font-medium text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-200">
+                    <span className="text-base">+{cardDef.OnDiscoveryEffects.increaseMaxPopulation}👥</span>
+                  </span>
+                )}
               </div>
             </div>
 
