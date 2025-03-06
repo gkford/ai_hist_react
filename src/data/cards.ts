@@ -107,7 +107,7 @@ export const allCards: CardDefinition[] = [
     title: 'Raise Children',
     type: 'people',
     icon: '👶',
-    imageSrc: '/card_images/your_custom_image.png',
+    imageSrc: '/card_images/raiseChildren.png',
     tipText: "Ensure your future by raising children.",
     quiz: {
       question: "How does raising children benefit the tribe?",
