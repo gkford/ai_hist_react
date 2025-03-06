@@ -57,7 +57,6 @@ export interface CardDefinition {
   discovery_stats?: DiscoveryStats
   replaces?: string // ID of the card this replaces
   tipText?: string
-  think_about_text?: string // Flavor text for unlocked cards
   quiz?: Quiz
 }
 
@@ -415,7 +414,6 @@ export const allCards: CardDefinition[] = [
   //     },
   //   },
   //   OnDiscoveryEffects: {},
-  //   think_about_text: 'A stick with a sharp end could be useful...',
   //   tipText: "Spear improves your tribes food production",
   // },
   {
