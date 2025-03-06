@@ -12,14 +12,18 @@ import { logger } from './logger'
 function processFoodConsumption() {
   const resourceStore = useResourceStore.getState()
   const workersStore = useWorkersStore.getState()
-  const workerCount = workersStore.workers.length
+  
+  // Get all workers except those assigned to raise_children
+  const workersConsumingFood = workersStore.workers.filter(w => w.assignedTo !== 'raise_children')
+  const workerCount = workersConsumingFood.length
+  
   const maxStorage = resourceStore.resources.food.max_storage
   const currentFood = resourceStore.resources.food.amount[0]
   
   logger.log(`Food before consumption: ${currentFood}`)
-  logger.log(`Workers consuming: ${workerCount}`)
+  logger.log(`Workers consuming: ${workerCount} (excluding workers raising children)`)
   
-  // Each worker consumes 1 food
+  // Each worker consumes 1 food, except those raising children
   resourceStore.spendResource('food', workerCount)
   
   // Get fresh state after spending
