@@ -71,6 +71,13 @@ export function WorkerUpgradeProgress({
     
     // Start a new interval
     intervalRef.current = window.setInterval(() => {
+      // Check if the game is still running before updating progress
+      if (!useGameLoopStore.getState().isRunning) {
+        // Just update the lastTickRef to avoid large jumps when game resumes
+        lastTickRef.current = Date.now()
+        return
+      }
+      
       const now = Date.now()
       const delta = (now - lastTickRef.current) / 1000 // Convert to seconds
       lastTickRef.current = now
