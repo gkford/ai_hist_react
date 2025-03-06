@@ -244,9 +244,9 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
               )}
             </div>
           ) : cardDef.type === 'people' ? (
-            <div></div>
-          ) : cardDef.type === 'create_worker' ? (
             <PopulationTracker className="w-full px-4 flex-1" />
+          ) : cardDef.type === 'create_worker' ? (
+            <WorkerTracker cardId="raise_children" className="w-full px-4" />
           ) : cardState.discovery_state.current_status === 'unlocked' || 
                cardState.discovery_state.current_status === 'locked' ? (
             <DiscoveryViewer
