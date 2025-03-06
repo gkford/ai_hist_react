@@ -143,12 +143,12 @@ export function WorkerUpgradeProgress({
   return (
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-600">Worker upgrade progress:</span>
+        <span className="text-sm text-gray-600">Sharing knowledge:</span>
       </div>
       <Progress value={progress} className="h-2" />
       <div className="flex justify-center text-xs mt-1">
         {upgradableWorkerCount === 0 ? (
-          <div className="text-blue-500 font-medium">All workers have been upgraded!</div>
+          <div className="text-blue-500 font-medium">All your people have learned non verbal communication!</div>
         ) : assignedWorkerCount === 0 ? (
           <div className="text-gray-500">No workers assigned</div>
         ) : null}
