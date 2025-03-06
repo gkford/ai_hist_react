@@ -333,7 +333,6 @@ export const allCards: CardDefinition[] = [
       discovery_unlocks: ['cooking'],
     },
     OnDiscoveryEffects: {
-      upgradeWorkers: true,
       increaseMaxPopulation: 5,
     },
     tipText: "Fire Domestication upgraded your population's thinking and increased your maximum population!",
