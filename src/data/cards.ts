@@ -373,15 +373,14 @@ export const allCards: CardDefinition[] = [
     icon: '🍖',
     imageSrc: '/card_images/cooking.png',
     discovery_stats: {
-      thought_to_imagine: 20,
-      further_thought_to_discover: 20,
+      thought_to_imagine: 10,
+      further_thought_to_discover: 10,
       thought_level: 2,
       discovery_unlocks: ['early_language'],
     },
-    // TODO: Should increase max food storage by 10
-    OnDiscoveryEffects: {
-      upgradeWorkers: true,
-    },
+    // OnDiscoveryEffects: {
+      // upgradeWorkers: true,
+    // },
     tipText: "Cooking upgraded your population's thinking!",
     quiz: {
       question: "What is a major benefit of cooking food?",
