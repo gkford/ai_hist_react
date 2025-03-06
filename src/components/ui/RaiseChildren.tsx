@@ -149,7 +149,6 @@ export function RaiseChildren({
   return (
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-600">Raising children:</span>
       </div>
       <Progress value={progress} className="h-2" />
       <div className="flex justify-center text-xs mt-1">
@@ -160,12 +159,6 @@ export function RaiseChildren({
         ) : foodAmount <= 0 ? (
           <div className="text-red-600 font-medium">Cannot raise children without food!</div>
         ) : null}
-      </div>
-      <div className="flex items-center justify-between text-sm mt-1">
-        <div>Calories consumed each day: {workers.length * 100}</div>
-        <div>
-          Excess Calories: {Math.floor(foodAmount * 100)}
-        </div>
       </div>
     </div>
   )
