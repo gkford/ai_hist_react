@@ -103,6 +103,24 @@ export const allCards: CardDefinition[] = [
     },
   },
   {
+    id: 'raise_children',
+    title: 'Raise Children',
+    type: 'people',
+    icon: '👶',
+    imageSrc: '/card_images/your_custom_image.png',
+    tipText: "Ensure your future by raising children.",
+    quiz: {
+      question: "How does raising children benefit the tribe?",
+      answers: [
+        "They become future leaders",
+        "They are a burden",
+        "They provide entertainment",
+        "They reduce work"
+      ],
+      correctAnswer: 0
+    },
+  },
+  {
     id: 'gather_food',
     title: 'Gather Food',
     type: 'production',

@@ -56,6 +56,12 @@ function initializeCards() {
     },
   })
 
+  cardStore.createCard('raise_children', {
+    discovery_state: {
+      current_status: 'discovered',
+    },
+  })
+
   // Add food resource card
   cardStore.createCard('food_resource', {
     discovery_state: {
