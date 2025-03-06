@@ -120,8 +120,13 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                   const anyCardHasPriority = Object.values(
                     useCardsStore.getState().cardStates
                   ).some((card) => card.discovery_state.priority === 'on')
+                  
+                  // Check if there are workers assigned to this computation card
+                  const hasAssignedWorkers = useWorkersStore.getState().workers.some(
+                    worker => worker.assignedTo === id
+                  )
 
-                  return !anyCardHasPriority ? (
+                  return !anyCardHasPriority && hasAssignedWorkers ? (
                     <div className="bg-yellow-100 text-yellow-800 p-2 text-sm mt-2 rounded">
                       Warning: Thoughts are being generated but not applied to
                       any discovery.
