@@ -100,6 +100,15 @@ export function processDiscoveries() {
           `Worker upgrade triggered by discovery of card ${card.id}.`
         )
       }
+      
+      if (card.OnDiscoveryEffects?.increaseMaxPopulation) {
+        // Increase max population
+        useWorkersStore.getState().increaseMaxPopulation(card.OnDiscoveryEffects.increaseMaxPopulation);
+        
+        logger.log(
+          `Max population increased by ${card.OnDiscoveryEffects.increaseMaxPopulation} due to discovery of card ${card.id}.`
+        )
+      }
 
       // Special message for tally marks discovery
       let discoveryMessage = undefined

@@ -36,6 +36,12 @@ export function OnDiscoveryEffectsViewer({
         </span>
       )
     }) : []
+    
+  const populationElement = effects.increaseMaxPopulation ? (
+    <span className="flex items-center gap-1">
+      +{effects.increaseMaxPopulation} 👥 max
+    </span>
+  ) : null
 
   const workers = useWorkersStore(state => state.workers)
   let fromLevel = 0, targetLevel = 0, count = 0;
@@ -74,6 +80,7 @@ export function OnDiscoveryEffectsViewer({
       <div className="flex gap-2 items-center">
         {bonusElements}
         {workerUpgradeElement}
+        {populationElement}
       </div>
     );
   }
@@ -82,8 +89,10 @@ export function OnDiscoveryEffectsViewer({
     <div className="p-2 text-sm border-t border-gray-200 text-gray-600 flex gap-2 items-center justify-center">
       <div className="flex gap-2 items-center justify-center">
         {bonusElements}
-        {bonusElements.length > 0 && workerUpgradeElement && <span className="mx-1">•</span>}
+        {bonusElements.length > 0 && (workerUpgradeElement || populationElement) && <span className="mx-1">•</span>}
         {workerUpgradeElement}
+        {workerUpgradeElement && populationElement && <span className="mx-1">•</span>}
+        {populationElement}
       </div>
     </div>
   )

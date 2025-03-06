@@ -28,6 +28,7 @@ export interface OngoingEffects {
 export interface OnDiscoveryEffects {
   resourceBonuses?: Partial<Record<ResourceKey, number>> // optional: resource bonus amounts
   upgradeWorkers?: boolean // indicates that worker upgrade should happen
+  increaseMaxPopulation?: number // optional: amount to increase max population by
 }
 
 export type CardType =
@@ -333,8 +334,9 @@ export const allCards: CardDefinition[] = [
     },
     OnDiscoveryEffects: {
       upgradeWorkers: true,
+      increaseMaxPopulation: 5,
     },
-    tipText: "Fire Domestication upgraded your population's thinking!",
+    tipText: "Fire Domestication upgraded your population's thinking and increased your maximum population!",
     quiz: {
       question: "How does fire domestication benefit your tribe?",
       answers: [
