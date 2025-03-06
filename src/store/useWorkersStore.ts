@@ -24,6 +24,7 @@ export interface Worker {
 
 interface WorkersStore {
   workers: Worker[];
+  max_population: number;
   addWorker: (worker: Worker) => void;
   assignWorker: (workerId: string, newAssignment: string | null) => void;
   removeWorker: (workerId: string) => void;
@@ -31,10 +32,12 @@ interface WorkersStore {
   upgradeWorkers: (count: number) => void; // Legacy method
   upgradeWorkersOnDiscovery: (cardId?: string) => void; // New unified method
   getWorkerIcon: (level: number) => string;
+  increaseMaxPopulation: (amount: number) => void;
 }
 
 export const useWorkersStore = create<WorkersStore>((set, get) => ({
   getWorkerIcon: (level: number) => WORKER_ICONS[level as keyof typeof WORKER_ICONS] || WORKER_ICONS[1],
+  max_population: 5,
   workers: Array(1).fill(null).map((_, i) => ({
     id: `worker-${i}`,
     level: 1,
@@ -146,5 +149,12 @@ export const useWorkersStore = create<WorkersStore>((set, get) => ({
       logger.log(`Half of workers upgraded to level ${targetLevel}`);
       return { workers: updatedWorkers };
     });
+  },
+  
+  increaseMaxPopulation: (amount: number) => {
+    set((state) => ({
+      max_population: state.max_population + amount
+    }));
+    logger.log(`Max population increased by ${amount} to ${get().max_population}`);
   }
 }));
