@@ -139,12 +139,11 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             {/* Additional Main Content vertically centered - with overflow hidden */}
             <div className="flex-grow flex items-center overflow-hidden">
               <div className="w-full">
-                {/* Add the discovery notification in the main content area */}
+                {/* Show discovery notification if present, otherwise show regular content */}
                 {cardState.discovery_state.current_status === 'discovered' &&
-                  useDiscoveryStore.getState().pendingAcknowledgments[id] && (
+                  useDiscoveryStore.getState().pendingAcknowledgments[id] ? (
                     <CardDiscoveryNotification cardId={id} />
-                  )}
-                {cardState.discovery_state.current_status === 'locked' ? (
+                  ) : cardState.discovery_state.current_status === 'locked' ? (
                   <div className={cn(
                     "text-center text-gray-500 italic",
                     !disableInteractions && "cursor-pointer"
