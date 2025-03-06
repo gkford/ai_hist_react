@@ -69,7 +69,7 @@ export function PopulationTracker({
         onClick={handleAddPopulation}
         disabled={isAtMaxPopulation}
       >
-        Add Population {isAtMaxPopulation ? `(Max: ${max_population})` : ''}
+        {isAtMaxPopulation ? 'Population Max Reached' : 'Add Population'}
       </Button>
     </div>
   )
