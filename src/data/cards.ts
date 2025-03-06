@@ -490,7 +490,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'early_language',
     title: 'Early Language',
-    type: 'science',
+    type: 'worker_upgrade',
     icon: '💭',
     imageSrc: '/card_images/earlyLanguage.png',
     discovery_stats: {
@@ -499,15 +499,7 @@ export const allCards: CardDefinition[] = [
       thought_level: 3,
       discovery_unlocks: ['storytelling'],
     },
-    ongoingEffects: {
-      resourceModifiers: {
-        thoughts3: '+5%',
-      },
-    },
-    OnDiscoveryEffects: {
-      upgradeWorkers: true,
-    },
-    tipText: "Early Language upgraded your population's thinking!",
+    tipText: "Assign workers to train other workers to level 3",
     quiz: {
       question: "What is a benefit of developing early language?",
       answers: [
@@ -548,7 +540,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'storytelling',
     title: 'Storytelling',
-    type: 'science',
+    type: 'worker_upgrade',
     icon: '📚',
     imageSrc: '/card_images/storyTelling.png',
     discovery_stats: {
@@ -556,10 +548,7 @@ export const allCards: CardDefinition[] = [
       further_thought_to_discover: 40,
       thought_level: 3,
     },
-    OnDiscoveryEffects: {
-      upgradeWorkers: true,
-    },
-    tipText: "Storytelling upgraded your population's thinking!",
+    tipText: "Assign workers to train other workers to level 4",
     quiz: {
       question: "Why is storytelling important?",
       answers: [
