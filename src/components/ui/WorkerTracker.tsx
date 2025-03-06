@@ -36,15 +36,21 @@ export function WorkerTracker({
       discoveryStore.acknowledgeDiscovery(cardId)
     }
     
-    if (delta > 0) {
-      // For adding workers, use the assignment rules
-      assignWorkerToCard(cardId)
-    } else {
-      // For removing workers, send them back to population
-      const workerToUnassign = assignedWorkers[assignedWorkers.length - 1]
-      if (workerToUnassign) {
-        workersStore.assignWorker(workerToUnassign.id, 'population')
+    // Use a try-catch to prevent any errors from affecting the game state
+    try {
+      if (delta > 0) {
+        // For adding workers, use the assignment rules
+        assignWorkerToCard(cardId)
+      } else {
+        // For removing workers, send them back to population
+        const workerToUnassign = assignedWorkers[assignedWorkers.length - 1]
+        if (workerToUnassign) {
+          workersStore.assignWorker(workerToUnassign.id, 'population')
+        }
       }
+    } catch (error) {
+      console.error('Error changing worker assignment:', error)
+      // Continue game execution even if there's an error
     }
   }
 
