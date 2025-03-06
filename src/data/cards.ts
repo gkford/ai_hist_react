@@ -105,7 +105,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'raise_children',
     title: 'Raise Children',
-    type: 'people',
+    type: 'raise_children',
     icon: '👶',
     imageSrc: '/card_images/raiseChildren.png',
     tipText: "Ensure your future by raising children.",
