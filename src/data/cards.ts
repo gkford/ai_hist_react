@@ -38,6 +38,7 @@ export type CardType =
   | 'production'
   | 'resource'
   | 'worker_upgrade'
+  | 'create_worker'
 
 export interface Quiz {
   question: string
@@ -105,7 +106,7 @@ export const allCards: CardDefinition[] = [
   {
     id: 'raise_children',
     title: 'Raise Children',
-    type: 'raise_children',
+    type: 'create_worker',
     icon: '👶',
     imageSrc: '/card_images/raiseChildren.png',
     tipText: "Ensure your future by raising children.",
