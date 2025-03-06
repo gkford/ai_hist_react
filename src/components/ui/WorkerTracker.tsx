@@ -35,25 +35,8 @@ export function WorkerTracker({
     
     // Dismiss any discovery notification for this card when interacting with it
     if (discoveryStore.pendingAcknowledgments[cardId]) {
-      // Get the current state before acknowledging
-      const remainingAcknowledgments = Object.keys(
-        discoveryStore.pendingAcknowledgments
-      ).filter(id => id !== cardId);
-      
-      const hasActiveResearch = Object.values(useCardsStore.getState().cardStates).some(
-        state => state.discovery_state.priority === 'on'
-      );
-      
-      // Now acknowledge the discovery
+      // Simply acknowledge the discovery without opening the research dialog
       discoveryStore.acknowledgeDiscovery(cardId)
-      
-      // Check if we need to open research dialog
-      // Only open if this was the last pending acknowledgment and no card is actively being researched
-      if (remainingAcknowledgments.length === 0 && 
-          !useGameLoopStore.getState().isResearchDialogOpen && 
-          !hasActiveResearch) {
-        useGameLoopStore.getState().openResearchDialog();
-      }
     }
     
     // Use a try-catch to prevent any errors from affecting the game state
