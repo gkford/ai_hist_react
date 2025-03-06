@@ -72,8 +72,9 @@ export function WorkerUpgradeProgress({
     // Start a new interval
     intervalRef.current = window.setInterval(() => {
       try {
-        // Check if the game is still running before updating progress
-        if (!useGameLoopStore.getState().isRunning) {
+        // Check if the game is still running and there's food available before updating progress
+        const foodAmount = useResourceStore.getState().resources.food.amount[0];
+        if (!useGameLoopStore.getState().isRunning || foodAmount <= 0) {
           // Just update the lastTickRef to avoid large jumps when game resumes
           lastTickRef.current = Date.now()
           return
