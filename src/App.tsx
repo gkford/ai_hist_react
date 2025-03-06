@@ -22,6 +22,9 @@ function sortCardsInColumn(a: CardState, b: CardState): number {
   // People cards should always be above all other cards
   if (cardA.type === 'people' && cardB.type !== 'people') return -1
   if (cardB.type === 'people' && cardA.type !== 'people') return 1
+  // Ensure food_resource card always above create_worker cards
+  if (cardA.id === 'food_resource' && cardB.type === 'create_worker') return -1
+  if (cardB.id === 'food_resource' && cardA.type === 'create_worker') return 1
 
   // Instead of discovery_timestamp, sort by createdAt.
   return (b.createdAt || 0) - (a.createdAt || 0)
@@ -35,6 +38,7 @@ function getCardColumn(cardDef: { id: string; type: CardType }): number {
     case 'people':
     case 'computation':
     case 'resource':
+    case 'create_worker':
       return 1
     case 'production':
       return 2
