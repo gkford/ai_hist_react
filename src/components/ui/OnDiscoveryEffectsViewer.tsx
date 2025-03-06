@@ -38,7 +38,7 @@ export function OnDiscoveryEffectsViewer({
     }) : []
     
   const populationElement = effects.increaseMaxPopulation ? (
-    <span className="flex items-center gap-1 font-medium text-green-600">
+    <span className="flex items-center gap-1 font-medium text-green-600 bg-green-50 px-2 py-1 rounded">
       +{effects.increaseMaxPopulation} 👥 max population
     </span>
   ) : null
@@ -77,7 +77,7 @@ export function OnDiscoveryEffectsViewer({
     ) : null;
     
     const compactPopulationElement = effects.increaseMaxPopulation ? (
-      <span className="flex items-center gap-1 text-sm font-medium text-green-600">
+      <span className="flex items-center gap-1 text-sm font-medium text-green-600 bg-green-50 px-1 py-0.5 rounded">
         +{effects.increaseMaxPopulation}👥
       </span>
     ) : null;
