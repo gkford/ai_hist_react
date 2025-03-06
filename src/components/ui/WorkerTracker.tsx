@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { assignWorkerToCard } from '@/lib/workerAssignmentRules'
 import { useWorkersStore } from '@/store/useWorkersStore'
+import { useDiscoveryStore } from '@/store/useDiscoveryStore'
 
 interface WorkerTrackerProps extends React.HTMLAttributes<HTMLDivElement> {
   cardId: string
@@ -28,6 +29,12 @@ export function WorkerTracker({
     if (delta < 0 && assignedWorkers.length <= 0) return
     
     const workersStore = useWorkersStore.getState()
+    const discoveryStore = useDiscoveryStore.getState()
+    
+    // Dismiss any discovery notification for this card when interacting with it
+    if (discoveryStore.pendingAcknowledgments[cardId]) {
+      discoveryStore.acknowledgeDiscovery(cardId)
+    }
     
     if (delta > 0) {
       // For adding workers, use the assignment rules
