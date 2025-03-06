@@ -146,7 +146,6 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.2,
     },
-    think_about_text: 'Think about food... ',
     quiz: {
       question: "What is the primary benefit of hunting compared to gathering?",
       answers: [
@@ -171,7 +170,6 @@ export const allCards: CardDefinition[] = [
       thought_level: 1,
       discovery_unlocks: ['cooperative_hunting'],
     },
-    think_about_text: 'How do we express ourselves without words?',
     tipText: "Assign workers to train other workers to level 2",
     quiz: {
       question: "How does non-verbal communication help your people?",
@@ -204,7 +202,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: true,
     },
-    think_about_text: 'What if we shared things with others?',
     tipText: "Gift Giving upgraded your population's thinking!",
     quiz: {
       question: "Why might gift giving be useful?",
@@ -234,7 +231,6 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.3,
     },
-    think_about_text: 'How can we get catch bigger animals... ?',
     tipText: "Click + to assign workers to Cooperative Hunting",
     quiz: {
       question: "What is a benefit of cooperative hunting?",
@@ -312,7 +308,6 @@ export const allCards: CardDefinition[] = [
         food: '+5%',
       },
     },
-    think_about_text: 'Could these rocks be useful somehow?',
     tipText: "Early Stone Tools improves your tribes food production",
     quiz: {
       question: "What is one benefit of using stone tools?",
@@ -340,7 +335,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: true,
     },
-    think_about_text: 'Can we make the hot thing from lightning...',
     tipText: "Fire Domestication upgraded your population's thinking!",
     quiz: {
       question: "How does fire domestication benefit your tribe?",
@@ -369,7 +363,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: true,
     },
-    think_about_text: 'What if we put food near the fire?',
     tipText: "Cooking upgraded your population's thinking!",
     quiz: {
       question: "What is a major benefit of cooking food?",
@@ -438,7 +431,6 @@ export const allCards: CardDefinition[] = [
       resource: 'food',
       amount: 1.5,
     },
-    think_about_text: 'What if we exchanged things we have for things we need?',
     tipText: "Click + to assign workers to Trading",
     quiz: {
       question: "How can trading help your tribe?",
@@ -466,7 +458,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: true,
     },
-    think_about_text: 'Could we make marks on the cave walls?',
     tipText: "Cave Painting upgraded your population's thinking!",
     quiz: {
       question: "Why might cave painting be important?",
@@ -499,7 +490,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: true,
     },
-    think_about_text: 'How can we communicate more complex ideas?',
     tipText: "Early Language upgraded your population's thinking!",
     quiz: {
       question: "What is a benefit of developing early language?",
@@ -526,7 +516,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: true,
     },
-    think_about_text: 'How can we keep track of quantities?',
     tipText: "Tally Marks upgraded your population's thinking!",
     quiz: {
       question: "How do tally marks help?",
@@ -553,7 +542,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       upgradeWorkers: true,
     },
-    think_about_text: 'How can we share experiences with others?',
     tipText: "Storytelling upgraded your population's thinking!",
     quiz: {
       question: "Why is storytelling important?",
