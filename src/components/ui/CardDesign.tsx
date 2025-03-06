@@ -212,6 +212,10 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                       </div>
                     )}
                   </div>
+                ) : cardDef.type === 'create_worker' ? (
+                  <div className="w-full">
+                    <RaiseChildren />
+                  </div>
                 ) : (
                   <div></div>
                 )}
