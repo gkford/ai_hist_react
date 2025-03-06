@@ -2,6 +2,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { useWorkersStore } from '@/store/useWorkersStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
+import { useResourceStore } from '@/store/useResourceStore'
 import { Progress } from '@/components/ui/progress'
 import { logger } from '@/lib/logger'
 import { WORKER_ICONS } from '@/store/useWorkersStore'
@@ -58,6 +59,9 @@ export function WorkerUpgradeProgress({
     }
   }, [])
   
+  // Get current food amount
+  const foodAmount = useResourceStore(state => state.resources.food.amount[0])
+  
   // Setup the interval for progress updates
   React.useEffect(() => {
     // Clear any existing interval
@@ -66,8 +70,8 @@ export function WorkerUpgradeProgress({
       intervalRef.current = null
     }
     
-    // Don't start a new interval if not running, no workers, or no upgradable workers
-    if (!isRunning || assignedWorkerCount === 0 || upgradableWorkerCount === 0) return
+    // Don't start a new interval if not running, no workers, no upgradable workers, or no food
+    if (!isRunning || assignedWorkerCount === 0 || upgradableWorkerCount === 0 || foodAmount <= 0) return
     
     // Start a new interval
     intervalRef.current = window.setInterval(() => {
@@ -83,6 +87,12 @@ export function WorkerUpgradeProgress({
       const now = Date.now()
       const delta = (now - lastTickRef.current) / 1000 // Convert to seconds
       lastTickRef.current = now
+      
+      console.log('Worker upgrade progress tick:', { 
+        foodAmount, 
+        delta, 
+        assignedWorkerCount 
+      })
       
       // Calculate progress increment based on number of workers
       const increment = (delta / upgradeTime) * assignedWorkerCount * 100
@@ -151,7 +161,7 @@ export function WorkerUpgradeProgress({
         intervalRef.current = null
       }
     }
-  }, [isRunning, assignedWorkerCount, upgradableWorkerCount, upgradeTime, targetLevel])
+  }, [isRunning, assignedWorkerCount, upgradableWorkerCount, upgradeTime, targetLevel, foodAmount])
   
   return (
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
