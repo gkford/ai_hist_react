@@ -38,8 +38,8 @@ export function OnDiscoveryEffectsViewer({
     }) : []
     
   const populationElement = effects.increaseMaxPopulation ? (
-    <span className="flex items-center gap-1">
-      +{effects.increaseMaxPopulation} 👥 max
+    <span className="flex items-center gap-1 font-medium text-green-600">
+      +{effects.increaseMaxPopulation} 👥 max population
     </span>
   ) : null
 
@@ -75,12 +75,18 @@ export function OnDiscoveryEffectsViewer({
         {/* {count} {WORKER_TYPES[fromLevel].icon} → {WORKER_TYPES[targetLevel].icon} */}
       </span>
     ) : null;
+    
+    const compactPopulationElement = effects.increaseMaxPopulation ? (
+      <span className="flex items-center gap-1 text-sm font-medium text-green-600">
+        +{effects.increaseMaxPopulation}👥
+      </span>
+    ) : null;
 
     return (
       <div className="flex gap-2 items-center">
         {bonusElements}
         {workerUpgradeElement}
-        {populationElement}
+        {compactPopulationElement}
       </div>
     );
   }
