@@ -354,11 +354,6 @@ export const allCards: CardDefinition[] = [
     OnDiscoveryEffects: {
       increaseMaxPopulation: 5,
     },
-    ongoingEffects: {
-      resourceModifiers: {
-        thoughts2: '+10%',
-      },
-    },
     tipText: "Fire Domestication upgraded your population's thinking and increased your maximum population!",
     quiz: {
       question: "How does fire domestication benefit your tribe?",
