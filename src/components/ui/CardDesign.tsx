@@ -151,12 +151,12 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     useCardsStore.getState().cardStates
                   ).some((card) => card.discovery_state.priority === 'on')
                   
-                  // Check if there are workers assigned to this computation card
-                  const hasAssignedWorkers = useWorkersStore.getState().workers.some(
+                  // Check if there are people assigned to this computation card
+                  const hasAssignedPeople = useWorkersStore.getState().workers.some(
                     worker => worker.assignedTo === id
                   )
 
-                  return !anyCardHasPriority && hasAssignedWorkers ? (
+                  return !anyCardHasPriority && hasAssignedPeople ? (
                     <div className="bg-yellow-100 text-yellow-800 p-2 text-sm mt-2 rounded">
                       Warning: Thoughts are being generated but not applied to
                       any discovery.
@@ -225,7 +225,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                   <div className="w-full text-center">
                     {resource.amount[0] <= 0 && (
                       <div className="text-red-600 font-medium">
-                        Cannot think while hungry!
+                        People cannot think while hungry!
                       </div>
                     )}
                   </div>
@@ -242,7 +242,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                     />
                     {resource.amount[0] <= 0 && (
                       <div className="text-red-600 font-medium text-center mt-2">
-                        Cannot learn while hungry!
+                        People cannot learn while hungry!
                       </div>
                     )}
                   </div>

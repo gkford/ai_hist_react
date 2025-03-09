@@ -108,7 +108,7 @@ export const allCards: CardDefinition[] = [
     id: 'raise_children',
     title: 'Raise Children',
     type: 'create_worker',
-    description: "Assign workers to raise children and grow your population",
+    description: "Assign people to raise children and grow your population",
     icon: '👶',
     imageSrc: '/card_images/raiseChildren.png',
     tipText: "Ensure your future by raising children.",
@@ -127,7 +127,7 @@ export const allCards: CardDefinition[] = [
     id: 'gather_food',
     title: 'Gather Food',
     type: 'production',
-    description: "Gain 1.1 food per person gathering food",
+    description: "Gain 1.1 food per person assigned to gathering food",
     icon: '⚙️',
     imageSrc: '/card_images/gatherFood.png',
     discovery_stats: {
