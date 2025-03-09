@@ -101,12 +101,17 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           <div className="flex-1 flex flex-col p-4 overflow-hidden">
             {/* Title Row - with overflow hidden and responsive font size */}
             <div className="flex items-center justify-between overflow-hidden">
-              <h3 className={cn(
-                "font-semibold truncate mr-2",
-                // cardDef.title.length > 30 ? "text-base" : "",
-                cardDef.title.length > 15 ? "text-lg" : "text-xl",
-                // cardDef.title.length > 25 ? "text-sm" : "",
-              )}>{cardDef.title}</h3>
+              <div className="flex flex-col overflow-hidden mr-2">
+                <h3 className={cn(
+                  "font-semibold truncate",
+                  // cardDef.title.length > 30 ? "text-base" : "",
+                  cardDef.title.length > 15 ? "text-lg" : "text-xl",
+                  // cardDef.title.length > 25 ? "text-sm" : "",
+                )}>{cardDef.title}</h3>
+                {cardDef.description && (
+                  <p className="text-xs text-gray-500 italic truncate">{cardDef.description}</p>
+                )}
+              </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {cardDef.generates && <GenerationTracker cardId={id} />}
                 {cardDef.ongoingEffects && (

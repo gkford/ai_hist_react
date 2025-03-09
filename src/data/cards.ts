@@ -50,6 +50,7 @@ export interface CardDefinition {
   id: string
   title: string
   type: CardType
+  description?: string // Short description of what the card does
   resource_type?: ResourceKey
   icon?: string
   imageSrc?: string
@@ -125,6 +126,7 @@ export const allCards: CardDefinition[] = [
     id: 'gather_food',
     title: 'Gather Food',
     type: 'production',
+    description: "Gain 1.1 food per person gathering food",
     icon: '⚙️',
     imageSrc: '/card_images/gatherFood.png',
     discovery_stats: {
