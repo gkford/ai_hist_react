@@ -101,17 +101,12 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
           <div className="flex-1 flex flex-col p-4 overflow-hidden">
             {/* Title Row - with overflow hidden and responsive font size */}
             <div className="flex items-center justify-between overflow-hidden">
-              <div className="flex flex-col overflow-hidden mr-2">
-                <h3 className={cn(
-                  "font-semibold truncate",
-                  // cardDef.title.length > 30 ? "text-base" : "",
-                  cardDef.title.length > 15 ? "text-lg" : "text-xl",
-                  // cardDef.title.length > 25 ? "text-sm" : "",
-                )}>{cardDef.title}</h3>
-                {cardDef.description && (
-                  <p className="text-xs text-gray-500 italic truncate">{cardDef.description}</p>
-                )}
-              </div>
+              <h3 className={cn(
+                "font-semibold truncate mr-2",
+                // cardDef.title.length > 30 ? "text-base" : "",
+                cardDef.title.length > 15 ? "text-lg" : "text-xl",
+                // cardDef.title.length > 25 ? "text-sm" : "",
+              )}>{cardDef.title}</h3>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {cardDef.generates && <GenerationTracker cardId={id} />}
                 {cardDef.ongoingEffects && (
@@ -172,21 +167,26 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             )}
 
             {/* Additional Main Content vertically centered - with overflow hidden */}
-            <div className="flex-grow flex items-center overflow-hidden">
-              <div className="w-full">
-                {/* Show discovery notification if present, otherwise show regular content */}
-                {cardState.discovery_state.current_status === 'discovered' &&
-                  useDiscoveryStore.getState().pendingAcknowledgments[id] ? (
-                    <CardDiscoveryNotification cardId={id} />
-                  ) : cardState.discovery_state.current_status === 'locked' ? (
-                  <div className={cn(
-                    "text-center text-gray-500 italic",
-                    !disableInteractions && "cursor-pointer"
-                  )} 
-                  onClick={() => !disableInteractions && setShowQuiz(true)}>
-                    <p className="text-lg">Locked</p>
-                    <p className="text-sm mt-1">Click to unlock and research</p>
-                  </div>
+            <div className="flex-grow flex flex-col overflow-hidden">
+              {/* Description text at the top of the main content area */}
+              {cardDef.description && (
+                <p className="text-xs text-gray-500 italic mb-2">{cardDef.description}</p>
+              )}
+              <div className="flex-grow flex items-center overflow-hidden">
+                <div className="w-full">
+                  {/* Show discovery notification if present, otherwise show regular content */}
+                  {cardState.discovery_state.current_status === 'discovered' &&
+                    useDiscoveryStore.getState().pendingAcknowledgments[id] ? (
+                      <CardDiscoveryNotification cardId={id} />
+                    ) : cardState.discovery_state.current_status === 'locked' ? (
+                    <div className={cn(
+                      "text-center text-gray-500 italic",
+                      !disableInteractions && "cursor-pointer"
+                    )} 
+                    onClick={() => !disableInteractions && setShowQuiz(true)}>
+                      <p className="text-lg">Locked</p>
+                      <p className="text-sm mt-1">Click to unlock and research</p>
+                    </div>
                 ) : isunlocked ? (
                   <div className="text-center text-gray-500 italic">
                     <p className="text-lg">Undiscovered</p>
@@ -253,6 +253,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
                 ) : (
                   <div></div>
                 )}
+                </div>
               </div>
             </div>
           </div>
