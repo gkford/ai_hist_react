@@ -108,6 +108,7 @@ export const allCards: CardDefinition[] = [
     id: 'raise_children',
     title: 'Raise Children',
     type: 'create_worker',
+    description: "Assign workers to raise children and grow your population",
     icon: '👶',
     imageSrc: '/card_images/raiseChildren.png',
     tipText: "Ensure your future by raising children.",

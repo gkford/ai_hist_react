@@ -170,7 +170,7 @@ export const CardDesign = React.forwardRef<HTMLDivElement, CardDesignProps>(
             <div className="flex-grow flex flex-col overflow-hidden">
               {/* Description text at the top of the main content area */}
               {cardDef.description && (
-                <p className="text-xs text-gray-500 italic mb-2">{cardDef.description}</p>
+                <p className="text-sm text-gray-600 italic mb-2">{cardDef.description}</p>
               )}
               <div className="flex-grow flex items-center overflow-hidden">
                 <div className="w-full">
