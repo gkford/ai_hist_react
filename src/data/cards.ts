@@ -185,6 +185,7 @@ export const allCards: CardDefinition[] = [
     id: 'non_verbal_communication',
     title: 'Non-verbal Communication',
     type: 'worker_upgrade',
+    description: "Train your people to communicate with gestures and signals",
     icon: '👋',
     imageSrc: '/card_images/nonVerbalCommunication.png',
     discovery_stats: {
@@ -209,6 +210,7 @@ export const allCards: CardDefinition[] = [
     id: 'gift_giving',
     title: 'Gift Giving',
     type: 'science',
+    description: "Exchange gifts to build social bonds and improve thinking",
     icon: '🎁',
     imageSrc: '/card_images/giftGiving.png',
     discovery_stats: {
@@ -242,6 +244,7 @@ export const allCards: CardDefinition[] = [
     id: 'cooperative_hunting',
     title: 'Cooperative Hunting',
     type: 'production',
+    description: "Hunt together to catch larger prey and gain 1.3 food per person",
     icon: '🏹',
     imageSrc: '/card_images/cooperativeHunting.png',
     discovery_stats: {
@@ -271,6 +274,7 @@ export const allCards: CardDefinition[] = [
     id: 'think',
     title: 'Think',
     type: 'computation',
+    description: "Assign people to think and generate new ideas",
     icon: '🧠',
     imageSrc: '/card_images/think.webp',
     generates: {
@@ -316,6 +320,7 @@ export const allCards: CardDefinition[] = [
     id: 'early_stone_tools',
     title: 'Early Stone Tools',
     type: 'science',
+    description: "Simple tools made from stone that improve food production",
     icon: '🪨',
     imageSrc: '/card_images/earlyStoneTools.png',
     discovery_stats: {
@@ -347,6 +352,7 @@ export const allCards: CardDefinition[] = [
     id: 'fire_domestication',
     title: 'Fire Domestication',
     type: 'science',
+    description: "Control fire for warmth, protection, and increased population capacity",
     icon: '🔥',
     imageSrc: '/card_images/fireDomestication.png',
     discovery_stats: {
@@ -374,6 +380,7 @@ export const allCards: CardDefinition[] = [
     id: 'cooking',
     title: 'Cooking',
     type: 'science',
+    description: "Prepare food with fire to make it safer and more nutritious",
     icon: '🍖',
     imageSrc: '/card_images/cooking.png',
     discovery_stats: {
@@ -443,6 +450,7 @@ export const allCards: CardDefinition[] = [
     id: 'trading',
     title: 'Trading',
     type: 'production',
+    description: "Exchange goods with other groups to gain 1.5 food per person",
     icon: '🤝',
     imageSrc: '/card_images/trading.png',
     // TODO: Implement trading mechanics:
@@ -468,6 +476,7 @@ export const allCards: CardDefinition[] = [
     id: 'cave_painting',
     title: 'Cave Painting',
     type: 'science',
+    description: "Create visual records of important events and increase population capacity",
     icon: '🎨',
     imageSrc: '/card_images/cavePainting.png',
     discovery_stats: {
@@ -495,6 +504,7 @@ export const allCards: CardDefinition[] = [
     id: 'early_language',
     title: 'Early Language',
     type: 'worker_upgrade',
+    description: "Develop basic verbal communication to improve collaboration",
     icon: '💭',
     imageSrc: '/card_images/earlyLanguage.png',
     discovery_stats: {
@@ -519,6 +529,7 @@ export const allCards: CardDefinition[] = [
     id: 'tally_marks',
     title: 'Tally Marks',
     type: 'science',
+    description: "Simple counting system to track quantities and increase population capacity",
     icon: '✏️',
     imageSrc: '/card_images/tallyMarks.png',
     discovery_stats: {
@@ -545,6 +556,7 @@ export const allCards: CardDefinition[] = [
     id: 'storytelling',
     title: 'Storytelling',
     type: 'worker_upgrade',
+    description: "Share knowledge through stories to preserve tribal wisdom",
     icon: '📚',
     imageSrc: '/card_images/storyTelling.png',
     discovery_stats: {
