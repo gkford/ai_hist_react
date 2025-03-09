@@ -155,6 +155,7 @@ export const allCards: CardDefinition[] = [
     id: 'hunt',
     title: 'Hunting',
     type: 'production',
+    description: "Gain 1.2 food per person assigned to hunting",
     icon: '🦌',
     imageSrc: '/card_images/hunt.webp',
     discovery_stats: {
