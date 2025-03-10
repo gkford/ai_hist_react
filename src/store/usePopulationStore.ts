@@ -91,12 +91,18 @@ export const usePopulationStore = create<PopulationStore>((set, get) => ({
   
   calculateDominantEquilibrium: () => {
     const { populationTarget, calorieEquilibrium } = get();
+    const currentPopulation = useWorkersStore.getState().workers.length;
     
-    // If either value is 0, use the other one
+    // If population target is 0 (no one raising children), don't allow growth
     if (populationTarget === 0) {
-      set({ dominantEquilibrium: calorieEquilibrium });
+      // Use current population or calorie equilibrium, whichever is lower
+      // This prevents growth when no one is raising children
+      const dominant = Math.min(currentPopulation, calorieEquilibrium);
+      set({ dominantEquilibrium: dominant });
       return;
     }
+    
+    // If calorie equilibrium is 0, use population target
     if (calorieEquilibrium === 0) {
       set({ dominantEquilibrium: populationTarget });
       return;
@@ -108,7 +114,7 @@ export const usePopulationStore = create<PopulationStore>((set, get) => ({
   },
   
   updatePopulationProgress: () => {
-    const { dominantEquilibrium, populationProgress } = get();
+    const { dominantEquilibrium, populationProgress, populationTarget } = get();
     const currentPopulation = useWorkersStore.getState().workers.length;
     
     // Calculate the difference
@@ -120,12 +126,21 @@ export const usePopulationStore = create<PopulationStore>((set, get) => ({
       return;
     }
     
+    // If we're trying to grow but no one is raising children, don't allow growth
+    if (difference > 0 && populationTarget === 0) {
+      logger.log(`No population growth possible: no workers assigned to raise children`);
+      if (populationProgress > 0) {
+        set({ populationProgress: 0 });
+      }
+      return;
+    }
+    
     // Calculate the rate of change based on the difference
     // The larger the difference, the faster the change
     // Using a tanh function to make it smooth
     const changeRate = Math.tanh(difference / 5) * 0.2; // Scale factor of 0.2 means max ±0.2 per tick
     
-    logger.log(`Population progress: current=${populationProgress.toFixed(2)}, change=${changeRate.toFixed(2)}, difference=${difference}`);
+    logger.log(`Population progress: current=${populationProgress.toFixed(2)}, change=${changeRate.toFixed(2)}, difference=${difference}, target=${populationTarget}`);
     
     // Update the progress
     const newProgress = populationProgress + changeRate;
@@ -134,12 +149,12 @@ export const usePopulationStore = create<PopulationStore>((set, get) => ({
   },
   
   applyPopulationChanges: () => {
-    const { populationProgress } = get();
+    const { populationProgress, populationTarget } = get();
     const workersStore = useWorkersStore.getState();
     const currentWorkers = workersStore.workers;
     
-    // If progress reaches +1, add a worker
-    if (populationProgress >= 1) {
+    // If progress reaches +1 and we have a non-zero population target, add a worker
+    if (populationProgress >= 1 && populationTarget > 0) {
       // Create a new worker
       const newWorkerId = `worker-${currentWorkers.length}`;
       
@@ -162,8 +177,8 @@ export const usePopulationStore = create<PopulationStore>((set, get) => ({
       set({ populationProgress: populationProgress - 1 });
     }
     
-    // If progress reaches -1, remove a worker
-    else if (populationProgress <= -1 && currentWorkers.length > 0) {
+    // If progress reaches -1, remove a worker, but never below 2
+    else if (populationProgress <= -1 && currentWorkers.length > 2) {
       // Find an unassigned worker or one assigned to gather_food
       const workerToRemove = currentWorkers.find(w => 
         w.assignedTo === null || w.assignedTo === 'gather_food'
@@ -181,6 +196,10 @@ export const usePopulationStore = create<PopulationStore>((set, get) => ({
       
       // Reset progress (keeping any excess)
       set({ populationProgress: populationProgress + 1 });
+    } else if (populationProgress <= -1 && currentWorkers.length <= 2) {
+      // If we're at minimum population, reset progress
+      logger.log(`Cannot reduce population below 2 workers`);
+      set({ populationProgress: 0 });
     }
   }
 }));
