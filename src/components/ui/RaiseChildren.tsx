@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { useWorkersStore, WORKER_ICONS } from '@/store/useWorkersStore'
 import { useResourceStore } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
-import { usePopulationStore } from '@/store/usePopulationStore'
+import { usePopulationStore, CALORIE_CONSUMPTION_PER_PERSON } from '@/store/usePopulationStore'
 import { Progress } from '@/components/ui/progress'
 import { logger } from '@/lib/logger'
 
@@ -22,6 +22,7 @@ export function RaiseChildren({
   // Update population target when assigned workers change
   const updatePopulationTarget = usePopulationStore(state => state.updatePopulationTarget)
   const populationTarget = usePopulationStore(state => state.populationTarget)
+  const calorieEquilibrium = usePopulationStore(state => state.calorieEquilibrium)
   
   React.useEffect(() => {
     updatePopulationTarget()
@@ -42,7 +43,14 @@ export function RaiseChildren({
         ) : foodAmount <= 0 ? (
           <div className="text-red-600 font-medium">Cannot raise children without food!</div>
         ) : (
-          <div className="text-green-600">Target: {populationTarget} people</div>
+          <div className="text-green-600">
+            Target: {populationTarget} people
+            {calorieEquilibrium > 0 && (
+              <span className="ml-2 text-blue-500">
+                (Sustainable: {calorieEquilibrium})
+              </span>
+            )}
+          </div>
         )}
       </div>
     </div>

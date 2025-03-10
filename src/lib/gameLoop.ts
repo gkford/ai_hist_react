@@ -4,13 +4,14 @@ import { useResourceStore, ResourceKey } from '@/store/useResourceStore'
 import { useGameLoopStore } from '@/store/useGameLoopStore'
 import { useCardsStore } from '@/store/useCardsStore'
 import { useWorkersStore } from '@/store/useWorkersStore'
+import { usePopulationStore, CALORIE_CONSUMPTION_PER_PERSON } from '@/store/usePopulationStore'
 import { allCards } from '@/data/cards'
 import { logger } from './logger'
 
 // Worker upgrades are now handled entirely by the discovery system
 
-// Constant for calorie consumption per person
-const CALORIE_CONSUMPTION_PER_PERSON = 2000;
+// Import calorie consumption constant from population store
+import { usePopulationStore, CALORIE_CONSUMPTION_PER_PERSON } from '@/store/usePopulationStore'
 
 function processFoodConsumption() {
   const resourceStore = useResourceStore.getState()
@@ -228,6 +229,9 @@ export async function processTick() {
       // Process people level upgrades
       logger.log('Processing People Level...')
       processPeopleLevel()
+
+      // Calculate calorie equilibrium
+      usePopulationStore.getState().calculateCalorieEquilibrium()
 
       // Deduct food based on population (moved to end)
       logger.log('Processing Food Consumption...')
