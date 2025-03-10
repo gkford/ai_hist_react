@@ -11,11 +11,7 @@ export function PopulationTracker({
   ...props 
 }: PopulationTrackerProps) {
   const workers = useWorkersStore(state => state.workers)
-  const max_population = useWorkersStore(state => state.max_population)
   const populationTarget = usePopulationStore(state => state.populationTarget)
-  
-  // Check if population is at max
-  const isAtMaxPopulation = workers.length >= max_population
 
   return (
     <div 
@@ -29,9 +25,8 @@ export function PopulationTracker({
         </div>
       </div>
       <div className="text-sm">
-        Population: {workers.length}/{max_population}
+        Population: {workers.length}
         {populationTarget > 0 && <span className="ml-2 text-green-500">Target: {populationTarget}</span>}
-        {isAtMaxPopulation && <span className="ml-2 text-blue-500">Maximum reached</span>}
       </div>
     </div>
   )

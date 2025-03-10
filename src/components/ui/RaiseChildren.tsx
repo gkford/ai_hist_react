@@ -11,9 +11,8 @@ export function RaiseChildren({
   className,
   ...props 
 }: React.HTMLAttributes<HTMLDivElement>) {
-  // Get worker count and max population
+  // Get worker count
   const workers = useWorkersStore(state => state.workers)
-  const max_population = useWorkersStore(state => state.max_population)
   
   // Get assigned worker count
   const assignedWorkerCount = useWorkersStore(
@@ -28,9 +27,6 @@ export function RaiseChildren({
     updatePopulationTarget()
   }, [assignedWorkerCount, updatePopulationTarget])
   
-  // Check if population is at max
-  const isAtMaxPopulation = workers.length >= max_population
-  
   // Get current food amount
   const foodAmount = useResourceStore(state => state.resources.food.amount[0])
 
@@ -38,12 +34,10 @@ export function RaiseChildren({
     <div className={cn("flex flex-col gap-1 p-2", className)} {...props}>
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium">Population Target: {populationTarget}</span>
-        <span className="text-sm">Current: {workers.length}/{max_population}</span>
+        <span className="text-sm">Current: {workers.length}</span>
       </div>
       <div className="flex justify-center text-xs mt-1">
-        {isAtMaxPopulation ? (
-          <div className="text-blue-500 font-medium">Maximum population reached!</div>
-        ) : assignedWorkerCount === 0 ? (
+        {assignedWorkerCount === 0 ? (
           <div className="text-gray-500">No workers assigned to raising children</div>
         ) : foodAmount <= 0 ? (
           <div className="text-red-600 font-medium">Cannot raise children without food!</div>
