@@ -11,9 +11,17 @@ export function PopulationTracker({
   ...props 
 }: PopulationTrackerProps) {
   const workers = useWorkersStore(state => state.workers)
+  const raisingChildrenCount = workers.filter(w => w.assignedTo === 'raise_children').length
+  const regularWorkerCount = workers.length - raisingChildrenCount
+  
   const populationTarget = usePopulationStore(state => state.populationTarget)
   const calorieEquilibrium = usePopulationStore(state => state.calorieEquilibrium)
   const foodResource = useResourceStore(state => state.resources.food)
+  
+  // Calculate total calorie consumption
+  const regularCalories = regularWorkerCount * CALORIE_CONSUMPTION_PER_PERSON
+  const raisingChildrenCalories = raisingChildrenCount * CALORIE_CONSUMPTION_PER_PERSON * 1.5
+  const totalCalories = regularCalories + raisingChildrenCalories
 
   return (
     <div 
@@ -21,7 +29,7 @@ export function PopulationTracker({
       {...props}
     >
       <div className="flex flex-col text-sm">
-        <div>Calories consumed each day: {workers.length * CALORIE_CONSUMPTION_PER_PERSON}</div>
+        <div>Calories consumed each day: {Math.floor(totalCalories)}</div>
         <div>
           Excess Calories: {Math.floor(foodResource.amount[0] * (foodResource.calories || 2000))}
         </div>

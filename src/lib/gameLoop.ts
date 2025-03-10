@@ -17,22 +17,35 @@ function processFoodConsumption() {
   const resourceStore = useResourceStore.getState()
   const workersStore = useWorkersStore.getState()
   
-  // Get all workers except those assigned to raise_children
-  const workersConsumingFood = workersStore.workers.filter(w => w.assignedTo !== 'raise_children')
-  const workerCount = workersConsumingFood.length
+  // Get all workers
+  const allWorkers = workersStore.workers
+  // Get workers assigned to raise children
+  const raisingChildrenWorkers = workersStore.workers.filter(w => w.assignedTo === 'raise_children')
+  // Get regular workers (not raising children)
+  const regularWorkers = workersStore.workers.filter(w => w.assignedTo !== 'raise_children')
+  
+  const regularWorkerCount = regularWorkers.length
+  const raisingChildrenCount = raisingChildrenWorkers.length
   
   const maxStorage = resourceStore.resources.food.max_storage
   const currentFood = resourceStore.resources.food.amount[0]
   const caloriesPerFood = resourceStore.resources.food.calories || 2000
   
   logger.log(`Food before consumption: ${currentFood}`)
-  logger.log(`Workers consuming: ${workerCount} (excluding workers raising children)`)
+  logger.log(`Regular workers: ${regularWorkerCount}, Raising children: ${raisingChildrenCount}`)
   logger.log(`Calories per food unit: ${caloriesPerFood}`)
   
   // Calculate how much food to consume based on calories
-  const totalCaloriesNeeded = workerCount * CALORIE_CONSUMPTION_PER_PERSON
+  // Regular workers consume normal calories
+  const regularCaloriesNeeded = regularWorkerCount * CALORIE_CONSUMPTION_PER_PERSON
+  // Workers raising children consume 150% calories
+  const raisingChildrenCaloriesNeeded = raisingChildrenCount * CALORIE_CONSUMPTION_PER_PERSON * 1.5
+  
+  const totalCaloriesNeeded = regularCaloriesNeeded + raisingChildrenCaloriesNeeded
   const foodUnitsToConsume = totalCaloriesNeeded / caloriesPerFood
   
+  logger.log(`Regular workers calories: ${regularCaloriesNeeded}`)
+  logger.log(`Raising children calories: ${raisingChildrenCaloriesNeeded}`)
   logger.log(`Total calories needed: ${totalCaloriesNeeded}`)
   logger.log(`Food units to consume: ${foodUnitsToConsume.toFixed(2)}`)
   
