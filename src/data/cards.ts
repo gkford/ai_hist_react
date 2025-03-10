@@ -137,7 +137,7 @@ export const allCards: CardDefinition[] = [
     },
     generates: {
       resource: 'food',
-      amount: 1.1,
+      amount: 3,
     },
     tipText: "Click + to assign workers to Gather Food",
     quiz: {

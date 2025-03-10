@@ -46,7 +46,7 @@ export const usePopulationStore = create<PopulationStore>((set, get) => ({
     const assignedWorkers = workersStore.workers.filter(w => w.assignedTo === 'raise_children').length;
     
     // Population target is 3x the number of workers assigned to raise children
-    const target = assignedWorkers * 3;
+    const target = assignedWorkers * 4;
     
     set({ populationTarget: target });
   },
