@@ -243,8 +243,12 @@ export async function processTick() {
       logger.log('Processing People Level...')
       processPeopleLevel()
 
-      // Calculate calorie equilibrium
+      // Calculate calorie equilibrium and population changes
+      logger.log('Processing Population Changes...')
       usePopulationStore.getState().calculateCalorieEquilibrium()
+      usePopulationStore.getState().calculateDominantEquilibrium()
+      usePopulationStore.getState().updatePopulationProgress()
+      usePopulationStore.getState().applyPopulationChanges()
 
       // Deduct food based on population (moved to end)
       logger.log('Processing Food Consumption...')

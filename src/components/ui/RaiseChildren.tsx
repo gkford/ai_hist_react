@@ -23,6 +23,8 @@ export function RaiseChildren({
   const updatePopulationTarget = usePopulationStore(state => state.updatePopulationTarget)
   const populationTarget = usePopulationStore(state => state.populationTarget)
   const calorieEquilibrium = usePopulationStore(state => state.calorieEquilibrium)
+  const dominantEquilibrium = usePopulationStore(state => state.dominantEquilibrium)
+  const populationProgress = usePopulationStore(state => state.populationProgress)
   
   React.useEffect(() => {
     updatePopulationTarget()
@@ -52,6 +54,31 @@ export function RaiseChildren({
             )}
           </div>
         )}
+      </div>
+      
+      {/* Population progress bar */}
+      <div className="mt-2">
+        <div className="flex justify-between text-xs mb-1">
+          <span>Population Change:</span>
+          <span>
+            {dominantEquilibrium > workers.length 
+              ? 'Growing' 
+              : dominantEquilibrium < workers.length 
+                ? 'Declining' 
+                : 'Stable'}
+          </span>
+        </div>
+        <Progress 
+          value={Math.abs(populationProgress) * 100} 
+          className={cn(
+            "h-2",
+            dominantEquilibrium > workers.length 
+              ? "bg-green-200" 
+              : dominantEquilibrium < workers.length 
+                ? "bg-red-200" 
+                : "bg-gray-200"
+          )}
+        />
       </div>
     </div>
   )
