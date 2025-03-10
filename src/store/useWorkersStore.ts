@@ -35,7 +35,7 @@ interface WorkersStore {
 
 export const useWorkersStore = create<WorkersStore>((set, get) => ({
   getWorkerIcon: (level: number) => WORKER_ICONS[level as keyof typeof WORKER_ICONS] || WORKER_ICONS[1],
-  workers: Array(1).fill(null).map((_, i) => ({
+  workers: Array(2).fill(null).map((_, i) => ({
     id: `worker-${i}`,
     level: 1,
     icon: WORKER_ICONS[1],
