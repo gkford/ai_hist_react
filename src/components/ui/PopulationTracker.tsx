@@ -20,7 +20,7 @@ export function PopulationTracker({
   
   // Calculate total calorie consumption
   const regularCalories = regularWorkerCount * CALORIE_CONSUMPTION_PER_PERSON
-  const raisingChildrenCalories = raisingChildrenCount * CALORIE_CONSUMPTION_PER_PERSON * 1.5
+  const raisingChildrenCalories = raisingChildrenCount * CALORIE_CONSUMPTION_PER_PERSON * 2.0
   const totalCalories = regularCalories + raisingChildrenCalories
 
   return (

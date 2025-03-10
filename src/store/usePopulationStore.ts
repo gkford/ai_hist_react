@@ -59,8 +59,8 @@ export const usePopulationStore = create<PopulationStore>((set) => ({
     const raisingChildrenRatio = raisingChildrenWorkers / totalWorkers;
     
     // Calculate average calorie consumption per person based on current ratio
-    // Regular workers: 100%, Workers raising children: 150%
-    const avgCaloriesPerPerson = CALORIE_CONSUMPTION_PER_PERSON * (1 + (0.5 * raisingChildrenRatio));
+    // Regular workers: 100%, Workers raising children: 200%
+    const avgCaloriesPerPerson = CALORIE_CONSUMPTION_PER_PERSON * (1 + (1.0 * raisingChildrenRatio));
     
     // Calculate how many people can be sustained with this calorie production
     const equilibrium = totalCaloriesPerDay / avgCaloriesPerPerson;

@@ -38,8 +38,8 @@ function processFoodConsumption() {
   // Calculate how much food to consume based on calories
   // Regular workers consume normal calories
   const regularCaloriesNeeded = regularWorkerCount * CALORIE_CONSUMPTION_PER_PERSON
-  // Workers raising children consume 150% calories
-  const raisingChildrenCaloriesNeeded = raisingChildrenCount * CALORIE_CONSUMPTION_PER_PERSON * 1.5
+  // Workers raising children consume 200% calories
+  const raisingChildrenCaloriesNeeded = raisingChildrenCount * CALORIE_CONSUMPTION_PER_PERSON * 2.0
   
   const totalCaloriesNeeded = regularCaloriesNeeded + raisingChildrenCaloriesNeeded
   const foodUnitsToConsume = totalCaloriesNeeded / caloriesPerFood
