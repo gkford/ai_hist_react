@@ -9,6 +9,9 @@ import { logger } from './logger'
 
 // Worker upgrades are now handled entirely by the discovery system
 
+// Constant for calorie consumption per person
+const CALORIE_CONSUMPTION_PER_PERSON = 2000;
+
 function processFoodConsumption() {
   const resourceStore = useResourceStore.getState()
   const workersStore = useWorkersStore.getState()
@@ -19,12 +22,21 @@ function processFoodConsumption() {
   
   const maxStorage = resourceStore.resources.food.max_storage
   const currentFood = resourceStore.resources.food.amount[0]
+  const caloriesPerFood = resourceStore.resources.food.calories || 2000
   
   logger.log(`Food before consumption: ${currentFood}`)
   logger.log(`Workers consuming: ${workerCount} (excluding workers raising children)`)
+  logger.log(`Calories per food unit: ${caloriesPerFood}`)
   
-  // Each worker consumes 1 food, except those raising children
-  resourceStore.spendResource('food', workerCount)
+  // Calculate how much food to consume based on calories
+  const totalCaloriesNeeded = workerCount * CALORIE_CONSUMPTION_PER_PERSON
+  const foodUnitsToConsume = totalCaloriesNeeded / caloriesPerFood
+  
+  logger.log(`Total calories needed: ${totalCaloriesNeeded}`)
+  logger.log(`Food units to consume: ${foodUnitsToConsume.toFixed(2)}`)
+  
+  // Consume the calculated amount of food
+  resourceStore.spendResource('food', foodUnitsToConsume)
   
   // Get fresh state after spending
   const afterConsumption = useResourceStore.getState().resources.food.amount[0]
