@@ -2,6 +2,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { useWorkersStore } from '@/store/useWorkersStore'
 import { useResourceStore } from '@/store/useResourceStore'
+import { usePopulationStore } from '@/store/usePopulationStore'
 
 interface PopulationTrackerProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -11,6 +12,7 @@ export function PopulationTracker({
 }: PopulationTrackerProps) {
   const workers = useWorkersStore(state => state.workers)
   const max_population = useWorkersStore(state => state.max_population)
+  const populationTarget = usePopulationStore(state => state.populationTarget)
   
   // Check if population is at max
   const isAtMaxPopulation = workers.length >= max_population
@@ -28,6 +30,7 @@ export function PopulationTracker({
       </div>
       <div className="text-sm">
         Population: {workers.length}/{max_population}
+        {populationTarget > 0 && <span className="ml-2 text-green-500">Target: {populationTarget}</span>}
         {isAtMaxPopulation && <span className="ml-2 text-blue-500">Maximum reached</span>}
       </div>
     </div>
